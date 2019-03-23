@@ -1,4 +1,19 @@
-*
-!.emacs.d/config.org
-!.bashrc
+# Excluir todo.
+/*
+
+
+# Añadir todos los archivos de configuración.
+
+# Emacs
+!/.emacs.d
+/.emacs.d/*
+!/.emacs.d/config.org
+!/.emacs.d/init.el
+!/.emacs.d/custom.el
+
+# Bash.
+# !.bashrc
+
+# Git.
 !.gitignore
+!.gitconfig

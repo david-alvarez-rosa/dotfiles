@@ -1,0 +1,18 @@
+[user]
+	name = David Álvarez Rosa
+	email = david@alvarezrosa.com
+[credential]
+        helper = store	
+[core]
+	editor = vim
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+	pager = true
+	ui = auto
+[alias]
+	hist = log --graph --oneline --decorate --color
+	st = status
+
