@@ -380,11 +380,10 @@ Para una mejor gestión de ventanas, búsqueda de archivos y de comandos.
           helm-scroll-amount 8
           helm-echo-input-in-header-line t
           helm-boring-buffer-regexp-list '("\\` " "\\`\\*helm" "\\`\\*echo area"
-                                           "\\`\\*minibuf" "magit" "elfeed" "*Messages*"))
+                                           "\\`\\*minibuf" "magit" "elfeed" "*Messages*"
+                                           "*Ediff Registry*"))
     :init
-    (helm-mode 1)
-    ;; :diminish
-    )
+    (helm-mode 1))
 #+END_SRC
 
 Configuraciones adicionales.
