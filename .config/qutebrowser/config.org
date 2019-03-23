@@ -1,0 +1,665 @@
+#+TITLE: Archivo de configuración de Qutebrowser
+#+AUTHOR: David Álvarez Rosa
+
+* Qutebrowser
+:PROPERTIES:
+:HEADER-ARGS+: :tangle yes
+:END:
+
+** Básicos
+*** Movimiento
+Movimiento en página.
+#+BEGIN_SRC python
+  config.bind('n', 'scroll down')
+  config.bind('p', 'scroll up')
+  config.bind('<Ctrl-n>', 'scroll down')
+  config.bind('<Ctrl-p>', 'scroll up')
+  config.bind('<Ctrl-f>', 'scroll right')
+  config.bind('<Ctrl-b>', 'scroll left')
+  config.bind('d', 'scroll-page 0 0.5')
+  config.bind('u', 'scroll-page 0 -0.5')
+  config.bind('<', 'scroll-to-perc 0')
+  config.bind('>', 'scroll-to-perc')
+#+END_SRC
+
+*** Búsqueda
+Configurar comandos de búsqueda.
+#+BEGIN_SRC python
+  config.bind('<Ctrl-s>', 'set-cmd-text /', mode='normal')
+  config.bind('<Ctrl-r>', 'set-cmd-text ?', mode='normal')
+  config.bind('<Ctrl-s>', 'search-next', mode='command')
+  config.bind('<Ctrl-r>', 'search-prev', mode='command')
+  config.bind('<Alt-n>', 'search-next', mode='command')
+  config.bind('<Alt-p>', 'search-prev', mode='command')
+  config.bind('<Alt-n>', 'search-next', mode='normal')
+  config.bind('<Alt-p>', 'search-prev', mode='normal')
+#+END_SRC
+
+
+*** Pestañas
+Movimiento entre pestañas.
+#+BEGIN_SRC python
+  config.bind('K', 'tab-next')
+  config.bind('J', 'tab-prev')
+  config.bind('f', 'tab-next')
+  config.bind('b', 'tab-prev')
+  config.bind('N', 'tab-next')
+  config.bind('P', 'tab-prev')
+#+END_SRC
+
+Movimiento de pestañas.
+#+BEGIN_SRC python
+  config.bind('<Ctrl-K>', 'tab-move +')
+  config.bind('<Ctrl-J>', 'tab-move -')
+  config.bind('<Alt-f>', 'tab-move +')
+  config.bind('<Alt-b>', 'tab-move -')
+  config.bind('<Ctrl-Shift-N>', 'tab-move +')
+  config.bind('<Ctrl-Shift-P>', 'tab-move -')
+#+END_SRC
+
+
+*** /Escape/
+Convertir "C-g" en una tecla de escape.
+#+BEGIN_SRC python
+  config.bind("<Ctrl-g>", 'leave-mode', mode="prompt")
+  config.bind("<Ctrl-g>", 'leave-mode', mode="hint")
+  config.bind("<Ctrl-g>", 'leave-mode', mode="command")
+  config.bind("<Ctrl-g>", 'leave-mode', mode="insert")
+  config.bind("<Ctrl-g>", 'leave-mode', mode="caret")
+  config.bind("<Ctrl-g>", 'leave-mode', mode="passthrough")
+  config.bind("<Ctrl-g>", 'leave-mode', mode="yesno")
+#+END_SRC
+
+
+*** Otros
+Movimiento en modo de entrada de texto.
+#+BEGIN_SRC python
+  config.bind('<Ctrl-f>', 'scroll right', mode='insert')
+  config.bind('<Ctrl-b>', 'scroll left', mode='insert')
+  config.bind('<Ctrl-p>', 'scroll up', mode='insert')
+  config.bind('<Ctrl-n>', 'scroll down', mode='insert')
+  config.bind('<Alt-f>', 'move-to-next-word', mode='insert')
+#+END_SRC
+
+Movimiento en modo de selección.
+#+BEGIN_SRC python
+  config.bind('<Ctrl-f>', 'move-to-next-char', mode='caret')
+  config.bind('<Ctrl-b>', 'move-to-prev-char', mode='caret')
+  config.bind('<Ctrl-p>', 'move-to-prev-line', mode='caret')
+  config.bind('<Ctrl-n>', 'move-to-next-line', mode='caret')
+  config.bind('<Alt-f>', 'move-to-next-word', mode='caret')
+  config.bind('<Alt-b>', 'move-to-prev-word', mode='caret')
+  config.bind('<Ctrl-e>', 'move-to-end-of-line', mode='caret')
+  config.bind('<Ctrl-a>', 'move-to-start-of-line', mode='caret')
+  config.bind('<Alt-w>', 'yank selection', mode='caret')
+  config.bind('>', 'move-to-end-of-document', mode='caret')
+  config.bind('<', 'move-to-start-of-document', mode='caret')
+  config.bind('<Ctrl-Space>', 'toggle-selection', mode='caret')
+  config.bind('<Ctrl-Space>', 'enter-mode caret', mode='normal')
+  config.bind('<Ctrl-Space>', 'enter-mode caret', mode='insert')
+
+  # Modo de inserción (desactivando el resto).
+  config.bind('<Ctrl-i>', 'enter-mode passthrough')
+  config.bind('<Ctrl-g>', 'enter-mode normal', mode='passthrough')
+  config.bind('<Ctrl-i>', 'enter-mode normal', mode='passthrough')
+#+END_SRC
+
+** Otros
+#+BEGIN_SRC python
+  # Configurar editor externo.
+  c.editor.command = ['st', '-e', 'emacsclient', '{}']
+  # c.editor.command = ['st', '-e', 'vim', '{}']
+
+  # Permitir deshacer el cerrar una pestaña.
+  config.bind('U', 'undo')
+
+  # Cerrar pestaña.
+  config.bind('k', 'tab-close')
+  # Cerrar "qutebrowser".
+  config.unbind('<Ctrl+x>')
+  config.bind('<Ctrl-x><Ctrl-c>', 'close')
+
+  # Configurar modo de selección de links.
+  config.bind('h', 'hint all')
+  config.bind('H', 'hint all tab')
+
+  # Moverse en la historia.
+  config.bind('B', 'back')
+  config.bind('F', 'forward')
+
+  # Configurar tamaño del menú de autocompletado.
+  c.completion.height = '45%'
+  # Configurar formato de la fecha.
+  c.completion.timestamp_format = '%d-%m-%Y'
+
+  # Para modo comandos.
+  config.bind('<Alt-x>', 'set-cmd-text :')
+  config.bind('<Ctrl-n>', 'completion-item-focus next', mode='command')
+  config.bind('<Ctrl-p>', 'completion-item-focus prev', mode='command')
+
+  # Abrir pestañas después de la actual.
+  c.tabs.new_position.unrelated = 'next'
+  # Mostrar barra de pestañas solo cuando se está cambiando de pestaña.
+  c.tabs.show = 'switching'
+  c.tabs.show_switching_delay = 3000
+  # Formato de las pestañas.
+  c.tabs.title.format = '{perc} {index} {title}'
+  # No dar hacer circular el movimiento entre pestañas.
+  c.tabs.wrap = False
+
+  # No mostrar barra de scroll en menú de autocompletado.
+  c.completion.scrollbar.padding = 0
+  c.completion.scrollbar.width = 0
+
+  # No mostrar barra de estado.
+  c.statusbar.hide = False
+
+  # No mostrar pdfs en web.
+  c.content.pdfjs = False
+#+END_SRC
+
+
+** Fuente
+#+BEGIN_SRC python
+  ############################### Configuración de fuente #################################
+
+  ## Encoding to use for the editor.
+  ## Type: Encoding
+  c.editor.encoding = 'utf-8'
+
+  ## Font used in the completion categories.
+  ## Type: Font
+  c.fonts.completion.category = 'bold 10pt monospace'
+
+  ## Font used in the completion widget.
+  ## Type: Font
+  c.fonts.completion.entry = '10pt monospace'
+
+  ## Font used for the debugging console.
+  ## Type: QtFont
+  c.fonts.debug_console = '10pt monospace'
+
+  ## Font used for the downloadbar.
+  ## Type: Font
+  c.fonts.downloads = '10pt monospace'
+
+  ## Font used for the hints.
+  ## Type: Font
+  c.fonts.hints = 'bold 10pt monospace'
+
+  ## Font used in the keyhint widget.
+  ## Type: Font
+  c.fonts.keyhint = '10pt monospace'
+
+  ## Font used for error messages.
+  ## Type: Font
+  c.fonts.messages.error = '10pt monospace'
+
+  ## Font used for info messages.
+  ## Type: Font
+  c.fonts.messages.info = '10pt monospace'
+
+  ## Font used for warning messages.
+  ## Type: Font
+  c.fonts.messages.warning = '10pt monospace'
+
+  ## Default monospace fonts. Whenever "monospace" is used in a font
+  ## setting, it's replaced with the fonts listed here.
+  ## Type: Font
+  c.fonts.monospace = '"Inconsolata", "xos4 Terminus", Terminus, Monospace, "DejaVu Sans Mono", Monaco, "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, "Liberation Mono", monospace, Fixed, Consolas, Terminal'
+
+  ## Font used for prompts.
+  ## Type: Font
+  c.fonts.prompts = '10pt sans-serif'
+
+  ## Font used in the statusbar.
+  ## Type: Font
+  c.fonts.statusbar = '10pt monospace'
+
+  ## Font used in the tab bar.
+  ## Type: QtFont
+  c.fonts.tabs = '10pt monospace'
+
+  ## Font family for cursive fonts.
+  ## Type: FontFamily
+  c.fonts.web.family.cursive = ''
+
+  ## Font family for fantasy fonts.
+  ## Type: FontFamily
+  c.fonts.web.family.fantasy = ''
+
+  ## Font family for fixed fonts.
+  ## Type: FontFamily
+  c.fonts.web.family.fixed = ''
+
+  ## Font family for sans-serif fonts.
+  ## Type: FontFamily
+  c.fonts.web.family.sans_serif = ''
+
+  ## Font family for serif fonts.
+  ## Type: FontFamily
+  c.fonts.web.family.serif = ''
+
+  ## Font family for standard fonts.
+  ## Type: FontFamily
+  c.fonts.web.family.standard = ''
+
+  ## The default font size for regular text.
+  ## Type: Int
+  c.fonts.web.size.default = 16
+
+  ## The default font size for fixed-pitch text.
+  ## Type: Int
+  c.fonts.web.size.default_fixed = 13
+
+  ## The hard minimum font size.
+  ## Type: Int
+  c.fonts.web.size.minimum = 0
+
+  ## The minimum logical font size that is applied when zooming out.
+  ## Type: Int
+  c.fonts.web.size.minimum_logical = 6
+
+#+END_SRC
+
+
+** Colores
+#+BEGIN_SRC python
+  ############################### Configuración de colores #################################
+
+  # base16-qutebrowser (https://github.com/theova/base16-qutebrowser)
+  # Base16 qutebrowser template by theova
+  # Default Dark scheme by Chris Kempson (http://chriskempson.com)
+
+  base00 = "#181818"
+  base01 = "#282828"
+  base02 = "#383838"
+  base03 = "#585858"
+  base04 = "#b8b8b8"
+  base05 = "#d8d8d8"
+  base06 = "#e8e8e8"
+  base07 = "#f8f8f8"
+  base08 = "#ab4642"
+  base09 = "#dc9656"
+  base0A = "#f7ca88"
+  base0B = "#a1b56c"
+  base0C = "#86c1b9"
+  base0D = "#7cafc2"
+  base0E = "#ba8baf"
+  base0F = "#a16946"
+
+  # set qutebrowser colors
+
+  # Text color of the completion widget. May be a single color to use for
+  # all columns or a list of three colors, one for each column.
+  c.colors.completion.fg = base05
+
+  # Background color of the completion widget for odd rows.
+  c.colors.completion.odd.bg = base03
+
+  # Background color of the completion widget for even rows.
+  c.colors.completion.even.bg = base00
+
+  # Foreground color of completion widget category headers.
+  c.colors.completion.category.fg = base0A
+
+  # Background color of the completion widget category headers.
+  c.colors.completion.category.bg = base00
+
+  # Top border color of the completion widget category headers.
+  c.colors.completion.category.border.top = base00
+
+  # Bottom border color of the completion widget category headers.
+  c.colors.completion.category.border.bottom = base00
+
+  # Foreground color of the selected completion item.
+  c.colors.completion.item.selected.fg = base01
+
+  # Background color of the selected completion item.
+  c.colors.completion.item.selected.bg = base0A
+
+  # Top border color of the completion widget category headers.
+  c.colors.completion.item.selected.border.top = base0A
+
+  # Bottom border color of the selected completion item.
+  c.colors.completion.item.selected.border.bottom = base0A
+
+  # Foreground color of the matched text in the completion.
+  c.colors.completion.match.fg = base0B
+
+  # Color of the scrollbar handle in the completion view.
+  c.colors.completion.scrollbar.fg = base05
+
+  # Color of the scrollbar in the completion view.
+  c.colors.completion.scrollbar.bg = base00
+
+  # Background color for the download bar.
+  c.colors.downloads.bar.bg = base00
+
+  # Color gradient start for download text.
+  c.colors.downloads.start.fg = base00
+
+  # Color gradient start for download backgrounds.
+  c.colors.downloads.start.bg = base0D
+
+  # Color gradient end for download text.
+  c.colors.downloads.stop.fg = base00
+
+  # Color gradient stop for download backgrounds.
+  c.colors.downloads.stop.bg = base0C
+
+  # Foreground color for downloads with errors.
+  c.colors.downloads.error.fg = base08
+
+  # Font color for hints.
+  c.colors.hints.fg = base00
+
+  # Background color for hints. Note that you can use a `rgba(...)` value
+  # for transparency.
+  c.colors.hints.bg = base0A
+
+  # Font color for the matched part of hints.
+  c.colors.hints.match.fg = base05
+
+  # Text color for the keyhint widget.
+  c.colors.keyhint.fg = base05
+
+  # Highlight color for keys to complete the current keychain.
+  c.colors.keyhint.suffix.fg = base05
+
+  # Background color of the keyhint widget.
+  c.colors.keyhint.bg = base00
+
+  # Foreground color of an error message.
+  c.colors.messages.error.fg = base00
+
+  # Background color of an error message.
+  c.colors.messages.error.bg = base08
+
+  # Border color of an error message.
+  c.colors.messages.error.border = base08
+
+  # Foreground color of a warning message.
+  c.colors.messages.warning.fg = base00
+
+  # Background color of a warning message.
+  c.colors.messages.warning.bg = base0E
+
+  # Border color of a warning message.
+  c.colors.messages.warning.border = base0E
+
+  # Foreground color of an info message.
+  c.colors.messages.info.fg = base05
+
+  # Background color of an info message.
+  c.colors.messages.info.bg = base00
+
+  # Border color of an info message.
+  c.colors.messages.info.border = base00
+
+  # Foreground color for prompts.
+  c.colors.prompts.fg = base05
+
+  # Border used around UI elements in prompts.
+  c.colors.prompts.border = base00
+
+  # Background color for prompts.
+  c.colors.prompts.bg = base00
+
+  # Background color for the selected item in filename prompts.
+  c.colors.prompts.selected.bg = base0A
+
+  # Foreground color of the statusbar.
+  c.colors.statusbar.normal.fg = base0B
+
+  # Background color of the statusbar.
+  c.colors.statusbar.normal.bg = base00
+
+  # Foreground color of the statusbar in insert mode.
+  c.colors.statusbar.insert.fg = base00
+
+  # Background color of the statusbar in insert mode.
+  c.colors.statusbar.insert.bg = base0D
+
+  # Foreground color of the statusbar in passthrough mode.
+  c.colors.statusbar.passthrough.fg = base00
+
+  # Background color of the statusbar in passthrough mode.
+  c.colors.statusbar.passthrough.bg = base0C
+
+  # Foreground color of the statusbar in private browsing mode.
+  c.colors.statusbar.private.fg = base00
+
+  # Background color of the statusbar in private browsing mode.
+  c.colors.statusbar.private.bg = base03
+
+  # Foreground color of the statusbar in command mode.
+  c.colors.statusbar.command.fg = base05
+
+  # Background color of the statusbar in command mode.
+  c.colors.statusbar.command.bg = base00
+
+  # Foreground color of the statusbar in private browsing + command mode.
+  c.colors.statusbar.command.private.fg = base05
+
+  # Background color of the statusbar in private browsing + command mode.
+  c.colors.statusbar.command.private.bg = base00
+
+  # Foreground color of the statusbar in caret mode.
+  c.colors.statusbar.caret.fg = base00
+
+  # Background color of the statusbar in caret mode.
+  c.colors.statusbar.caret.bg = base0E
+
+  # Foreground color of the statusbar in caret mode with a selection.
+  c.colors.statusbar.caret.selection.fg = base00
+
+  # Background color of the statusbar in caret mode with a selection.
+  c.colors.statusbar.caret.selection.bg = base0D
+
+  # Background color of the progress bar.
+  c.colors.statusbar.progress.bg = base0D
+
+  # Default foreground color of the URL in the statusbar.
+  c.colors.statusbar.url.fg = base05
+
+  # Foreground color of the URL in the statusbar on error.
+  c.colors.statusbar.url.error.fg = base08
+
+  # Foreground color of the URL in the statusbar for hovered links.
+  c.colors.statusbar.url.hover.fg = base05
+
+  # Foreground color of the URL in the statusbar on successful load
+  # (http).
+  c.colors.statusbar.url.success.http.fg = base0C
+
+  # Foreground color of the URL in the statusbar on successful load
+  # (https).
+  c.colors.statusbar.url.success.https.fg = base0B
+
+  # Foreground color of the URL in the statusbar when there's a warning.
+  c.colors.statusbar.url.warn.fg = base0E
+
+  # Background color of the tab bar.
+  c.colors.tabs.bar.bg = base00
+
+  # Color gradient start for the tab indicator.
+  c.colors.tabs.indicator.start = base0D
+
+  # Color gradient end for the tab indicator.
+  c.colors.tabs.indicator.stop = base0C
+
+  # Color for the tab indicator on errors.
+  c.colors.tabs.indicator.error = base08
+
+  # Foreground color of unselected odd tabs.
+  c.colors.tabs.odd.fg = base05
+
+  # Background color of unselected odd tabs.
+  c.colors.tabs.odd.bg = base03
+
+  # Foreground color of unselected even tabs.
+  c.colors.tabs.even.fg = base05
+
+  # Background color of unselected even tabs.
+  c.colors.tabs.even.bg = base00
+
+  # Foreground color of selected odd tabs.
+  c.colors.tabs.selected.odd.fg = base00
+
+  # Background color of selected odd tabs.
+  c.colors.tabs.selected.odd.bg = base05
+
+  # Foreground color of selected even tabs.
+  c.colors.tabs.selected.even.fg = base00
+
+  # Background color of selected even tabs.
+  c.colors.tabs.selected.even.bg = base05
+
+  # Background color for webpages if unset (or empty to use the theme's
+  # color).
+  # c.colors.webpage.bg = base00
+
+
+  # Añadir los atajos.
+  config.unbind('D')
+  config.source('shortcuts.py')
+#+END_SRC
+
+
+** Atajos extra (de un github)
+Faltaría configurarlo todo.....
+
+#+BEGIN_SRC python
+
+
+  # Configuración muy interesante de comandos que está en https://github.com/dustinlacewell/dotfiles/blob/c9eead887206652481d97e7623d2a5fe98916d1e/modules/home/linux/workstation/qutebrowser/config/keys.py
+  # En general su configuración está muy bien: https://github.com/dustinlacewell/dotfiles/tree/c9eead887206652481d97e7623d2a5fe98916d1e/modules/home/linux/workstation/qutebrowser
+
+
+  # # disable insert mode completely
+  # c.input.insert_mode.auto_enter = False
+  # c.input.insert_mode.auto_leave = False
+  # c.input.insert_mode.plugins = False
+
+  # # Forward unbound keys
+  # c.input.forward_unbound_keys = "all"
+
+  # ESC_BIND = 'clear-keychain ;; search ;; fullscreen --leave'
+
+  # c.bindings.default['normal'] = {}
+  # # Bindings
+  # c.bindings.commands['normal'] = {
+  #     # Navigation
+  #     '<ctrl-v>': 'scroll-page 0 0.5',
+  #     '<alt-v>': 'scroll-page 0 -0.5',
+  #     '<ctrl-shift-v>': 'scroll-page 0 1',
+  #     '<alt-shift-v>': 'scroll-page 0 -1',
+  #     # FIXME come up with logical bindings for scrolling left/right
+
+  #     # Commands
+  #     '<ctrl-y>': 'yank',
+  #     '<alt-x>': 'set-cmd-text :',
+  #     '<ctrl-x>b': 'set-cmd-text -s :buffer',
+  #     '<ctrl-x>k': 'tab-close',
+  #     '<ctrl-x><ctrl-c>': 'quit',
+  #     '<ctrl-x><ctrl-t>': 'config-cycle -t -p content.host_blocking.enabled',
+
+  #     # searching
+  #     '<ctrl-s>': 'set-cmd-text /',
+  #     '<ctrl-r>': 'set-cmd-text ?',
+
+  #     # history
+  #     '<ctrl-l>': 'forward',
+  #     '<ctrl-h>': 'back',
+
+  #     # tabs
+  #     '<ctrl-k>': 'tab-next',
+  #     '<ctrl-j>': 'tab-prev',
+  #     '<ctrl-shift-j>': 'tab-move -',
+  #     '<ctrl-shift-k>': 'tab-move +',
+  #     '<alt-p>': 'tab-pin',
+  #     '<alt-1>': 'tab-focus 1',
+  #     '<alt-2>': 'tab-focus 2',
+  #     '<alt-3>': 'tab-focus 3',
+  #     '<alt-4>': 'tab-focus 4',
+  #     '<alt-5>': 'tab-focus 5',
+  #     '<alt-6>': 'tab-focus 6',
+  #     '<alt-7>': 'tab-focus 7',
+  #     '<alt-8>': 'tab-focus 8',
+  #     '<alt-9>': 'tab-focus 9',
+  #     '<alt-0>': 'tab-focus -1',
+
+  #     # hints
+  #     '<alt-o>': 'hint all',
+  #     '<alt-y>': 'hint all yank',
+  #     '<alt-t>': 'hint all tab',
+
+  #     # open links
+  #     '<ctrl-o>': 'set-cmd-text -s :open',
+  #     '<ctrl-t>': 'set-cmd-text -s :open -t',
+  #     '<ctrl-x>e': 'set-cmd-text -s :open {url:pretty}',
+
+  #     # editing
+  #     '1': 'fake-key 1',
+  #     '2': 'fake-key 2',
+  #     '3': 'fake-key 3',
+  #     '4': 'fake-key 4',
+  #     '5': 'fake-key 5',
+  #     '6': 'fake-key 6',
+  #     '7': 'fake-key 7',
+  #     '8': 'fake-key 8',
+  #     '9': 'fake-key 9',
+  #     '0': 'fake-key 0',
+  #     '<alt-a>': 'fake-key <ctrl-a>',
+  #     '<alt-k>': 'fake-key <alt-shift-right><ctrl-x>',
+  #     '<alt-shift-k>': 'fake-key <alt-shift-left><ctrl-x>',
+  #     '<ctrl-f>': 'fake-key <right>',
+  #     '<ctrl-shift-f>': 'fake-key <shift-right>',
+  #     '<ctrl-b>': 'fake-key <left>',
+  #     '<ctrl-shift-b>': 'fake-key <shift-left>',
+  #     '<ctrl-a>': 'fake-key <home>',
+  #     '<ctrl-e>': 'fake-key <end>',
+  #     '<ctrl-n>': 'fake-key <down>',
+  #     '<ctrl-p>': 'fake-key <up>',
+  #     '<alt-f>': 'fake-key <ctrl-right>',
+  #     '<alt-shift-f>': 'fake-key <ctrl-shift-right>',
+  #     '<alt-b>': 'fake-key <ctrl-left>',
+  #     '<alt-shift-b>': 'fake-key <ctrl-shift-left>',
+  #     '<ctrl-d>': 'fake-key <delete>',
+  #     '<alt-d>': 'fake-key <ctrl-delete>',
+  #     '<alt-backspace>': 'fake-key <ctrl-backspace>',
+  #     '<ctrl-w>': 'fake-key <Ctrl-backspace>',
+  #     '<ctrl-y>': 'insert-text {primary}',
+  #     '<alt-l>': 'spawn --userscript qute-lastpass',
+
+
+  #     # escape hatch
+  #     '<ctrl-c>h': 'set-cmd-text -s :help',
+  #     '<ctrl-g>': ESC_BIND,
+  # }
+
+  # c.bindings.commands['command'] = {
+  #     '<ctrl-s>': 'search-next',
+  #     '<ctrl-r>': 'search-prev',
+
+  #     '<ctrl-p>': 'completion-item-focus prev',
+  #     '<ctrl-n>': 'completion-item-focus next',
+
+  #     '<alt-p>': 'command-history-prev',
+  #     '<alt-n>': 'command-history-next',
+
+  #     # escape hatch
+  #     '<ctrl-g>': 'leave-mode',
+  # }
+
+  # c.bindings.commands['hint'] = {
+  #     # escape hatch
+  #     '<ctrl-g>': 'leave-mode',
+  # }
+
+  # c.bindings.commands['caret'] = {
+  #     # escape hatch
+  #     '<ctrl-g>': 'leave-mode',
+  # }
+#+END_SRC

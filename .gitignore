@@ -26,3 +26,8 @@
 !/.config/i3
 /.config/i3/*
 !/.config/i3/config
+
+# Qutebrowser.
+!/.config/qutebrowser
+/.config/qutebrowser/*
+!/.config/qutebrowser/config.org
