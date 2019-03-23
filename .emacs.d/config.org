@@ -210,7 +210,7 @@ Cerrar las parejas automáticamente (excepto en LaTeX, usa AUCTeX).
 
 ** =ediff=
 Configurar cómo se comparta =ediff=. No abrir una nueva ventana para el control
-y dividor los archivos horizontalmente.
+y dividir los archivos horizontalmente.
 #+BEGIN_SRC emacs-lisp
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (setq ediff-split-window-function 'split-window-horizontally)

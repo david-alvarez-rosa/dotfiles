@@ -4,6 +4,10 @@
 
 # Añadir todos los archivos de configuración.
 
+# General (no ignorar la carpeta de configuración).
+!/.config
+/.config/*
+
 # Emacs
 !/.emacs.d
 /.emacs.d/*
@@ -12,8 +16,13 @@
 !/.emacs.d/custom.el
 
 # Bash.
-# !.bashrc
+!/.bashrc
 
 # Git.
-!.gitignore
-!.gitconfig
+!/.gitignore
+!/.gitconfig
+
+# i3wm.
+!/.config/i3
+/.config/i3/*
+!/.config/i3/config
