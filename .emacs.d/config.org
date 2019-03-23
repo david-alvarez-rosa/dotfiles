@@ -1,0 +1,1724 @@
+#+TITLE: Configuración de GNU Emacs
+#+AUTHOR: David Álvarez Rosa
+
+
+* Gestión de paquetes
+** Definición de los repositorios
+Añadimos los diferentes repositorios para descargar paquetes (entre ellos Melpa).
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+
+  (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/")))
+#+END_SRC
+
+** Gestor de paquetes
+Usaremos =use-package= para facilitar la gestión de paquetes.
+#+BEGIN_SRC emacs-lisp
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+#+END_SRC
+
+Siempre forzaremos que todos los paquetes estén instalados al iniciar Emacs.
+#+BEGIN_SRC emacs-lisp
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+#+END_SRC
+
+
+* Configuración ajustes estándar
+Esta sección contiene las configuraciones para las carácterísticas que forman
+parte de Emacs.
+
+** Hacer Emacs más rápido
+Aumentar /garbage-collection/ de los 0.76MB estándar a 20MB, que hace Emacs más
+rápido en algunas operaciones.
+#+BEGIN_SRC emacs-lisp
+  (setq gc-cons-threshold 20000000)
+#+END_SRC
+
+** Servidor de Emacs
+Iniciar el servidor de Emacs al iniciar.
+#+BEGIN_SRC emacs-lisp
+  (server-start)
+#+END_SRC
+
+** No crear copias de seguridad
+#+BEGIN_SRC emacs-lisp
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+#+END_SRC
+
+** =dired-mode=
+Permitir usar =a= para abrir un nuevo directorio en vez de =RET=. =RET= crea un
+nueva ventana /todas/ las veces, =a= usa la misma ventana.
+#+BEGIN_SRC emacs-lisp
+  (put 'dired-find-alternate-file 'disabled nil)
+#+END_SRC
+
+Mostrar tamaños en unidades fáciles de leer.
+#+BEGIN_SRC emacs-lisp
+  (setq-default dired-listing-switches "-alh")
+#+END_SRC
+
+** Preguntar y/n en vez de yes/no
+Permite confirmar opciones más rápido.
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+** Actualizar automáticamente
+Cuando algo cambia en un archivo, automáticamente actualizarlo.
+#+BEGIN_SRC emacs-lisp
+  (global-auto-revert-mode t)
+#+END_SRC
+
+** Interfaz
+*** Quitar barras y menús inútiles
+No mostrar la barra de menú, de herramientas ni la barra de desplazamiento.
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode 0)
+  (menu-bar-mode 0)
+  (scroll-bar-mode 0)
+#+END_SRC
+
+*** Desactivar pantalla de inicio
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-splash-screen t)
+  (setq inhibit-startup-message t)
+#+END_SRC
+
+*** Sombreado
+Sombrear la línea donde está el cursor (solo en GUI).
+#+BEGIN_SRC emacs-lisp
+  (when window-system (global-hl-line-mode t))
+#+END_SRC
+
+*** Símbolos
+Para que aparezcan símbolos (solo en GUI).
+#+BEGIN_SRC emacs-lisp
+  (when window-system (global-prettify-symbols-mode t))
+#+END_SRC
+
+*** Fechas
+Mostrar las fechas en formato europeo.
+#+BEGIN_SRC emacs-lisp
+(setq calendar-date-style (quote european))
+#+END_SRC
+
+** Comandos desactivados
+Activar algunos comandos que están desactivados.
+#+BEGIN_SRC emacs-lisp
+  (put 'narrow-to-region 'disabled nil)
+  (put 'upcase-region 'disabled nil)
+  (put 'narrow-to-page 'disabled nil)
+  (put 'LaTeX-narrow-to-environment 'disabled nil)
+#+END_SRC
+
+** Truncar lineas
+Truncar líneas demasiado largas automáticamente (a partir de 80 caracteres).
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (setq fill-column 80)
+#+END_SRC
+
+Usar =visual-line= para una mejor gestión de las lineas demasiado largas que no
+entran en la pantalla.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'text-mode-hook (lambda () (setq visual-line-mode t)))
+#+END_SRC
+
+** Sobreescribir lo seleccionado
+#+BEGIN_SRC emacs-lisp
+  (pending-delete-mode t)
+#+END_SRC
+
+** Configurar separadores
+Considerar las mayúsculas como separador de palabras.
+#+BEGIN_SRC emacs-lisp
+  (global-subword-mode 1)
+#+END_SRC
+
+** Gestión de ventanas
+Usar un comando más sencillo para cambiar entre ventanas.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-o") 'other-window)
+  (defun david/reverse-window-cycling ()
+    (interactive)
+    (other-window -1))
+  (global-set-key (kbd "M-O") 'david/reverse-window-cycling)
+#+END_SRC
+
+*** =windmove=
+Esta construido dentro de Emacs. Permite moverse entre ventanas usando =Shift= y
+las flechas del teclado.
+#+BEGIN_SRC emacs-lisp
+  (when (fboundp 'windmove-default-keybindings)
+    (windmove-default-keybindings))
+#+END_SRC
+
+*** =winner-mode=
+Permite deshacer y reacer entre configuraciones de ventanas con los comandos
+=C-c left= y =C-c right= para deshacer y rehacer respectivamente.
+#+BEGIN_SRC emacs-lisp
+  (when (fboundp 'winner-mode)
+    (winner-mode 1))
+#+END_SRC
+
+*** =ibuffer=
+Para mejorar la gestión de las ventanas.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+#+END_SRC
+
+En modo experto siempre, no pedir confirmación.
+#+BEGIN_SRC emacs-lisp
+  (setq ibuffer-expert t)
+#+END_SRC
+
+** Desplazamiento
+Cambiar el modo de desplazamiento para no centrar la pantalla.
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-conservatively 100)
+#+END_SRC
+
+Moverse entre párrafos fácilmente.
+#+BEGIN_SRC emacs-lisp
+  (define-key global-map (kbd "C-M-n") 'forward-paragraph)
+  (define-key global-map (kbd "C-M-p") 'backward-paragraph)
+#+END_SRC
+
+** Paréntesis
+Colorea los paréntesis en parejas al pasar por encima.
+#+BEGIN_SRC emacs-lisp
+  (show-paren-mode 1)
+#+END_SRC
+
+Cerrar las parejas automáticamente (excepto en LaTeX, usa AUCTeX).
+#+BEGIN_SRC emacs-lisp
+  (setq electric-pair-pairs '(
+                              (?\{ . ?\})
+                              (?\( . ?\))
+                              (?\[ . ?\])
+                              (?\' . ?\')
+                              (?\" . ?\")))
+  (electric-pair-mode t)
+  (eval-after-load "latex"
+    (electric-pair-mode nil))
+#+END_SRC
+
+** =ediff=
+Configurar cómo se comparta =ediff=. No abrir una nueva ventana para el control
+y dividor los archivos horizontalmente.
+#+BEGIN_SRC emacs-lisp
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq ediff-split-window-function 'split-window-horizontally)
+#+END_SRC
+
+Al terminar dejar las ventanas como estaban.
+#+BEGIN_SRC emacs-lisp
+  ;; (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+#+END_SRC
+
+** Terminal
+Usar automáticamente bash como terminal por defecto para /ansi-term/.
+#+BEGIN_SRC emacs-lisp
+  (defvar my-term-shell "/bin/bash")
+  (defadvice ansi-term (before force-bash)
+    (interactive (list my-term-shell)))
+  (ad-activate 'ansi-term)
+#+END_SRC
+
+Configurar comando =M-return= para abrir una terminal.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<M-return>") 'ansi-term)
+#+END_SRC
+
+** Archivo de personalizaciones
+Crear un archivo diferente para las personalizaciones.
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file t)
+#+END_SRC
+
+
+* General
+Esta sección contiene diferentes ajustes que no forman parte de Emacs, pero que
+no son específicos de ningún modo.
+
+** =beacon-mode=
+https://github.com/Malabarba/beacon
+Cuando hay un cambio de ventana o un desplazamiento de ventana, sombreará un
+poco el cursor para facilitar la detección del mismo.
+#+BEGIN_SRC emacs-lisp
+  (use-package beacon
+    :init
+    (beacon-mode 1)
+    :diminish)
+#+END_SRC
+
+** =popup-kill-ring=
+Facilita la gestión de la memoria al copiar y pegar. Muestra las últimas cosas
+copiadas.
+#+BEGIN_SRC emacs-lisp
+  (use-package popup-kill-ring
+    :bind ("M-y" . popup-kill-ring))
+#+END_SRC
+
+** =which-key=
+Muestra los posibles comandos (que completan la secuencia comenzada)
+disponibles.
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :init
+    (which-key-mode)
+    :diminish)
+#+END_SRC
+
+** =avy=
+Permite buscar caracteres fácilmente.
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :bind
+    ("M-s" . avy-goto-char))
+#+END_SRC
+
+** =undo-tree=
+Mejora en deshacer y admite rehacer.
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :init
+    (global-undo-tree-mode)
+    :diminish)
+#+END_SRC
+
+** =multiple-cursors=
+Permite edición múltiple (https://github.com/magnars/multiple-cursors.el).
+#+BEGIN_SRC emacs-lisp
+  (use-package multiple-cursors
+    :config
+    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+    (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+    (define-key mc/keymap (kbd "<return>") nil))
+#+END_SRC
+
+** =rainbow-delimiters=
+Colorear los paréntesis de acuerdo con su profundidad.
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :init
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+    :diminish)
+#+END_SRC
+
+** =swiper=
+Para mejorar la búsqueda.
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :bind ("C-s" . 'swiper))
+#+END_SRC
+
+** =hungry-delete=
+Borrado de todos los espacios hasta el siguiente caracter.
+#+BEGIN_SRC emacs-lisp
+  (use-package hungry-delete
+    :config (global-hungry-delete-mode)
+    :diminish)
+#+END_SRC
+
+** =highlight-indent-guides=
+Guías para los niveles de indentación. Solo aparecerán las guías para nivel de
+indentación > 2.
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-indent-guides
+    :init
+    (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+    :config
+    (setq highlight-indent-guides-method 'character)
+    (setq highlight-indent-guides-character ?|)
+    (setq highlight-indent-guides-responsive (quote top))
+    :diminish)
+  (defun david/my-highlighter (level responsive display)
+    "Solo mostrar guías para nivel de indentación (LEVEL) > 2."
+    (if (> 2 level)
+        nil
+      (highlight-indent-guides--highlighter-default level responsive display)))
+  (setq highlight-indent-guides-highlighter-function 'david/my-highlighter)
+#+END_SRC
+
+** =helm=
+Para una mejor gestión de ventanas, búsqueda de archivos y de comandos.
+#+BEGIN_SRC emacs-lisp
+    (use-package helm
+      :bind
+      ("C-x C-f" . 'helm-find-files)
+      ("C-x b" . 'helm-buffers-list)
+      ("M-x" . 'helm-M-x)
+      :config
+      (defun david/helm-hide-minibuffer ()
+        (when (with-helm-buffer helm-echo-input-in-header-line)
+          (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+            (overlay-put ov 'window (selected-window))
+            (overlay-put ov 'face
+                         (let ((bg-color (face-background 'default nil)))
+                           `(:background ,bg-color :foreground ,bg-color)))
+            (setq-local cursor-type nil))))
+      (add-hook 'helm-minibuffer-set-up-hook 'david/helm-hide-minibuffer)
+      (setq helm-autoresize-max-height 0
+            helm-autoresize-min-height 40
+            helm-m-x-fuzzy-match t
+            helm-buffers-fuzzy-matching t
+            helm-recentf-fuzzy-match t
+            helm-semantic-fuzzy-match t
+            helm-imenu-fuzzy-match t
+            helm-split-window-in-side-p t
+            helm-move-to-line-cycle-in-source t
+            helm-ff-search-library-in-sexp t
+            helm-scroll-amount 8
+            helm-echo-input-in-header-line t
+        helm-boring-buffer-regexp-list '("\\` " "\\`\\*helm" "\\`\\*echo area" "\\`\\*minibuf"))
+      :init
+      (helm-mode 1)
+      ;; :diminish
+      )
+#+END_SRC
+
+Configuraciones adicionales.
+#+BEGIN_SRC emacs-lisp
+  (require 'helm-config)
+  (helm-autoresize-mode 1)
+  ;; (define-key helm-find-files-map (kbd "C-b") 'helm-find-files-up-one-level)
+  (define-key helm-map (kbd "<M-tab>") 'helm-execute-persistent-action)
+  (define-key helm-find-files-map (kbd "<M-tab>") 'helm-execute-persistent-action)
+  (define-key helm-buffer-map (kbd "<M-tab>") 'helm-execute-persistent-action)
+  (setq helm-ff-auto-update-initial-value t)
+#+END_SRC
+
+** =iedit=
+Para tener múltiplos cursores (edición múltiple). Útil para cambiar el nombre de
+variables.
+#+BEGIN_SRC emacs-lisp
+  (use-package iedit
+    :config
+    (define-key global-map (kbd "C-;") 'iedit-mode))
+#+END_SRC
+
+** =expand-region=
+Expande la región seleccionada por regiones semánticas.
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :config
+    (require 'expand-region)
+    (global-set-key (kbd "C-=") 'er/expand-region))
+#+END_SRC
+
+** =pretty-symbols=
+Convertir algunas palabras en símbolos (solo en GUI).
+#+BEGIN_SRC emacs-lisp
+  (when window-system
+    (use-package pretty-mode
+      :config
+      (global-pretty-mode t)))
+#+END_SRC
+
+** =sudo-edit=
+Para editar en modo de administrador.
+#+BEGIN_SRC emacs-lisp
+  (use-package sudo-edit
+    :bind ("M-e" . sudo-edit))
+#+END_SRC
+
+** =yasnippet=
+Ofrece plantillas (configurables) para diferentes modos.
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :config
+    (use-package yasnippet-snippets)
+    (yas-reload-all)
+    :init
+    (add-to-list 'load-path
+                 "~/.emacs.d/plugins/yasnippet")
+    (require 'yasnippet)
+    (yas-global-mode 1))
+#+END_SRC
+
+** =dired-narrow=
+Permite filtrar directorios en =dired=, usar =/= para comenzar y =g= para volver
+a vista normal.
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-narrow
+    :config
+    (require 'dired)
+    (define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy))
+#+END_SRC
+
+** =company=
+Paquete para autocompletar.
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :init
+    (setq company-show-numbers t)
+    (add-hook 'after-init-hook 'global-company-mode)
+    :config
+    (setq company-idle-delay 1)
+    (setq company-minimum-prefix-length 3)
+    :bind
+    ("C-:" . company-complete)  ; In case I don't want to wait
+    :diminish)
+#+END_SRC
+
+Poder avanzar y retrocer en con los comandos clásicos de Emacs.
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'company
+    (define-key company-active-map (kbd "M-n") nil)
+    (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "C-n") #'company-select-next)
+    (define-key company-active-map (kbd "C-p") #'company-select-previous)
+    (define-key company-active-map (kbd "SPC") #'company-abort))
+#+END_SRC
+
+** =winum=
+Numera las diferentes ventanas para facilitar el movimiento entre las mismas.
+#+BEGIN_SRC emacs-lisp
+  (use-package winum
+    :config
+    (define-key global-map (kbd "C-`") 'winum-select-window-by-number)
+    (define-key global-map (kbd "C-²") 'winum-select-window-by-number)
+    (define-key global-map (kbd "M-0") 'winum-select-window-0-or-10)
+    (define-key global-map (kbd "M-1") 'winum-select-window-1)
+    (define-key global-map (kbd "M-2") 'winum-select-window-2)
+    (define-key global-map (kbd "M-3") 'winum-select-window-3)
+    (define-key global-map (kbd "M-4") 'winum-select-window-4)
+    (define-key global-map (kbd "M-5") 'winum-select-window-5)
+    (define-key global-map (kbd "M-6") 'winum-select-window-6)
+    (define-key global-map (kbd "M-7") 'winum-select-window-7)
+    (define-key global-map (kbd "M-8") 'winum-select-window-8)
+    (require 'winum)
+    (setq winum-auto-setup-mode-line nil)
+    (winum-mode))
+#+END_SRC
+
+** TODO =paredit=
+Paredit is great, it brings structural editing to lisps, maintaining the
+syntactical correctness of your code.
+[[http://danmidwood.com/content/2014/11/21/animated-paredit.html]]
+Básicamente para gestionar las parejas de manera sencilla.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package paredit)
+  #+END_SRC
+
+** =linkmarks.el=
+Permite gestionar los /bookmarks/ con =org-mode= y añade
+funcionalidades extra (especialmente útil para directorios).
+#+BEGIN_SRC emacs-lisp
+  ;; (load "~/.emacs.d/linkmarks")
+  ;; (setq linkmarks-file "~/.emacs.d/bookmarks.org")
+  ;; (define-key global-map (kbd "C-x r b") 'linkmarks-select)
+#+END_SRC
+
+** =flyspell=
+Corrector (configurado en español). Para buscar siguiente error =C-,= y para
+autocorregir con otras palabras =C-.=
+#+BEGIN_SRC emacs-lisp
+  (setq ispell-dictionary "spanish")
+  ;; (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+  ;; (add-hook 'LaTeX-mode-hook 'flyspell-buffer)
+#+END_SRC
+
+
+* Tema
+Configuración del tema gráfico.
+#+BEGIN_SRC emacs-lisp
+  (unless (package-installed-p 'spacemacs-theme)
+    (package-refresh-contents)
+    (package-install 'spacemacs-theme))
+  (setq custom-enabled-themes (quote (spacemacs-dark)))
+  (setq custom-safe-themes
+        (quote
+         ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+#+END_SRC
+
+Estilo de letra.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (set-frame-font "Inconsolata 11")
+#+END_SRC
+
+** Barra de estado
+Configuración de la barra de estado.
+#+BEGIN_SRC emacs-lisp
+  (use-package spaceline
+    :config
+    (require 'spaceline-config)
+    (setq spaceline-buffer-encoding-abbrev-p nil)
+    ;; (setq spaceline-line-column-p nil)
+    ;; (setq spaceline-line-p nil)
+    ;; (spaceline-spacemacs-theme)
+    (spaceline-emacs-theme)
+    (setq powerline-default-separator (quote arrow-fade))
+    ;; (setq spaceline-highlight-face-func 'spaceline-highlight-face-modified)
+    (spaceline-toggle-minor-modes-off)
+    (spaceline-toggle-hud-off)
+    (spaceline-helm-mode)
+    (spaceline-info-mode))
+  (add-hook 'emacs-startup-hook #'spaceline-compile)
+#+END_SRC
+
+Mostrar la posición del cursor en el texto y la hora.
+#+BEGIN_SRC emacs-lisp
+  (setq line-number-mode t)
+  (setq column-number-mode t)
+  (setq display-time-24hr-format t)
+  (setq display-time-format "%d %B %H:%M")
+  (setq display-time-default-load-average nil)
+  (display-time-mode 1)
+#+END_SRC
+
+Mostrar estado de la batería en la barra.
+#+BEGIN_SRC emacs-lisp
+(use-package fancy-battery
+  :config
+  (setq fancy-battery-show-percentage t)
+  (setq battery-update-interval 15)
+  (if window-system
+      (fancy-battery-mode)
+    (display-battery-mode t)))
+#+END_SRC
+
+Mostrar posición del cursor de manera gráfica.
+#+BEGIN_SRC emacs-lisp
+  (use-package nyan-mode
+    :init
+    (nyan-mode 1)
+    :config
+    (setq nyan-animate-nyancat t)
+    (nyan-start-animation)
+    (setq nyan-wavy-trail t))
+#+END_SRC
+
+*** =diminish=
+Para no mostar algunos modos menores en la barra de estado.
+#+BEGIN_SRC emacs-lisp
+(use-package diminish
+  :init
+  (diminish 'visual-line-mode)
+  (diminish 'subword-mode)
+  (diminish 'page-break-lines-mode)
+  (diminish 'auto-revert-mode)
+  (diminish 'highlight-indent-guides-mode)
+  (diminish 'auto-fill-function)
+  (diminish 'org-indent-mode)
+  ;; (diminish 'eldoc-mode)
+  (diminish 'yas-minor-mode))
+#+END_SRC
+
+** Transparencia
+Configurar la transparencia.
+#+BEGIN_SRC emacs-lisp
+(setq transparency_level 0)
+(defun david/cycle-transparency ()
+  "Permite cambiar la transparencia entre 3 modos (desactivado, medio, alto)."
+  (interactive)
+  (if (equal transparency_level 0)
+      (progn (set-frame-parameter (selected-frame) 'alpha '(95 . 80))
+         (setq transparency_level 1))
+    (if (equal transparency_level 1)
+    (progn (set-frame-parameter (selected-frame) 'alpha '(90 . 80))
+           (setq transparency_level 2))
+      (if (equal transparency_level 2)
+      (progn (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
+         (setq transparency_level 0)))
+      )))
+(david/cycle-transparency)
+(define-key global-map (kbd "C-c t") 'david/cycle-transparency)
+#+END_SRC
+
+
+* Funciones
+Varias funciones extras útiles.
+
+** Edición de texto
+Eliminar palabra completa (sin importar dónde esté el cursor).
+#+BEGIN_SRC emacs-lisp
+  (defun david/kill-whole-word ()
+    (interactive)
+    (backward-word)
+    (kill-word 1))
+  (global-set-key (kbd "C-c w k") 'david/kill-whole-word)
+#+END_SRC
+
+Copiar una palabra completa (sin importar dónde esté el cursor).
+#+BEGIN_SRC emacs-lisp
+  (defun copy-whole-word ()
+    (interactive)
+    (save-excursion
+      (forward-char 1)
+      (backward-word)
+      (kill-word 1)
+      (yank)))
+  (global-set-key (kbd "C-c w y") 'copy-whole-word)
+#+END_SRC
+
+Eliminar una linea completa (sin importar dónde esté el cursor).
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c l k") 'kill-whole-line)
+#+END_SRC
+
+Copiar una línea completa (sin importar dónde esté el cursor).
+#+BEGIN_SRC emacs-lisp
+  (defun copy-whole-line ()
+    (interactive)
+    (save-excursion
+      (kill-new
+       (buffer-substring
+        (point-at-bol)
+        (point-at-eol)))))
+  (global-set-key (kbd "C-c l y") 'copy-whole-line)
+#+END_SRC
+
+** Movimiento entre texto
+Funciones para mejorar los comandos de movimiento.
+#+BEGIN_SRC emacs-lisp
+  (defun david/next-lines ()
+    (interactive)
+    (next-line 10))
+  (global-set-key (kbd "C-v") 'david/next-lines)
+  (defun david/previous-lines ()
+    (interactive)
+    (previous-line 10))
+  (global-set-key (kbd "M-v") 'david/previous-lines)
+#+END_SRC
+
+** Gestión de ventanas
+Funciones para mejorar la división de la pantalla.
+#+BEGIN_SRC emacs-lisp
+  (defun david/split-and-follow-horizontally()
+    (interactive)
+    (split-window-below)
+    (balance-windows)
+    (other-window 1))
+  (global-set-key (kbd "C-x 2") 'david/split-and-follow-horizontally)
+  (defun david/split-and-follow-vertically()
+    (interactive)
+    (split-window-right)
+    (balance-windows)
+    (other-window 1))
+  (global-set-key (kbd "C-x 3") 'david/split-and-follow-vertically)
+#+END_SRC
+
+Función para cerrar las ventanas sin pedir confirmación.
+#+BEGIN_SRC emacs-lisp
+  (defun david/kill-curr-buffer()
+    (interactive)
+    (kill-buffer (current-buffer)))
+  (global-set-key (kbd "C-x k") 'david/kill-curr-buffer)
+#+END_SRC
+
+Función para cerrar ventana sin pedir confirmación y quitándola.
+#+BEGIN_SRC emacs-lisp
+  (defun david/kill-curr-buffer-2()
+    (interactive)
+    (kill-buffer (current-buffer))
+    (delete-window))
+  (global-set-key (kbd "C-x C-k") 'david/kill-curr-buffer-2)
+#+END_SRC
+
+Actualizar la otra ventana.
+#+BEGIN_SRC emacs-lisp
+  (defun david/update-other-buffer ()
+    (interactive)
+    (other-window 1)
+    (revert-buffer nil t)
+    (other-window -1))
+#+END_SRC
+
+** Gestión de /buffers/
+Eliminar todos los /buffers/ excepto el /scratch/ (útil cuando hay muchos
+abiertos).
+#+BEGIN_SRC emacs-lisp
+  (defun david/kill-all-buffers ()
+    "Kill all other buffers."
+    (interactive)
+    (switch-to-buffer "*scratch*")
+    (delete-other-windows)
+    (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+#+END_SRC
+
+** Gestionar configuración
+Funciones para abrir y para recargar la configuración.
+#+BEGIN_SRC emacs-lisp
+  (defun david/open-config-file()
+    "Abrir el archivo de configuración."
+    (interactive)
+    (find-file "~/.emacs.d/config.org"))
+  ;; (global-set-key (kbd "C-c e") 'david/open-config-file)
+  (defun david/reload-config()
+    "Recargar la configuración automáticamente."
+    (interactive)
+    (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+  ;; (global-set-key (kbd "C-c r") 'david/reload-config)
+#+END_SRC
+
+
+* Programación
+** General
+*** Indentar automáticamente
+Corrige la indentación automáticamente al cambiar de linea con la tecla =RET=.
+#+BEGIN_SRC emacs-lisp
+  (define-key global-map (kbd "RET") 'newline-and-indent)
+#+END_SRC
+
+*** =nlinum-relative=
+Numera lineas de manera relativa solo en modo de programación.
+#+BEGIN_SRC emacs-lisp
+  (use-package nlinum-relative
+    :config
+    (setq linum-relative-current-symbol "")
+    (add-hook 'prog-mode-hook 'nlinum-relative-mode)
+    (add-hook 'LaTeX-mode-hook 'nlinum-relative-mode)
+    (add-hook 'Octave-mode-hook 'nlinum-relative-mode)
+    :diminish)
+#+END_SRC
+
+*** Tabulador
+Configurar el tamaño del tabulador a 2 espacios.
+#+BEGIN_SRC emacs-lisp
+  (setq-default tab-width 2)
+#+END_SRC
+
+Usar 2 espacios en vez de un tabulador.
+#+BEGIN_SRC emacs-lisp
+  (setq-default tab-width 2 indent-tabs-mode nil)
+  (setq-default indent-tabs-mode nil)
+#+END_SRC
+
+*** Eliminar espacios inútiles
+Eliminar espacios al final de linea al guardar.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  ;; (add-hook 'before-save-hook '(lambda()
+  ;;                               (when (not (or (derived-mode-p 'markdown-mode))
+  ;;                                 (delete-trailing-whitespace)))))
+#+END_SRC
+
+*** Corrección de sintaxis
+Habilitar corrección de sintaxis al momento usando =flycheck=
+(http://www.flycheck.org/).
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :init
+    ;; (add-hook 'after-init-hook #'global-flycheck-mode)
+    ;;:diminish
+    )
+#+END_SRC
+
+*** TODO Comentarios
+https://github.com/vincekd/comment-tags
+
+comment-tags highlights and lists comment tags such as ‘TODO’, ‘FIXME’, ‘XXX’.
+
+Commands (prefixed by C-c t):
+
+b to list tags in current buffer (comment-tags-list-tags-buffer).
+a to list tags in all buffers (comment-tags-list-tags-buffers).
+s to jump to tag in current buffer by a word or phrase using reading-completion (comment-tags-find-tags-buffer).
+n to jump to next tag from point (comment-tags-next-tag).
+p to jump to previous tag from point (comment-tags-previous-tag).
+(setq comment-tags-keymap-prefix (kbd "C-c t"))
+(with-eval-after-load "comment-tags"
+  (setq comment-tags-keyword-faces
+        `(("TODO" . ,(list :weight 'bold :foreground "#DF5427"))
+          ("FIXME" . ,(list :weight 'bold :foreground "#DF5427"))
+          ("BUG" . ,(list :weight 'bold :foreground "#DF5427"))
+          ("HACK" . ,(list :weight 'bold :foreground "#DF5427"))
+          ("KLUDGE" . ,(list :weight 'bold :foreground "#DF5427"))
+          ("XXX" . ,(list :weight 'bold :foreground "#DF5427"))
+          ("INFO" . ,(list :weight 'bold :foreground "#1FDA9A"))
+          ("DONE" . ,(list :weight 'bold :foreground "#1FDA9A"))))
+  (setq comment-tags-comment-start-only t
+        comment-tags-require-colon t
+        comment-tags-case-sensitive t
+        comment-tags-show-faces t
+        comment-tags-lighter nil))
+(add-hook 'prog-mode-hook 'comment-tags-mode)
+
+** C/C++
+#+BEGIN_SRC emacs-lisp
+  (require 'company)
+  (require 'cc-mode)
+  (setq company-backends (delete 'company-semantic company-backends))
+  (define-key c-mode-map (kbd "C-:")  'company-complete)
+  (define-key c++-mode-map  (kbd "C-:") 'company-complete)
+#+END_SRC
+
+*** =company-c-headers=
+Autocompletar los /headers/.
+#+BEGIN_SRC emacs-lisp
+  (use-package company-c-headers)
+  (add-to-list 'company-backends 'company-c-headers)
+  (add-to-list 'company-c-headers-path-system "/usr/include/c++/8.2.1/")
+#+END_SRC
+
+*** Plegar código
+Permiter plegar partes de código (mirando parejas de llaves/paréntesis
+generalmente) con el comando: =C-c @ C-c= entre otros.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'c-mode-common-hook 'hs-minor-mode)
+#+END_SRC
+
+** Web
+*** =rainbow-mode=
+Subraya los códigos de los colores del color que es.
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+    :init
+    (add-hook 'prog-mode-hook 'rainbow-mode)
+    :diminish)
+#+END_SRC
+
+*** TODO Impatient Mode
+Impatient Mode
+https://github.com/netguy204/imp.el
+
+Live JavaScript Coding Emacs/Browser: See your changes in the browser as you type
+
+Usage
+Enable the web server provided by simple-httpd: M-x httpd-start
+
+Publish buffers by enabling the minor mode impatient-mode: M-x impatient-mode
+
+And then point your browser to http://localhost:8080/imp/, select a buffer, and
+watch your changes appear as you type!
+
+*** =web-mode=
+Para editar PHP-HTML-CSS-JS.
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+    :config
+    (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+    (setq web-mode-markup-indent-offset 3))
+#+END_SRC
+
+** Octave
+Abrir en el modo correspondiente scripts de Octave.
+#+BEGIN_SRC emacs-lisp
+  (setq auto-mode-alist
+        (cons
+         '("\\.m$" . octave-mode)
+         auto-mode-alist))
+#+END_SRC
+
+Configurar el caracter para comentar en Octave.
+#+BEGIN_SRC emacs-lisp
+  ;; (setq octave-comment-start "%")
+  ;; (setq octave-block-comment-start "%")
+#+END_SRC
+
+** TODO p_slides
+p_slides is a static files only, dead simple way, to create semantic slides. The
+slide content is markdown, embedded in a HTML file. When opening a
+presentation.html file, enable markdown-mode.
+
+(add-to-list 'auto-mode-alist '("presentation.html" . markdown-mode))
+(add-hook 'markdown-mode-hook 'flyspell-mode)
+
+** TODO Auto Reload Web Sites
+Introducing a custom browser-reloading-mode. It’s a quick implementation and not
+a real derived mode.
+
+When enabling browser-reloading-mode for a specific buffer, whenever this buffer
+is saved, a command-line utility reload_chromium.sh is called. This in turn is a
+wrapper around xdotool with which a reloading of the Chromium browser is
+triggered.
+
+This is handy when working in a web environment that doesn’t natively support
+hot-reloading (static web pages, for instance) and the page has too much
+(dynamic) content to be displayed properly in impatient-mode. I’m using it for
+example when working on a p_slides slide deck.
+
+(defun reload-chromium ()
+  (when enable-browser-reloading
+    (shell-command-to-string "reload_chromium.sh")))
+
+(defun browser-reloading-mode ()
+  "Finds the open chromium session and reloads the tab"
+  (interactive)
+  ;; When set, disable the local binding and therefore disable the mode
+  (if enable-browser-reloading
+      (setq enable-browser-reloading nil)
+    ;; Otherwise create a local var and set it to True
+    (progn
+      (make-local-variable 'enable-browser-reloading)
+      (setq enable-browser-reloading t))))
+
+;; By default, disable the guard against using `reload-chromium`
+(setq enable-browser-reloading nil)
+(add-hook 'after-save-hook #'reload-chromium)
+
+** =Magit=
+Es una interfaz completa de Git (control de versiones) para Emacs.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit)
+  (global-set-key (kbd "C-x g") 'magit-status)
+#+END_SRC
+
+** TODO Projectile
+https://github.com/bbatsov/projectile
+
+Projectile is a project interaction library. For instance - finding project
+files (C-c p f) or jumping to a new project (C-c p p).
+
+Configuration
+Enable Projectile globally
+
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+** TODO Dumb Jumb
+https://github.com/jacktasia/dumb-jump
+
+“Jump to definition” with support for multiple programming languages that favors
+“just working”. This means minimal – and ideally zero – configuration with
+absolutely no stored indexes (TAGS) or persistent background processes.
+
+Dumb Jump uses The Silver Searcher ag, ripgrep rg, or grep to find potential
+definitions of a function or variable under point. It uses a set of regular
+expressions based on the file extension, or major-mode, of the current buffer.
+
+(dumb-jump-mode)
+(setq dumb-jump-selector 'ivy)
+Usage
+The one important shortcut is C-M-g which attempts to jump to the definition of
+the thing under point.
+
+
+* Org Mode
+** Configuración de listas
+Considerar 'a)', 'A' y 'A)' como listas de elementos.
+#+BEGIN_SRC emacs-lisp
+  (setq org-list-allow-alphabetical t)
+#+END_SRC
+
+** Varios
+*** Indentar
+Indentar.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook 'org-indent-mode)
+#+END_SRC
+
+*** Comandos rápidos
+Habilitar los comandos rápidos para acciones.
+#+BEGIN_SRC emacs-lisp
+  (setq org-use-speed-commands t)
+  (setq org-use-speed-commands
+        (lambda () (and (looking-at org-outline-regexp) (looking-back "^\**"))))
+#+END_SRC
+
+*** =refile=
+Configurar el /refile/ con =C-c w=.
+#+BEGIN_SRC emacs-lisp
+  (setq org-refile-targets '((nil :maxlevel . 9)
+                                  (org-agenda-files :maxlevel . 9)))
+  (setq org-outline-path-complete-in-steps nil)
+  (setq org-refile-use-outline-path t)
+#+END_SRC
+
+*** Notas
+Permitir tomar notas rápidamente.
+#+BEGIN_SRC emacs-lisp
+  (setq org-default-notes-file "~/Documents/Notas.org")
+  (define-key global-map (kbd "C-c n") 'org-capture)
+#+END_SRC
+
+** Evaluar código
+Permitir evaluar código de los siguientes lenguajes.
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load "org"
+        (org-babel-do-load-languages
+         'org-babel-load-languages
+         '((C . t)
+           ;; (C++ . t)
+           (python . t)
+           (latex . t)
+           (matlab . t)
+           (shell . t)
+           (css . t)
+           (calc . t)
+           (js . t))))
+#+END_SRC
+
+Abrir código fuente (en 'org-mode') sin dividir el 'buffer'.
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-window-setup 'reorganize-frame)
+#+END_SRC
+
+No preguntar por confirmación al evaluar código.
+#+BEGIN_SRC emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+END_SRC
+
+** Interfaz
+Configurar la posición de las etiquetas.
+#+BEGIN_SRC emacs-lisp
+  (setq org-tags-column -72)
+#+END_SRC
+
+Cambiar los puntos suspensivos.
+#+BEGIN_SRC emacs-lisp
+  (setq org-ellipsis " ⚡")
+#+END_SRC
+
+Mostrar las fechas en formato europeo.
+#+BEGIN_SRC emacs-lisp
+  (setq org-time-stamp-custom-formats (quote ("<%d-%m-%y %a>" . "<%d-%m-%y %a %H:%M>")))
+  (setq org-display-custom-times t)
+#+END_SRC
+
+Configurar opciones para guardar las interacciones.
+#+BEGIN_SRC emacs-lisp
+  (setq org-log-done (quote note))
+  (setq org-log-into-drawer t)
+#+END_SRC
+
+No truncar las lineas demasiado largas (y desactivar =visual-line-mode=).
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook (lambda () (setq truncate-lines t)))
+  (add-hook 'org-mode-hook (lambda () (setq visual-line-mode nil)))
+#+END_SRC
+
+*** =org-bullets=
+Cambia los asteriscos por bolas.
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :config
+    (add-hook 'org-mode-hook(lambda () (org-bullets-mode)))
+    (setq org-bullets-bullet-list '("✙" "○" "✜" "✿")))
+#+END_SRC
+
+** Agenda
+Gestionar los diferentes archivos para la Agenda.
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files (quote
+                          ("~/Documents/Agenda.org"
+                          "~/Documents/Emacs.org"
+                          ;; "~/Documents/Pendiente.org"
+                          "~/Documents/Contactos.org"
+                          "~/Documents/UPC/Cuatrimestre 6/UPC.org"
+                          "~/Documents/Notas.org")))
+#+END_SRC
+
+Comando para abrir la agenda en cualquier modo.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c a") 'org-agenda)
+#+END_SRC
+
+Configurar agenda personalizada.
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-custom-commands
+        (quote
+         (("n" "Agenda and all TODOs"
+           ((agenda "" nil)
+            (alltodo "" nil))
+           ((org-agenda-start-with-log-mode t))))))
+#+END_SRC
+
+Configurar el número de días para mostrar un /deadline/. Dejarlo en una semana
+(7 días).
+#+BEGIN_SRC emacs-lisp
+  (setq org-deadline-warning-days 7)
+#+END_SRC
+
+Utilizar =o= en la agenda para abrir los links en vez de para ampliar la
+ventana.
+#+BEGIN_SRC emacs-lisp
+  (require 'org-agenda)
+  (define-key org-agenda-mode-map "o" 'org-agenda-open-link)
+#+END_SRC
+
+** Archivar
+Configurar la función de archivo.
+#+BEGIN_SRC emacs-lisp
+  (setq org-archive-location "~/.emacs.d/archive/%s::")
+#+END_SRC
+
+** Exportar
+Añadir el paquete =minted= al exportar LaTeX.
+#+BEGIN_SRC emacs-lisp
+  ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
+  ;; (setq org-latex-listings 'minted)
+#+END_SRC
+
+*** Recargar
+Automáticamente recargar el pdf compilado (para LaTeX y para Beamer).
+#+BEGIN_SRC emacs-lisp
+(defun david/org-compile-beamer-and-update-other-buffer ()
+  "Has as a premise that it's run from an org-mode buffer and the
+   other buffer already has the PDF open"
+  (interactive)
+  (org-beamer-export-to-pdf)
+  (david/update-other-buffer))
+
+(defun david/org-compile-latex-and-update-other-buffer ()
+  "Has as a premise that it's run from an org-mode buffer and the
+   other buffer already has the PDF open"
+  (interactive)
+  (org-latex-export-to-pdf)
+  (david/update-other-buffer))
+
+(define-key org-mode-map (kbd "C-c lr") 'david/org-compile-latex-and-update-other-buffer)
+(define-key org-mode-map (kbd "C-c br") 'david/org-compile-beamer-and-update-other-buffer)
+#+END_SRC
+
+
+* Edición de documentos
+** Markdown
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode)
+#+END_SRC
+
+*** Compilar
+Definir función para compilar en Markdown (usando pandoc). Automáticamente
+recarga el pdf (con =C-c r=).
+#+BEGIN_SRC emacs-lisp
+  (defun david/md-compile ()
+    "Compiles the currently loaded markdown file using pandoc into a PDF"
+    (interactive)
+    (save-buffer)
+    (shell-command (concat "pandoc " (buffer-file-name) " -o "
+                           (replace-regexp-in-string "md" "pdf" (buffer-file-name)))))
+
+  (defun david/md-compile-and-update-other-buffer ()
+    "Has as a premise that it's run from a markdown-mode buffer and the
+       other buffer already has the PDF open"
+    (interactive)
+    (david/md-compile)
+    (david/update-other-buffer))
+
+  (eval-after-load 'markdown-mode
+    '(define-key markdown-mode-map (kbd "C-c r") 'david/md-compile-and-update-other-buffer))
+#+END_SRC
+
+** LaTeX
+Configuración de LaTeX con AUCTeX.
+Siempre en modo matemático.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+#+END_SRC
+
+Usar =reftex=.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (setq reftex-toc-split-windows-fraction 0.2)
+#+END_SRC
+
+Configar el visor de PDF como =pdf-tools=
+#+BEGIN_SRC emacs-lisp
+  (setq TeX-view-program-selection (quote
+                                    (((output-dvi has-no-display-manager) "dvi2tty")
+                                     ((output-dvi style-pstricks) "dvips and gv")
+                                     (output-dvi "xdvi")
+                                     (output-pdf "PDF Tools")
+                                     (output-html "xdg-open"))))
+#+END_SRC
+
+Permitir correlación entre .tex y .pdf.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+#+END_SRC
+
+Cerrar parejas automáticamente (por ejemplo: paréntesis).
+#+BEGIN_SRC emacs-lisp
+  (setq  LaTeX-electric-left-right-brace t)
+#+END_SRC
+
+Eliminar archivos innecesarios fácilmente.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'LaTeX-mode-hook
+            (lambda ()(define-key LaTeX-mode-map (kbd "C-x M-k") 'TeX-clean)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (setq LaTeX-item-indent 0)
+#+END_SRC
+
+*** Compilación
+Compilar con =-shell-escape= siempre.
+#+BEGIN_SRC emacs-lisp
+  (setq TeX-command-extra-options "-shell-escape")
+#+END_SRC
+
+No preguntar para guardar y actualizar el /pdf/ después de compilar.
+#+BEGIN_SRC emacs-lisp
+  (setq TeX-save-query nil)
+  (add-hook 'TeX-after-compilation-finished-functions
+            #'TeX-revert-document-buffer)
+#+END_SRC
+
+*** =outline-mode=
+Permite esconder/plegar partes del texto. El prefijo es =C-c @=.
+#+BEGIN_SRC emacs-lisp
+  (defun david/turn-on-outline-minor-mode ()
+    (outline-minor-mode 1))
+
+  (add-hook 'LaTeX-mode-hook 'david/turn-on-outline-minor-mode)
+#+END_SRC
+
+
+* Visor de PDF
+Usar =pdf-tools= como visor de PDF y configurar los diferentes comandos de
+movimiento.
+#+BEGIN_SRC emacs-lisp
+  (defun david/pdf-tools-previous-lines ()
+    (interactive)
+    (pdf-view-previous-line-or-previous-page 15))
+  (defun david/pdf-tools-next-lines ()
+    (interactive)
+    (pdf-view-next-line-or-next-page 15))
+  (use-package pdf-tools
+    :config
+    ;; Iniciar.
+    (pdf-tools-install)
+    ;; "Swiper" no funciona aquí (busca en código fuente).
+    (define-key pdf-view-mode-map "\C-s" 'isearch-forward)
+    ;; Mejora en los comandos básicos de movimiento.
+    (define-key pdf-view-mode-map (kbd "n") 'pdf-view-next-line-or-next-page)
+    (define-key pdf-view-mode-map (kbd "p") 'pdf-view-previous-line-or-previous-page)
+    (define-key pdf-view-mode-map (kbd "d") 'david/pdf-tools-next-lines)
+    (define-key pdf-view-mode-map (kbd "u") 'david/pdf-tools-previous-lines)
+    (with-eval-after-load 'pdf-links
+      (define-key pdf-links-minor-mode-map (kbd "f") 'image-forward-hscroll))
+    (define-key pdf-view-mode-map (kbd "f") 'image-forward-hscroll)
+    (define-key pdf-view-mode-map (kbd "b") 'image-backward-hscroll)
+    (define-key pdf-view-mode-map (kbd "l") 'image-forward-hscroll)
+    (define-key pdf-view-mode-map (kbd "h") 'image-backward-hscroll)
+    (define-key pdf-view-mode-map (kbd ".") 'pdf-view-next-page-command)
+    (define-key pdf-view-mode-map (kbd ",") 'pdf-view-previous-page-command))
+#+END_SRC
+
+
+* Correo electrónico
+Configuración del correo electrónico (con =mu4e=). Abrir directamente los
+recibidos con =C-x m=.
+#+BEGIN_SRC emacs-lisp
+  (require 'mu4e)
+  (setq mail-user-agent 'mu4e-user-agent)
+  (defun david/open-mu4e-inbox ()
+    "Mostrar los correos de todas las cuentas de los últimos 7 días."
+    (interactive)
+    (mu4e-headers-search "date:7d..now"))
+  (define-key global-map (kbd "C-x m") 'david/open-mu4e-inbox)
+  (require 'smtpmail)
+  (setq message-send-mail-function 'smtpmail-send-it)
+#+END_SRC
+
+** Cuentas
+Definición de las diferentes cuentas de correo electrónico.
+#+BEGIN_SRC emacs-lisp
+  (setq mu4e-maildir "~/.mail")
+
+  ;; Cuenta predeterminada.
+  (setq mu4e-inbox-folder "/david/Inbox"
+        mu4e-drafts-folder "/david/Drafts"
+        mu4e-sent-folder "/david//Sent"
+        mu4e-trash-folder "/david/Inbox/Trash"
+        user-full-name "David Álvarez Rosa"
+        user-mail-address "david@alvarezrosa.com"
+        smtpmail-starttls-credentials '(("alvarezrosa.com" 587 nil nil))
+        smtpmail-default-smtp-server "alvarezrosa.com"
+        smtpmail-smtp-server "alvarezrosa.com"
+        smtpmail-smtp-service 587
+        mu4e-sent-messages-behavior 'sent)
+
+  (defvar david/mu4e-account-alist
+    '(("david"
+       (user-full-name "David Álvarez Rosa")
+       (mu4e-inbox-folder "/david/Inbox")
+       (mu4e-sent-folder "/david/Sent")
+       (mu4e-drafts-folder "/david/Drafts")
+       (mu4e-trash-folder "/david/Inbox/Trash")
+       (user-mail-address "david@alvarezrosa.com")
+       (smtpmail-starttls-credentials '(("alvarezrosa.com" 587 nil nil)))
+       (smtpmail-default-smtp-server "alvarezrosa.com")
+       (smtpmail-smtp-server "alvarezrosa.com")
+       (smtpmail-smtp-service 587)
+       (mu4e-sent-messages-behavior sent))
+      ("gmail"
+       (user-full-name "David Álvarez Rosa")
+       (mu4e-inbox-folder "/gmail/Inbox")
+       (mu4e-sent-folder "/gmail/[Gmail]/Sent Mail")
+       (mu4e-drafts-folder "/gmail/[Gmail]/Drafts")
+       (mu4e-trash-folder "/gmail/[Gmail]/Bin")
+       (user-mail-address "davidolazegues@gmail.com")
+       (starttls-use-gnutls t)
+       (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil)))
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-service 587)
+       (mu4e-sent-messages-behavior delete))))
+#+END_SRC
+
+Configurar las carpetas dinámicamente (dependiendo de la cuenta de correo).
+#+BEGIN_SRC emacs-lisp
+  (setq mu4e-refile-folder
+        (lambda (msg)
+          (cond
+           ((string-match "^/gmail.*"
+                          (mu4e-message-field msg :maildir))
+            "/gmail/archive")
+           ((string-match "^/david.*"
+                          (mu4e-message-field msg :maildir))
+           "/david/Inbox/Junk"))))
+
+  (setq mu4e-trash-folder
+        (lambda (msg)
+          (cond
+           ((string-match "^/gmail.*"
+                          (mu4e-message-field msg :maildir))
+            "/gmail/[Gmail]/Bin")
+           ((string-match "^/david.*"
+                          (mu4e-message-field msg :maildir))
+           "/david/Inbox/Trash"))))
+#+END_SRC
+
+** Atajos
+Añadir atajos de teclado para ir a las diferentes carpetas de las diferentes
+cuentas.
+#+BEGIN_SRC emacs-lisp
+  (setq mu4e-maildir-shortcuts
+        '(("/david/Inbox" . ?i)
+          ("/david/Sent" . ?s)
+          ("/david/Inbox/Trash" . ?t)
+          ("/david/Drafts" . ?d)
+          ("/david/Inbox/Junk" . ?j)
+          ("/gmail/Inbox" . ?I)
+          ("/gmail/[Gmail]/Sent Mail" . ?S)
+          ("/gmail/[Gmail]/Bin" . ?B)
+          ("/gmail/[Gmail]/Drafts" . ?D)
+          ("/gmail/[Gmail]/All Mail" . ?A)))
+#+END_SRC
+
+Añadir configuraciones personalizadas de marcadores.
+#+BEGIN_SRC emacs-lisp
+  (defvar inbox-folders (string-join '("maildir:/david/Inbox"
+                                       "maildir:/gmail/Inbox")
+                                     " OR "))
+
+  (defvar draft-folders (string-join '("maildir:/david/Drafts"
+                                       "maildir:/gmail/[Gmail]/Drafts")
+                                     " OR "))
+
+  (defvar spam-folders (string-join '("maildir:/david/Inbox/Junk")
+                                    " OR "))
+
+  (setq mu4e-bookmarks
+  '(("date:today..now" "Today's messages" ?t)
+         ("date:7d..now" "Last 7 days" ?w)
+         ("flag:flagged" "Flagged" ?f)
+         ("mime:image/*" "Messages with images" ?p)
+         (spam-folders "All spambuckets" ?S)
+         (draft-folders "All drafts" ?d)
+         (inbox-folders "All inbox mails" ?i)
+         ("flag:unread" "Unread messages" ?u)))
+#+END_SRC
+
+** Autocompletado
+Permitir el autocompletado estándar. Y solo tener en cuenta el autocompletado
+con los correos de hace como mucho 6 meses.
+#+BEGIN_SRC emacs-lisp
+  (setq mu4e-compose-complete-addresses t)
+  (setq mu4e-compose-complete-only-after
+        (format-time-string
+         "%Y-%m-%d"
+         (time-subtract (current-time) (days-to-time 150))))
+#+END_SRC
+
+Personalizar el autcompletado de correos (con =M + tab=).
+#+BEGIN_SRC emacs-lisp
+  (setq david/contact-file "~/.emacs.d/contactos.txt")
+  (defun david/read-contact-list ()
+    (with-temp-buffer
+      (insert-file-contents david/contact-file)
+      (split-string (buffer-string) "\n" t)))
+  (defun david/complete-emails ()
+    (interactive)
+    (helm :sources `(((name . "Email address candidates")
+                     (candidates . david/read-contact-list)
+                     (action . (("insert" . (lambda (x)
+                                              (insert
+                                               (mapconcat
+                                                'identity
+                                                (helm-marked-candidates)
+                                                ", "))))))))
+    :input (word-at-point)
+    :buffer "*helm complete email*"))
+  (define-key mu4e-compose-mode-map (kbd "<M-tab>") 'david/complete-emails)
+#+END_SRC
+
+** Composición
+Usar =C-c x= para pasar a =org-mu4e-compose=, que permite componer correos
+usando =org-mode=. Después, convertir el mensaje en =org= a HTML (al enviar).
+#+BEGIN_SRC emacs-lisp
+  (require 'org-mu4e)
+  (define-key mu4e-compose-mode-map (kbd "C-c x") 'org-mu4e-compose-org-mode)
+  (setq org-mu4e-convert-to-html t)
+#+END_SRC
+
+Activar el autocorrector en español al estar en modo de composición.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
+  (add-hook 'mu4e-compose-mode-hook (lambda ()
+                                      (ispell-change-dictionary "spanish")))
+#+END_SRC
+
+Configuración para manjear más de una cuenta a la hora de enviar correo. Esta
+función es de la documentación de MU4E
+([[http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html#Multiple-accounts]]). Siempre
+que se quiera componer un nuevo correo, cambiar toda las variables de
+configuración relevantes a la cuenta elegida.
+#+BEGIN_SRC emacs-lisp
+  (defun david/mu4e-set-account ()
+    "Set the account for composing a message."
+    (let* ((account
+            (if mu4e-compose-parent-message
+                (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
+                  (string-match "/\\(.*?\\)/" maildir)
+                  (match-string 1 maildir))
+              (completing-read (format "Compose with account: (%s) "
+                                       (mapconcat #'(lambda (var) (car var))
+                                                  david/mu4e-account-alist "/"))
+                               (mapcar #'(lambda (var) (car var)) david/mu4e-account-alist)
+                               nil t nil nil (caar david/mu4e-account-alist))))
+           (account-vars (cdr (assoc account david/mu4e-account-alist))))
+      (if account-vars
+          (mapc #'(lambda (var)
+                    (set (car var) (cadr var)))
+                account-vars)
+        (error "No email account found"))))
+
+ (add-hook 'mu4e-compose-pre-hook 'david/mu4e-set-account)
+#+END_SRC
+
+** Archivos adjuntos
+Mejorar la gestión de los archivos adjuntos (con =dired=).
+#+BEGIN_SRC emacs-lisp
+  (require 'gnus-dired)
+  (defun gnus-dired-mail-buffers ()
+    "Devuelve una lista de las ventanas con mensajes activos."
+    (let (buffers)
+      (save-current-buffer
+        (dolist (buffer (buffer-list t))
+          (set-buffer buffer)
+          (when (and (derived-mode-p 'message-mode)
+                   (null message-sent-message-via))
+            (push (buffer-name buffer) buffers))))
+      (nreverse buffers)))
+  (setq gnus-dired-mail-mode 'mu4e-user-agent)
+  (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+#+END_SRC
+
+Comprobar si se ha adjunto el archivo cuando se debería.
+#+BEGIN_SRC emacs-lisp
+  (defvar david/message-attachment-regexp
+    "\\([Tt]e mando\\|[Tt]e mandamos\\|[Aa]djunto|pdf|[Aa]rchivo\\)")
+  (defun david/message-check-attachment nil
+    "Comprueba si hay realmente un archivo adjuntado cuando yo lo menciono."
+    (save-excursion
+      (message-goto-body)
+      (when (search-forward-regexp david/message-attachment-regexp nil t nil)
+        (message-goto-body)
+        (unless (or (search-forward "<#part" nil t nil)
+                   (message-y-or-n-p
+                    "No attachment. Send the message ?" nil nil))
+          (error "No message sent")))))
+  (add-hook 'message-send-hook 'david/message-check-attachment)
+#+END_SRC
+
+** Imágenes
+Configurar cómo se muestran las imágenes en =mu4e=
+#+BEGIN_SRC emacs-lisp
+  (when (fboundp 'imagemagick-register-types)
+    (imagemagick-register-types))
+  (setq mu4e-view-show-images t)
+#+END_SRC
+
+** Correos HTML
+#+BEGIN_SRC emacs-lisp
+(require 'mu4e-contrib)
+(setq mu4e-html2text-command 'mu4e-shr2text)
+;;(setq mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
+(add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+#+END_SRC
+
+Hacer más probable el mostrar correos como texto.
+#+BEGIN_SRC emacs-lisp
+(setq mu4e-view-html-plaintext-ratio-heuristic  most-positive-fixnum)
+(setq mu4e-compose-format-flowed t)
+#+END_SRC
+
+** Otros
+Configuraciones varias.
+#+BEGIN_SRC emacs-lisp
+  ;; Eliminar los 'buffers' de mensajes.
+  (setq message-kill-buffer-on-exit t)
+  ;; Usar 'U' para actualizar en principal.
+  (setq mu4e-get-mail-command "mbsync -a -V")
+  ;; Usar 'C-c u' para actualizar (solo indexando).
+  (define-key mu4e-headers-mode-map (kbd "C-c u") 'mu4e-update-index)
+#+END_SRC
+
+Usar tabulador para moverse entre links.
+#+BEGIN_SRC emacs-lisp
+  (bind-key "<tab>" 'shr-next-link mu4e-view-mode-map)
+  (bind-key "<backtab>" 'shr-previous-link mu4e-view-mode-map)
+#+END_SRC
+
+Mostrar las fechas en formato europeo. Y las horas en formato de 24 horas.
+#+BEGIN_SRC emacs-lisp
+(setq mu4e-headers-date-format "%d-%m-%Y")
+(setq mu4e-headers-time-format "  %H:%M")
+#+END_SRC
+
+No mostrar correos relacionados, esto se puede cambiar con =W=.
+#+BEGIN_SRC emacs-lisp
+  (setq mu4e-headers-include-related nil)
+#+END_SRC
+
+Mostrar las direcciones de correo completadas cuando en modo de lectura.
+#+BEGIN_SRC emacs-lisp
+(setq mu4e-view-show-addresses t)
+#+END_SRC
+
+
+* Gestor de suscripciones
+Usaremos =elfeed= para gestionar las suscripciones, es un lector de
+/feeds/ de RSS y Atom.
+#+BEGIN_SRC emacs-lisp
+  (use-package elfeed
+    :config
+    (global-set-key (kbd "C-c e") 'elfeed)
+    (define-key global-map (kbd "C-c e") 'elfeed))
+#+END_SRC
+
+Mostrar las fechas en formato europeo.
+#+BEGIN_SRC emacs-lisp
+(setq elfeed-search-date-format (quote ("%d-%m-%Y" 11 :left)))
+#+END_SRC
+
+Configuraciones varias: directorio de datos, posición, filtro, tamaño.
+#+BEGIN_SRC emacs-lisp
+  (setq elfeed-db-directory "~/.emacs.d/elfeed")
+  (setq elfeed-goodies/entry-pane-position (quote bottom))
+  (setq elfeed-search-date-format (quote ("%d-%m-%Y" 11 :left)))
+  (setq elfeed-search-filter "@1-week-ago ")
+  (setq elfeed-search-title-max-width 100)
+#+END_SRC
+
+** =elfeed-org=
+Ayuda a gestionar 'elfeed' con 'org-mode'.
+#+BEGIN_SRC emacs-lisp
+  (use-package elfeed-org
+    :config
+    (elfeed-org)
+    (setq rmh-elfeed-org-files (list "~/.emacs.d/elfeed.org")))
+#+END_SRC
+
+** =elfeed-goodies=
+Otro paquete más para =elfeed= (para la interfaz).
+#+BEGIN_SRC emacs-lisp
+  (use-package elfeed-goodies)
+  (require 'elfeed-goodies)
+  (elfeed-goodies/setup)
+  (setq elfeed-goodies/entry-pane-size 0.8)
+  (setq elfeed-goodies/feed-source-column-width 22)
+  (setq elfeed-goodies/tag-column-width 30)
+  (setq elfeed-goodies/powerline-default-separator nil)
+#+END_SRC
+
+** Funciones
+Abrir vídeos de la /feed/ de =elfeed= usando =mpv=.
+#+BEGIN_SRC emacs-lisp
+  (defun elfeed-play-with-mpv ()
+    (interactive)
+    (elfeed-search-untag-all-unread)
+    (previous-line)
+    (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
+          (quality-arg "")
+          (quality-val (completing-read "Max height resolution (0 for unlimited): " '("1080" "720" "480" "0") nil nil)))
+      (setq quality-val (string-to-number quality-val))
+      (message "Opening %s with height≤%s with mpv..." (elfeed-entry-link entry) quality-val)
+      (when (< 0 quality-val)
+        (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val)))
+      (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry))))
+  (define-key elfeed-show-mode-map (kbd "C-c C-o") 'elfeed-play-with-mpv)
+  (define-key elfeed-search-mode-map (kbd "C-c C-o") 'elfeed-play-with-mpv)
+  (define-key elfeed-search-mode-map (kbd "o") 'elfeed-play-with-mpv)
+#+END_SRC
+
+
+* Configuraciones antiguas
+** =htmlize=
+Convierte un buffer o un archivo a HTML (respetando estilo).
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package htmlize)
+#+END_SRC
+
+** =calfw=
+Calendario en Emacs.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package calfw
+    :config
+    ;; Comenzar las semanas en Lunes.
+    (setq calendar-week-start-day 1)
+    ;; ;; Dos posibles configuraciones altenativas para el calendario (no funcionan bien).
+    ;; (setq cfw:fchar-junction ?╋
+    ;;     cfw:fchar-vertical-line ?┃
+    ;;     cfw:fchar-horizontal-line ?━
+    ;;     cfw:fchar-left-junction ?┣
+    ;;     cfw:fchar-right-junction ?┫
+    ;;     cfw:fchar-top-junction ?┯
+    ;;     cfw:fchar-top-left-corner ?┏
+    ;;     cfw:fchar-top-right-corner ?┓)
+    ;; (setq cfw:fchar-junction ?╬
+    ;;     cfw:fchar-vertical-line ?║
+    ;;     cfw:fchar-horizontal-line ?═
+    ;;     cfw:fchar-left-junction ?╠
+    ;;     cfw:fchar-right-junction ?╣
+    ;;     cfw:fchar-top-junction ?╦
+    ;;     cfw:fchar-top-left-corner ?╔
+    ;;     cfw:fchar-top-right-corner ?╗)
+  )
+#+END_SRC
+
+*** =calfw-org=
+Mostrar eventos de la agenda en "calfw".
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package calfw-org
+    :config
+    ;; (require 'calfw-org)
+    ;; Similar exactamente los comandos de la Agenda (de 'org').
+    (setq cfw:org-overwrite-default-keybinding t)
+    (define-key cfw:calendar-mode-map (kbd "w") 'cfw:change-view-week)
+    (define-key cfw:calendar-mode-map (kbd "m") 'cfw:change-view-month)
+    (define-key cfw:calendar-mode-map (kbd "W") 'cfw:change-view-two-weeks)
+    (global-set-key (kbd "C-c c") 'cfw:open-org-calendar))
+#+END_SRC
+
+** Truncar lineas
+No truncar las lineas que no entran en la pantalla.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (set-default 'truncate-lines t)
+  (setq truncate-partial-width-windows t)
+#+END_SRC
+
+** =ace-window=
+Mejorar la gestión de ventanas, especialmente cuando hay más de 2.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package ace-window)
+  (global-set-key (kbd "C-x o") 'ace-window)
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+#+END_SRC
