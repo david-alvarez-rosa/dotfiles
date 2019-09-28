@@ -105,3 +105,30 @@ if ! shopt -oq posix; then
 	. /etc/bash_completion
     fi
 fi
+
+# Cronómetro con límite de tiempo.
+function cronómetro {
+    if [[ $1 == "--help" || $1 == "-h" ]]; then
+        echo "Cronómetro con límite de tiempo."
+        echo -e "\nAdmite un parámetro tiempo máximo, a partir del cual se bloquea la pantalla."
+        echo -e "\nDavid Álvarez Rosa"
+        return
+    fi
+    x=0; sec=0; min=0;
+    while true; do
+        if [ $sec -le 9 ]; then
+            echo -ne "\r$min:0$sec";
+        else
+            echo -ne "\r$min:$sec";
+        fi
+        x=$(( x + 1 )); min=$(( x/60 )); sec=$(( x%60 ));
+        if [[ $min%15 -eq 0 && $sec -eq 0 ]]; then
+            notify-send --urgency normal "Cronómetro" "$min minutos.";
+        fi
+        if [[ $min -eq $1 && $sec -eq 0 ]]; then
+            betterlockscreen -l;
+            notify-send -t 0 --urgency normal "Cronómetro" "Tiempo alcanzado: $min minutos.";
+        fi;
+        sleep 1;
+    done
+}
