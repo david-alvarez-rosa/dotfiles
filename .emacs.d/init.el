@@ -1,4 +1,4 @@
-;;; package --- Configuración de Emacs de David Álvarez
+;;; init.el --- Configuración de Emacs de David Álvarez -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;   - Toda la configuración se encuentra en 'config.org'.
 ;;; Code:
