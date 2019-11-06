@@ -13,6 +13,9 @@ shopt -s histappend
 # Tamaños máximos de la historia.
 export HISTSIZE=5000
 export HISTFILESIZE=5000
+# Definición de variables.
+export BROWSER="qutebrowser"
+
 
 # Configuración de "Bash prompt".
 if [ "$EUID" -ne 0 ]
@@ -34,6 +37,10 @@ shopt -s autocd
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
+
+# Mejora (globstar matching).
+shopt -s globstar
+
 
 # Completar también con los siguientes comandos.
 complete -c man which whereis
@@ -82,6 +89,7 @@ alias cpc="xclip -selection clipboard"
 alias sdn="shutdown -h now"
 alias yt="youtube-dl --add-metadata -ic --output \"%(uploader)s%(title)s.%(ext)s\"" # Download video link
 alias yta="yt -x -f bestaudio/best" # Download only audio
+alias atenea="wget -m -E -k --reject=logout* --exclude-directories=/calendar,/user,/grade,/pluginfile.php,/mod/forum,/lib,/repository,/message --load-cookies=cookies.txt --save-cookies=cookies.txt --keep-session-cookies https://atenea.upc.edu/"
 
 # Configuración de fzf.
 export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"

@@ -17,23 +17,16 @@ default_border pixel 1
 
 # Configurar la imagen de fondo de escritorio.
 exec_always --no-startup-id "feh --bg-scale ~/.config/wallpaper.png"
-# Starts dunst for notifications:
+# Configurar dunst para notificaciones:
 exec --no-startup-id dunst
 # Permitir transparencia.
 exec --no-startup-id "compton --xrender-sync-fence"
-# Configurar el teclado.
-exec --no-startup-id "~/.scripts/keyboard"
+# Iniciar i3.
+exec --no-startup-id ".scripts/i3start"
+# Configurar teclado.
+exec --no-startup-id ".scripts/keyboard"
 # Hacer el ratón invisible cuando no se usa.
 exec --no-startup-id "unclutter --timeout 2"
-# Configuración inicial.
-exec --no-startup-id "~/.scripts/i3start"
-exec --no-startup-id "sudo ~/.scripts/i3brightness"
-# Actualizar el correo cada 5 minutos.
-exec --no-startup-id "~/.scripts/updateMail"
-# Registrar tiempo total de uso diario.
-exec --no-startup-id "~/.scripts/dateLog"
-# Notificar de batería baja.
-exec --no-startup-id "~/.scripts/batteryNotify"
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -120,8 +113,15 @@ bindsym $mod+a focus parent
 # Comando para el navegador ("qutebrowser")
 bindsym $mod+w exec --no-startup-id "qutebrowser &"
 
+# Comando para abrir Transmission (para los torrents).
+bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission transmission-remote-cli"
+for_window [title="Transmission"] floating enable, resize grow left 175, resize grow right 175, resize grow down 75, resize grow up 75
+
+# Comando para abrir Skype.
+bindsym $mod+Shift+s exec --no-startup-id "skypeforlinux &"
+
 # Comando para actualizar el correo.
-bindsym $mod+Shift+m exec --no-startup-id "~/.scripts/updateMail -c &"
+bindsym $mod+Shift+m exec --no-startup-id "~/.scripts/cronjobs/updateMail '' 'yes'"
 
 # Comandos para el volumen.
 bindsym XF86AudioMute                    exec --no-startup-id "pamixer --allow-boost -t && pkill -RTMIN+10 i3blocks"
@@ -143,13 +143,14 @@ bindsym Control+XF86MonBrightnessUp      exec --no-startup-id "x=$(</sys/class/b
 # Comandos para captura de pantalla.
 bindsym Print                            exec --no-startup-id "~/.scripts/screenshot"
 bindsym Shift+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
-bindsym Control+Print              	 exec --no-startup-id "~/.scripts/screenshot s"
+bindsym Control+Print              	     exec --no-startup-id "~/.scripts/screenshot s"
 
 # Mover ventana abajo a la derecha (para vídeo).
-bindsym $mod+Shift+v                     floating toggle; exec --no-startup-id ~/.scripts/bottomright; sticky toggle
+bindsym $mod+Shift+v                     floating toggle; exec --no-startup-id ~/.scripts/bottomright; sticky enable
 
 # Abrir "mpv" siempre en pequeño abajo a la derecha.
-for_window [class="mpv"]                 floating toggle; sticky toggle; exec --no-startup-id ~/.scripts/bottomright
+for_window [class="mpv"]                 floating enable; exec --no-startup-id ~/.scripts/bottomright
+for_window [class="mpv"]                 sticky enable
 
 # Definición de nombres para los diferentes espacios de trabajo.
 set $ws1 "1. Emacs"

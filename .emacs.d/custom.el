@@ -19,7 +19,7 @@
  '(org-todo-keyword-faces nil)
  '(package-selected-packages
    (quote
-    (elfeed flycheck company avy elfeed-goodies: yasnippet-snippets yasnippet org-mime elfeed-goodies dired-narrow paredit winum window-numbering which-key web-mode use-package undo-tree switch-window swiper sudo-edit spacemacs-theme spaceline slime-company rainbow-mode rainbow-delimiters pretty-mode popup-kill-ring pdf-tools org-bullets nyan-mode nlinum-relative multiple-cursors memoize markdown-mode magit iedit hungry-delete htmlize highlight-indent-guides helm flycheck-clang-analyzer fancy-battery expand-region elfeed-org diminish company-shell company-jedi company-irony company-c-headers company-auctex calfw-org calfw beacon ace-window)))
+    (auctex helm-projectile projectile elfeed flycheck company avy elfeed-goodies: yasnippet-snippets yasnippet org-mime elfeed-goodies dired-narrow paredit winum window-numbering which-key web-mode use-package undo-tree switch-window swiper sudo-edit spacemacs-theme spaceline slime-company rainbow-mode rainbow-delimiters pretty-mode popup-kill-ring pdf-tools org-bullets nyan-mode nlinum-relative multiple-cursors memoize markdown-mode magit iedit hungry-delete htmlize highlight-indent-guides helm flycheck-clang-analyzer fancy-battery expand-region elfeed-org diminish company-shell company-jedi company-irony company-c-headers company-auctex calfw-org calfw beacon ace-window)))
  '(powerline-default-separator (quote arrow-fade)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

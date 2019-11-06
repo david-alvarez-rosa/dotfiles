@@ -444,6 +444,7 @@ Para editar en modo de administrador.
 Ofrece plantillas (configurables) para diferentes modos.
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
+    :defer t
     :config
     (use-package yasnippet-snippets)
     (yas-reload-all)
@@ -766,9 +767,21 @@ Corrige la indentación automáticamente al cambiar de linea con la tecla =RET=.
   (define-key global-map (kbd "RET") 'newline-and-indent)
 #+END_SRC
 
+*** Compilar
+No preguntar por el comando de compilación (siempre será =make -k=), y solo
+preguntará si se presiona el comando de copilar con un prefijo numério.
+#+BEGIN_SRC emacs-lisp
+  ;; (setq compilation-read-command nil)
+#+END_SRC
+
+Definir comando para compilar.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key "\C-x\C-m" 'compile)
+#+END_SRC
+
 *** =nlinum-relative=
 Numera lineas de manera relativa solo en modo de programación.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package nlinum-relative
     :config
     (setq linum-relative-current-symbol "")
@@ -804,10 +817,22 @@ Habilitar corrección de sintaxis al momento usando =flycheck=
 (http://www.flycheck.org/).
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
+    :defer t
     :init
-    ;; (add-hook 'after-init-hook #'global-flycheck-mode)
-    ;;:diminish
-    )
+    (add-hook 'prog-mode-hook 'global-flycheck-mode)
+    :diminish)
+#+END_SRC
+
+*** =Projectile=
+Añadir el Projectile.
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :config (projectile-mode +1)
+    :bind (:map projectile-mode-map ("C-c p" . 'projectile-command-map)))
+
+  (use-package helm-projectile
+    :defer t
+    :init (helm-projectile-on))
 #+END_SRC
 
 *** TODO Comentarios
@@ -842,19 +867,15 @@ p to jump to previous tag from point (comment-tags-previous-tag).
 
 ** C/C++
 #+BEGIN_SRC emacs-lisp
-  ;; Borrar todo???
-
-  ;; (require 'company)
-  ;; (require 'cc-mode)
-  ;; (setq company-backends (delete 'company-semantic company-backends))
-  ;; (define-key c-mode-map (kbd "C-:")  'company-complete)
-  ;; (define-key c++-mode-map  (kbd "C-:") 'company-complete)
-#+END_SRC
+  (use-package cc-mode
+    :defer t)
+  #+END_SRC
 
 *** =company-c-headers=
 Autocompletar los /headers/.
 #+BEGIN_SRC emacs-lisp
   (use-package company-c-headers
+    :defer t
     :config
     (add-to-list 'company-backends 'company-c-headers)
     (add-to-list 'company-c-headers-path-system "/usr/include/c++/8.2.1/"))
@@ -872,8 +893,9 @@ generalmente) con el comando: =C-c @ C-c= entre otros.
 Subraya los códigos de los colores del color que es.
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-mode
+    :defer t
     :init
-    (add-hook 'prog-mode-hook 'rainbow-mode)
+    (add-hook 'web-mode-hook 'rainbow-mode)
     :diminish)
 #+END_SRC
 
@@ -895,6 +917,7 @@ watch your changes appear as you type!
 Para editar PHP-HTML-CSS-JS.
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
+    :defer t
     :config
     (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
@@ -965,19 +988,6 @@ Es una interfaz completa de Git (control de versiones) para Emacs.
     ("C-x g" . 'magit-status))
 #+END_SRC
 
-** TODO Projectile
-https://github.com/bbatsov/projectile
-
-Projectile is a project interaction library. For instance - finding project
-files (C-c p f) or jumping to a new project (C-c p p).
-
-Configuration
-Enable Projectile globally
-
-(projectile-mode +1)
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
 ** TODO Dumb Jumb
 https://github.com/jacktasia/dumb-jump
 
@@ -1037,12 +1047,12 @@ Permitir tomar notas rápidamente.
 Plantillas para tomar notas.
 #+BEGIN_SRC emacs-lisp
   (setq org-capture-templates
-        '(("n" "Algo pendiente por hacer." entry
+        '(("t" "Algo pendiente por hacer." entry
            (file+headline "/home/david/Documents/Notas.org" "Pendiente")
-           "* TODO %?\nSCHEDULED: %t" :empty-lines-before 1)
+           "* TODO [#C] %?\nSCHEDULED: %t" :empty-lines-before 1)
           ("l" "Algo pendiente por hacer (con link)." entry
            (file+headline "/home/david/Documents/Notas.org" "Pendiente")
-           "* TODO %?\nSCHEDULED: %t\n%a" :empty-lines-before 1)))
+           "* TODO [#C] %?\nSCHEDULED: %t\n%a" :empty-lines-before 1)))
 #+END_SRC
 
 ** Evaluar código
@@ -1255,6 +1265,9 @@ recarga el pdf (con =C-c r=).
 Configuración de LaTeX con AUCTeX.
 Siempre en modo matemático.
 #+BEGIN_SRC emacs-lisp
+  (use-package auctex
+    :defer t)
+
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 #+END_SRC
 
@@ -1395,7 +1408,7 @@ Definición de las diferentes cuentas de correo electrónico.
        (smtpmail-smtp-server "alvarezrosa.com")
        (smtpmail-smtp-service 587)
        (mu4e-sent-messages-behavior sent))
-      ("Yandex Mail"
+      ("Yandex"
        (user-full-name "David Álvarez Rosa")
        (mu4e-inbox-folder "/Yandex/Inbox")
        (mu4e-sent-folder "/Yandex/Sent")
@@ -1446,6 +1459,7 @@ cuentas.
           ("/Yandex/Sent" . ?S)
           ("/Yandex/Trash" . ?B)
           ("/Yandex/Drafts" . ?D)
+          ("/Yandex/Spam" . ?J)
           ("/Yandex/All Mail" . ?A)))
 #+END_SRC
 
@@ -1459,7 +1473,8 @@ Añadir configuraciones personalizadas de marcadores.
                                        "maildir:/Yandex/Drafts")
                                      " OR "))
 
-  (defvar spam-folders (string-join '("maildir:/david/Inbox/Junk")
+  (defvar spam-folders (string-join '("maildir:/david/Inbox/Junk"
+                                      "maildir:/Yandex/Spam")
                                     " OR "))
 
   (setq mu4e-bookmarks
