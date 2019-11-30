@@ -1432,7 +1432,7 @@ Configurar las carpetas dinámicamente (dependiendo de la cuenta de correo).
             "/Yandex/Junk")
            ((string-match "^/david.*"
                           (mu4e-message-field msg :maildir))
-           "/david/Inbox/Junk"))))
+           "/David/Inbox/Junk"))))
 
   (setq mu4e-trash-folder
         (lambda (msg)
@@ -1442,7 +1442,7 @@ Configurar las carpetas dinámicamente (dependiendo de la cuenta de correo).
             "/Yandex/Trash")
            ((string-match "^/david.*"
                           (mu4e-message-field msg :maildir))
-           "/david/Inbox/Trash"))))
+           "/David/Inbox/Trash"))))
 #+END_SRC
 
 ** Atajos
@@ -1450,14 +1450,14 @@ Añadir atajos de teclado para ir a las diferentes carpetas de las diferentes
 cuentas.
 #+BEGIN_SRC emacs-lisp
   (setq mu4e-maildir-shortcuts
-        '(("/david/Inbox" . ?i)
-          ("/david/Sent" . ?s)
-          ("/david/Inbox/Trash" . ?t)
-          ("/david/Drafts" . ?d)
-          ("/david/Inbox/Junk" . ?j)
+        '(("/David/Inbox" . ?i)
+          ("/David/Sent" . ?s)
+          ("/David/Inbox/Trash" . ?t)
+          ("/David/Drafts" . ?d)
+          ("/David/Inbox/Junk" . ?j)
           ("/Yandex/Inbox" . ?I)
           ("/Yandex/Sent" . ?S)
-          ("/Yandex/Trash" . ?B)
+          ("/Yandex/Trash" . ?T)
           ("/Yandex/Drafts" . ?D)
           ("/Yandex/Spam" . ?J)
           ("/Yandex/All Mail" . ?A)))
@@ -1465,15 +1465,15 @@ cuentas.
 
 Añadir configuraciones personalizadas de marcadores.
 #+BEGIN_SRC emacs-lisp
-  (defvar inbox-folders (string-join '("maildir:/david/Inbox"
+  (defvar inbox-folders (string-join '("maildir:/David/Inbox"
                                        "maildir:/Yandex/Inbox")
                                      " OR "))
 
-  (defvar draft-folders (string-join '("maildir:/david/Drafts"
+  (defvar draft-folders (string-join '("maildir:/David/Drafts"
                                        "maildir:/Yandex/Drafts")
                                      " OR "))
 
-  (defvar spam-folders (string-join '("maildir:/david/Inbox/Junk"
+  (defvar spam-folders (string-join '("maildir:/David/Inbox/Junk"
                                       "maildir:/Yandex/Spam")
                                     " OR "))
 
