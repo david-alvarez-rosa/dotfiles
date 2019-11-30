@@ -160,8 +160,8 @@ set $ws4 "4. Ranger"
 set $ws5 "5. Skype"
 set $ws6 "6. Executing"
 set $ws7 "7. Video"
-set $ws8 "8"
-set $ws9 "9"
+set $ws8 "8. Firefox"
+set $ws9 "9. Auxiliar"
 set $ws10 "10"
 
 # Ir al un espacio de trabajo.
@@ -200,6 +200,9 @@ assign [class="qutebrowser"] $ws2
 
 # Abrir inicialmente "emacs" en su espacio de trabajo.
 assign [class="Emacs"] $ws1
+
+# Abrir inicialmente "Firefox" en su espacio de trabajo.
+assign [class="firefox"] $ws8
 
 # Abrir inicialmente "ranger" en su espacio de trabajo.
 # assign [class="ranger"] $ws4
