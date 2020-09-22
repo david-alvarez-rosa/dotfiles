@@ -20,7 +20,7 @@ exec_always --no-startup-id "feh --bg-scale ~/.config/wallpaper.png"
 # Configurar dunst para notificaciones:
 exec --no-startup-id dunst
 # Permitir transparencia.
-exec --no-startup-id "compton --xrender-sync-fence"
+exec --no-startup-id "picom --xrender-sync-fence -i 1.0 -m 1.0 -e 1.0"
 # Iniciar i3.
 exec --no-startup-id ".scripts/i3start"
 # Configurar teclado.
