@@ -888,6 +888,54 @@ generalmente) con el comando: =C-c @ C-c= entre otros.
   (add-hook 'c-mode-common-hook 'hs-minor-mode)
 #+END_SRC
 
+** Python
+Paquete para mejorar y facilitar la edición de Python.
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+    :init
+    (elpy-enable))
+#+END_SRC
+
+This is from the documentation.
+
+Once installed, Elpy will automatically provide code completion, syntax error
+highlighting and code hinting (in the modeline) for python files. Elpy offers a
+lot of features, but the following keybindings should be enough to get started:
+- =C-c C-c= evaluates the current python script (or region if something is
+selected) in an interactive python shell. The python shell is automatically
+displayed aside of your script.
+- =C-RET= evaluates the current statement (current line plus the following
+  nested lines).
+- =C-c C-z= switches between your script and the interactive shell.
+- =C-c C-d= displays documentation for the thing under cursor. The documentation
+  will pop in a different buffer, that can be closed with q.
+
+Moving around and indenting is similar to Org mode.
+
+Some more things that are pretty sweet.
+- =M-.= go to definition.
+- =M-*= go back from definition where I was.
+- =C-c C-o= occur definition. All places where a function/class is used.
+
+*** Virtual environments
+For handling Python virtual environments, we will use
+#+BEGIN_SRC emacs-lisp
+  (use-package pyenv-mode
+    :init
+    (pyenv-mode))
+#+END_SRC
+
+*** Jupyter Notebook
+For Jupyter Notebook integration we will use =ein=.
+#+BEGIN_SRC emacs-lisp
+    (use-package ein)
+#+END_SRC
+
+Basic usage:
+- =C-c C-o= after opening =.ipynb= file for editing as notebook.
+- =M-x ein:run= launches a Jupyter process from Emacs.
+- =M-x ein:login= connects to a running Jupyter process.
+
 ** Web
 *** =rainbow-mode=
 Subraya los códigos de los colores del color que es.
