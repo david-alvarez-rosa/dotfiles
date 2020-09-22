@@ -732,15 +732,15 @@ Actualizar la otra ventana.
 #+END_SRC
 
 ** Gestión de /buffers/
-Eliminar todos los /buffers/ excepto el /scratch/ (útil cuando hay muchos
-abiertos).
+Eliminar todos los /buffers/ excepto el actual y el /scratch/ (útil cuando hay
+muchos abiertos).
 #+BEGIN_SRC emacs-lisp
-  (defun david/kill-all-buffers ()
-    "Kill all other buffers."
+  (defun david/kill-all-other-buffers ()
+    "Kill all buffers except current and *scratch*."
     (interactive)
-    (switch-to-buffer "*scratch*")
     (delete-other-windows)
-    (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+    (setq scratch (get-buffer "*scratch*"))
+    (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
 #+END_SRC
 
 ** Gestionar configuración
