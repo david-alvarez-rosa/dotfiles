@@ -987,6 +987,16 @@ Configurar el caracter para comentar en Octave.
   ;; (setq octave-block-comment-start "%")
 #+END_SRC
 
+** R
+Añadir paquete ESS ("Emacs Speaks Statistics") para editor código de R.
+#+BEGIN_SRC emacs-lisp
+  (use-package ess
+    :config
+    (require 'ess-r-mode)
+    (define-key ess-r-mode-map ";" 'ess-cycle-assign)
+    (define-key inferior-ess-r-mode-map ";" 'ess-cycle-assign))
+#+END_SRC
+
 ** TODO p_slides
 p_slides is a static files only, dead simple way, to create semantic slides. The
 slide content is markdown, embedded in a HTML file. When opening a
