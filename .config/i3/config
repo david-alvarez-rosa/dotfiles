@@ -27,6 +27,8 @@ exec --no-startup-id ".scripts/i3start"
 exec --no-startup-id ".scripts/keyboard"
 # Hacer el ratón invisible cuando no se usa.
 exec --no-startup-id "unclutter --timeout 2"
+# Encender el teclado numérico
+exec --no-startup-id "numlockx on"
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -114,7 +116,7 @@ bindsym $mod+a focus parent
 bindsym $mod+w exec --no-startup-id "qutebrowser &"
 
 # Comando para abrir Transmission (para los torrents).
-bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission transmission-remote-cli"
+bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission tremc"
 for_window [title="Transmission"] floating enable, resize grow left 175, resize grow right 175, resize grow down 75, resize grow up 75
 
 # Comando para abrir Skype.
@@ -142,7 +144,7 @@ bindsym Control+XF86MonBrightnessUp      exec --no-startup-id "x=$(</sys/class/b
 
 # Comandos para captura de pantalla.
 bindsym Print                            exec --no-startup-id "~/.scripts/screenshot"
-bindsym Shift+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
+bindsym $mod+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
 bindsym Control+Print              	     exec --no-startup-id "~/.scripts/screenshot s"
 
 # Mover ventana abajo a la derecha (para vídeo).
@@ -157,7 +159,7 @@ set $ws1 "1. Emacs"
 set $ws2 "2. Browser"
 set $ws3 "3. Terminal"
 set $ws4 "4. Ranger"
-set $ws5 "5. Skype"
+set $ws5 "5. Communication"
 set $ws6 "6. Executing"
 set $ws7 "7. Video"
 set $ws8 "8. Firefox"
@@ -195,14 +197,27 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 assign [class="Skype"] $ws5
 for_window [class="Skype"] floating disable
 
+# Abrir inicialmente "Slack" en su espacio de trabajo.
+assign [class="Slack"] $ws5
+
 # Abrir inicialmente "qutebrowser" en su espacio de trabajo.
 assign [class="qutebrowser"] $ws2
 
 # Abrir inicialmente "emacs" en su espacio de trabajo.
 assign [class="Emacs"] $ws1
 
+# Abrir inicialmente imágenes de "octave" en su espacio de trabajo.
+assign [class="GNU Octave"] $ws6
+
+# Abrir inicialmente imágenes de "python" en su espacio de trabajo.
+assign [class="matplotlib"] $ws6
+
 # Abrir inicialmente "Firefox" en su espacio de trabajo.
 assign [class="firefox"] $ws8
+
+# Abrir inicialmente "LibrOffice" y "Gimp" en espacio de trabajo auxiliar.
+assign [class="(?i)office.*"] $ws9
+assign [class="(?i)gimp.*"] $ws9
 
 # Abrir inicialmente "ranger" en su espacio de trabajo.
 # assign [class="ranger"] $ws4
