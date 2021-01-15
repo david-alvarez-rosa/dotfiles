@@ -835,6 +835,12 @@ Añadir el Projectile.
     :init (helm-projectile-on))
 #+END_SRC
 
+Añadir el paquete =helm-ag= para buscar en código. Necesario tener instalado el
+programa =ag=. En Arch Linux: =pacman -S the_silver_searcher=.
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-ag)
+#+END_SRC
+
 *** TODO Comentarios
 https://github.com/vincekd/comment-tags
 
