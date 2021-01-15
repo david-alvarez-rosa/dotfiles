@@ -61,8 +61,8 @@ eval "$(dircolors)"
 
 # Algunos alias básicos.
 alias ls="ls -hN --color=auto --group-directories-first -v --time-style='+%d %b %H:%M'"
-alias ll="ls -la"
-alias l="ls"
+alias l="exa --icons --group-directories-first"
+alias ll="l -lag"
 alias grep="grep --color"
 alias diff="diff --color"
 alias p="pacman"
