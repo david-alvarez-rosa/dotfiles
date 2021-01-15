@@ -8,6 +8,10 @@
 !/.config
 /.config/*
 
+# README and LICENSE.
+!README.org
+!LICENSE.org
+
 # Emacs
 !/.emacs.d
 /.emacs.d/*

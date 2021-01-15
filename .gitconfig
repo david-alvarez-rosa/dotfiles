@@ -1,18 +1,20 @@
 [user]
-	name = David Álvarez Rosa
-	email = david@alvarezrosa.com
+  name = David Álvarez Rosa
+  email = david@alvarezrosa.com
+  signingkey = 92C293BEB93A70A1
 [credential]
-        helper = store	
+  helper = store
 [core]
-	editor = vim
+  editor = vim
 [color]
-	diff = auto
-	status = auto
-	branch = auto
-	interactive = auto
-	pager = true
-	ui = auto
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  pager = true
+  ui = auto
 [alias]
-	hist = log --graph --oneline --decorate --color
-	st = status
-
+  hist = log --graph --oneline --decorate --color
+  st = status
+[commit]
+  gpgsign = true
