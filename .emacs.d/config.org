@@ -1571,6 +1571,55 @@ Añadir configuraciones personalizadas de marcadores.
          ("flag:unread" "Unread messages" ?u)))
 #+END_SRC
 
+** Correos en cola
+Permite guardar los correos en cola (bandeja de salida) para enviarlos más
+adelante. Útil cuando se está trabajando sin conexión a internet por ejemplo.
+#+BEGIN_SRC emacs-lisp
+  (setq smtpmail-queue-dir "~/.mail/Queue/cur")
+
+  (defun david/toggle-mail-queue ()
+    "Permite conmutar entre cola de correos activda o desactivada."
+    (interactive)
+    (if smtpmail-queue-mail
+        (setq smtpmail-queue-mail nil)
+        (setq smtpmail-queue-mail t)))
+  (define-key mu4e-main-mode-map (kbd "C-c q") 'david/toggle-mail-queue)
+#+END_SRC
+
+** Encriptación
+Encriptar todos los correos salientes /automágicamente/ si la llave existe.
+#+BEGIN_SRC emacs-lisp
+  (defun david/can-encrypt-message-p ()
+    "Return non-nil if current message can be encrypted.
+  I.e., the keyring has a public key for each recipient."
+    (let ((recipients
+           (seq-map #'cadr ; only take email address, not recipient name
+                    (seq-mapcat (lambda (header)
+                                  (let ((header-value
+                                         (message-fetch-field header)))
+                                    (and header-value
+                                         (mail-extract-address-components header-value
+                                                                          t))))
+                                '("To" "CC" "BCC"))))
+          (context (epg-make-context epa-protocol)))
+      (seq-every-p (lambda (recipient)
+                     (not (seq-empty-p (epg-list-keys context recipient))))
+                   recipients)))
+
+  (defun david/add-encryption-mark-if-possible ()
+    "Add MML tag to encrypt message when there is a key for each
+  recipient."
+    (when (david/can-encrypt-message-p)
+      (mml-secure-message-sign-encrypt)))
+
+  (add-hook 'message-send-hook #'david/add-encryption-mark-if-possible)
+#+END_SRC
+
+Para firmar correos salientes.
+#+BEGIN_SRC emacs-lisp
+  (setq mml-secure-openpgp-sign-with-sender t)
+#+END_SRC
+
 ** Autocompletado
 Permitir el autocompletado estándar. Y solo tener en cuenta el autocompletado
 con los correos de hace como mucho 6 meses.
@@ -1620,11 +1669,38 @@ imágenes por ejemplo).
   (require 'org-mime)
 #+END_SRC
 
+Añadir automáticamente la firma.
+#+BEGIN_SRC emacs-lisp
+  (setq message-signature-file "~/.emacs.d/signature.txt")
+  (setq mu4e-compose-signature-auto-include nil)
+#+END_SRC
+
 Activar el autocorrector en español al estar en modo de composición.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
   (add-hook 'mu4e-compose-mode-hook (lambda ()
                                       (ispell-change-dictionary "spanish")))
+#+END_SRC
+
+Forzar que no se corten las lineas al enviar los correos.
+#+BEGIN_SRC emacs-lisp
+  (setq fill-flowed-encode-column 79)
+  (setq fill-flowed-display-column 79)
+
+  (add-hook 'mu4e-compose-mode-hook 'enriched-mode)
+  (add-hook 'mu4e-compose-mode-hook (lambda () (use-hard-newlines 1 'always)))
+
+  (defun david/mu4e-remove-soft-breaks ()
+    "Remove the soft breaks that occur with auto-fill-mode."
+    (interactive)
+    (mu4e-compose-goto-bottom)
+    (call-interactively 'set-mark-command)
+    (mu4e-compose-goto-top)
+    (set-fill-column (point-max))
+    (call-interactively 'fill-paragraph)
+    (set-fill-column 79))
+  (define-key mu4e-compose-mode-map (kbd "C-c s") 'david/mu4e-remove-soft-breaks)
+  (define-key mu4e-compose-mode-map (kbd "M-q") 'fill-paragraph)
 #+END_SRC
 
 Configuración para manjear más de una cuenta a la hora de enviar correo. Esta
@@ -1656,6 +1732,11 @@ configuración relevantes a la cuenta elegida.
 #+END_SRC
 
 ** Archivos adjuntos
+Configuración el directorio de descarga.
+#+BEGIN_SRC emacs-lisp
+  (setq mu4e-attachment-dir "~/Downloads")
+#+END_SRC
+
 Mejorar la gestión de los archivos adjuntos (con =dired=).
 #+BEGIN_SRC emacs-lisp
   (require 'gnus-dired)
