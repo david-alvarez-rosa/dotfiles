@@ -110,7 +110,7 @@ Sombrear la línea donde está el cursor (solo en GUI).
 
 *** Símbolos
 Para que aparezcan símbolos (solo en GUI).
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (when window-system (global-prettify-symbols-mode t))
 #+END_SRC
 
@@ -130,10 +130,10 @@ Activar algunos comandos que están desactivados.
 #+END_SRC
 
 ** Truncar lineas
-Truncar líneas demasiado largas automáticamente (a partir de 80 caracteres).
+Truncar líneas demasiado largas automáticamente (a partir de 79 caracteres).
 #+BEGIN_SRC emacs-lisp
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
-  (setq fill-column 80)
+  (setq-default fill-column 79)
 #+END_SRC
 
 Usar =visual-line= para una mejor gestión de las lineas demasiado largas que no
@@ -400,7 +400,7 @@ Para una mejor gestión de ventanas, búsqueda de archivos y de comandos.
                                            "\\`\\*minibuf" "magit" "elfeed" "*Messages*"
                                            "*Ediff Registry*" "*Calculator*" "Calc Trail*"
                                            "*Help*" "Suscripciones.org" "Cumpleaños.org"
-                                           "*Calendar*")))
+                                           "*Calendar*" ".*.synctex.gz")))
 #+END_SRC
 
 Configuraciones extra.
@@ -426,7 +426,7 @@ Expande la región seleccionada por regiones semánticas.
 
 ** =pretty-symbols=
 Convertir algunas palabras en símbolos (solo en GUI).
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (when window-system
     (use-package pretty-mode
       :config
@@ -453,6 +453,19 @@ Ofrece plantillas (configurables) para diferentes modos.
                  "~/.emacs.d/plugins/yasnippet")
     (require 'yasnippet)
     (yas-global-mode 1))
+#+END_SRC
+
+** =fast-scroll=
+To ensure scrolling is fast in Emacs, this package disables non-essential things
+while windowis being scrolled.
+#+BEGIN_SRC emacs-lisp
+  (use-package fast-scroll
+    :demand t
+    :config
+    (add-hook 'fast-scroll-start-hook (lambda () (flycheck-mode -1)))
+    (add-hook 'fast-scroll-end-hook (lambda () (flycheck-mode 1)))
+    (fast-scroll-config)
+    (fast-scroll-mode 1))
 #+END_SRC
 
 ** =dired-narrow=
@@ -524,7 +537,7 @@ funcionalidades extra (especialmente útil para directorios).
 Corrector (configurado en español). Para buscar siguiente error =C-,= y para
 autocorregir con otras palabras =C-.=
 #+BEGIN_SRC emacs-lisp
-  (setq ispell-dictionary "spanish")
+  (setq ispell-dictionary "english")
   ;; (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   ;; (add-hook 'LaTeX-mode-hook 'flyspell-buffer)
 #+END_SRC
@@ -680,11 +693,11 @@ Funciones para mejorar los comandos de movimiento.
 #+BEGIN_SRC emacs-lisp
   (defun david/next-lines ()
     (interactive)
-    (next-line 10))
+    (next-line 15))
   (global-set-key (kbd "C-v") 'david/next-lines)
   (defun david/previous-lines ()
     (interactive)
-    (previous-line 10))
+    (previous-line 15))
   (global-set-key (kbd "M-v") 'david/previous-lines)
 #+END_SRC
 
@@ -925,7 +938,7 @@ Some more things that are pretty sweet.
 
 *** Virtual environments
 For handling Python virtual environments, we will use
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package pyenv-mode
     :init
     (pyenv-mode))
@@ -941,6 +954,7 @@ Basic usage:
 - =C-c C-o= after opening =.ipynb= file for editing as notebook.
 - =M-x ein:run= launches a Jupyter process from Emacs.
 - =M-x ein:login= connects to a running Jupyter process.
+- =C-c C-f= for opening new notebook.
 
 ** Web
 *** =rainbow-mode=
@@ -975,7 +989,7 @@ Para editar PHP-HTML-CSS-JS.
     :config
     (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
-    (setq web-mode-markup-indent-offset 3))
+    (setq web-mode-markup-indent-offset 2))
 #+END_SRC
 
 ** Octave
@@ -1113,10 +1127,13 @@ Plantillas para tomar notas.
   (setq org-capture-templates
         '(("t" "Algo pendiente por hacer." entry
            (file+headline "/home/david/Documents/Notas.org" "Pendiente")
-           "* TODO [#C] %?\nSCHEDULED: %t" :empty-lines-before 1)
+           "* TODO [#C] %?\nSCHEDULED: %t" :empty-lines-before 1 :empty-lines-after 2)
           ("l" "Algo pendiente por hacer (con link)." entry
            (file+headline "/home/david/Documents/Notas.org" "Pendiente")
-           "* TODO [#C] %?\nSCHEDULED: %t\n%a" :empty-lines-before 1)))
+           "* TODO [#C] %?\nSCHEDULED: %t\n%a" :empty-lines-before 1 :empty-lines-after 2)
+          ("u" "Algo pendiente para universidad." entry
+           (file "/home/david/Documents/UPC/Cuatrimestre 9/UPC.org")
+           "* TODO [#C] %?\nSCHEDULED: %t" :empty-lines-after 0)))
 #+END_SRC
 
 ** Evaluar código
@@ -1133,6 +1150,7 @@ Permitir evaluar código de los siguientes lenguajes.
            (shell . t)
            (css . t)
            (calc . t)
+           (R . t)
            (js . t))))
 #+END_SRC
 
@@ -1201,9 +1219,11 @@ Cambia los asteriscos por bolas.
 Gestionar los diferentes archivos para la Agenda.
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files (quote
-                          ("~/.emacs.d/Cumpleaños.org"
-                          "~/Documents/UPC/Cuatrimestre 7/UPC.org"
-                          "~/Documents/Notas.org")))
+                          ("~/Documents/Contactos/Cumpleaños.org"
+                          "~/Documents/UPC/Cuatrimestre 9/UPC.org"
+                          "~/Documents/UPC/Cuatrimestre 9/Schedule.org"
+                          "~/Documents/Notas.org"
+                          "~/Documents/Career.org")))
 #+END_SRC
 
 Comando para abrir la agenda en cualquier modo.
@@ -1443,6 +1463,14 @@ movimiento.
                 ("," . 'pdf-view-previous-page-command)))
 #+END_SRC
 
+Slices are really useful:
+- =s r= reset slice.
+- =s m= set slice with mouse.
+- =s b= set slice using bounding box.
+#+BEGIN_SRC emacs-lisp
+  ;; (add-hook 'pdf-view-mode-hook 'pdf-view-auto-slice-minor-mode)
+#+END_SRC
+
 
 * Correo electrónico
 Configuración del correo electrónico (con =mu4e=). Abrir directamente los
@@ -1457,6 +1485,11 @@ recibidos con =C-x m=.
   (define-key global-map (kbd "C-x m") 'david/open-mu4e-inbox)
   (require 'smtpmail)
   (setq message-send-mail-function 'smtpmail-send-it)
+#+END_SRC
+
+Configuración del tamaño máximo de columna
+#+BEGIN_SRC emacs-lisp
+  (setq message-fill-column 79)
 #+END_SRC
 
 ** Cuentas
@@ -1543,7 +1576,8 @@ cuentas.
           ("/Yandex/Trash" . ?T)
           ("/Yandex/Drafts" . ?D)
           ("/Yandex/Spam" . ?J)
-          ("/Yandex/All Mail" . ?A)))
+          ("/Yandex/All Mail" . ?A)
+          ("/Queue" . ?q)))
 #+END_SRC
 
 Añadir configuraciones personalizadas de marcadores.
@@ -1754,7 +1788,8 @@ Mejorar la gestión de los archivos adjuntos (con =dired=).
   (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 #+END_SRC
 
-Comprobar si se ha adjunto el archivo cuando se debería.
+Comprobar si se ha adjunto el archivo cuando se debería. TODO: esto no está
+funcionando.
 #+BEGIN_SRC emacs-lisp
   (defvar david/message-attachment-regexp
     "\\([Tt]e mando\\|[Tt]e mandamos\\|[Aa]djunto|pdf|[Aa]rchivo\\)")
@@ -1836,10 +1871,27 @@ Usaremos =elfeed= para gestionar las suscripciones, es un lector de
     :config (setq elfeed-search-date-format '("%d-%m-%Y" 11 :left) ; Fechas formato europeo.
                   ;; Configuraciones varias: directorio de datos, posición, filtro, tamaño.
                   elfeed-db-directory "~/.emacs.d/elfeed"
-                  elfeed-goodies/entry-pane-position 'bottom
                   elfeed-search-date-format (quote ("%d-%m-%Y" 11 :left))
                   elfeed-search-filter "@1-week-ago -no "
                   elfeed-search-title-max-width 100))
+#+END_SRC
+
+Automáticamente ajustar a =fill-column= las entradas al abrirlas. Sobreescribe
+la función predetermianda.
+#+BEGIN_SRC emacs-lisp
+  (setq shr-use-fonts nil)
+  (setq shr-width 70)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  (defun david/elfeed-search-show-entry ()
+    "Show elfeed entry and fill the text to fill-column."
+    (interactive)
+    (elfeed-search-show-entry (elfeed-search-selected :single))
+    (read-only-mode 0)
+    (mark-whole-buffer)
+    (call-interactively 'fill-paragraph))
+  (define-key elfeed-search-mode-map (kbd "RET") 'david/elfeed-search-show-entry)
 #+END_SRC
 
 TODO: Actualizar automáticamente al abrir Emacs.
@@ -1862,9 +1914,10 @@ Otro paquete más para =elfeed= (para la interfaz).
   (use-package elfeed-goodies
     :config
     (elfeed-goodies/setup)
-    (setq elfeed-goodies/entry-pane-size 0.8
-          elfeed-goodies/feed-source-column-width 22
-          elfeed-goodies/tag-column-width 30
+    (setq elfeed-goodies/entry-pane-size 0.38
+          elfeed-goodies/entry-pane-position 'right
+          elfeed-goodies/feed-source-column-width 18
+          elfeed-goodies/tag-column-width 22
           elfeed-goodies/powerline-default-separator nil))
 #+END_SRC
 
@@ -1964,7 +2017,7 @@ Mejorar la gestión de ventanas, especialmente cuando hay más de 2.
 Despues de iniciar Emacs, volver a cambiar /garbage-collection/.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'emacs-startup-hook
-    (setq gc-cons-threshold 16777216
+    (setq gc-cons-threshold 800000
           gc-cons-percentage 0.1))
 #+END_SRC
 
@@ -1973,4 +2026,59 @@ Y volver a cambiar =file-name-handler-alist=.
   (add-hook 'emacs-startup-hook
     (setq file-name-handler-alist david/file-name-handler-alist))
   ;;; config.el ends here
+#+END_SRC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Pendiente
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c i") (lambda () (interactive)
+                                  (erc :server "irc.freenode.net"
+                                       :port "6667"
+                                       :nick "davidLinux")))
+
+  (setq erc-prompt-for-password nil)
+  (setq erc-fill-function 'erc-fill-static)
+
+  ;; (setq erc-fill-static-center 22)
+
+  ;; (require 'erc-join)
+  ;; (setq erc-autojoin-channels-alist
+  ;;       '(("freenode.net" "#thoughtbot" "#emacs" "#emacsnyc")))
+  ;; (erc-autojoin-enable)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(setq golden-ratio-auto-scale t)
+
+(setf (cdr (assq 'continuation fringe-indicator-alist))
+      '(nil nil) ;; no continuation indicators
+      ;; '(nil right-curly-arrow) ;; right indicator only
+      ;; '(left-curly-arrow nil) ;; left indicator only
+      ;; '(left-curly-arrow right-curly-arrow) ;; default
+      )
+
+(setf (cdr (assq 'truncation fringe-indicator-alist))
+      '(nil nil) ;; no continuation indicators
+      )
 #+END_SRC
