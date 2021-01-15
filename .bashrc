@@ -6,6 +6,14 @@ case $- in
     *) return;;
 esac
 
+# Acaemia setup.
+if [[ $USER != "academia" || $UID -eq 0 ]]
+then
+    [ $(date +%s) -le $(cat /home/david/.cache/endDate.txt) ] && exit
+    time=$(date +%k%M)
+#    [ $time -ge 1530 -a $time -le 1630 ] && exit
+fi
+
 # No poner lineas duplicadas o empezando con un espacio en la historia.
 export HISTCONTROL=ignoreboth
 # Añadir al archivo de historia, no sobreescribir.
@@ -14,7 +22,7 @@ shopt -s histappend
 export HISTSIZE=5000
 export HISTFILESIZE=5000
 # Definición de variables.
-export BROWSER="qutebrowser"
+# export BROWSER="qutebrowser"
 
 
 # Configuración de "Bash prompt".
@@ -71,8 +79,10 @@ alias sp-Syu="sp -Syu --noconfirm && pkill -RTMIN+1 i3blocks"
 alias sc="systemctl"
 alias ssc="sudo systemctl"
 alias ..='cd ..'
-alias ...='cd ../../../'
+alias ...='cd ../../'
 alias hg="history | grep"
+alias mv="mv -i"
+alias cp="cp -i"
 
 # Más alias.
 alias q="qutebrowser &"
@@ -89,7 +99,10 @@ alias cpc="xclip -selection clipboard"
 alias sdn="shutdown -h now"
 alias yt="youtube-dl --add-metadata -ic --output \"%(uploader)s%(title)s.%(ext)s\"" # Download video link
 alias yta="yt -x -f bestaudio/best" # Download only audio
-alias atenea="wget -m -E -k --reject=logout* --exclude-directories=/calendar,/user,/grade,/pluginfile.php,/mod/forum,/lib,/repository,/message --load-cookies=cookies.txt --save-cookies=cookies.txt --keep-session-cookies https://atenea.upc.edu/"
+alias nano="vim" # Just for the meme life
+alias remainingTime='echo $(( ($(cat ~/.cache/endDate.txt) - $(date +%s))/60 ))'
+alias vs='cd ~/.scripts/; vim $(fzf); cd -'
+
 
 # Configuración de fzf.
 export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
@@ -99,44 +112,87 @@ export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Añadir atajos a diferentes carpetas.
-if [ -f ~/.shortcuts ]; then
-    source ~/.shortcuts
-fi
+[ -f ~/.shortcuts ] && source ~/.shortcuts
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
-	. /usr/share/bash-completion/bash_completion
+  . /usr/share/bash-completion/bash_completion
     elif [ -f /etc/bash_completion ]; then
-	. /etc/bash_completion
+  . /etc/bash_completion
     fi
 fi
 
 # Cronómetro con límite de tiempo.
-function cronómetro {
+function chrono {
     if [[ $1 == "--help" || $1 == "-h" ]]; then
         echo "Cronómetro con límite de tiempo."
         echo -e "\nAdmite un parámetro tiempo máximo, a partir del cual se bloquea la pantalla."
         echo -e "\nDavid Álvarez Rosa"
         return
     fi
+    max=$(echo $1 / 1 | bc)
     x=0; sec=0; min=0;
     while true; do
-        if [ $sec -le 9 ]; then
-            echo -ne "\r$min:0$sec";
-        else
-            echo -ne "\r$min:$sec";
-        fi
+        [ $sec -le 9 ] && echo -ne "\r$min:0$sec" || echo -ne "\r$min:$sec";
         x=$(( x + 1 )); min=$(( x/60 )); sec=$(( x%60 ));
         if [[ $min%15 -eq 0 && $sec -eq 0 ]]; then
-            notify-send --urgency normal "Cronómetro" "$min minutos.";
+            remaining=$(( $1 - $min ))
+            notify-send --urgency normal "Cronómetro" "$min minutos. Quedan $remaining";
         fi
-        if [[ $min -eq $1 && $sec -eq 0 ]]; then
+        if [[ $min -eq $max && $sec -eq 0 ]]; then
             betterlockscreen -l;
             notify-send -t 0 --urgency normal "Cronómetro" "Tiempo alcanzado: $min minutos.";
         fi;
         sleep 1;
     done
 }
+
+function academia {
+    if [[ $1 == "--help" || $1 == "-h" ]]; then
+        echo "Academia."
+        echo -e "\nPasar como variable el tiempo en minutos."
+        echo -e "\nDavid Álvarez Rosa"
+        return
+    fi
+    startDate=$(date +%s)
+    endDate=$(( startDate + $1 * 60 ))
+    echo $endDate > /home/david/.cache/endDate.txt
+    nmcli networking off
+    sudo systemctl stop NetworkManager
+    chmod -R g=rwX ~/.mail/ ~/.mu/log/ ~/.config/pulse/ ~/.local/share/qutebrowser
+    if [[ $2 == "off" ]]; then
+        pkill i3
+        logout
+    fi
+}
+
+function jbl {
+    sudo systemctl start bluetooth
+    bluetoothctl power on
+    bluetoothctl connect 00:22:37:46:71:7A
+}
+
+# Update Atenea's local copy.
+function atenea {
+    pass=$(cat /home/david/.cache/atenea.txt)
+    wget --save-cookies=$HOME/Documents/UPC/Cuatrimestre\ 8/Atenea\ -\ Versión\ local/cookies.txt \
+         --directory-prefix=$HOME/Documents/UPC/Cuatrimestre\ 8/Atenea\ -\ Versión\ local/ \
+         --keep-session-cookies \
+         --post-data "adAS_i18n_theme=ca&adAS_mode=authn&adAS_username=david.alvarez.rosa&adAS_password=$pass&adAS_submit=" \
+         https://sso.upc.edu/CAS/login?service=https%3A%2F%2Fatenea.upc.edu%2Flogin%2Findex.php%3FauthCAS%3DCAS
+    rm $HOME/Documents/UPC/Cuatrimestre\ 8/Atenea\ -\ Versión\ local/login*
+    wget -m -E -k -p \
+         --directory-prefix=$HOME/Documents/UPC/Cuatrimestre\ 8/Atenea\ -\ Versión\ local/ \
+         --exclude-directories=calendar,/grade,/recent.php,/enrol,/mod/forum,/wiki,/lib,/repository,/message,/profile,/preferences \
+         --reject-regex "(logout|user)" \
+         --load-cookies=$HOME/Documents/UPC/Cuatrimestre\ 8/Atenea\ -\ Versión\ local/cookies.txt \
+         https://atenea.upc.edu/
+    notify-send -t 0 --urgency low "Atenea UPC" "Descarga completa.";
+}
+
+
+export EDITOR="vim"
+export GPG_AGENT_INFO=""
