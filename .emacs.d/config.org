@@ -1211,10 +1211,10 @@ Comando para abrir la agenda en cualquier modo.
   (defun david/org-agenda-current-week()
     "Abrir la agenda de la semana."
     (interactive)
-    (if (not (equal buffer-file-name "/home/david/Documents/UPC/Cuatrimestre 7/UPC.org"))
+    (if (not (equal buffer-file-name "/home/david/Documents/UPC/Cuatrimestre 9/UPC.org"))
         (progn (delete-other-windows)
-               (find-file "~/Documents/UPC/Cuatrimestre 7/UPC.org")
-               (next-line 7)
+               (find-file "~/Documents/UPC/Cuatrimestre 9/UPC.org")
+               (next-line 8)
                (org-forward-heading-same-level 5)
                (david/split-and-follow-vertically)
                (org-agenda nil "n")
@@ -1236,9 +1236,9 @@ Comando para abrir la agenda en cualquier modo.
 Configurar agenda personalizada.
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-custom-commands
-        '(("n" "Agenda and all TODOs"
-           ((agenda "" nil)
-            (alltodo "" nil))
+        '(("n" "Agenda and all TODOs without schedule"
+           ((agenda "" ((org-agenda-tag-filter-preset (quote ("-SCH")))))
+            (alltodo "" ((org-agenda-tag-filter-preset (quote ("-SCH"))))))
            ((org-agenda-start-with-log-mode t)))
           ("d" "Current day"
            ((agenda "" ((org-agenda-span 1)))))))
