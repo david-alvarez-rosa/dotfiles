@@ -1336,6 +1336,10 @@ Siempre en modo matemático.
 #+END_SRC
 
 Usar =reftex=.
+- =C-c= show ToC.
+- =C-c (= create label.
+- =C-c )= reference label.
+- =C-c [= create cite.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (setq reftex-toc-split-windows-fraction 0.2)
@@ -1374,7 +1378,7 @@ Eliminar archivos innecesarios fácilmente.
 *** Compilación
 Compilar con =-shell-escape= siempre.
 #+BEGIN_SRC emacs-lisp
-  (setq TeX-command-extra-options "-shell-escape --synctex=1")
+  (setq TeX-command-extra-options "-shell-escape -synctex=1")
 #+END_SRC
 
 No preguntar para guardar y actualizar el /pdf/ después de compilar.
@@ -1391,6 +1395,21 @@ Permite esconder/plegar partes del texto. El prefijo es =C-c @=.
     (outline-minor-mode 1))
 
   (add-hook 'LaTeX-mode-hook 'david/turn-on-outline-minor-mode)
+#+END_SRC
+
+*** BibTeX
+For managing .bib files. Use =C-c C-c=. Insert entries templates with different
+key bindings. Also, =C-c C-f= for inserting new field.
+#+BEGIN_SRC emacs-lisp
+  (setq bibtex-align-at-equal-sign t)
+  ;; (setq bibtex-text-indentation 14)
+  ;; (setq bibtex-contline-indentation 5)
+
+  (setq bibtex-entry-format `(opts-or-alts required-fields
+                              numerical-fields whitespace realign
+                              last-comma delimiters unify-case
+                              braces sort-fields))
+  (setq bibtex-autokey-year-title-separator ":")
 #+END_SRC
 
 
