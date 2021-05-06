@@ -1622,7 +1622,7 @@ adelante. Útil cuando se está trabajando sin conexión a internet por ejemplo.
 
 ** Encriptación
 Encriptar todos los correos salientes /automágicamente/ si la llave existe.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (defun david/can-encrypt-message-p ()
     "Return non-nil if current message can be encrypted.
   I.e., the keyring has a public key for each recipient."
