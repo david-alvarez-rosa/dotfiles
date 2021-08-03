@@ -627,22 +627,24 @@ Para no mostar algunos modos menores en la barra de estado.
 ** Transparencia
 Configurar la transparencia.
 #+BEGIN_SRC emacs-lisp
-(setq transparency_level 0)
-(defun david/cycle-transparency ()
-  "Permite cambiar la transparencia entre 3 modos (desactivado, medio, alto)."
-  (interactive)
-  (if (equal transparency_level 0)
-      (progn (set-frame-parameter (selected-frame) 'alpha '(95 . 80))
-         (setq transparency_level 1))
-    (if (equal transparency_level 1)
-    (progn (set-frame-parameter (selected-frame) 'alpha '(90 . 80))
-           (setq transparency_level 2))
-      (if (equal transparency_level 2)
-      (progn (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
-         (setq transparency_level 0)))
-      )))
-(david/cycle-transparency)
-(define-key global-map (kbd "C-c t") 'david/cycle-transparency)
+  (setq transparency_level 0)
+  (defun david/cycle-transparency ()
+    "Permite cambiar la transparencia entre 3 modos (desactivado, medio, alto)."
+    (interactive)
+    (if (equal transparency_level 0)
+        (progn (set-frame-parameter (selected-frame) 'alpha '(95 . 80))
+           (setq transparency_level 1))
+      (if (equal transparency_level 1)
+      (progn (set-frame-parameter (selected-frame) 'alpha '(90 . 80))
+             (setq transparency_level 2))
+        (if (equal transparency_level 2)
+        (progn (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
+           (setq transparency_level 0)))
+        )))
+  (david/cycle-transparency)
+  (define-key global-map (kbd "C-c t") 'david/cycle-transparency)
+#+END_SRC
+
 ** Centered buffer
 Utility to center buffer (distraction-free editing).
 #+BEGIN_SRC emacs-lisp
