@@ -1998,6 +1998,20 @@ Abrir vídeos de la /feed/ de =elfeed= usando =mpv=.
   (define-key elfeed-search-mode-map (kbd "O") 'david/elfeed-play-with-mpv-with-quality)
 #+END_SRC
 
+Ignorar la entrada actual (concretamente, añadir la TAG =no=).
+#+BEGIN_SRC emacs-lisp
+  (defun david/elfeed-ignore ()
+    (interactive)
+    (setq entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
+    (setq tag (intern "no"))
+    (elfeed-tag entry tag)
+    (elfeed-search-update-entry entry)
+    (forward-line))
+    ;; (elfeed-search-update--force))
+  (define-key elfeed-show-mode-map (kbd "i") 'david/elfeed-ignore)
+  (define-key elfeed-search-mode-map (kbd "i") 'david/elfeed-ignore)
+#+END_SRC
+
 
 * Configuraciones antiguas
 ** =htmlize=
