@@ -643,6 +643,13 @@ Configurar la transparencia.
       )))
 (david/cycle-transparency)
 (define-key global-map (kbd "C-c t") 'david/cycle-transparency)
+** Centered buffer
+Utility to center buffer (distraction-free editing).
+#+BEGIN_SRC emacs-lisp
+  (use-package sublimity
+    :config
+    (require 'sublimity-attractive)
+    (setq sublimity-attractive-centering-width 100))
 #+END_SRC
 
 
