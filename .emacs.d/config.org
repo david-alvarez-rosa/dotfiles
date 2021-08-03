@@ -1350,6 +1350,22 @@ Automáticamente recargar el pdf compilado (para LaTeX y para Beamer).
 (define-key org-mode-map (kbd "C-c br") 'david/org-compile-beamer-and-update-other-buffer)
 #+END_SRC
 
+** Esfuerzo
+Ask for an effort estimate when clocking in.
+#+begin_src emacs-lisp
+  (add-hook 'org-clock-in-prepare-hook
+            'david/org-mode-ask-effort)
+
+  (defun david/org-mode-ask-effort ()
+    "Ask for an effort estimate when clocking in."
+    (unless (org-entry-get (point) "Effort")
+      (let ((effort
+             (completing-read
+              "Effort: "
+              (org-entry-get-multivalued-property (point) "Effort"))))
+        (unless (equal effort "")
+          (org-set-property "Effort" effort)))))
+#+end_src
 
 * Edición de documentos
 ** Markdown
