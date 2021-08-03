@@ -1210,7 +1210,7 @@ Mostrar las fechas en formato europeo.
 
 Configurar opciones para guardar las interacciones.
 #+BEGIN_SRC emacs-lisp
-  (setq org-log-done (quote note))
+  (setq org-log-done 'time)
   (setq org-log-into-drawer t)
 #+END_SRC
 
@@ -1230,7 +1230,7 @@ No truncar las lineas demasiado largas (y desactivar =visual-line-mode=).
 Dejar las ventanas como estaban al quitar y abrir en buffer actual la agenda.
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-restore-windows-after-quit t)
-  (setq org-agenda-window-setup "current-window")
+  ;; (setq org-agenda-window-setup "current-window")
 #+END_SRC
 
 *** =org-bullets=
@@ -1248,34 +1248,39 @@ Gestionar los diferentes archivos para la Agenda.
   (setq org-agenda-files (quote
                           ("~/Documents/Contactos/Cumpleaños.org"
                           "~/Documents/UPC/Cuatrimestre 9/UPC.org"
-                          "~/Documents/UPC/Cuatrimestre 9/Schedule.org"
-                          "~/Documents/Notas.org"
-                          "~/Documents/Career.org")))
+                          ;; "~/Documents/UPC/Cuatrimestre 9/Schedule.org"
+                          "~/Documents/Notes.org"
+                          "~/Documents/Career/Career.org"
+                          "~/Documents/Tasks.org")))
 #+END_SRC
 
 Comando para abrir la agenda en cualquier modo.
 #+BEGIN_SRC emacs-lisp
+  ;; (defun david/org-agenda-current-week()
+  ;;   "Abrir la agenda de la semana."
+  ;;   (interactive)
+  ;;   (if (not (equal buffer-file-name "~/Documents/Notes.org"))
+  ;;       (progn (delete-other-windows)
+  ;;              (find-file "~/Documents/Notes.org")
+  ;;              (next-line 8)
+  ;;              (org-forward-heading-same-level 5)
+  ;;              (david/split-and-follow-vertically)
+  ;;              (org-agenda nil "n")
+  ;;              (other-window 1))
+  ;;     (progn (delete-other-windows)
+  ;;            (david/split-and-follow-vertically)
+  ;;            (org-agenda nil "n"))))
   (defun david/org-agenda-current-week()
     "Abrir la agenda de la semana."
     (interactive)
-    (if (not (equal buffer-file-name "/home/david/Documents/UPC/Cuatrimestre 9/UPC.org"))
-        (progn (delete-other-windows)
-               (find-file "~/Documents/UPC/Cuatrimestre 9/UPC.org")
-               (next-line 8)
-               (org-forward-heading-same-level 5)
-               (david/split-and-follow-vertically)
-               (org-agenda nil "n")
-               (other-window 1))
-      (progn (delete-other-windows)
-             (david/split-and-follow-vertically)
-             (org-agenda nil "n"))))
+    (org-agenda nil " "))
   (global-set-key (kbd "C-c a") 'david/org-agenda-current-week)
 
-  (defun david/org-agenda-current-day()
+  (defun david/org-agenda-current-day ()
     "Abrir la agenda en agenda en pequeño y horizontal con el día actual."
     (interactive)
-    (david/split-and-follow-horizontally)
-    (shrink-window 8)
+    ;; (david/split-and-follow-horizontally)
+    ;; (shrink-window 8)
     (org-agenda nil "d"))
   (global-set-key (kbd "C-c d") 'david/org-agenda-current-day)
 #+END_SRC
@@ -1288,7 +1293,35 @@ Configurar agenda personalizada.
             (alltodo "" ((org-agenda-tag-filter-preset (quote ("-SCH"))))))
            ((org-agenda-start-with-log-mode t)))
           ("d" "Current day"
-           ((agenda "" ((org-agenda-span 1)))))))
+           ((agenda "" ((org-agenda-span 'day)))))
+          (" " "Agenda"
+           ((agenda ""
+                    ((org-agenda-start-on-weekday nil)
+                     (org-agenda-span 3)
+                     ;; (org-agenda-start-day "-3d")
+         (org-agenda-overriding-header "Main Week Agenda (Scheduled and Deadline Tasks)")
+                     (org-agenda-skip-function
+                      '(org-agenda-skip-entry-if 'regexp ":HABIT:"))))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next")))
+            (todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting")))
+            (tags-todo "TODO=\"TODO\"+PROJECT"
+                       ((org-agenda-overriding-header "Projects")))
+            (tags-todo "TODO=\"TODO\"+CATEGORY=\"Email\""
+                       ((org-agenda-overriding-header "Email Tasks"))
+                       (org-agenda-skip-function
+                        '(org-agenda-skip-entry-if 'deadline 'scheduled)))
+            (tags-todo "TODO=\"TODO\"+CATEGORY=\"Standalone\""
+                       ((org-agenda-overriding-header "Standalone Tasks"))
+                       (org-agenda-skip-function
+                        '(org-agenda-skip-entry-if 'deadline 'scheduled)))
+            (agenda ""
+                    ((org-agenda-span 'day)
+                     (org-agenda-overriding-header "Daily Habits Agenda")
+                     (org-agenda-skip-function
+                      '(org-agenda-skip-entry-if 'notregexp ":HABIT:")))))
+           ((org-agenda-start-with-log-mode t)))))
 #+END_SRC
 
 Configurar el número de días para mostrar un /deadline/. Dejarlo en una semana
