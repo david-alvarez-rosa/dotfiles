@@ -1107,6 +1107,13 @@ Habilitar los comandos rápidos para acciones.
 #+END_SRC
 
 *** =refile=
+Habilitar la introdución de bloques como era antiguamente, esto es, usar <KEY
+para introducir bloques. Ahora mismo el método recomendado es =C-c C-,= que
+ejecuta =org-structure-template-alist=.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (require 'org-tempo)
+#+END_SRC
+
 Configurar el /refile/ con =C-c w=.
 #+BEGIN_SRC emacs-lisp
   (setq org-refile-targets '((nil :maxlevel . 9)
