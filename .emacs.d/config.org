@@ -1131,25 +1131,36 @@ Configurar el /refile/ con =C-c w=.
   (setq org-refile-use-outline-path 'file)
 #+END_SRC
 
-*** Notas
+*** Captura
 Permitir tomar notas rápidamente.
 #+BEGIN_SRC emacs-lisp
-  (setq org-default-notes-file "~/Documents/Notas.org")
+  (setq org-default-notes-file "~/Documents/Tasks.org")
   (define-key global-map (kbd "C-c c") 'org-capture)
 #+END_SRC
 
 Plantillas para tomar notas.
 #+BEGIN_SRC emacs-lisp
   (setq org-capture-templates
-        '(("t" "Algo pendiente por hacer." entry
-           (file+headline "/home/david/Documents/Notas.org" "Pendiente")
-           "* TODO [#C] %?\nSCHEDULED: %t" :empty-lines-before 1 :empty-lines-after 2)
-          ("l" "Algo pendiente por hacer (con link)." entry
-           (file+headline "/home/david/Documents/Notas.org" "Pendiente")
-           "* TODO [#C] %?\nSCHEDULED: %t\n%a" :empty-lines-before 1 :empty-lines-after 2)
-          ("u" "Algo pendiente para universidad." entry
-           (file "/home/david/Documents/UPC/Cuatrimestre 9/UPC.org")
-           "* TODO [#C] %?\nSCHEDULED: %t" :empty-lines-after 0)))
+        '(("t" "Standalone Tasks" entry
+           (file+headline "~/Documents/Tasks.org" "Standalone Tasks")
+           "* TODO [#C] %?" :empty-lines-before 1 :empty-lines-after 2)
+          ("e" "Email" entry
+           (file+headline "~/Documents/Tasks.org" "Email Tasks")
+           "* TODO [#C] Reply: %a"
+           :immediate-finish t :empty-lines-before 1 :empty-lines-after 2)
+          ("l" "Link" entry
+           (file+headline "~/Documents/Tasks.org" "Email")
+           "* TODO [#C] %a" :empty-lines-before 1 :empty-lines-after 2)
+          ("o" "Text" entry
+           (file+headline "~/Documents/Notes.org" "Varios")
+           "* %?" :empty-lines-before 1 :empty-lines-after 2)))
+#+END_SRC
+
+*** Keywords
+#+BEGIN_SRC emacs-lisp
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|"
+                    "DONE(d)" "CANCELLED(c)")))
 #+END_SRC
 
 ** Evaluar código
