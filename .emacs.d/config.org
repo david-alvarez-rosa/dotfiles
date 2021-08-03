@@ -1304,6 +1304,13 @@ ventana.
   (define-key org-agenda-mode-map "o" 'org-agenda-open-link)
 #+END_SRC
 
+*** Habits
+Show a nice graph for recurring habits. See [[https://orgmode.org/manual/Tracking-your-habits.html][Tracking your Habits]] in the
+Org-mode manual for more information.
+#+BEGIN_SRC emacs-lisp
+  (require 'org-habit)
+#+END_SRC
+
 ** Archivar
 Configurar la función de archivo.
 #+BEGIN_SRC emacs-lisp
