@@ -1934,10 +1934,10 @@ Configurar cómo se muestran las imágenes en =mu4e=
 
 ** Correos HTML
 #+BEGIN_SRC emacs-lisp
-(require 'mu4e-contrib)
-(setq mu4e-html2text-command 'mu4e-shr2text)
-;;(setq mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
-(add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+  (require 'mu4e-contrib)
+  (setq mu4e-html2text-command 'mu4e-shr2text)
+  ;;(setq mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
+  (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
 #+END_SRC
 
 Hacer más probable el mostrar correos como texto.
