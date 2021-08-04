@@ -1,20 +1,35 @@
-#+TITLE: Configuración de GNU Emacs
+#+TITLE: GNU Emacs Configuration
+#+LANGUAGE: en
 #+AUTHOR: David Álvarez Rosa
+#+EMAIL: david@alvarezrosa.com
+#+DESCRIPTION: My personal GNU Emacs configuration file.
+
+
+GNU Emacs is a free (as in /freedom/) ~operating system~ text editor, created
+by GNU Project founder Richard Matthew Stallman. I've been using this
+magnificent piece of software daily for years now and I can assure you that
+is--without a doubt--THE best multi-purpose program ever written,
+over-performing any other so-called text editors (such as Vi(m)--the editor of
+the beast-- or, even worse, Microsoft VSCode malware, among others). I consider
+myself a member of the Church of Emacs, as my only religion, and I'm a firmly
+believer in St.\ IGNUcius. In my day-to-day life I try to stick to the FOSS
+philosophy, while living a life of purity, pursuing sainthood mainly through
+extensively using org-mode.
 
 
 * Gestión de paquetes
 ** Definición de los repositorios
 Añadimos los diferentes repositorios para descargar paquetes (entre ellos
 Melpa). No inicializamos =Package.el=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;;; config.el --- Configuración de Emacs de David Álvarez -*- lexical-binding: t -*-
   ;;; Commentary:
   ;;   - Toda la configuración se encuentra en 'config.org'.
   ;;; Code:
 
   (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-			   ("melpa" . "https://melpa.org/packages/")))
-#+END_SRC
+         ("melpa" . "https://melpa.org/packages/")))
+#+end_src
 
 ** Gestor de paquetes
 Usaremos =use-package= para facilitar la gestión de paquetes.
