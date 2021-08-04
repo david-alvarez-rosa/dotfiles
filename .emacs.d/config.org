@@ -241,17 +241,6 @@ Crear un archivo diferente para las personalizaciones.
 Esta sección contiene diferentes ajustes que no forman parte de Emacs, pero que
 no son específicos de ningún modo.
 
-** =beacon-mode=
-https://github.com/Malabarba/beacon
-Cuando hay un cambio de ventana o un desplazamiento de ventana, sombreará un
-poco el cursor para facilitar la detección del mismo.
-#+begin_src emacs-lisp
-  (use-package beacon
-    :init
-    (beacon-mode 1)
-    :diminish)
-#+end_src
-
 ** =which-key=
 Muestra los posibles comandos (que completan la secuencia comenzada)
 disponibles.
