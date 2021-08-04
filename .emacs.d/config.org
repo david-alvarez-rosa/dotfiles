@@ -461,15 +461,6 @@ Básicamente para gestionar las parejas de manera sencilla.
   (use-package paredit)
   #+end_src
 
-** =linkmarks.el=
-Permite gestionar los /bookmarks/ con =org-mode= y añade
-funcionalidades extra (especialmente útil para directorios).
-#+begin_src emacs-lisp
-  ;; (load "~/.emacs.d/linkmarks")
-  ;; (setq linkmarks-file "~/.emacs.d/bookmarks.org")
-  ;; (define-key global-map (kbd "C-x r b") 'linkmarks-select)
-#+end_src
-
 ** =flyspell=
 Corrector (configurado en español). Para buscar siguiente error =C-,= y para
 autocorregir con otras palabras =C-.=
