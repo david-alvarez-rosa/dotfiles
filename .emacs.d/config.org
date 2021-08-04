@@ -1600,6 +1600,8 @@ Definición de las diferentes cuentas de correo electrónico.
 #+BEGIN_SRC emacs-lisp
   (setq mu4e-maildir "~/.mail")
 
+  (setq mu4e-user-mail-address-list '("david@alvarezrosa.com"
+                                     "david.alvarez.rosa@yandex.com"))
   ;; Cuenta predeterminada.
   (setq mu4e-inbox-folder "/David/Inbox"
         mu4e-drafts-folder "/David/Drafts"
