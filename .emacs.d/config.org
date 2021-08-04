@@ -36,79 +36,55 @@ particular package does not exist, it will be installed automagically.
 #+end_src
 
 
-* Configuración ajustes estándar
-Esta sección contiene las configuraciones para las carácterísticas que forman
-parte de Emacs.
-** Servidor de Emacs
-Iniciar el servidor de Emacs al iniciar.
+* Default Settings Configuration
+This section contains all configuration related to main settings for built-in
+Emacs features.
+
+** Server Mode
+Start the Emacs server mode from this instance, so that all =emacsclient= calls
+are routed here. This way, files can be sent to the current Emacs instance,
+instead of opening a new one (much faster).
 #+begin_src emacs-lisp
-  (use-package server
-    :defer 15
-    :ensure nil ; Forma parte de Emacs.
-    :config (server-start))
+  (server-start)
 #+end_src
 
-** No crear copias de seguridad
+** File Backups and Autosave
+Keep backups and autosaves in specific directories rather than leaving
+temporary files all over the filesystem.
 #+begin_src emacs-lisp
-  (setq make-backup-files nil
-        auto-save-default nil)
+  (setq-default backup-dir "~/.emacs.d/.backups/")
+  (make-directory backup-dir t)
+  (setq-default backup-directory-alist '(("." . "~/.emacs.d/.backups")))
+  (setq-default autosave-dir "~/.emacs.d/.autosaves/")
+  (make-directory autosave-dir t)
+  (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
+  (setq-default delete-old-versions -1)
+  (setq-default version-control t)
 #+end_src
 
 ** =dired-mode=
-Permitir usar =a= para abrir un nuevo directorio en vez de =RET=. =RET= crea un
-nueva ventana /todas/ las veces, =a= usa la misma ventana.
-#+begin_src emacs-lisp
-  (put 'dired-find-alternate-file 'disabled nil)
-#+end_src
-
-Mostrar tamaños en unidades fáciles de leer.
+Show file sizes in a human readable style.
 #+begin_src emacs-lisp
   (setq-default dired-listing-switches "-alh")
 #+end_src
 
-** Preguntar y/n en vez de yes/no
-Permite confirmar opciones más rápido.
+Ability to use =a= to visit a new directory or file in dired instead of using
+=RET=. =RET= works just fine, but it will create a new buffer for every
+interaction whereas =a= reuses the current buffer.
+#+begin_src emacs-lisp
+  (put 'dired-find-alternate-file 'disabled nil)
+#+end_src
+
+** Change yes/no Questions to y/n
+Shorter and faster.
 #+begin_src emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
 
-** Actualizar automáticamente
-Cuando algo cambia en un archivo, automáticamente actualizarlo.
+** Auto Revert Mode
+When a buffer is modified from outside Emacs, automatically revert it.
 #+begin_src emacs-lisp
-  (global-auto-revert-mode t)
-#+end_src
-
-** Interfaz
-*** Quitar barras y menús inútiles
-No mostrar la barra de menú, de herramientas ni la barra de desplazamiento.
-#+begin_src emacs-lisp
-  (tool-bar-mode 0)
-  (menu-bar-mode 0)
-  (scroll-bar-mode 0)
-#+end_src
-
-*** Desactivar pantalla de inicio
-#+begin_src emacs-lisp
-  (setq inhibit-splash-screen t)
-  (setq inhibit-startup-message t)
-#+end_src
-
-*** Sombreado
-Sombrear la línea donde está el cursor (solo en GUI).
-#+begin_src emacs-lisp
-  (when window-system (global-hl-line-mode t))
-#+end_src
-
-*** Símbolos
-Para que aparezcan símbolos (solo en GUI).
-#+begin_src emacs-lisp :tangle no
-  (when window-system (global-prettify-symbols-mode t))
-#+end_src
-
-*** Fechas
-Mostrar las fechas en formato europeo.
-#+begin_src emacs-lisp
-  (setq calendar-date-style (quote european))
+  (global-auto-revert-mode 1)
 #+end_src
 
 ** Comandos desactivados
@@ -548,6 +524,40 @@ Estilo de letra.
 #+begin_src emacs-lisp :tangle no
   (set-frame-font "Inconsolata 11")
 #+end_src
+*
+* Interfaz
+*** Quitar barras y menús inútiles
+No mostrar la barra de menú, de herramientas ni la barra de desplazamiento.
+#+begin_src emacs-lisp
+  (tool-bar-mode 0)
+  (menu-bar-mode 0)
+  (scroll-bar-mode 0)
+#+end_src
+
+*** Desactivar pantalla de inicio
+#+begin_src emacs-lisp
+  (setq inhibit-splash-screen t)
+  (setq inhibit-startup-message t)
+#+end_src
+
+*** Sombreado
+Sombrear la línea donde está el cursor (solo en GUI).
+#+begin_src emacs-lisp
+  (when window-system (global-hl-line-mode t))
+#+end_src
+
+*** Símbolos
+Para que aparezcan símbolos (solo en GUI).
+#+begin_src emacs-lisp :tangle no
+  (when window-system (global-prettify-symbols-mode t))
+#+end_src
+
+*** Fechas
+Mostrar las fechas en formato europeo.
+#+begin_src emacs-lisp
+  (setq calendar-date-style (quote european))
+#+end_src
+
 
 ** Barra de estado
 Configuración de la barra de estado.
