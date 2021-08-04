@@ -377,22 +377,6 @@ Expande la región seleccionada por regiones semánticas.
     :bind ("C-=" . 'er/expand-region))
 #+end_src
 
-** =pretty-symbols=
-Convertir algunas palabras en símbolos (solo en GUI).
-#+begin_src emacs-lisp :tangle no
-  (when window-system
-    (use-package pretty-mode
-      :config
-      (global-pretty-mode t)))
-#+end_src
-
-** =sudo-edit=
-Para editar en modo de administrador.
-#+begin_src emacs-lisp
-  (use-package sudo-edit
-    :bind ("M-e" . 'sudo-edit))
-#+end_src
-
 ** =yasnippet=
 Ofrece plantillas (configurables) para diferentes modos.
 #+begin_src emacs-lisp
