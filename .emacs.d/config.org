@@ -39,20 +39,6 @@ particular package does not exist, it will be installed automagically.
 * Configuración ajustes estándar
 Esta sección contiene las configuraciones para las carácterísticas que forman
 parte de Emacs.
-
-** Hacer Emacs más rápido
-Aumentar /garbage-collection/, que hace Emacs más rápido al iniciarse.
-#+begin_src emacs-lisp
-  (setq gc-cons-threshold 402653184
-        gc-cons-percentage 0.6)
-#+end_src
-
-Similarmente, desactivar (temporalmente) =file-name-handler-alist=.
-#+begin_src emacs-lisp
-  (defvar david/file-name-handler-alist file-name-handler-alist)
-  (setq file-name-handler-alist nil)
-#+end_src
-
 ** Servidor de Emacs
 Iniciar el servidor de Emacs al iniciar.
 #+begin_src emacs-lisp
@@ -2165,38 +2151,6 @@ Mejorar la gestión de ventanas, especialmente cuando hay más de 2.
   (global-set-key (kbd "C-x o") 'ace-window)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 #+end_src
-
-
-* Final
-Despues de iniciar Emacs, volver a cambiar /garbage-collection/.
-#+begin_src emacs-lisp
-  (add-hook 'emacs-startup-hook
-    (setq gc-cons-threshold 800000
-          gc-cons-percentage 0.1))
-#+end_src
-
-Y volver a cambiar =file-name-handler-alist=.
-#+begin_src emacs-lisp
-  (add-hook 'emacs-startup-hook
-    (setq file-name-handler-alist david/file-name-handler-alist))
-  ;;; config.el ends here
-#+end_src
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
