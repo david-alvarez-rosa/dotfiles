@@ -1627,7 +1627,6 @@ Definición de las diferentes cuentas de correo electrónico.
         smtpmail-smtp-server "alvarezrosa.com"
         smtpmail-smtp-service 587
         mu4e-sent-messages-behavior 'sent)
-
   (defvar david/mu4e-account-alist
     '(("David"
        (user-full-name "David Álvarez Rosa")
@@ -1834,8 +1833,18 @@ Activar el autocorrector en español al estar en modo de composición.
                                       (ispell-change-dictionary "spanish")))
 #+END_SRC
 
-Forzar que no se corten las lineas al enviar los correos.
+
+Configurar la línea de cita.
+
 #+BEGIN_SRC emacs-lisp
+
+  (setq message-citation-line-function 'message-insert-formatted-citation-line)
+  (setq message-citation-line-format "On %a %d %b %Y at %R, %f wrote:")
+#+END_SRC
+
+
+Forzar que no se corten las lineas al enviar los correos.
+#+BEGIN_SRC emacs-lisp :tangle no
   (setq fill-flowed-encode-column 79)
   (setq fill-flowed-display-column 79)
 
