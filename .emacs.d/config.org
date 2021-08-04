@@ -17,31 +17,21 @@ philosophy, while living a life of purity, pursuing sainthood mainly through
 extensively using org-mode.
 
 
-* Gestión de paquetes
-** Definición de los repositorios
-Añadimos los diferentes repositorios para descargar paquetes (entre ellos
-Melpa). No inicializamos =Package.el=.
+* Package Management
+=use-package= will be used for general package management. Ensure it's
+installed and load the package.
 #+begin_src emacs-lisp
-  ;;; config.el --- Configuración de Emacs de David Álvarez -*- lexical-binding: t -*-
-  ;;; Commentary:
-  ;;   - Toda la configuración se encuentra en 'config.org'.
-  ;;; Code:
-
-  (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-         ("melpa" . "https://melpa.org/packages/")))
-#+end_src
-
-** Gestor de paquetes
-Usaremos =use-package= para facilitar la gestión de paquetes.
-#+BEGIN_SRC emacs-lisp
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
+
+  (eval-when-compile
+    (require 'use-package))
 #+end_src
 
-Siempre forzaremos que todos los paquetes estén instalados al iniciar Emacs.
-#+BEGIN_SRC emacs-lisp
-  (require 'use-package)
+Always ensure that all package are installed when starting Emacs. If a
+particular package does not exist, it will be installed automagically.
+#+begin_src emacs-lisp
   (setq use-package-always-ensure t)
 #+end_src
 
