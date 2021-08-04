@@ -510,32 +510,31 @@ Estilo de letra.
 #+begin_src emacs-lisp :tangle no
   (set-frame-font "Inconsolata 11")
 #+end_src
-*
-* Interfaz
-*** Quitar barras y menús inútiles
-No mostrar la barra de menú, de herramientas ni la barra de desplazamiento.
+
+** Basic Interface Settings
+Settings related to built-in enhancements of the UI that do not depend on any
+external package.
+*** Disable Menus and Scrollbars
+Disable tool bar, menu bar and scroll bar. All three are very ugly and
+unnecesary. Might be handy for normies, but not for chad Emacs users.
 #+begin_src emacs-lisp
   (tool-bar-mode 0)
   (menu-bar-mode 0)
   (scroll-bar-mode 0)
 #+end_src
 
-*** Desactivar pantalla de inicio
+*** Remove Startup Screen
+Inhibit lame startup screen.
 #+begin_src emacs-lisp
   (setq inhibit-splash-screen t)
   (setq inhibit-startup-message t)
 #+end_src
 
-*** Sombreado
-Sombrear la línea donde está el cursor (solo en GUI).
+*** Highlight Cuurrent Line
+Pretty nice UI enhancement for finding current line. It does not look good in
+the terminal version of Emacs, though, so it's not set there.
 #+begin_src emacs-lisp
   (when window-system (global-hl-line-mode t))
-#+end_src
-
-*** Símbolos
-Para que aparezcan símbolos (solo en GUI).
-#+begin_src emacs-lisp :tangle no
-  (when window-system (global-prettify-symbols-mode t))
 #+end_src
 
 *** Fechas
