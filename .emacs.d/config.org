@@ -52,20 +52,20 @@ parte de Emacs.
 
 ** Hacer Emacs más rápido
 Aumentar /garbage-collection/, que hace Emacs más rápido al iniciarse.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq gc-cons-threshold 402653184
         gc-cons-percentage 0.6)
 #+end_src
 
 Similarmente, desactivar (temporalmente) =file-name-handler-alist=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defvar david/file-name-handler-alist file-name-handler-alist)
   (setq file-name-handler-alist nil)
 #+end_src
 
 ** Servidor de Emacs
 Iniciar el servidor de Emacs al iniciar.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package server
     :defer 15
     :ensure nil ; Forma parte de Emacs.
@@ -73,7 +73,7 @@ Iniciar el servidor de Emacs al iniciar.
 #+end_src
 
 ** No crear copias de seguridad
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq make-backup-files nil
         auto-save-default nil)
 #+end_src
@@ -81,63 +81,63 @@ Iniciar el servidor de Emacs al iniciar.
 ** =dired-mode=
 Permitir usar =a= para abrir un nuevo directorio en vez de =RET=. =RET= crea un
 nueva ventana /todas/ las veces, =a= usa la misma ventana.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (put 'dired-find-alternate-file 'disabled nil)
 #+end_src
 
 Mostrar tamaños en unidades fáciles de leer.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq-default dired-listing-switches "-alh")
 #+end_src
 
 ** Preguntar y/n en vez de yes/no
 Permite confirmar opciones más rápido.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
 
 ** Actualizar automáticamente
 Cuando algo cambia en un archivo, automáticamente actualizarlo.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (global-auto-revert-mode t)
 #+end_src
 
 ** Interfaz
 *** Quitar barras y menús inútiles
 No mostrar la barra de menú, de herramientas ni la barra de desplazamiento.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (tool-bar-mode 0)
   (menu-bar-mode 0)
   (scroll-bar-mode 0)
 #+end_src
 
 *** Desactivar pantalla de inicio
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq inhibit-splash-screen t)
   (setq inhibit-startup-message t)
 #+end_src
 
 *** Sombreado
 Sombrear la línea donde está el cursor (solo en GUI).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (when window-system (global-hl-line-mode t))
 #+end_src
 
 *** Símbolos
 Para que aparezcan símbolos (solo en GUI).
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (when window-system (global-prettify-symbols-mode t))
 #+end_src
 
 *** Fechas
 Mostrar las fechas en formato europeo.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq calendar-date-style (quote european))
 #+end_src
 
 ** Comandos desactivados
 Activar algunos comandos que están desactivados.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (put 'narrow-to-region 'disabled nil)
   (put 'upcase-region 'disabled nil)
   (put 'narrow-to-page 'disabled nil)
@@ -146,31 +146,31 @@ Activar algunos comandos que están desactivados.
 
 ** Truncar lineas
 Truncar líneas demasiado largas automáticamente (a partir de 79 caracteres).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
   (setq-default fill-column 79)
 #+end_src
 
 Usar =visual-line= para una mejor gestión de las lineas demasiado largas que no
 entran en la pantalla.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'text-mode-hook (lambda () (setq visual-line-mode t)))
 #+end_src
 
 ** Sobreescribir lo seleccionado
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (pending-delete-mode t)
 #+end_src
 
 ** Configurar separadores
 Considerar las mayúsculas como separador de palabras.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (global-subword-mode 1)
 #+end_src
 
 ** Gestión de ventanas
 Usar un comando más sencillo para cambiar entre ventanas.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (global-set-key (kbd "M-o") 'other-window)
   (defun david/reverse-window-cycling ()
     (interactive)
@@ -181,7 +181,7 @@ Usar un comando más sencillo para cambiar entre ventanas.
 *** =windmove=
 Esta construido dentro de Emacs. Permite moverse entre ventanas usando =Shift= y
 las flechas del teclado.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (when (fboundp 'windmove-default-keybindings)
     (windmove-default-keybindings))
 #+end_src
@@ -189,42 +189,42 @@ las flechas del teclado.
 *** =winner-mode=
 Permite deshacer y reacer entre configuraciones de ventanas con los comandos
 =C-c left= y =C-c right= para deshacer y rehacer respectivamente.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (when (fboundp 'winner-mode)
     (winner-mode 1))
 #+end_src
 
 *** =ibuffer=
 Para mejorar la gestión de las ventanas.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
 En modo experto siempre, no pedir confirmación.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq ibuffer-expert t)
 #+end_src
 
 ** Desplazamiento
 Cambiar el modo de desplazamiento para no centrar la pantalla.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq scroll-conservatively 100)
 #+end_src
 
 Moverse entre párrafos fácilmente.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (define-key global-map (kbd "C-M-n") 'forward-paragraph)
   (define-key global-map (kbd "C-M-p") 'backward-paragraph)
 #+end_src
 
 ** Paréntesis
 Colorea los paréntesis en parejas al pasar por encima.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (show-paren-mode 1)
 #+end_src
 
 Cerrar las parejas automáticamente (excepto en LaTeX, usa AUCTeX).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq electric-pair-pairs '(
                               (?\{ . ?\})
                               (?\( . ?\))
@@ -239,19 +239,19 @@ Cerrar las parejas automáticamente (excepto en LaTeX, usa AUCTeX).
 ** =ediff=
 Configurar cómo se comparta =ediff=. No abrir una nueva ventana para el control
 y dividir los archivos horizontalmente.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
 Al terminar dejar las ventanas como estaban.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 #+end_src
 
 ** Terminal
 Usar automáticamente bash como terminal por defecto para /ansi-term/.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defvar my-term-shell "/bin/bash")
   (defadvice ansi-term (before force-bash)
     (interactive (list my-term-shell)))
@@ -259,13 +259,13 @@ Usar automáticamente bash como terminal por defecto para /ansi-term/.
 #+end_src
 
 Configurar comando =M-return= para abrir una terminal.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (global-set-key (kbd "<M-return>") 'ansi-term)
 #+end_src
 
 ** Archivo de personalizaciones
 Crear un archivo diferente para las personalizaciones.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
   (load custom-file t)
 #+end_src
@@ -279,7 +279,7 @@ no son específicos de ningún modo.
 https://github.com/Malabarba/beacon
 Cuando hay un cambio de ventana o un desplazamiento de ventana, sombreará un
 poco el cursor para facilitar la detección del mismo.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package beacon
     :init
     (beacon-mode 1)
@@ -289,7 +289,7 @@ poco el cursor para facilitar la detección del mismo.
 ** =popup-kill-ring=
 Facilita la gestión de la memoria al copiar y pegar. Muestra las últimas cosas
 copiadas.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package popup-kill-ring
     :bind ("M-y" . popup-kill-ring))
 #+end_src
@@ -297,7 +297,7 @@ copiadas.
 ** =which-key=
 Muestra los posibles comandos (que completan la secuencia comenzada)
 disponibles.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package which-key
     :init (which-key-mode)
     :diminish)
@@ -305,14 +305,14 @@ disponibles.
 
 ** =avy=
 Permite buscar caracteres fácilmente.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package avy
     :bind ("M-s" . avy-goto-char))
 #+end_src
 
 ** =undo-tree=
 Mejora en deshacer y admite rehacer.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package undo-tree
     :init (global-undo-tree-mode)
     :diminish)
@@ -320,7 +320,7 @@ Mejora en deshacer y admite rehacer.
 
 ** =multiple-cursors=
 Permite edición múltiple (https://github.com/magnars/multiple-cursors.el).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package multiple-cursors
     :bind (("C->" . 'mc/mark-next-like-this)
            ("C-<" . 'mc/mark-previous-like-this)
@@ -331,7 +331,7 @@ Permite edición múltiple (https://github.com/magnars/multiple-cursors.el).
 
 ** =rainbow-delimiters=
 Colorear los paréntesis de acuerdo con su profundidad.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package rainbow-delimiters
     :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
     :diminish)
@@ -339,14 +339,14 @@ Colorear los paréntesis de acuerdo con su profundidad.
 
 ** =swiper=
 Para mejorar la búsqueda.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package swiper
     :bind ("C-s" . 'swiper))
 #+end_src
 
 ** =hungry-delete=
 Borrado de todos los espacios hasta el siguiente caracter.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package hungry-delete
     :config (global-hungry-delete-mode)
     :diminish)
@@ -355,7 +355,7 @@ Borrado de todos los espacios hasta el siguiente caracter.
 ** =highlight-indent-guides=
 Guías para los niveles de indentación. Solo aparecerán las guías para nivel de
 indentación > 2.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package highlight-indent-guides
     :init
     (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
@@ -374,7 +374,7 @@ indentación > 2.
 
 ** =helm=
 Para una mejor gestión de ventanas, búsqueda de archivos y de comandos.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package helm
     :init (helm-mode 1)
     :bind (("C-x C-f" . 'helm-find-files)
@@ -419,7 +419,7 @@ Para una mejor gestión de ventanas, búsqueda de archivos y de comandos.
 #+end_src
 
 Configuraciones extra.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (require 'helm-config)
   (helm-autoresize-mode 1)
 #+end_src
@@ -427,21 +427,21 @@ Configuraciones extra.
 ** =iedit=
 Para tener múltiplos cursores (edición múltiple). Útil para cambiar el nombre de
 variables.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package iedit
     :bind ("C-;" . 'iedit-mode))
 #+end_src
 
 ** =expand-region=
 Expande la región seleccionada por regiones semánticas.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package expand-region
     :bind ("C-=" . 'er/expand-region))
 #+end_src
 
 ** =pretty-symbols=
 Convertir algunas palabras en símbolos (solo en GUI).
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (when window-system
     (use-package pretty-mode
       :config
@@ -450,14 +450,14 @@ Convertir algunas palabras en símbolos (solo en GUI).
 
 ** =sudo-edit=
 Para editar en modo de administrador.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package sudo-edit
     :bind ("M-e" . 'sudo-edit))
 #+end_src
 
 ** =yasnippet=
 Ofrece plantillas (configurables) para diferentes modos.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package yasnippet
     :defer t
     :config
@@ -473,7 +473,7 @@ Ofrece plantillas (configurables) para diferentes modos.
 ** =fast-scroll=
 To ensure scrolling is fast in Emacs, this package disables non-essential things
 while windowis being scrolled.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package fast-scroll
     :demand t
     :config
@@ -486,7 +486,7 @@ while windowis being scrolled.
 ** =dired-narrow=
 Permite filtrar directorios en =dired=, usar =/= para comenzar y =g= para volver
 a vista normal.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package dired-narrow
     :bind (:map dired-mode-map
                 ("/" . 'dired-narrow-fuzzy)))
@@ -495,7 +495,7 @@ a vista normal.
 ** =company=
 Paquete para autocompletar configurado para avanzar y retroceder con los
 comandos clásicos de Emacs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package company
     :config (setq company-idle-delay 1
                   company-minimum-prefix-length 3
@@ -513,7 +513,7 @@ comandos clásicos de Emacs.
 
 ** =winum=
 Numera las diferentes ventanas para facilitar el movimiento entre las mismas.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package winum
     :bind (("C-`" . 'winum-select-window-by-number)
            ("C-²" . 'winum-select-window-by-number)
@@ -535,14 +535,14 @@ Paredit is great, it brings structural editing to lisps, maintaining the
 syntactical correctness of your code.
 [[http://danmidwood.com/content/2014/11/21/animated-paredit.html]]
 Básicamente para gestionar las parejas de manera sencilla.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package paredit)
   #+end_src
 
 ** =linkmarks.el=
 Permite gestionar los /bookmarks/ con =org-mode= y añade
 funcionalidades extra (especialmente útil para directorios).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; (load "~/.emacs.d/linkmarks")
   ;; (setq linkmarks-file "~/.emacs.d/bookmarks.org")
   ;; (define-key global-map (kbd "C-x r b") 'linkmarks-select)
@@ -551,7 +551,7 @@ funcionalidades extra (especialmente útil para directorios).
 ** =flyspell=
 Corrector (configurado en español). Para buscar siguiente error =C-,= y para
 autocorregir con otras palabras =C-.=
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq ispell-dictionary "english")
   ;; (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   ;; (add-hook 'LaTeX-mode-hook 'flyspell-buffer)
@@ -560,7 +560,7 @@ autocorregir con otras palabras =C-.=
 
 * Tema
 Configuración del tema gráfico.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package spacemacs-theme
     :defer t
     :init
@@ -569,13 +569,13 @@ Configuración del tema gráfico.
 #+end_src
 
 Estilo de letra.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (set-frame-font "Inconsolata 11")
 #+end_src
 
 ** Barra de estado
 Configuración de la barra de estado.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package spaceline
     :config
     (require 'spaceline-config)
@@ -595,7 +595,7 @@ Configuración de la barra de estado.
 #+end_src
 
 Mostrar la posición del cursor en el texto y la hora.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq line-number-mode t
         column-number-mode t
         display-time-24hr-format t
@@ -605,7 +605,7 @@ Mostrar la posición del cursor en el texto y la hora.
 #+end_src
 
 Mostrar estado de la batería en la barra.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package fancy-battery
     :config (setq fancy-battery-show-percentage t
                   battery-update-interval 15)
@@ -615,7 +615,7 @@ Mostrar estado de la batería en la barra.
 #+end_src
 
 Mostrar posición del cursor de manera gráfica.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package nyan-mode
     :init (nyan-mode 1)
     :config (setq nyan-animate-nyancat t
@@ -625,7 +625,7 @@ Mostrar posición del cursor de manera gráfica.
 
 *** =diminish=
 Para no mostar algunos modos menores en la barra de estado.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package diminish
   :init
   (diminish 'visual-line-mode)
@@ -641,7 +641,7 @@ Para no mostar algunos modos menores en la barra de estado.
 
 ** Transparencia
 Configurar la transparencia.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq transparency_level 0)
   (defun david/cycle-transparency ()
     "Permite cambiar la transparencia entre 3 modos (desactivado, medio, alto)."
@@ -662,7 +662,7 @@ Configurar la transparencia.
 
 ** Centered buffer
 Utility to center buffer (distraction-free editing).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package sublimity
     :config
     (require 'sublimity-attractive)
@@ -675,7 +675,7 @@ Varias funciones extras útiles.
 
 ** Edición de texto
 Eliminar palabra completa (sin importar dónde esté el cursor).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/kill-whole-word ()
     (interactive)
     (backward-word)
@@ -684,7 +684,7 @@ Eliminar palabra completa (sin importar dónde esté el cursor).
 #+end_src
 
 Copiar una palabra completa (sin importar dónde esté el cursor).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun copy-whole-word ()
     (interactive)
     (save-excursion
@@ -696,12 +696,12 @@ Copiar una palabra completa (sin importar dónde esté el cursor).
 #+end_src
 
 Eliminar una linea completa (sin importar dónde esté el cursor).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (global-set-key (kbd "C-c l k") 'kill-whole-line)
 #+end_src
 
 Copiar una línea completa (sin importar dónde esté el cursor).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun copy-whole-line ()
     (interactive)
     (save-excursion
@@ -714,7 +714,7 @@ Copiar una línea completa (sin importar dónde esté el cursor).
 
 ** Movimiento entre texto
 Funciones para mejorar los comandos de movimiento.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/next-lines ()
     (interactive)
     (next-line 15))
@@ -727,7 +727,7 @@ Funciones para mejorar los comandos de movimiento.
 
 ** Gestión de ventanas
 Funciones para mejorar la división de la pantalla.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/split-and-follow-horizontally()
     (interactive)
     (split-window-below)
@@ -743,7 +743,7 @@ Funciones para mejorar la división de la pantalla.
 #+end_src
 
 Función para cerrar las ventanas sin pedir confirmación.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/kill-curr-buffer()
     (interactive)
     (kill-buffer (current-buffer)))
@@ -751,7 +751,7 @@ Función para cerrar las ventanas sin pedir confirmación.
 #+end_src
 
 Función para cerrar ventana sin pedir confirmación y quitándola.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/kill-curr-buffer-2()
     (interactive)
     (kill-buffer (current-buffer))
@@ -760,7 +760,7 @@ Función para cerrar ventana sin pedir confirmación y quitándola.
 #+end_src
 
 Actualizar la otra ventana.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/update-other-buffer ()
     (interactive)
     (other-window 1)
@@ -771,7 +771,7 @@ Actualizar la otra ventana.
 ** Gestión de /buffers/
 Eliminar todos los /buffers/ excepto el actual y el /scratch/ (útil cuando hay
 muchos abiertos).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/kill-all-other-buffers ()
     "Kill all buffers except current and *scratch*."
     (interactive)
@@ -782,7 +782,7 @@ muchos abiertos).
 
 ** Gestionar configuración
 Funciones para abrir y para recargar la configuración.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/open-config-file()
     "Abrir el archivo de configuración."
     (interactive)
@@ -800,25 +800,25 @@ Funciones para abrir y para recargar la configuración.
 ** General
 *** Indentar automáticamente
 Corrige la indentación automáticamente al cambiar de linea con la tecla =RET=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (define-key global-map (kbd "RET") 'newline-and-indent)
 #+end_src
 
 *** Compilar
 No preguntar por el comando de compilación (siempre será =make -k=), y solo
 preguntará si se presiona el comando de copilar con un prefijo numério.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; (setq compilation-read-command nil)
 #+end_src
 
 Definir comando para compilar.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (global-set-key "\C-x\C-m" 'compile)
 #+end_src
 
 *** =nlinum-relative=
 Numera lineas de manera relativa solo en modo de programación.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package nlinum-relative
     :config
     (setq linum-relative-current-symbol "")
@@ -830,19 +830,19 @@ Numera lineas de manera relativa solo en modo de programación.
 
 *** Tabulador
 Configurar el tamaño del tabulador a 2 espacios.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq-default tab-width 2)
 #+end_src
 
 Usar 2 espacios en vez de un tabulador.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq-default tab-width 2 indent-tabs-mode nil)
   (setq-default indent-tabs-mode nil)
 #+end_src
 
 *** Eliminar espacios inútiles
 Eliminar espacios al final de linea al guardar.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   ;; (add-hook 'before-save-hook '(lambda()
   ;;                               (when (not (derived-mode-p 'org-mode))
@@ -852,7 +852,7 @@ Eliminar espacios al final de linea al guardar.
 *** Corrección de sintaxis
 Habilitar corrección de sintaxis al momento usando =flycheck=
 (http://www.flycheck.org/).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package flycheck
     :defer t
     :init
@@ -862,7 +862,7 @@ Habilitar corrección de sintaxis al momento usando =flycheck=
 
 *** =Projectile=
 Añadir el Projectile.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package projectile
     :config (projectile-mode +1)
     :bind (:map projectile-mode-map ("C-c p" . 'projectile-command-map)))
@@ -874,7 +874,7 @@ Añadir el Projectile.
 
 Añadir el paquete =helm-ag= para buscar en código. Necesario tener instalado el
 programa =ag=. En Arch Linux: =pacman -S the_silver_searcher=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package helm-ag)
 #+end_src
 
@@ -909,14 +909,14 @@ p to jump to previous tag from point (comment-tags-previous-tag).
 (add-hook 'prog-mode-hook 'comment-tags-mode)
 
 ** C/C++
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package cc-mode
     :defer t)
   #+end_src
 
 *** =company-c-headers=
 Autocompletar los /headers/.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package company-c-headers
     :defer t
     :config
@@ -927,13 +927,13 @@ Autocompletar los /headers/.
 *** Plegar código
 Permiter plegar partes de código (mirando parejas de llaves/paréntesis
 generalmente) con el comando: =C-c @ C-c= entre otros.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'c-mode-common-hook 'hs-minor-mode)
 #+end_src
 
 ** Python
 Paquete para mejorar y facilitar la edición de Python.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package elpy
     :init
     (elpy-enable))
@@ -962,7 +962,7 @@ Some more things that are pretty sweet.
 
 *** Virtual environments
 For handling Python virtual environments, we will use
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package pyenv-mode
     :init
     (pyenv-mode))
@@ -970,7 +970,7 @@ For handling Python virtual environments, we will use
 
 *** Jupyter Notebook
 For Jupyter Notebook integration we will use =ein=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
     (use-package ein)
 #+end_src
 
@@ -983,7 +983,7 @@ Basic usage:
 ** Web
 *** =rainbow-mode=
 Subraya los códigos de los colores del color que es.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package rainbow-mode
     :defer t
     :init
@@ -1007,7 +1007,7 @@ watch your changes appear as you type!
 
 *** =web-mode=
 Para editar PHP-HTML-CSS-JS.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package web-mode
     :defer t
     :config
@@ -1018,7 +1018,7 @@ Para editar PHP-HTML-CSS-JS.
 
 ** Octave
 Abrir en el modo correspondiente scripts de Octave.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq auto-mode-alist
         (cons
          '("\\.m$" . octave-mode)
@@ -1026,14 +1026,14 @@ Abrir en el modo correspondiente scripts de Octave.
 #+end_src
 
 Configurar el caracter para comentar en Octave.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; (setq octave-comment-start "%")
   ;; (setq octave-block-comment-start "%")
 #+end_src
 
 ** R
 Añadir paquete ESS ("Emacs Speaks Statistics") para editor código de R.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package ess
     :config
     (require 'ess-r-mode)
@@ -1084,7 +1084,7 @@ example when working on a p_slides slide deck.
 
 ** =Magit=
 Es una interfaz completa de Git (control de versiones) para Emacs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package magit
     :bind
     ("C-x g" . 'magit-status))
@@ -1111,20 +1111,20 @@ the thing under point.
 * Org Mode
 ** Configuración de listas
 Considerar 'a)', 'A' y 'A)' como listas de elementos.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-list-allow-alphabetical t)
 #+end_src
 
 ** Varios
 *** Indentar
 Indentar.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'org-mode-hook 'org-indent-mode)
 #+end_src
 
 *** Comandos rápidos
 Habilitar los comandos rápidos para acciones.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-use-speed-commands t)
   (setq org-use-speed-commands
         (lambda () (and (looking-at org-outline-regexp) (looking-back "^\**"))))
@@ -1133,13 +1133,13 @@ Habilitar los comandos rápidos para acciones.
 Habilitar la introdución de bloques como era antiguamente, esto es, usar <KEY
 para introducir bloques. Ahora mismo el método recomendado es =C-c C-,= que
 ejecuta =org-structure-template-alist=.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (require 'org-tempo)
 #+end_src
 
 *** =REFILE=
 Configurar el /refile/ con =C-c w=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-refile-targets '((nil :maxlevel . 1)
                                   (org-agenda-files :maxlevel . 1)))
   (setq org-outline-path-complete-in-steps nil)
@@ -1148,13 +1148,13 @@ Configurar el /refile/ con =C-c w=.
 
 *** Captura
 Permitir tomar notas rápidamente.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-default-notes-file "~/Documents/Tasks.org")
   (define-key global-map (kbd "C-c c") 'org-capture)
 #+end_src
 
 Plantillas para tomar notas.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-capture-templates
         '(("t" "Standalone Tasks" entry
            (file+headline "~/Documents/Tasks.org" "Standalone Tasks")
@@ -1172,7 +1172,7 @@ Plantillas para tomar notas.
 #+end_src
 
 *** Keywords
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-todo-keywords
         '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|"
                     "DONE(d)" "CANCELLED(c)")))
@@ -1180,7 +1180,7 @@ Plantillas para tomar notas.
 
 ** Evaluar código
 Permitir evaluar código de los siguientes lenguajes.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (eval-after-load "org"
         (org-babel-do-load-languages
          'org-babel-load-languages
@@ -1197,60 +1197,60 @@ Permitir evaluar código de los siguientes lenguajes.
 #+end_src
 
 Abrir código fuente (en 'org-mode') sin dividir el 'buffer'.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-src-window-setup 'reorganize-frame)
 #+end_src
 
 No preguntar por confirmación al evaluar código.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-confirm-babel-evaluate nil)
 #+end_src
 
 ** Interfaz
 Configurar la posición de las etiquetas.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-tags-column -72)
 #+end_src
 
 Cambiar los puntos suspensivos.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-ellipsis " ⚡")
 #+end_src
 
 Mostrar las fechas en formato europeo.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-time-stamp-custom-formats (quote ("<%d-%m-%y %a>" . "<%d-%m-%y %a %H:%M>")))
   (setq org-display-custom-times t)
 #+end_src
 
 Configurar opciones para guardar las interacciones.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
 #+end_src
 
 Configurar colores para las diferentes prioridades.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-priority-faces '((65 :foreground "#e45649" :weight bold :face bold)
                              (66 :foreground "#dc752f" :weight bold :face bold)
                              (67 :foreground "#0098dd" :weight bold :face bold)))
 #+end_src
 
 No truncar las lineas demasiado largas (y desactivar =visual-line-mode=).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'org-mode-hook (lambda () (setq truncate-lines t)))
   (add-hook 'org-mode-hook (lambda () (setq visual-line-mode nil)))
 #+end_src
 
 Dejar las ventanas como estaban al quitar y abrir en buffer actual la agenda.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-agenda-restore-windows-after-quit t)
   ;; (setq org-agenda-window-setup "current-window")
 #+end_src
 
 *** =org-bullets=
 Cambia los asteriscos por bolas.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package org-bullets
     :config
     (add-hook 'org-mode-hook(lambda () (org-bullets-mode)))
@@ -1259,7 +1259,7 @@ Cambia los asteriscos por bolas.
 
 ** Agenda
 Gestionar los diferentes archivos para la Agenda.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-agenda-files (quote
                           ("~/Documents/Contactos/Cumpleaños.org"
                           "~/Documents/UPC/Cuatrimestre 9/UPC.org"
@@ -1270,7 +1270,7 @@ Gestionar los diferentes archivos para la Agenda.
 #+end_src
 
 Comando para abrir la agenda en cualquier modo.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; (defun david/org-agenda-current-week()
   ;;   "Abrir la agenda de la semana."
   ;;   (interactive)
@@ -1301,7 +1301,7 @@ Comando para abrir la agenda en cualquier modo.
 #+end_src
 
 Configurar agenda personalizada.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-agenda-custom-commands
         '(("n" "Agenda and all TODOs without schedule"
            ((agenda "" ((org-agenda-tag-filter-preset (quote ("-SCH")))))
@@ -1343,7 +1343,7 @@ Configurar agenda personalizada.
 
 Configurar el número de días para mostrar un /deadline/. Dejarlo en una semana
 (7 días).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-deadline-warning-days 7)
 #+end_src
 
@@ -1354,7 +1354,7 @@ With =q= bury agenda instead of killing it (faster of course).
 
 Utilizar =o= en la agenda para abrir los links en vez de para ampliar la
 ventana.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (require 'org-agenda)
   (define-key org-agenda-mode-map "o" 'org-agenda-open-link)
 #+end_src
@@ -1362,31 +1362,31 @@ ventana.
 *** Habits
 Show a nice graph for recurring habits. See [[https://orgmode.org/manual/Tracking-your-habits.html][Tracking your Habits]] in the
 Org-mode manual for more information.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (require 'org-habit)
 #+end_src
 
 ** Archivar
 Configurar la función de archivo.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-archive-location "~/.emacs.d/archive/%s::")
 #+end_src
 
 ** Exportar
 Al exportar a iCalendar, incluir los TODO.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; (setq org-icalendar-include-todo t)
 #+end_src
 
 Añadir el paquete =minted= al exportar LaTeX.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
   ;; (setq org-latex-listings 'minted)
 #+end_src
 
 *** Recargar
 Automáticamente recargar el pdf compilado (para LaTeX y para Beamer).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun david/org-compile-beamer-and-update-other-buffer ()
   "Has as a premise that it's run from an org-mode buffer and the
    other buffer already has the PDF open"
@@ -1425,14 +1425,14 @@ Ask for an effort estimate when clocking in.
 
 * Edición de documentos
 ** Markdown
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package markdown-mode)
 #+end_src
 
 *** Compilar
 Definir función para compilar en Markdown (usando pandoc). Automáticamente
 recarga el pdf (con =C-c r=).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/md-compile ()
     "Compiles the currently loaded markdown file using pandoc into a PDF"
     (interactive)
@@ -1454,7 +1454,7 @@ recarga el pdf (con =C-c r=).
 ** LaTeX
 Configuración de LaTeX con AUCTeX.
 Siempre en modo matemático.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package auctex
     :defer t)
 
@@ -1466,13 +1466,13 @@ Usar =reftex=.
 - =C-c (= create label.
 - =C-c )= reference label.
 - =C-c [= create cite.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (setq reftex-toc-split-windows-fraction 0.2)
 #+end_src
 
 Configar el visor de PDF como =pdf-tools=
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq TeX-view-program-selection (quote
                                     (((output-dvi has-no-display-manager) "dvi2tty")
                                      ((output-dvi style-pstricks) "dvips and gv")
@@ -1482,33 +1482,33 @@ Configar el visor de PDF como =pdf-tools=
 #+end_src
 
 Permitir correlación entre .tex y .pdf.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
 #+end_src
 
 Cerrar parejas automáticamente (por ejemplo: paréntesis).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq  LaTeX-electric-left-right-brace t)
 #+end_src
 
 Eliminar archivos innecesarios fácilmente.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'LaTeX-mode-hook
             (lambda ()(define-key LaTeX-mode-map (kbd "C-x M-k") 'TeX-clean)))
 #+end_src
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq LaTeX-item-indent 0)
 #+end_src
 
 *** Compilación
 Compilar con =-shell-escape= siempre.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq TeX-command-extra-options "-shell-escape -synctex=1")
 #+end_src
 
 No preguntar para guardar y actualizar el /pdf/ después de compilar.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq TeX-save-query nil)
   (add-hook 'TeX-after-compilation-finished-functions
             #'TeX-revert-document-buffer)
@@ -1516,7 +1516,7 @@ No preguntar para guardar y actualizar el /pdf/ después de compilar.
 
 *** =outline-mode=
 Permite esconder/plegar partes del texto. El prefijo es =C-c @=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/turn-on-outline-minor-mode ()
     (outline-minor-mode 1))
 
@@ -1526,7 +1526,7 @@ Permite esconder/plegar partes del texto. El prefijo es =C-c @=.
 *** BibTeX
 For managing .bib files. Use =C-c C-c=. Insert entries templates with different
 key bindings. Also, =C-c C-f= for inserting new field.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq bibtex-align-at-equal-sign t)
   ;; (setq bibtex-text-indentation 14)
   ;; (setq bibtex-contline-indentation 5)
@@ -1542,7 +1542,7 @@ key bindings. Also, =C-c C-f= for inserting new field.
 * Visor de PDF
 Usar =pdf-tools= como visor de PDF y configurar los diferentes comandos de
 movimiento.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package pdf-tools
     :config
     (pdf-tools-install) ; Iniciar.
@@ -1573,7 +1573,7 @@ Slices are really useful:
 - =s r= reset slice.
 - =s m= set slice with mouse.
 - =s b= set slice using bounding box.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; (add-hook 'pdf-view-mode-hook 'pdf-view-auto-slice-minor-mode)
 #+end_src
 
@@ -1601,7 +1601,7 @@ Algunos comandos para facilitar la interacción.
 * Correo electrónico
 Configuración del correo electrónico (con =mu4e=). Abrir directamente los
 recibidos con =C-x m=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (require 'mu4e)
   (setq mail-user-agent 'mu4e-user-agent)
   (defun david/open-mu4e-inbox ()
@@ -1628,13 +1628,13 @@ recibidos con =C-x m=.
 #+end_src
 
 Configuración del tamaño máximo de columna
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq message-fill-column 72)
 #+end_src
 
 ** Cuentas
 Definición de las diferentes cuentas de correo electrónico.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq mu4e-maildir "~/.mail")
   (setq mu4e-user-mail-address-list '("david@alvarezrosa.com"
                                      "david.alvarez.rosa@yandex.com"))
@@ -1679,7 +1679,7 @@ Definición de las diferentes cuentas de correo electrónico.
 #+end_src
 
 Configurar las carpetas dinámicamente (dependiendo de la cuenta de correo).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq mu4e-refile-folder
         (lambda (msg)
           (cond
@@ -1704,7 +1704,7 @@ Configurar las carpetas dinámicamente (dependiendo de la cuenta de correo).
 ** Atajos
 Añadir atajos de teclado para ir a las diferentes carpetas de las diferentes
 cuentas.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq mu4e-maildir-shortcuts
         '(("/David/Inbox" . ?i)
           ("/David/Sent" . ?s)
@@ -1721,7 +1721,7 @@ cuentas.
 #+end_src
 
 Añadir configuraciones personalizadas de marcadores.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defvar inbox-folders (string-join '("maildir:/David/Inbox"
                                        "maildir:/Yandex/Inbox")
                                      " OR "))
@@ -1748,7 +1748,7 @@ Añadir configuraciones personalizadas de marcadores.
 ** Correos en cola
 Permite guardar los correos en cola (bandeja de salida) para enviarlos más
 adelante. Útil cuando se está trabajando sin conexión a internet por ejemplo.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq smtpmail-queue-dir "~/.mail/Queue/cur")
 
   (defun david/toggle-mail-queue ()
@@ -1762,7 +1762,7 @@ adelante. Útil cuando se está trabajando sin conexión a internet por ejemplo.
 
 ** Encriptación
 Encriptar todos los correos salientes /automágicamente/ si la llave existe.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (defun david/can-encrypt-message-p ()
     "Return non-nil if current message can be encrypted.
   I.e., the keyring has a public key for each recipient."
@@ -1790,14 +1790,14 @@ Encriptar todos los correos salientes /automágicamente/ si la llave existe.
 #+end_src
 
 Para firmar correos salientes.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq mml-secure-openpgp-sign-with-sender t)
 #+end_src
 
 ** Autocompletado
 Permitir el autocompletado estándar. Y solo tener en cuenta el autocompletado
 con los correos de hace como mucho 6 meses.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq mu4e-compose-complete-addresses t)
   (setq mu4e-compose-complete-only-after
         (format-time-string
@@ -1806,7 +1806,7 @@ con los correos de hace como mucho 6 meses.
 #+end_src
 
 Personalizar el autcompletado de correos (con =M + tab=).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq david/contact-file "~/Documents/Contactos/Correos.txt")
   (defun david/read-contact-list ()
     (with-temp-buffer
@@ -1830,7 +1830,7 @@ Personalizar el autcompletado de correos (con =M + tab=).
 ** Composición
 Usar =C-c x= para pasar a =org-mu4e-compose=, que permite componer correos
 usando =org-mode=. Después, convertir el mensaje en =org= a HTML (al enviar).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (require 'org-mu4e)
   (define-key mu4e-compose-mode-map (kbd "C-c x") 'org-mu4e-compose-org-mode)
   (setq org-mu4e-convert-to-html t)
@@ -1838,19 +1838,19 @@ usando =org-mode=. Después, convertir el mensaje en =org= a HTML (al enviar).
 
 Añadir =org-mime= para poder convertir de =Org= a HTML (para mandar LaTeX como
 imágenes por ejemplo).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package org-mime)
   (require 'org-mime)
 #+end_src
 
 Añadir automáticamente la firma.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq message-signature-file "~/.emacs.d/signature.txt")
   (setq mu4e-compose-signature-auto-include nil)
 #+end_src
 
 Activar el autocorrector en español al estar en modo de composición.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
   (add-hook 'mu4e-compose-mode-hook (lambda ()
                                       (ispell-change-dictionary "spanish")))
@@ -1859,7 +1859,7 @@ Activar el autocorrector en español al estar en modo de composición.
 
 Configurar la línea de cita.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
   (setq message-citation-line-function 'message-insert-formatted-citation-line)
   (setq message-citation-line-format "On %a %d %b %Y at %R, %f wrote:")
@@ -1867,7 +1867,7 @@ Configurar la línea de cita.
 
 
 Forzar que no se corten las lineas al enviar los correos.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (setq fill-flowed-encode-column 79)
   (setq fill-flowed-display-column 79)
 
@@ -1892,7 +1892,7 @@ función es de la documentación de MU4E
 ([[http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html#Multiple-accounts]]). Siempre
 que se quiera componer un nuevo correo, cambiar toda las variables de
 configuración relevantes a la cuenta elegida.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/mu4e-set-account ()
     "Set the account for composing a message."
     (let* ((account
@@ -1917,12 +1917,12 @@ configuración relevantes a la cuenta elegida.
 
 ** Archivos adjuntos
 Configuración el directorio de descarga.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq mu4e-attachment-dir "~/Downloads")
 #+end_src
 
 Mejorar la gestión de los archivos adjuntos (con =dired=).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (require 'gnus-dired)
   (defun gnus-dired-mail-buffers ()
     "Devuelve una lista de las ventanas con mensajes activos."
@@ -1940,7 +1940,7 @@ Mejorar la gestión de los archivos adjuntos (con =dired=).
 
 Comprobar si se ha adjunto el archivo cuando se debería. TODO: esto no está
 funcionando.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defvar david/message-attachment-regexp
     "\\([Tt]e mando\\|[Tt]e mandamos\\|[Aa]djunto|pdf|[Aa]rchivo\\)")
   (defun david/message-check-attachment nil
@@ -1958,14 +1958,14 @@ funcionando.
 
 ** Imágenes
 Configurar cómo se muestran las imágenes en =mu4e=
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (when (fboundp 'imagemagick-register-types)
     (imagemagick-register-types))
   (setq mu4e-view-show-images t)
 #+end_src
 
 ** Correos HTML
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (require 'mu4e-contrib)
   (setq mu4e-html2text-command 'mu4e-shr2text)
   ;;(setq mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
@@ -1973,14 +1973,14 @@ Configurar cómo se muestran las imágenes en =mu4e=
 #+end_src
 
 Hacer más probable el mostrar correos como texto.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (setq mu4e-view-html-plaintext-ratio-heuristic  most-positive-fixnum)
 ;; (setq mu4e-compose-format-flowed t)
 #+end_src
 
 ** Otros
 Configuraciones varias.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; Eliminar los 'buffers' de mensajes.
   (setq message-kill-buffer-on-exit t)
   ;; Usar 'U' para actualizar en principal.
@@ -1990,24 +1990,24 @@ Configuraciones varias.
 #+end_src
 
 Usar tabulador para moverse entre links.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (bind-key "<tab>" 'shr-next-link mu4e-view-mode-map)
   (bind-key "<backtab>" 'shr-previous-link mu4e-view-mode-map)
 #+end_src
 
 Mostrar las fechas en formato europeo. Y las horas en formato de 24 horas.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (setq mu4e-headers-date-format "%d-%m-%Y")
 (setq mu4e-headers-time-format "  %H:%M")
 #+end_src
 
 No mostrar correos relacionados, esto se puede cambiar con =W=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq mu4e-headers-include-related nil)
 #+end_src
 
 Mostrar las direcciones de correo completadas cuando en modo de lectura.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (setq mu4e-view-show-addresses t)
 #+end_src
 
@@ -2015,7 +2015,7 @@ Mostrar las direcciones de correo completadas cuando en modo de lectura.
 * Gestor de suscripciones
 Usaremos =elfeed= para gestionar las suscripciones, es un lector de
 /feeds/ de RSS y Atom.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package elfeed
     :bind ("C-c e" . 'elfeed)
     :config (setq elfeed-search-date-format '("%d-%m-%Y" 11 :left) ; Fechas formato europeo.
@@ -2028,12 +2028,12 @@ Usaremos =elfeed= para gestionar las suscripciones, es un lector de
 
 Automáticamente ajustar a =fill-column= las entradas al abrirlas. Sobreescribe
 la función predetermianda.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq shr-use-fonts nil)
   (setq shr-width 70)
 #+end_src
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (defun david/elfeed-search-show-entry ()
     "Show elfeed entry and fill the text to fill-column."
     (interactive)
@@ -2045,13 +2045,13 @@ la función predetermianda.
 #+end_src
 
 TODO: Actualizar automáticamente al abrir Emacs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; (add-hook 'emacs-startup-hook 'elfeed-update)
 #+end_src
 
 ** =elfeed-org=
 Ayuda a gestionar 'elfeed' con 'org-mode'.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package elfeed-org
     :config
     (elfeed-org)
@@ -2060,7 +2060,7 @@ Ayuda a gestionar 'elfeed' con 'org-mode'.
 
 ** =elfeed-goodies=
 Otro paquete más para =elfeed= (para la interfaz).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package elfeed-goodies
     :config
     (elfeed-goodies/setup)
@@ -2073,7 +2073,7 @@ Otro paquete más para =elfeed= (para la interfaz).
 
 ** Funciones
 Abrir vídeos de la /feed/ de =elfeed= usando =mpv=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/elfeed-play-with-mpv ()
     (interactive)
     (setq entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
@@ -2099,7 +2099,7 @@ Abrir vídeos de la /feed/ de =elfeed= usando =mpv=.
 #+end_src
 
 Ignorar la entrada actual (concretamente, añadir la TAG =no=).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun david/elfeed-ignore ()
     (interactive)
     (setq entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
@@ -2116,13 +2116,13 @@ Ignorar la entrada actual (concretamente, añadir la TAG =no=).
 * Configuraciones antiguas
 ** =htmlize=
 Convierte un buffer o un archivo a HTML (respetando estilo).
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package htmlize)
 #+end_src
 
 ** =calfw=
 Calendario en Emacs.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package calfw
     :config
     ;; Comenzar las semanas en Lunes.
@@ -2149,7 +2149,7 @@ Calendario en Emacs.
 
 *** =calfw-org=
 Mostrar eventos de la agenda en "calfw".
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package calfw-org
     :config
     ;; (require 'calfw-org)
@@ -2163,14 +2163,14 @@ Mostrar eventos de la agenda en "calfw".
 
 ** Truncar lineas
 No truncar las lineas que no entran en la pantalla.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (set-default 'truncate-lines t)
   (setq truncate-partial-width-windows t)
 #+end_src
 
 ** =ace-window=
 Mejorar la gestión de ventanas, especialmente cuando hay más de 2.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package ace-window)
   (global-set-key (kbd "C-x o") 'ace-window)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
@@ -2179,14 +2179,14 @@ Mejorar la gestión de ventanas, especialmente cuando hay más de 2.
 
 * Final
 Despues de iniciar Emacs, volver a cambiar /garbage-collection/.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'emacs-startup-hook
     (setq gc-cons-threshold 800000
           gc-cons-percentage 0.1))
 #+end_src
 
 Y volver a cambiar =file-name-handler-alist=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'emacs-startup-hook
     (setq file-name-handler-alist david/file-name-handler-alist))
   ;;; config.el ends here
@@ -2215,7 +2215,7 @@ Y volver a cambiar =file-name-handler-alist=.
 
 
 * Pendiente
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (global-set-key (kbd "C-c i") (lambda () (interactive)
                                   (erc :server "irc.freenode.net"
                                        :port "6667"
@@ -2232,7 +2232,7 @@ Y volver a cambiar =file-name-handler-alist=.
   ;; (erc-autojoin-enable)
 #+end_src
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (setq golden-ratio-auto-scale t)
 
 (setf (cdr (assq 'continuation fringe-indicator-alist))
