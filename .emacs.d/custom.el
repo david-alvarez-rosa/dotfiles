@@ -32,7 +32,7 @@
      ("FIXME" . "#dc752f")
      ("XXX+" . "#dc752f")
      ("\\?\\?\\?+" . "#dc752f")))
- '(ispell-dictionary "spanish")
+ '(ispell-dictionary "spanish" t)
  '(mml-secure-key-preferences
    '((OpenPGP
       (sign
@@ -46,7 +46,7 @@
  '(org-time-stamp-custom-formats '("<%d-%m-%Y %a>" . "<%d-%m-%y %a %H:%M>"))
  '(org-todo-keyword-faces nil)
  '(package-selected-packages
-   '(helm-ag helm-rg doom-modeline fast-scroll pyenv-mode elpy ein web-mode ess php-mode golden-ratio helm-projectile projectile elfeed flycheck company avy elfeed-goodies: yasnippet-snippets org-mime elfeed-goodies dired-narrow paredit winum window-numbering use-package switch-window swiper sudo-edit spacemacs-theme spaceline slime-company rainbow-delimiters pretty-mode popup-kill-ring pdf-tools org-bullets nyan-mode nlinum-relative multiple-cursors memoize markdown-mode magit iedit hungry-delete htmlize highlight-indent-guides helm flycheck-clang-analyzer fancy-battery expand-region elfeed-org diminish company-shell company-jedi company-irony company-c-headers company-auctex calfw-org calfw beacon ace-window))
+   '(sublimity-map sublimity centered-window emms mpdel helm-ag helm-rg doom-modeline fast-scroll pyenv-mode elpy ein web-mode ess php-mode golden-ratio helm-projectile projectile elfeed flycheck company avy elfeed-goodies: yasnippet-snippets org-mime elfeed-goodies dired-narrow paredit winum window-numbering use-package switch-window swiper sudo-edit spacemacs-theme spaceline slime-company rainbow-delimiters pretty-mode popup-kill-ring pdf-tools org-bullets nyan-mode nlinum-relative multiple-cursors memoize markdown-mode magit iedit hungry-delete htmlize highlight-indent-guides helm flycheck-clang-analyzer fancy-battery expand-region elfeed-org diminish company-shell company-jedi company-irony company-c-headers company-auctex calfw-org calfw beacon ace-window))
  '(pdf-view-midnight-colors '("#655370" . "#fbf8ef"))
  '(powerline-default-separator 'arrow-fade)
  '(safe-local-variable-values

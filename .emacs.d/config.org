@@ -5,7 +5,7 @@
 #+DESCRIPTION: My personal GNU Emacs configuration file.
 
 
-GNU Emacs is a free (as in /freedom/) ~operating system~ text editor, created
+GNU Emacs is a free (as in /freedom/) +operating system+ text editor, created
 by GNU Project founder Richard Matthew Stallman. I've been using this
 magnificent piece of software daily for years now and I can assure you that
 is--without a doubt--THE best multi-purpose program ever written,
@@ -18,7 +18,7 @@ extensively using org-mode.
 
 
 * Package Management
-=use-package= will be used for general package management. Ensure it's
+=use-package= will be used for general package management. Ensure it is
 installed and load the package.
 #+begin_src emacs-lisp
   (unless (package-installed-p 'use-package)
@@ -73,17 +73,14 @@ interaction whereas =a= reuses the current buffer.
 #+end_src
 
 *** File Backups and Autosaves
-Keep backups and autosaves in specific directories rather than leaving
-temporary files all over the filesystem.
+Keep backups and autosaves in the "temp" directory. Take into account that this
+is a dangerous option with respect the disappearance of files, but I always use
+version control for important projects, so that is not a problem for me.
 #+begin_src emacs-lisp
-  (setq-default backup-dir "~/.emacs.d/.backups/")
-  (make-directory backup-dir t)
-  (setq-default backup-directory-alist '(("." . "~/.emacs.d/.backups")))
-  (setq-default autosave-dir "~/.emacs.d/.autosaves/")
-  (make-directory autosave-dir t)
-  (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
-  (setq-default delete-old-versions -1)
-  (setq-default version-control t)
+  (setq backup-directory-alist
+        `((".*" . ,temporary-file-directory)))
+  (setq auto-save-file-name-transforms
+        `((".*" ,temporary-file-directory t)))
 #+end_src
 
 *** Auto Revert Mode
@@ -103,6 +100,18 @@ Para mejorar la gestión de las ventanas.
 En modo experto siempre, no pedir confirmación.
 #+begin_src emacs-lisp
   (setq ibuffer-expert t)
+#+end_src
+
+*** Kill All Function
+Kill all buffers except current and *scratch*. Useful for "restarting" Emacs
+without closing it.
+#+begin_src emacs-lisp
+  (defun david/kill-all-other-buffers ()
+    "Kill all buffers except current and *scratch*."
+    (interactive)
+    (delete-other-windows)
+    (setq scratch (get-buffer "*scratch*"))
+    (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
 #+end_src
 
 ** Window Management
@@ -260,7 +269,7 @@ disponibles.
     :diminish)
 #+end_src
 
-** =avy=
+** TODO =avy=
 Permite buscar caracteres fácilmente.
 #+begin_src emacs-lisp
   (use-package avy
@@ -644,7 +653,7 @@ Configurar la transparencia.
   (define-key global-map (kbd "C-c t") 'david/cycle-transparency)
 #+end_src
 
-** Centered buffer
+** Centered Buffer
 Utility to center buffer (distraction-free editing).
 #+begin_src emacs-lisp
   (use-package sublimity
@@ -713,17 +722,6 @@ Actualizar la otra ventana.
     (other-window -1))
 #+end_src
 
-** Gestión de /buffers/
-Eliminar todos los /buffers/ excepto el actual y el /scratch/ (útil cuando hay
-muchos abiertos).
-#+begin_src emacs-lisp
-  (defun david/kill-all-other-buffers ()
-    "Kill all buffers except current and *scratch*."
-    (interactive)
-    (delete-other-windows)
-    (setq scratch (get-buffer "*scratch*"))
-    (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
-#+end_src
 
 
 * Programación
@@ -2086,4 +2084,11 @@ Mejorar la gestión de ventanas, especialmente cuando hay más de 2.
 (setf (cdr (assq 'truncation fringe-indicator-alist))
       '(nil nil) ;; no continuation indicators
       )
+#+end_src
+
+** TODO Very nice scrolling with keyboard
+#+begin_src emacs-lisp
+  ;;scroll window up/down by one line
+  (global-set-key (kbd "M-n") 'scroll-up-line)
+  (global-set-key (kbd "M-p") 'scroll-down-line)
 #+end_src
