@@ -310,26 +310,6 @@ Borrado de todos los espacios hasta el siguiente caracter.
     :diminish)
 #+end_src
 
-** =highlight-indent-guides=
-Guías para los niveles de indentación. Solo aparecerán las guías para nivel de
-indentación > 2.
-#+begin_src emacs-lisp :tangle no
-  (use-package highlight-indent-guides
-    :init
-    (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-    :config
-    (setq highlight-indent-guides-method 'character)
-    (setq highlight-indent-guides-character ?|)
-    (setq highlight-indent-guides-responsive (quote top))
-    :diminish)
-  (defun david/my-highlighter (level responsive display)
-    "Solo mostrar guías para nivel de indentación (LEVEL) > 2."
-    (if (> 2 level)
-        nil
-      (highlight-indent-guides--highlighter-default level responsive display)))
-  (setq highlight-indent-guides-highlighter-function 'david/my-highlighter)
-#+end_src
-
 ** =helm=
 Para una mejor gestión de ventanas, búsqueda de archivos y de comandos.
 #+begin_src emacs-lisp
