@@ -276,14 +276,6 @@ Permite buscar caracteres fácilmente.
     :bind ("M-s" . avy-goto-char))
 #+end_src
 
-** =undo-tree=
-Mejora en deshacer y admite rehacer.
-#+begin_src emacs-lisp
-  (use-package undo-tree
-    :init (global-undo-tree-mode)
-    :diminish)
-#+end_src
-
 ** =multiple-cursors=
 Permite edición múltiple (https://github.com/magnars/multiple-cursors.el).
 #+begin_src emacs-lisp
