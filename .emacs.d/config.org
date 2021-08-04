@@ -657,45 +657,6 @@ Utility to center buffer (distraction-free editing).
 * Funciones
 Varias funciones extras útiles.
 
-** Edición de texto
-Eliminar palabra completa (sin importar dónde esté el cursor).
-#+begin_src emacs-lisp
-  (defun david/kill-whole-word ()
-    (interactive)
-    (backward-word)
-    (kill-word 1))
-  (global-set-key (kbd "C-c w k") 'david/kill-whole-word)
-#+end_src
-
-Copiar una palabra completa (sin importar dónde esté el cursor).
-#+begin_src emacs-lisp
-  (defun copy-whole-word ()
-    (interactive)
-    (save-excursion
-      (forward-char 1)
-      (backward-word)
-      (kill-word 1)
-      (yank)))
-  (global-set-key (kbd "C-c w y") 'copy-whole-word)
-#+end_src
-
-Eliminar una linea completa (sin importar dónde esté el cursor).
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c l k") 'kill-whole-line)
-#+end_src
-
-Copiar una línea completa (sin importar dónde esté el cursor).
-#+begin_src emacs-lisp
-  (defun copy-whole-line ()
-    (interactive)
-    (save-excursion
-      (kill-new
-       (buffer-substring
-        (point-at-bol)
-        (point-at-eol)))))
-  (global-set-key (kbd "C-c l y") 'copy-whole-line)
-#+end_src
-
 ** Movimiento entre texto
 Funciones para mejorar los comandos de movimiento.
 #+begin_src emacs-lisp
@@ -762,21 +723,6 @@ muchos abiertos).
     (delete-other-windows)
     (setq scratch (get-buffer "*scratch*"))
     (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
-#+end_src
-
-** Gestionar configuración
-Funciones para abrir y para recargar la configuración.
-#+begin_src emacs-lisp
-  (defun david/open-config-file()
-    "Abrir el archivo de configuración."
-    (interactive)
-    (find-file "~/.emacs.d/config.org"))
-  ;; (global-set-key (kbd "C-c e") 'david/open-config-file)
-  (defun david/reload-config()
-    "Recargar la configuración automáticamente."
-    (interactive)
-    (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
-  ;; (global-set-key (kbd "C-c r") 'david/reload-config)
 #+end_src
 
 
