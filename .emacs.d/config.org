@@ -201,20 +201,6 @@ Al terminar dejar las ventanas como estaban.
   ;; (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 #+end_src
 
-** Terminal
-Usar automáticamente bash como terminal por defecto para /ansi-term/.
-#+begin_src emacs-lisp
-  (defvar my-term-shell "/bin/bash")
-  (defadvice ansi-term (before force-bash)
-    (interactive (list my-term-shell)))
-  (ad-activate 'ansi-term)
-#+end_src
-
-Configurar comando =M-return= para abrir una terminal.
-#+begin_src emacs-lisp
-  (global-set-key (kbd "<M-return>") 'ansi-term)
-#+end_src
-
 ** Archivo de personalizaciones
 Crear un archivo diferente para las personalizaciones.
 #+begin_src emacs-lisp
