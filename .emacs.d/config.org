@@ -48,7 +48,31 @@ instead of opening a new one (much faster).
   (server-start)
 #+end_src
 
-** File Backups and Autosave
+** File Management
+Configuration related to file management.
+
+*** Dired Mode
+Dired is the main mode for Emacs file-manager operations. The name “Dired”
+stands for “directory editor”.
+
+Dired buffer can be modified by making them editable presing =C-x C-q=. With
+this is posible to bulk-rename files, or to change file ownerships and
+privileges, just thinking about the file listing as an (Emacs) editable text
+file.
+
+Show file sizes in a human readable style.
+#+begin_src emacs-lisp
+  (setq-default dired-listing-switches "-alh")
+#+end_src
+
+Ability to use =a= to visit a new directory or file in Dired instead of using
+=RET=. =RET= works just fine, but it will create a new buffer for every
+interaction whereas =a= reuses the current buffer.
+#+begin_src emacs-lisp
+  (put 'dired-find-alternate-file 'disabled nil)
+#+end_src
+
+*** File Backups and Autosaves
 Keep backups and autosaves in specific directories rather than leaving
 temporary files all over the filesystem.
 #+begin_src emacs-lisp
@@ -62,90 +86,14 @@ temporary files all over the filesystem.
   (setq-default version-control t)
 #+end_src
 
-** =dired-mode=
-Show file sizes in a human readable style.
-#+begin_src emacs-lisp
-  (setq-default dired-listing-switches "-alh")
-#+end_src
-
-Ability to use =a= to visit a new directory or file in dired instead of using
-=RET=. =RET= works just fine, but it will create a new buffer for every
-interaction whereas =a= reuses the current buffer.
-#+begin_src emacs-lisp
-  (put 'dired-find-alternate-file 'disabled nil)
-#+end_src
-
-** Change yes/no Questions to y/n
-Shorter and faster.
-#+begin_src emacs-lisp
-  (defalias 'yes-or-no-p 'y-or-n-p)
-#+end_src
-
-** Auto Revert Mode
-When a buffer is modified from outside Emacs, automatically revert it.
+*** Auto Revert Mode
+When a file is modified from outside Emacs, automatically revert the
+corresponding buffer.
 #+begin_src emacs-lisp
   (global-auto-revert-mode 1)
 #+end_src
 
-** Comandos desactivados
-Activar algunos comandos que están desactivados.
-#+begin_src emacs-lisp
-  (put 'narrow-to-region 'disabled nil)
-  (put 'upcase-region 'disabled nil)
-  (put 'narrow-to-page 'disabled nil)
-  (put 'LaTeX-narrow-to-environment 'disabled nil)
-#+end_src
-
-** Truncar lineas
-Truncar líneas demasiado largas automáticamente (a partir de 79 caracteres).
-#+begin_src emacs-lisp
-  (add-hook 'text-mode-hook 'turn-on-auto-fill)
-  (setq-default fill-column 79)
-#+end_src
-
-Usar =visual-line= para una mejor gestión de las lineas demasiado largas que no
-entran en la pantalla.
-#+begin_src emacs-lisp
-  (add-hook 'text-mode-hook (lambda () (setq visual-line-mode t)))
-#+end_src
-
-** Sobreescribir lo seleccionado
-#+begin_src emacs-lisp
-  (pending-delete-mode t)
-#+end_src
-
-** Configurar separadores
-Considerar las mayúsculas como separador de palabras.
-#+begin_src emacs-lisp
-  (global-subword-mode 1)
-#+end_src
-
-** Gestión de ventanas
-Usar un comando más sencillo para cambiar entre ventanas.
-#+begin_src emacs-lisp
-  (global-set-key (kbd "M-o") 'other-window)
-  (defun david/reverse-window-cycling ()
-    (interactive)
-    (other-window -1))
-  (global-set-key (kbd "M-O") 'david/reverse-window-cycling)
-#+end_src
-
-*** =windmove=
-Esta construido dentro de Emacs. Permite moverse entre ventanas usando =Shift= y
-las flechas del teclado.
-#+begin_src emacs-lisp
-  (when (fboundp 'windmove-default-keybindings)
-    (windmove-default-keybindings))
-#+end_src
-
-*** =winner-mode=
-Permite deshacer y reacer entre configuraciones de ventanas con los comandos
-=C-c left= y =C-c right= para deshacer y rehacer respectivamente.
-#+begin_src emacs-lisp
-  (when (fboundp 'winner-mode)
-    (winner-mode 1))
-#+end_src
-
+** Buffer Management
 *** =ibuffer=
 Para mejorar la gestión de las ventanas.
 #+begin_src emacs-lisp
@@ -157,13 +105,84 @@ En modo experto siempre, no pedir confirmación.
   (setq ibuffer-expert t)
 #+end_src
 
-** Desplazamiento
-Cambiar el modo de desplazamiento para no centrar la pantalla.
+** Window Management
+Faster commands for cycling windows: =M-o= instead of =C-x o= (one key press
+less) and =M-O= for reverse window cycling.
 #+begin_src emacs-lisp
-  (setq scroll-conservatively 100)
+  (global-set-key (kbd "M-o") 'other-window)
+  (defun david/reverse-window-cycling ()
+    (interactive)
+    (other-window -1))
+  (global-set-key (kbd "M-O") 'david/reverse-window-cycling)
 #+end_src
 
-Moverse entre párrafos fácilmente.
+*** Wind Move
+Is built into Emacs (since version 21). It lets you move point from window to
+window using =Shift= and the arrow keys. This is easier to type than =C-x o=
+and, for some users, may be more intuitive.
+#+begin_src emacs-lisp
+  (windmove-default-keybindings)
+#+end_src
+
+*** Winner Mode
+Global minor mode that allows to “undo” and “redo” changes in window
+configuration. It is included in GNU Emacs.
+#+begin_src emacs-lisp
+  (winner-mode 1)
+#+end_src
+
+** Change yes/no Questions to y/n
+Shorter and faster.
+#+begin_src emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
+** Narrowing
+Narrowing buffers is very useful, however this commands are disabled by default
+because new users often find them confusing. However, this configuration is
+*not* for newbies, so enable them.
+#+begin_src emacs-lisp
+  (put 'narrow-to-region 'disabled nil)
+  (put 'narrow-to-page 'disabled nil)
+  (put 'LaTeX-narrow-to-environment 'disabled nil)
+#+end_src
+
+I use =C-x n n= for narrowing to region and then =C-x n p= for reverting to
+full page, but there are more narrow functions (enviroment dependent).
+
+** Upcase/Downcase Region
+Command for upcasing =C-x C-u= or downcasing =C-x C-l= current region are also
+disabled by default, enable them.
+#+begin_src emacs-lisp
+  (put 'upcase-region 'disabled nil)
+  (put 'downcase-region 'disabled nil)
+#+end_src
+
+** Auto Fill Mode
+Long lines are a bad practice. Please, don't use them, I find them quite
+annoying. Stick to at most 80 characters. Use =M-q= for filling paragraphs when
+editing (i.e., always ensure the =fill-column= limit).
+#+begin_src emacs-lisp
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (setq-default fill-column 79)
+#+end_src
+
+** Subword Mode
+Emacs treats camelCase strings as a single word by default, change this
+behaviour.
+#+begin_src emacs-lisp
+  (global-subword-mode 1)
+#+end_src
+
+** Scrolling
+I personally don't like automatic scrolling (centering point vertically in the
+window when point moves out of the visible portion of the text) so I have it
+disabled.
+#+begin_src emacs-lisp
+  (setq scroll-conservatively 101)
+#+end_src
+
+Set keys for forward/backward between paragraphs.
 #+begin_src emacs-lisp
   (define-key global-map (kbd "C-M-n") 'forward-paragraph)
   (define-key global-map (kbd "C-M-p") 'backward-paragraph)
