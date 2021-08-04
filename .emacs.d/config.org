@@ -496,8 +496,8 @@ autocorregir con otras palabras =C-.=
 #+end_src
 
 
-* Tema
-Configuración del tema gráfico.
+* Theme
+The theme I am currently using.
 #+begin_src emacs-lisp
   (use-package spacemacs-theme
     :defer t
@@ -535,12 +535,6 @@ Pretty nice UI enhancement for finding current line. It does not look good in
 the terminal version of Emacs, though, so it's not set there.
 #+begin_src emacs-lisp
   (when window-system (global-hl-line-mode t))
-#+end_src
-
-*** Fechas
-Mostrar las fechas en formato europeo.
-#+begin_src emacs-lisp
-  (setq calendar-date-style (quote european))
 #+end_src
 
 
@@ -1968,7 +1962,6 @@ Usar tabulador para moverse entre links.
 
 Mostrar las fechas en formato europeo. Y las horas en formato de 24 horas.
 #+begin_src emacs-lisp
-(setq mu4e-headers-date-format "%d-%m-%Y")
 (setq mu4e-headers-time-format "  %H:%M")
 #+end_src
 
@@ -1989,10 +1982,7 @@ Usaremos =elfeed= para gestionar las suscripciones, es un lector de
 #+begin_src emacs-lisp
   (use-package elfeed
     :bind ("C-c e" . 'elfeed)
-    :config (setq elfeed-search-date-format '("%d-%m-%Y" 11 :left) ; Fechas formato europeo.
-                  ;; Configuraciones varias: directorio de datos, posición, filtro, tamaño.
-                  elfeed-db-directory "~/.emacs.d/elfeed"
-                  elfeed-search-date-format (quote ("%d-%m-%Y" 11 :left))
+    :config (setq elfeed-db-directory "~/.emacs.d/elfeed"
                   elfeed-search-filter "@1-week-ago -no "
                   elfeed-search-title-max-width 100))
 #+end_src
