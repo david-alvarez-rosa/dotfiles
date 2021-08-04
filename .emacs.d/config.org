@@ -1582,24 +1582,37 @@ recibidos con =C-x m=.
   (require 'mu4e)
   (setq mail-user-agent 'mu4e-user-agent)
   (defun david/open-mu4e-inbox ()
-    "Mostrar los correos de todas las cuentas de los últimos 7 días."
+    "Mostrar los correos de todas las cuentas de los últimos 7
+  días.  Abre mu4e en pantalla completa, cerrando el resto de
+  ventanas, guarda en el registro la configuración."
     (interactive)
-    (mu4e-headers-search "date:7d..now"))
+    (window-configuration-to-register :mu4e-fullscreen)
+    (mu4e-headers-search "date:7d..now")
+    (delete-other-windows))
   (define-key global-map (kbd "C-x m") 'david/open-mu4e-inbox)
+
+  (defun david/mu4e-quit-session ()
+    "Restores the previous window configuration and kills the mu4e buffer."
+    (interactive)
+    (kill-buffer)
+    (jump-to-register :mu4e-fullscreen))
+
+  (define-key mu4e-headers-mode-map (kbd "q") 'david/mu4e-quit-session)
+  (define-key mu4e-main-mode-map (kbd "q") 'david/mu4e-quit-session)
+
   (require 'smtpmail)
   (setq message-send-mail-function 'smtpmail-send-it)
 #+END_SRC
 
 Configuración del tamaño máximo de columna
 #+BEGIN_SRC emacs-lisp
-  (setq message-fill-column 79)
+  (setq message-fill-column 72)
 #+END_SRC
 
 ** Cuentas
 Definición de las diferentes cuentas de correo electrónico.
 #+BEGIN_SRC emacs-lisp
   (setq mu4e-maildir "~/.mail")
-
   (setq mu4e-user-mail-address-list '("david@alvarezrosa.com"
                                      "david.alvarez.rosa@yandex.com"))
   ;; Cuenta predeterminada.
