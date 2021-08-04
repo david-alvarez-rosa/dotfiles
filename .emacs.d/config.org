@@ -2046,54 +2046,6 @@ Convierte un buffer o un archivo a HTML (respetando estilo).
   (use-package htmlize)
 #+end_src
 
-** =calfw=
-Calendario en Emacs.
-#+begin_src emacs-lisp :tangle no
-  (use-package calfw
-    :config
-    ;; Comenzar las semanas en Lunes.
-    (setq calendar-week-start-day 1)
-    ;; ;; Dos posibles configuraciones altenativas para el calendario (no funcionan bien).
-    ;; (setq cfw:fchar-junction ?╋
-    ;;     cfw:fchar-vertical-line ?┃
-    ;;     cfw:fchar-horizontal-line ?━
-    ;;     cfw:fchar-left-junction ?┣
-    ;;     cfw:fchar-right-junction ?┫
-    ;;     cfw:fchar-top-junction ?┯
-    ;;     cfw:fchar-top-left-corner ?┏
-    ;;     cfw:fchar-top-right-corner ?┓)
-    ;; (setq cfw:fchar-junction ?╬
-    ;;     cfw:fchar-vertical-line ?║
-    ;;     cfw:fchar-horizontal-line ?═
-    ;;     cfw:fchar-left-junction ?╠
-    ;;     cfw:fchar-right-junction ?╣
-    ;;     cfw:fchar-top-junction ?╦
-    ;;     cfw:fchar-top-left-corner ?╔
-    ;;     cfw:fchar-top-right-corner ?╗)
-  )
-#+end_src
-
-*** =calfw-org=
-Mostrar eventos de la agenda en "calfw".
-#+begin_src emacs-lisp :tangle no
-  (use-package calfw-org
-    :config
-    ;; (require 'calfw-org)
-    ;; Similar exactamente los comandos de la Agenda (de 'org').
-    (setq cfw:org-overwrite-default-keybinding t)
-    (define-key cfw:calendar-mode-map (kbd "w") 'cfw:change-view-week)
-    (define-key cfw:calendar-mode-map (kbd "m") 'cfw:change-view-month)
-    (define-key cfw:calendar-mode-map (kbd "W") 'cfw:change-view-two-weeks)
-    (global-set-key (kbd "C-c c") 'cfw:open-org-calendar))
-#+end_src
-
-** Truncar lineas
-No truncar las lineas que no entran en la pantalla.
-#+begin_src emacs-lisp :tangle no
-  (set-default 'truncate-lines t)
-  (setq truncate-partial-width-windows t)
-#+end_src
-
 ** =ace-window=
 Mejorar la gestión de ventanas, especialmente cuando hay más de 2.
 #+begin_src emacs-lisp :tangle no
@@ -2101,11 +2053,6 @@ Mejorar la gestión de ventanas, especialmente cuando hay más de 2.
   (global-set-key (kbd "C-x o") 'ace-window)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 #+end_src
-
-
-
-
-
 
 
 * Pendiente
