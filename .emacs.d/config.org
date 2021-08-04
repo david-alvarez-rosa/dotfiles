@@ -252,14 +252,6 @@ poco el cursor para facilitar la detección del mismo.
     :diminish)
 #+end_src
 
-** =popup-kill-ring=
-Facilita la gestión de la memoria al copiar y pegar. Muestra las últimas cosas
-copiadas.
-#+begin_src emacs-lisp
-  (use-package popup-kill-ring
-    :bind ("M-y" . popup-kill-ring))
-#+end_src
-
 ** =which-key=
 Muestra los posibles comandos (que completan la secuencia comenzada)
 disponibles.
