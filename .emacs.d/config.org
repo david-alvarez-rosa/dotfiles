@@ -302,14 +302,6 @@ Para mejorar la búsqueda.
     :bind ("C-s" . 'swiper))
 #+end_src
 
-** =hungry-delete=
-Borrado de todos los espacios hasta el siguiente caracter.
-#+begin_src emacs-lisp
-  (use-package hungry-delete
-    :config (global-hungry-delete-mode)
-    :diminish)
-#+end_src
-
 ** =helm=
 Para una mejor gestión de ventanas, búsqueda de archivos y de comandos.
 #+begin_src emacs-lisp
