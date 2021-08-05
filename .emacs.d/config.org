@@ -1063,31 +1063,10 @@ Ask for an effort estimate when clocking in.
 
 
 * Edición de documentos
-** Markdown
+** Markdown Mode
+Major mode for editting Markdown-formatted text.
 #+begin_src emacs-lisp
   (use-package markdown-mode)
-#+end_src
-
-*** Compilar
-Definir función para compilar en Markdown (usando pandoc). Automáticamente
-recarga el pdf (con =C-c r=).
-#+begin_src emacs-lisp
-  (defun david/md-compile ()
-    "Compiles the currently loaded markdown file using pandoc into a PDF"
-    (interactive)
-    (save-buffer)
-    (shell-command (concat "pandoc " (buffer-file-name) " -o "
-                           (replace-regexp-in-string "md" "pdf" (buffer-file-name)))))
-
-  (defun david/md-compile-and-update-other-buffer ()
-    "Has as a premise that it's run from a markdown-mode buffer and the
-       other buffer already has the PDF open"
-    (interactive)
-    (david/md-compile)
-    (david/update-other-buffer))
-
-  (eval-after-load 'markdown-mode
-    '(define-key markdown-mode-map (kbd "C-c r") 'david/md-compile-and-update-other-buffer))
 #+end_src
 
 ** LaTeX
@@ -1095,9 +1074,19 @@ Configuración de LaTeX con AUCTeX.
 Siempre en modo matemático.
 #+begin_src emacs-lisp
   (use-package auctex
-    :defer t)
-
-  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+    :config
+    ;; Always in math mode
+    (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+    ;; Set PDF viewer to pdf-tools with correlation
+    (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+    (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+    ;; Close pairs automagically (electric behavior)
+    (setq  LaTeX-electric-left-right-brace t)
+    :bind (
+           :map LaTeX-mode-map
+           ;; Command for cleaning auxiliary files
+           ("C-x M-k" . 'TeX-clean))
+    )
 #+end_src
 
 Usar =reftex=.
