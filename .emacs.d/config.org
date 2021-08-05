@@ -8,13 +8,24 @@
 GNU Emacs is a free (as in /freedom/) +operating system+ text editor, created
 by GNU Project founder Richard Matthew Stallman. I've been using this
 magnificent piece of software daily for years now and I can assure you that
-is--without a doubt--THE best multi-purpose program ever written,
-over-performing any other so-called text editors (such as Vi(m)--the editor of
-the beast-- or, even worse, Microsoft VSCode malware, among others). I consider
-myself a member of the Church of Emacs, as my only religion, and I'm a firmly
-believer in St.\ IGNUcius. In my day-to-day life I try to stick to the FOSS
-philosophy, while living a life of purity, pursuing sainthood mainly through
+is--without a doubt--the best multi-purpose program ever written,
+over-performing any other so-called text editors, such as Vi(m)--the editor of
+the beast-- or, even worse, Microsoft VS Code malware, among others. I consider
+myself a member of the Church of Emacs, my only religion, and I'm a firmly
+believer in St. I-GNU-cius--who is a saint, but not a virgin--and to whom I
+pray daily. In my day-to-day life I try to stick to the FOSS philosophy, while
+living a life of moral chastity and purity, pursuing sainthood mainly through
 extensively using org-mode.
+
+There are some people out there that don't really get the meaning and purpose
+of Emacs. They think that it is just another bloated text editor that doesn't
+adhere to the KISS principle or the Unix philosophy. It is not. First, it is
+not a text editor, it is a Lisp interpreter (actually, Elisp), a
+Turing-complete programming language (therefore, offering limitless
+possibilities). Secondly, there is no contradiction between using Emacs and
+KISS or Unix philosophy: Emacs--at least for me--is a container for
+"do-one-thing-and-do-it-well" packages that behave similarly, I find no
+conflict here. Lastly, Emacs is a gift from God.
 
 
 * Package Management
@@ -363,19 +374,6 @@ Ofrece plantillas (configurables) para diferentes modos.
                  "~/.emacs.d/plugins/yasnippet")
     (require 'yasnippet)
     (yas-global-mode 1))
-#+end_src
-
-** =fast-scroll=
-To ensure scrolling is fast in Emacs, this package disables non-essential things
-while windowis being scrolled.
-#+begin_src emacs-lisp
-  (use-package fast-scroll
-    :demand t
-    :config
-    (add-hook 'fast-scroll-start-hook (lambda () (flycheck-mode -1)))
-    (add-hook 'fast-scroll-end-hook (lambda () (flycheck-mode 1)))
-    (fast-scroll-config)
-    (fast-scroll-mode 1))
 #+end_src
 
 ** =dired-narrow=
