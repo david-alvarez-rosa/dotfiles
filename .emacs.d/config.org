@@ -197,7 +197,7 @@ behaviour.
 ** Scrolling
 I personally don't like automatic scrolling (centering point vertically in the
 window when point moves out of the visible portion of the text) so I have it
-disabled.
+disabled (just set the following number to a large number, greater than 100).
 #+begin_src emacs-lisp
   (setq scroll-conservatively 101)
 #+end_src
@@ -208,40 +208,36 @@ Set keys for forward/backward between paragraphs.
   (define-key global-map (kbd "C-M-p") 'backward-paragraph)
 #+end_src
 
-** Paréntesis
-Colorea los paréntesis en parejas al pasar por encima.
+** Character Pairs
+It can be useful to insert parentheses, braces, quotes and the like in matching
+pairs, e.g., pressing “(” inserts "()", with the cursor in between.
+#+begin_src emacs-lisp
+  (electric-pair-mode t)
+#+end_src
+
+Highlight matching braces.
 #+begin_src emacs-lisp
   (show-paren-mode 1)
 #+end_src
 
-Cerrar las parejas automáticamente (excepto en LaTeX, usa AUCTeX).
-#+begin_src emacs-lisp
-  (setq electric-pair-pairs '(
-                              (?\{ . ?\})
-                              (?\( . ?\))
-                              (?\[ . ?\])
-                              (?\' . ?\')
-                              (?\" . ?\")))
-  (electric-pair-mode t)
-  (eval-after-load "latex"
-    (electric-pair-mode nil))
-#+end_src
+** Ediff
+Ediff provides a convenient way for simultaneous browsing through the
+differences between a pair (or a triple) of files or buffers. The files being
+compared, are shown in separate windows and the differences are highlighted as
+you step through them. You can also copy difference regions from one buffer to
+another (and recover old differences if you change your mind). Another powerful
+feature is the ability to merge a pair of files into a third buffer.
 
-** =ediff=
-Configurar cómo se comparta =ediff=. No abrir una nueva ventana para el control
-y dividir los archivos horizontalmente.
+Don't open new frame for setup window and prefer splitting horizontally.
 #+begin_src emacs-lisp
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
-Al terminar dejar las ventanas como estaban.
-#+begin_src emacs-lisp
-  ;; (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
-#+end_src
-
-** Archivo de personalizaciones
-Crear un archivo diferente para las personalizaciones.
+** Custom VariablesFile
+Place all custom-defined variables in their own file and store the custom
+variable file in the local machine’s home directory outside of version
+control. This enables us to keep specific config local to each machine.
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
   (load custom-file t)
@@ -252,9 +248,10 @@ Crear un archivo diferente para las personalizaciones.
 Esta sección contiene diferentes ajustes que no forman parte de Emacs, pero que
 no son específicos de ningún modo.
 
-** =which-key=
-Muestra los posibles comandos (que completan la secuencia comenzada)
-disponibles.
+** Keybinding Panel =which-key=
+nNice utility for displaying available keybindings in a popup panel. You get an
+overview of what keybindings are available based on the prefix keys you
+entered.
 #+begin_src emacs-lisp
   (use-package which-key
     :init (which-key-mode)
@@ -422,7 +419,6 @@ Numera las diferentes ventanas para facilitar el movimiento entre las mismas.
     :config (setq winum-auto-setup-mode-line nil)
     (winum-mode))
 #+end_src
-
 
 ** TODO =paredit=
 Paredit is great, it brings structural editing to lisps, maintaining the
