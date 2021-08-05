@@ -720,33 +720,8 @@ For handling Python virtual environments, we will use
     (pyenv-mode))
 #+end_src
 
-** Web
-*** =rainbow-mode=
-Subraya los códigos de los colores del color que es.
-#+begin_src emacs-lisp
-  (use-package rainbow-mode
-    :defer t
-    :init
-    (add-hook 'web-mode-hook 'rainbow-mode)
-    :diminish)
-#+end_src
-
-*** TODO Impatient Mode
-Impatient Mode
-https://github.com/netguy204/imp.el
-
-Live JavaScript Coding Emacs/Browser: See your changes in the browser as you type
-
-Usage
-Enable the web server provided by simple-httpd: M-x httpd-start
-
-Publish buffers by enabling the minor mode impatient-mode: M-x impatient-mode
-
-And then point your browser to http://localhost:8080/imp/, select a buffer, and
-watch your changes appear as you type!
-
-*** =web-mode=
-Para editar PHP-HTML-CSS-JS.
+** Web Development
+=web-mode= Para editar PHP-HTML-CSS-JS.
 #+begin_src emacs-lisp
   (use-package web-mode
     :defer t
