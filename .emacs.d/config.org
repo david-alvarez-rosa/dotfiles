@@ -722,19 +722,11 @@ For handling Python virtual environments, we will use
     (setq web-mode-markup-indent-offset 2))
 #+end_src
 
-** Octave
-Abrir en el modo correspondiente scripts de Octave.
+** Octave/Matlab
+Open Matlab files (.m) in Octave mode by default.
 #+begin_src emacs-lisp
   (setq auto-mode-alist
-        (cons
-         '("\\.m$" . octave-mode)
-         auto-mode-alist))
-#+end_src
-
-Configurar el caracter para comentar en Octave.
-#+begin_src emacs-lisp
-  ;; (setq octave-comment-start "%")
-  ;; (setq octave-block-comment-start "%")
+        (cons '("\\.m$" . octave-mode) auto-mode-alist))
 #+end_src
 
 ** R
