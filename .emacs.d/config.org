@@ -739,71 +739,12 @@ Añadir paquete ESS ("Emacs Speaks Statistics") para editor código de R.
     (define-key inferior-ess-r-mode-map ";" 'ess-cycle-assign))
 #+end_src
 
-** TODO p_slides
-p_slides is a static files only, dead simple way, to create semantic slides. The
-slide content is markdown, embedded in a HTML file. When opening a
-presentation.html file, enable markdown-mode.
-
-(add-to-list 'auto-mode-alist '("presentation.html" . markdown-mode))
-(add-hook 'markdown-mode-hook 'flyspell-mode)
-
-** TODO Auto Reload Web Sites
-Introducing a custom browser-reloading-mode. It’s a quick implementation and not
-a real derived mode.
-
-When enabling browser-reloading-mode for a specific buffer, whenever this buffer
-is saved, a command-line utility reload_chromium.sh is called. This in turn is a
-wrapper around xdotool with which a reloading of the Chromium browser is
-triggered.
-
-This is handy when working in a web environment that doesn’t natively support
-hot-reloading (static web pages, for instance) and the page has too much
-(dynamic) content to be displayed properly in impatient-mode. I’m using it for
-example when working on a p_slides slide deck.
-
-(defun reload-chromium ()
-  (when enable-browser-reloading
-    (shell-command-to-string "reload_chromium.sh")))
-
-(defun browser-reloading-mode ()
-  "Finds the open chromium session and reloads the tab"
-  (interactive)
-  ;; When set, disable the local binding and therefore disable the mode
-  (if enable-browser-reloading
-      (setq enable-browser-reloading nil)
-    ;; Otherwise create a local var and set it to True
-    (progn
-      (make-local-variable 'enable-browser-reloading)
-      (setq enable-browser-reloading t))))
-
-;; By default, disable the guard against using `reload-chromium`
-(setq enable-browser-reloading nil)
-(add-hook 'after-save-hook #'reload-chromium)
-
 ** =Magit=
 Es una interfaz completa de Git (control de versiones) para Emacs.
 #+begin_src emacs-lisp
   (use-package magit
-    :bind
-    ("C-x g" . 'magit-status))
+    :bind ("C-x g" . 'magit-status))
 #+end_src
-
-** TODO Dumb Jumb
-https://github.com/jacktasia/dumb-jump
-
-“Jump to definition” with support for multiple programming languages that favors
-“just working”. This means minimal – and ideally zero – configuration with
-absolutely no stored indexes (TAGS) or persistent background processes.
-
-Dumb Jump uses The Silver Searcher ag, ripgrep rg, or grep to find potential
-definitions of a function or variable under point. It uses a set of regular
-expressions based on the file extension, or major-mode, of the current buffer.
-
-(dumb-jump-mode)
-(setq dumb-jump-selector 'ivy)
-Usage
-The one important shortcut is C-M-g which attempts to jump to the definition of
-the thing under point.
 
 
 * Org Mode
