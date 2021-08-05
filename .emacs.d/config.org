@@ -288,14 +288,6 @@ matches.
     :bind ("C-s" . 'swiper))
 #+end_src
 
-** =iedit=
-Para tener múltiplos cursores (edición múltiple). Útil para cambiar el nombre de
-variables.
-#+begin_src emacs-lisp
-  (use-package iedit
-    :bind ("C-;" . 'iedit-mode))
-#+end_src
-
 ** =expand-region=
 Expande la región seleccionada por regiones semánticas.
 #+begin_src emacs-lisp
