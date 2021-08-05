@@ -1099,32 +1099,6 @@ Usar =reftex=.
   (setq reftex-toc-split-windows-fraction 0.2)
 #+end_src
 
-Configar el visor de PDF como =pdf-tools=
-#+begin_src emacs-lisp
-  (setq TeX-view-program-selection (quote
-                                    (((output-dvi has-no-display-manager) "dvi2tty")
-                                     ((output-dvi style-pstricks) "dvips and gv")
-                                     (output-dvi "xdvi")
-                                     (output-pdf "PDF Tools")
-                                     (output-html "xdg-open"))))
-#+end_src
-
-Permitir correlación entre .tex y .pdf.
-#+begin_src emacs-lisp
-  (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-#+end_src
-
-Cerrar parejas automáticamente (por ejemplo: paréntesis).
-#+begin_src emacs-lisp
-  (setq  LaTeX-electric-left-right-brace t)
-#+end_src
-
-Eliminar archivos innecesarios fácilmente.
-#+begin_src emacs-lisp
-  (add-hook 'LaTeX-mode-hook
-            (lambda ()(define-key LaTeX-mode-map (kbd "C-x M-k") 'TeX-clean)))
-#+end_src
-
 #+begin_src emacs-lisp
   (setq LaTeX-item-indent 0)
 #+end_src
@@ -1142,23 +1116,11 @@ No preguntar para guardar y actualizar el /pdf/ después de compilar.
             #'TeX-revert-document-buffer)
 #+end_src
 
-*** =outline-mode=
-Permite esconder/plegar partes del texto. El prefijo es =C-c @=.
-#+begin_src emacs-lisp
-  (defun david/turn-on-outline-minor-mode ()
-    (outline-minor-mode 1))
-
-  (add-hook 'LaTeX-mode-hook 'david/turn-on-outline-minor-mode)
-#+end_src
-
 *** BibTeX
 For managing .bib files. Use =C-c C-c=. Insert entries templates with different
 key bindings. Also, =C-c C-f= for inserting new field.
 #+begin_src emacs-lisp
   (setq bibtex-align-at-equal-sign t)
-  ;; (setq bibtex-text-indentation 14)
-  ;; (setq bibtex-contline-indentation 5)
-
   (setq bibtex-entry-format `(opts-or-alts required-fields
                               numerical-fields whitespace realign
                               last-comma delimiters unify-case
