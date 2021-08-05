@@ -384,7 +384,6 @@ autocorregir con otras palabras =C-.=
 The theme I am currently using.
 #+begin_src emacs-lisp :tangle no
   (use-package spacemacs-theme
-    :defer t
     :init
     (setq custom-enabled-themes '(spacemacs-dark)
           custom-safe-themes '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
@@ -613,7 +612,6 @@ Habilitar corrección de sintaxis al momento usando =flycheck=
 (http://www.flycheck.org/).
 #+begin_src emacs-lisp :tangle no
   (use-package flycheck
-    :defer t
     :init
     (add-hook 'prog-mode-hook 'global-flycheck-mode)
     :diminish)
@@ -627,7 +625,6 @@ Añadir el Projectile.
     :bind (:map projectile-mode-map ("C-c p" . 'projectile-command-map)))
 
   (use-package helm-projectile
-    :defer t
     :init (helm-projectile-on))
 #+end_src
 
@@ -668,11 +665,6 @@ p to jump to previous tag from point (comment-tags-previous-tag).
 (add-hook 'prog-mode-hook 'comment-tags-mode)
 
 ** TODO C/C++
-#+begin_src emacs-lisp :tangle no
-  (use-package cc-mode
-    :defer t)
-  #+end_src
-
 *** TODO =company-c-headers=
 Autocompletar los /headers/.
 #+begin_src emacs-lisp :tangle no
@@ -724,7 +716,6 @@ For handling Python virtual environments, we will use
 =web-mode= Para editar PHP-HTML-CSS-JS.
 #+begin_src emacs-lisp
   (use-package web-mode
-    :defer t
     :config
     (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
