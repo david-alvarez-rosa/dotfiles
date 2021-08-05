@@ -258,63 +258,34 @@ entered.
     :diminish)
 #+end_src
 
-** =swiper=
-Para mejorar la búsqueda.
+** Completion Inteface
+After years using Helm I have decided to switch to Ivy, Counsel and Swiper as
+completion framework.
+
+Ivy is the generic completion mechanism for Emacs and aims to be more
+efficient, smaller, simpler, and smoother to use compared to other completion
+schemes yet highly customizable.
+#+begin_src emacs-lisp
+  (use-package ivy
+    :config
+    (setq ivy-use-virtual-buffers t)
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-count-format "%d/%d "))
+#+end_src
+
+Counsel is a collection of Ivy-enhanced versions of common Emacs commands, i.e,
+takes Ivy completion framework even further providing versions of common Emacs
+commands that are customised to make the best use of Ivy.
+#+begin_src emacs-lisp
+  (use-package counsel
+    :init (counsel-mode))
+#+end_src
+
+Swiper is an alternative to isearch that uses Ivy to show an overview of all
+matches.
 #+begin_src emacs-lisp
   (use-package swiper
     :bind ("C-s" . 'swiper))
-#+end_src
-
-** =helm=
-Para una mejor gestión de ventanas, búsqueda de archivos y de comandos.
-#+begin_src emacs-lisp
-  (use-package helm
-    :init (helm-mode 1)
-    :bind (("C-x C-f" . 'helm-find-files)
-           ("C-x b" . 'helm-buffers-list)
-           ("M-x" . 'helm-M-x)
-           ("C-x C-r" . 'helm-recentf)
-           :map helm-map
-           ("<M-tab>" . 'helm-execute-persistent-action)
-           :map helm-find-files-map
-           ;; ("C-b" . 'helm-find-files-up-one-level)
-           ("<M-tab>" . 'helm-execute-persistent-action)
-           :map helm-buffer-map
-           ("<M-tab>" . 'helm-execute-persistent-action))
-    :config
-    (defun david/helm-hide-minibuffer ()
-      (when (with-helm-buffer helm-echo-input-in-header-line)
-        (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-          (overlay-put ov 'window (selected-window))
-          (overlay-put ov 'face
-                       (let ((bg-color (face-background 'default nil)))
-                         `(:background ,bg-color :foreground ,bg-color)))
-          (setq-local cursor-type nil))))
-    (add-hook 'helm-minibuffer-set-up-hook 'david/helm-hide-minibuffer)
-    (setq helm-autoresize-max-height 0
-          helm-autoresize-min-height 40
-          helm-m-x-fuzzy-match t
-          helm-buffers-fuzzy-matching t
-          helm-recentf-fuzzy-match t
-          helm-semantic-fuzzy-match t
-          helm-imenu-fuzzy-match t
-          helm-split-window-in-side-p t
-          helm-move-to-line-cycle-in-source t
-          helm-ff-search-library-in-sexp t
-          helm-scroll-amount 8
-          helm-echo-input-in-header-line t
-          helm-ff-auto-update-initial-value t
-          helm-boring-buffer-regexp-list '("\\` " "\\`\\*helm" "\\`\\*echo area"
-                                           "\\`\\*minibuf" "magit" "elfeed" "*Messages*"
-                                           "*Ediff Registry*" "*Calculator*" "Calc Trail*"
-                                           "*Help*" "Suscripciones.org" "Cumpleaños.org"
-                                           "*Calendar*" ".*.synctex.gz")))
-#+end_src
-
-Configuraciones extra.
-#+begin_src emacs-lisp
-  (require 'helm-config)
-  (helm-autoresize-mode 1)
 #+end_src
 
 ** =iedit=
