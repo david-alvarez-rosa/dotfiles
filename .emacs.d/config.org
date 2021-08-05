@@ -522,9 +522,9 @@ Utility to center buffer (distraction-free editing).
 * Funciones
 Varias funciones extras útiles.
 
-** Movimiento entre texto
+** TODO Movimiento entre texto
 Funciones para mejorar los comandos de movimiento.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (defun david/next-lines ()
     (interactive)
     (next-line 15))
@@ -554,7 +554,7 @@ Funciones para mejorar la división de la pantalla.
 
 Función para cerrar las ventanas sin pedir confirmación.
 #+begin_src emacs-lisp
-  (defun david/kill-curr-buffer()
+  (defun david/kill-curr-buffer ()
     (interactive)
     (kill-buffer (current-buffer)))
   (global-set-key (kbd "C-x k") 'david/kill-curr-buffer)
@@ -562,22 +562,12 @@ Función para cerrar las ventanas sin pedir confirmación.
 
 Función para cerrar ventana sin pedir confirmación y quitándola.
 #+begin_src emacs-lisp
-  (defun david/kill-curr-buffer-2()
+  (defun david/kill-curr-buffer-2 ()
     (interactive)
     (kill-buffer (current-buffer))
     (delete-window))
   (global-set-key (kbd "C-x C-k") 'david/kill-curr-buffer-2)
 #+end_src
-
-Actualizar la otra ventana.
-#+begin_src emacs-lisp
-  (defun david/update-other-buffer ()
-    (interactive)
-    (other-window 1)
-    (revert-buffer nil t)
-    (other-window -1))
-#+end_src
-
 
 
 * Programación
@@ -586,18 +576,6 @@ Actualizar la otra ventana.
 Corrige la indentación automáticamente al cambiar de linea con la tecla =RET=.
 #+begin_src emacs-lisp
   (define-key global-map (kbd "RET") 'newline-and-indent)
-#+end_src
-
-*** Compilar
-No preguntar por el comando de compilación (siempre será =make -k=), y solo
-preguntará si se presiona el comando de copilar con un prefijo numério.
-#+begin_src emacs-lisp
-  ;; (setq compilation-read-command nil)
-#+end_src
-
-Definir comando para compilar.
-#+begin_src emacs-lisp
-  (global-set-key "\C-x\C-m" 'compile)
 #+end_src
 
 *** =nlinum-relative=
@@ -628,15 +606,12 @@ Usar 2 espacios en vez de un tabulador.
 Eliminar espacios al final de linea al guardar.
 #+begin_src emacs-lisp
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
-  ;; (add-hook 'before-save-hook '(lambda()
-  ;;                               (when (not (derived-mode-p 'org-mode))
-  ;;                                 (delete-trailing-whitespace))))
 #+end_src
 
-*** Corrección de sintaxis
+*** TODO Corrección de sintaxis
 Habilitar corrección de sintaxis al momento usando =flycheck=
 (http://www.flycheck.org/).
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package flycheck
     :defer t
     :init
@@ -692,27 +667,20 @@ p to jump to previous tag from point (comment-tags-previous-tag).
         comment-tags-lighter nil))
 (add-hook 'prog-mode-hook 'comment-tags-mode)
 
-** C/C++
-#+begin_src emacs-lisp
+** TODO C/C++
+#+begin_src emacs-lisp :tangle no
   (use-package cc-mode
     :defer t)
   #+end_src
 
-*** =company-c-headers=
+*** TODO =company-c-headers=
 Autocompletar los /headers/.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package company-c-headers
     :defer t
     :config
     (add-to-list 'company-backends 'company-c-headers)
     (add-to-list 'company-c-headers-path-system "/usr/include/c++/8.2.1/"))
-#+end_src
-
-*** Plegar código
-Permiter plegar partes de código (mirando parejas de llaves/paréntesis
-generalmente) con el comando: =C-c @ C-c= entre otros.
-#+begin_src emacs-lisp
-  (add-hook 'c-mode-common-hook 'hs-minor-mode)
 #+end_src
 
 ** Python
