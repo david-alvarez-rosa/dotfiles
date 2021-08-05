@@ -258,7 +258,10 @@ entered.
     :diminish)
 #+end_src
 
-** Completion Inteface
+** TODO Completion Inteface
+:PROPERTIES:
+:header-args: :tangle no
+:END:
 After years using Helm I have decided to switch to Ivy, Counsel and Swiper as
 completion framework.
 
@@ -267,10 +270,12 @@ efficient, smaller, simpler, and smoother to use compared to other completion
 schemes yet highly customizable.
 #+begin_src emacs-lisp
   (use-package ivy
+    :init (ivy-mode)
     :config
     (setq ivy-use-virtual-buffers t)
     (setq enable-recursive-minibuffers t)
-    (setq ivy-count-format "%d/%d "))
+    (setq ivy-count-format "%d/%d ")
+    (setq ivy-initial-inputs-alist nil))
 #+end_src
 
 Counsel is a collection of Ivy-enhanced versions of common Emacs commands, i.e,
@@ -288,26 +293,25 @@ matches.
     :bind ("C-s" . 'swiper))
 #+end_src
 
-** =expand-region=
-Expande la región seleccionada por regiones semánticas.
+** Expand region
+Expand region increases the selected region by semantic units. Just keep
+pressing the key until it selects what you want. Expand region is done by
+pressing ~C-=~ and contracting by prefixing the shortcut with a negative
+argument argument, i.e., ~C-- C-=~.
 #+begin_src emacs-lisp
   (use-package expand-region
     :bind ("C-=" . 'er/expand-region))
 #+end_src
 
-** =yasnippet=
-Ofrece plantillas (configurables) para diferentes modos.
+** Snippets
+YASnippets is a template system for Emacs. It allows you to type an
+abbreviation and automatically expand it into function templates.
 #+begin_src emacs-lisp
   (use-package yasnippet
-    :defer t
     :config
     (use-package yasnippet-snippets)
     (yas-reload-all)
-    :init
-    (add-to-list 'load-path
-                 "~/.emacs.d/plugins/yasnippet")
-    (require 'yasnippet)
-    (yas-global-mode 1))
+    :hook (prog-mode . yas-minor-mode))
 #+end_src
 
 ** =dired-narrow=
@@ -319,10 +323,10 @@ a vista normal.
                 ("/" . 'dired-narrow-fuzzy)))
 #+end_src
 
-** =company=
+** TODO =company=
 Paquete para autocompletar configurado para avanzar y retroceder con los
 comandos clásicos de Emacs.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package company
     :config (setq company-idle-delay 1
                   company-minimum-prefix-length 3
@@ -338,9 +342,9 @@ comandos clásicos de Emacs.
     :diminish)
 #+end_src
 
-** =winum=
+** TODO =winum=
 Numera las diferentes ventanas para facilitar el movimiento entre las mismas.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package winum
     :bind (("C-`" . 'winum-select-window-by-number)
            ("C-²" . 'winum-select-window-by-number)
@@ -366,7 +370,7 @@ Básicamente para gestionar las parejas de manera sencilla.
   (use-package paredit)
   #+end_src
 
-** =flyspell=
+** Spell Checking
 Corrector (configurado en español). Para buscar siguiente error =C-,= y para
 autocorregir con otras palabras =C-.=
 #+begin_src emacs-lisp
@@ -378,7 +382,7 @@ autocorregir con otras palabras =C-.=
 
 * Theme
 The theme I am currently using.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package spacemacs-theme
     :defer t
     :init
@@ -420,7 +424,7 @@ the terminal version of Emacs, though, so it's not set there.
 
 ** Barra de estado
 Configuración de la barra de estado.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package spaceline
     :config
     (require 'spaceline-config)
@@ -486,7 +490,7 @@ Para no mostar algunos modos menores en la barra de estado.
 
 ** Transparencia
 Configurar la transparencia.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (setq transparency_level 0)
   (defun david/cycle-transparency ()
     "Permite cambiar la transparencia entre 3 modos (desactivado, medio, alto)."
@@ -507,7 +511,7 @@ Configurar la transparencia.
 
 ** Centered Buffer
 Utility to center buffer (distraction-free editing).
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package sublimity
     :config
     (require 'sublimity-attractive)
