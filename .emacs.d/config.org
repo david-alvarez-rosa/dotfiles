@@ -258,13 +258,6 @@ entered.
     :diminish)
 #+end_src
 
-** TODO =avy=
-Permite buscar caracteres fácilmente.
-#+begin_src emacs-lisp
-  (use-package avy
-    :bind ("M-s" . avy-goto-char))
-#+end_src
-
 ** =multiple-cursors=
 Permite edición múltiple (https://github.com/magnars/multiple-cursors.el).
 #+begin_src emacs-lisp
