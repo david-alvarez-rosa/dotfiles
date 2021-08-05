@@ -249,24 +249,13 @@ Esta sección contiene diferentes ajustes que no forman parte de Emacs, pero que
 no son específicos de ningún modo.
 
 ** Keybinding Panel =which-key=
-nNice utility for displaying available keybindings in a popup panel. You get an
+Nice utility for displaying available keybindings in a popup panel. You get an
 overview of what keybindings are available based on the prefix keys you
 entered.
 #+begin_src emacs-lisp
   (use-package which-key
     :init (which-key-mode)
     :diminish)
-#+end_src
-
-** =multiple-cursors=
-Permite edición múltiple (https://github.com/magnars/multiple-cursors.el).
-#+begin_src emacs-lisp
-  (use-package multiple-cursors
-    :bind (("C->" . 'mc/mark-next-like-this)
-           ("C-<" . 'mc/mark-previous-like-this)
-           ("C-c C-<" . 'mc/mark-all-like-this)
-           ("C-S-c C-S-c" . 'nmc/edit-lines))
-    :config (define-key mc/keymap (kbd "<return>") nil))
 #+end_src
 
 ** =rainbow-delimiters=
