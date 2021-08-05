@@ -720,18 +720,6 @@ For handling Python virtual environments, we will use
     (pyenv-mode))
 #+end_src
 
-*** Jupyter Notebook
-For Jupyter Notebook integration we will use =ein=.
-#+begin_src emacs-lisp
-    (use-package ein)
-#+end_src
-
-Basic usage:
-- =C-c C-o= after opening =.ipynb= file for editing as notebook.
-- =M-x ein:run= launches a Jupyter process from Emacs.
-- =M-x ein:login= connects to a running Jupyter process.
-- =C-c C-f= for opening new notebook.
-
 ** Web
 *** =rainbow-mode=
 Subraya los códigos de los colores del color que es.
