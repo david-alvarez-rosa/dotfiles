@@ -234,7 +234,7 @@ Don't open new frame for setup window and prefer splitting horizontally.
   (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
-** Custom VariablesFile
+** Custom File
 Place all custom-defined variables in their own file and store the custom
 variable file in the local machine’s home directory outside of version
 control. This enables us to keep specific config local to each machine.
@@ -255,14 +255,6 @@ entered.
 #+begin_src emacs-lisp
   (use-package which-key
     :init (which-key-mode)
-    :diminish)
-#+end_src
-
-** =rainbow-delimiters=
-Colorear los paréntesis de acuerdo con su profundidad.
-#+begin_src emacs-lisp
-  (use-package rainbow-delimiters
-    :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
     :diminish)
 #+end_src
 
