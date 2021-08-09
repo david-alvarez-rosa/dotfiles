@@ -358,15 +358,6 @@ Numera las diferentes ventanas para facilitar el movimiento entre las mismas.
     (winum-mode))
 #+end_src
 
-** TODO =paredit=
-Paredit is great, it brings structural editing to lisps, maintaining the
-syntactical correctness of your code.
-[[http://danmidwood.com/content/2014/11/21/animated-paredit.html]]
-Básicamente para gestionar las parejas de manera sencilla.
-#+begin_src emacs-lisp :tangle no
-  (use-package paredit)
-  #+end_src
-
 ** Spell Checking
 Corrector (configurado en español). Para buscar siguiente error =C-,= y para
 autocorregir con otras palabras =C-.=
