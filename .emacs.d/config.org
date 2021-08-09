@@ -409,23 +409,41 @@ autocorregir con otras palabras =C-.=
 #+end_src
 
 
-* Theme
-The theme I am currently using.
-#+begin_src emacs-lisp :tangle no
-  (use-package spacemacs-theme
-    :init
-    (setq custom-enabled-themes '(spacemacs-dark)
-          custom-safe-themes '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+* Interface
+Settings related to interface.
+
+** Theme
+I am using Doom Themes. I find creating own theme is too much work and it's now
+worth your time. In the past I used Spacemacs theme and I was nice, but I
+became bored of it.
+#+begin_src emacs-lisp
+  (use-package doom-themes
+    :config
+    (setq doom-themes-enable-bold t
+          doom-themes-enable-italic t)
+    (load-theme 'doom-one t)
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config))
 #+end_src
 
-Estilo de letra.
-#+begin_src emacs-lisp :tangle no
-  (set-frame-font "Inconsolata 11")
+** Modeline
+For the modeline I am using also Doom Modeline. This package requires the fonts
+included with =all-the-icons= to be installed.
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :init (doom-modeline-mode 1))
+#+end_src
+
+** Font
+Set default font. I'm currently using Hack (in the past I used Inconsolata).
+#+begin_src emacs-lisp
+  (set-frame-font "Hack 9")
 #+end_src
 
 ** Basic Interface Settings
 Settings related to built-in enhancements of the UI that do not depend on any
 external package.
+
 *** Disable Menus and Scrollbars
 Disable tool bar, menu bar and scroll bar. All three are very ugly and
 unnecesary. Might be handy for normies, but not for chad Emacs users.
