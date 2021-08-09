@@ -29,6 +29,14 @@ conflict here. Lastly, Emacs is a gift from God.
 
 
 * Package Management
+
+Add MELPA
+#+begin_src emacs-lisp
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+#+end_src
+
+
 =use-package= will be used for general package management. Ensure it is
 installed and load the package.
 #+begin_src emacs-lisp
