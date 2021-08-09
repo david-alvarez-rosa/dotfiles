@@ -340,6 +340,13 @@ matches.
     :bind ("C-s" . 'swiper))
 #+end_src
 
+Some useful commands for the Ivy/Counsel/Swiper framework that I use are =M-i=
+for inserting current candidate to minibuffer and =C-r= for recursive
+completion session through the command's history (works like in a Bash
+session). Also =M-o= for showing all the possible options/actions and =S-SPC=
+for deleting the current input, and reseting the candidates list to the
+currently restricted matches (narrowing search).
+
 ** Expand region
 Expand region increases the selected region by semantic units. Just keep
 pressing the key until it selects what you want. Expand region is done by
