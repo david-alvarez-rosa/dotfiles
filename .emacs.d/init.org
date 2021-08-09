@@ -1454,13 +1454,9 @@ la función predetermianda.
   (define-key elfeed-search-mode-map (kbd "RET") 'david/elfeed-search-show-entry)
 #+end_src
 
-TODO: Actualizar automáticamente al abrir Emacs.
-#+begin_src emacs-lisp
-  ;; (add-hook 'emacs-startup-hook 'elfeed-update)
-#+end_src
-
-** =elfeed-org=
-Ayuda a gestionar 'elfeed' con 'org-mode'.
+** Elfeed Org
+Use Elfeed Org for managing subscriptions to RSS/Atom feeds using an org mode
+file.
 #+begin_src emacs-lisp
   (use-package elfeed-org
     :config
@@ -1468,8 +1464,8 @@ Ayuda a gestionar 'elfeed' con 'org-mode'.
     (setq rmh-elfeed-org-files (list "~/Documents/Suscripciones.org")))
 #+end_src
 
-** =elfeed-goodies=
-Otro paquete más para =elfeed= (para la interfaz).
+** Elfeed Goodies
+This package allows to configure the Elfeed interface.
 #+begin_src emacs-lisp
   (use-package elfeed-goodies
     :config
@@ -1481,8 +1477,9 @@ Otro paquete más para =elfeed= (para la interfaz).
           elfeed-goodies/powerline-default-separator nil))
 #+end_src
 
-** Funciones
-Abrir vídeos de la /feed/ de =elfeed= usando =mpv=.
+** Custom Functions
+For interacting with video (e.g., Youtube subscriptions). This allows to open
+the media with mpv.
 #+begin_src emacs-lisp
   (defun david/elfeed-play-with-mpv ()
     (interactive)
@@ -1508,7 +1505,7 @@ Abrir vídeos de la /feed/ de =elfeed= usando =mpv=.
   (define-key elfeed-search-mode-map (kbd "O") 'david/elfeed-play-with-mpv-with-quality)
 #+end_src
 
-Ignorar la entrada actual (concretamente, añadir la TAG =no=).
+Ignore current entry (i.e., tag it with =no= TAG).
 #+begin_src emacs-lisp
   (defun david/elfeed-ignore ()
     (interactive)
