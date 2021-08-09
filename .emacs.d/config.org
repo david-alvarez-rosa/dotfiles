@@ -261,10 +261,7 @@ entered.
     :diminish)
 #+end_src
 
-** TODO Completion Inteface
-:PROPERTIES:
-:header-args: :tangle no
-:END:
+** Completion Inteface
 After years using Helm I have decided to switch to Ivy, Counsel and Swiper as
 completion framework.
 
@@ -317,7 +314,7 @@ abbreviation and automatically expand it into function templates.
     :hook (prog-mode . yas-minor-mode))
 #+end_src
 
-** =dired-narrow=
+** TODO =dired-narrow=
 Permite filtrar directorios en =dired=, usar =/= para comenzar y =g= para volver
 a vista normal.
 #+begin_src emacs-lisp
@@ -326,24 +323,21 @@ a vista normal.
                 ("/" . 'dired-narrow-fuzzy)))
 #+end_src
 
-** TODO =company=
-Paquete para autocompletar configurado para avanzar y retroceder con los
-comandos clásicos de Emacs.
-#+begin_src emacs-lisp :tangle no
+** Company Mode
+Company is a text completion framework for Emacs. The name stands for "complete
+anything". It uses pluggable back-ends and front-ends to retrieve and display
+completion candidates.
+#+begin_src emacs-lisp
   (use-package company
-    :config (setq company-idle-delay 1
-                  company-minimum-prefix-length 3
-                  company-show-numbers t)
-    (global-company-mode)
-    :bind (("C-:" . company-complete) ; Para no esperar.
-           :map company-active-map
-           ("M-n" . nil)
-           ("M-p" . nil)
-           ("C-n" . #'company-select-next)
-           ("C-p" . #'company-select-previous)
-           ("SPC" . #'company-abort))
-    :diminish)
+    :config (setq company-show-quick-access t)
+    :init (global-company-mode)
+    :bind ("C-:" . company-complete))
 #+end_src
+
+Completion will start automatically after you type a few letters. Use =M-n= and
+=M-p= to select, =RET= to complete or =TAB= to complete the common part. Search
+through the completions with =C-s=, =C-r= and =C-o=. Press =M-(digit)= to
+quickly complete with one of the first 10 candidates.
 
 ** TODO =winum=
 Numera las diferentes ventanas para facilitar el movimiento entre las mismas.
