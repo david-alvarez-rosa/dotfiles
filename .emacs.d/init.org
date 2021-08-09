@@ -913,60 +913,10 @@ Org-mode manual for more information.
   (require 'org-habit)
 #+end_src
 
-** Archivar
-Configurar la función de archivo.
+** Archive
+Set default org archive location.
 #+begin_src emacs-lisp
-  (setq org-archive-location "~/.emacs.d/archive/%s::")
-#+end_src
-
-** Exportar
-Al exportar a iCalendar, incluir los TODO.
-#+begin_src emacs-lisp
-  ;; (setq org-icalendar-include-todo t)
-#+end_src
-
-Añadir el paquete =minted= al exportar LaTeX.
-#+begin_src emacs-lisp
-  ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
-  ;; (setq org-latex-listings 'minted)
-#+end_src
-
-*** Recargar
-Automáticamente recargar el pdf compilado (para LaTeX y para Beamer).
-#+begin_src emacs-lisp
-(defun david/org-compile-beamer-and-update-other-buffer ()
-  "Has as a premise that it's run from an org-mode buffer and the
-   other buffer already has the PDF open"
-  (interactive)
-  (org-beamer-export-to-pdf)
-  (david/update-other-buffer))
-
-(defun david/org-compile-latex-and-update-other-buffer ()
-  "Has as a premise that it's run from an org-mode buffer and the
-   other buffer already has the PDF open"
-  (interactive)
-  (org-latex-export-to-pdf)
-  (david/update-other-buffer))
-
-(define-key org-mode-map (kbd "C-c lr") 'david/org-compile-latex-and-update-other-buffer)
-(define-key org-mode-map (kbd "C-c br") 'david/org-compile-beamer-and-update-other-buffer)
-#+end_src
-
-** Esfuerzo
-Ask for an effort estimate when clocking in.
-#+begin_src emacs-lisp
-  (add-hook 'org-clock-in-prepare-hook
-            'david/org-mode-ask-effort)
-
-  (defun david/org-mode-ask-effort ()
-    "Ask for an effort estimate when clocking in."
-    (unless (org-entry-get (point) "Effort")
-      (let ((effort
-             (completing-read
-              "Effort: "
-              (org-entry-get-multivalued-property (point) "Effort"))))
-        (unless (equal effort "")
-          (org-set-property "Effort" effort)))))
+  (setq org-archive-location "~/Documents/Archive//%s::")
 #+end_src
 
 
