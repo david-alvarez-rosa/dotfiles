@@ -3,6 +3,7 @@
 #+AUTHOR: David Álvarez Rosa
 #+EMAIL: david@alvarezrosa.com
 #+DESCRIPTION: My personal GNU Emacs configuration file.
+#+PROPERTY: header-args :tangle yes
 
 
 GNU Emacs is a free (as in /freedom/) +operating system+ text editor, created
@@ -534,15 +535,6 @@ Añadir el Projectile.
   (use-package projectile
     :config (projectile-mode +1)
     :bind (:map projectile-mode-map ("C-c p" . 'projectile-command-map)))
-
-  (use-package helm-projectile
-    :init (helm-projectile-on))
-#+end_src
-
-Añadir el paquete =helm-ag= para buscar en código. Necesario tener instalado el
-programa =ag=. En Arch Linux: =pacman -S the_silver_searcher=.
-#+begin_src emacs-lisp
-  (use-package helm-ag)
 #+end_src
 
 *** TODO Comentarios
@@ -763,7 +755,7 @@ Configurar la posición de las etiquetas.
 #+end_src
 
 Cambiar los puntos suspensivos.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (setq org-ellipsis " ⚡")
 #+end_src
 
@@ -800,7 +792,7 @@ Dejar las ventanas como estaban al quitar y abrir en buffer actual la agenda.
 
 *** =org-bullets=
 Cambia los asteriscos por bolas.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package org-bullets
     :config
     (add-hook 'org-mode-hook(lambda () (org-bullets-mode)))
