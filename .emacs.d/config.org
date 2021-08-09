@@ -358,7 +358,7 @@ Numera las diferentes ventanas para facilitar el movimiento entre las mismas.
     (winum-mode))
 #+end_src
 
-** Spell Checking
+** TODO Spell Checking
 Corrector (configurado en español). Para buscar siguiente error =C-,= y para
 autocorregir con otras palabras =C-.=
 #+begin_src emacs-lisp
@@ -431,7 +431,7 @@ Configuración de la barra de estado.
 #+end_src
 
 Mostrar la posición del cursor en el texto y la hora.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (setq line-number-mode t
         column-number-mode t
         display-time-24hr-format t
@@ -441,7 +441,7 @@ Mostrar la posición del cursor en el texto y la hora.
 #+end_src
 
 Mostrar estado de la batería en la barra.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package fancy-battery
     :config (setq fancy-battery-show-percentage t
                   battery-update-interval 15)
@@ -451,28 +451,12 @@ Mostrar estado de la batería en la barra.
 #+end_src
 
 Mostrar posición del cursor de manera gráfica.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package nyan-mode
     :init (nyan-mode 1)
     :config (setq nyan-animate-nyancat t
                   nyan-wavy-trail t)
     (nyan-start-animation))
-#+end_src
-
-*** =diminish=
-Para no mostar algunos modos menores en la barra de estado.
-#+begin_src emacs-lisp
-(use-package diminish
-  :init
-  (diminish 'visual-line-mode)
-  (diminish 'subword-mode)
-  (diminish 'page-break-lines-mode)
-  (diminish 'auto-revert-mode)
-  (diminish 'highlight-indent-guides-mode)
-  (diminish 'auto-fill-function)
-  (diminish 'org-indent-mode)
-  ;; (diminish 'eldoc-mode)
-  (diminish 'yas-minor-mode))
 #+end_src
 
 ** Transparencia
@@ -1060,7 +1044,7 @@ Major mode for editting Markdown-formatted text.
 ** LaTeX
 Configuración de LaTeX con AUCTeX.
 Siempre en modo matemático.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package auctex
     :config
     ;; Always in math mode
@@ -1534,8 +1518,7 @@ Configurar cómo se muestran las imágenes en =mu4e=
 
 Hacer más probable el mostrar correos como texto.
 #+begin_src emacs-lisp
-(setq mu4e-view-html-plaintext-ratio-heuristic  most-positive-fixnum)
-;; (setq mu4e-compose-format-flowed t)
+  (setq mu4e-view-html-plaintext-ratio-heuristic  most-positive-fixnum)
 #+end_src
 
 ** Otros
