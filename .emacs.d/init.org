@@ -671,45 +671,45 @@ Considerar 'a)', 'A' y 'A)' como listas de elementos.
   (setq org-list-allow-alphabetical t)
 #+end_src
 
-** Varios
-*** Indentar
-Indentar.
+** Indent Mode
+Launch org mode in indent mode.
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook 'org-indent-mode)
 #+end_src
 
-*** Comandos rápidos
-Habilitar los comandos rápidos para acciones.
+** Speed Commands
+Activate single letter commands at beginning of a headline.
 #+begin_src emacs-lisp
   (setq org-use-speed-commands t)
-  (setq org-use-speed-commands
-        (lambda () (and (looking-at org-outline-regexp) (looking-back "^\**"))))
 #+end_src
 
-Habilitar la introdución de bloques como era antiguamente, esto es, usar <KEY
-para introducir bloques. Ahora mismo el método recomendado es =C-c C-,= que
-ejecuta =org-structure-template-alist=.
-#+begin_src emacs-lisp :tangle no
-  (require 'org-tempo)
-#+end_src
+This is very useful for navigating/modifying org mode files. I usually use
+=n=/=p= for next/previous, =b=/=f= for backward/forward, and =l=/=r= for
+left/right.
 
-*** =REFILE=
-Configurar el /refile/ con =C-c w=.
+** Refile
+Configuration for refiling command =C-c w=.
 #+begin_src emacs-lisp
-  (setq org-refile-targets '((nil :maxlevel . 1)
-                                  (org-agenda-files :maxlevel . 1)))
+  (setq org-refile-targets '((nil :maxlevel . 2)
+                                  (org-agenda-files :maxlevel . 2)))
   (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-use-outline-path 'file)
 #+end_src
 
-*** Captura
+** Capture templates
 Permitir tomar notas rápidamente.
 #+begin_src emacs-lisp
   (setq org-default-notes-file "~/Documents/Tasks.org")
   (define-key global-map (kbd "C-c c") 'org-capture)
 #+end_src
 
-Plantillas para tomar notas.
+Set my custom capture templates. Brief description of them:
+- Standalone Tasks: main template for TODO tasks.
+- Email Tasks: template for capturing emails I need to reply to (with link of
+  course).
+- Link Tasks: similar to standalone tasks, but with link (e.g., email or Elfeed
+  link).
+- Text: tempalte for taking quick notes.
 #+begin_src emacs-lisp
   (setq org-capture-templates
         '(("t" "Standalone Tasks" entry
@@ -727,15 +727,22 @@ Plantillas para tomar notas.
            "* %?" :empty-lines-before 1 :empty-lines-after 2)))
 #+end_src
 
-*** Keywords
+** Keywords
+Custom todo keywords. I use them as follows:
+- TODO: task that needs to be done (in order, depending priority).
+- WAIT: I am waiting for something that does not depend on myself (i.e,
+  something external).
+- NEXT: todo task, that is on-going or is next task to be done.
+- DONE: task is done.
+- CANCELLED: task is cancelled.
 #+begin_src emacs-lisp
   (setq org-todo-keywords
         '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|"
                     "DONE(d)" "CANCELLED(c)")))
 #+end_src
 
-** Evaluar código
-Permitir evaluar código de los siguientes lenguajes.
+** Code Evaluation
+Allow code blocks in these languages to be evaluated with =C-c C-c=.
 #+begin_src emacs-lisp
   (eval-after-load "org"
         (org-babel-do-load-languages
@@ -752,31 +759,20 @@ Permitir evaluar código de los siguientes lenguajes.
            (js . t))))
 #+end_src
 
-Abrir código fuente (en 'org-mode') sin dividir el 'buffer'.
-#+begin_src emacs-lisp
-  (setq org-src-window-setup 'reorganize-frame)
-#+end_src
-
-No preguntar por confirmación al evaluar código.
+Don't ask for confirmation for evaluating code.
 #+begin_src emacs-lisp
   (setq org-confirm-babel-evaluate nil)
 #+end_src
 
 ** Interfaz
 Configurar la posición de las etiquetas.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (setq org-tags-column -72)
 #+end_src
 
 Cambiar los puntos suspensivos.
 #+begin_src emacs-lisp :tangle no
   (setq org-ellipsis " ⚡")
-#+end_src
-
-Mostrar las fechas en formato europeo.
-#+begin_src emacs-lisp
-  (setq org-time-stamp-custom-formats (quote ("<%d-%m-%y %a>" . "<%d-%m-%y %a %H:%M>")))
-  (setq org-display-custom-times t)
 #+end_src
 
 Configurar opciones para guardar las interacciones.
@@ -786,26 +782,21 @@ Configurar opciones para guardar las interacciones.
 #+end_src
 
 Configurar colores para las diferentes prioridades.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (setq org-priority-faces '((65 :foreground "#e45649" :weight bold :face bold)
                              (66 :foreground "#dc752f" :weight bold :face bold)
                              (67 :foreground "#0098dd" :weight bold :face bold)))
 #+end_src
 
-No truncar las lineas demasiado largas (y desactivar =visual-line-mode=).
-#+begin_src emacs-lisp
-  (add-hook 'org-mode-hook (lambda () (setq truncate-lines t)))
-  (add-hook 'org-mode-hook (lambda () (setq visual-line-mode nil)))
-#+end_src
-
-Dejar las ventanas como estaban al quitar y abrir en buffer actual la agenda.
+Restore windows after quitting org agenda.
 #+begin_src emacs-lisp
   (setq org-agenda-restore-windows-after-quit t)
   ;; (setq org-agenda-window-setup "current-window")
 #+end_src
 
-*** =org-bullets=
-Cambia los asteriscos por bolas.
+*** TODO =org-bullets=
+Cambia los asteriscos por bolas. Aquí mirar el paquete =org-superstar= que es
+una versión moderna de este. Y mirar qué lista de bolas poner.
 #+begin_src emacs-lisp :tangle no
   (use-package org-bullets
     :config
