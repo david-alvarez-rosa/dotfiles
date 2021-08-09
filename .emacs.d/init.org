@@ -987,44 +987,29 @@ key bindings. Also, =C-c C-f= for inserting new field.
 #+end_src
 
 
-* Visor de PDF
+* PDF Viewer
 Usar =pdf-tools= como visor de PDF y configurar los diferentes comandos de
 movimiento.
+
+PDF Tools PDF Tools is, among other things, a replacement of DocView for PDF
+files. The key difference is that pages are not pre-rendered by
+e.g. ghostscript and stored in the file-system, but rather created on-demand
+and stored in memory.
+
+Disable here Swiper for searching, and fallback to Isearch, since Swiper
+searchs in the source code rather than in the PDF itself.
 #+begin_src emacs-lisp
   (use-package pdf-tools
     :config
-    (pdf-tools-install) ; Iniciar.
-    (with-eval-after-load 'pdf-links
-      (define-key pdf-links-minor-mode-map (kbd "f") 'image-forward-hscroll))
-    (defun david/pdf-tools-previous-lines ()
-      (interactive)
-      (pdf-view-previous-line-or-previous-page 15))
-    (defun david/pdf-tools-next-lines ()
-      (interactive)
-      (pdf-view-next-line-or-next-page 15))
+    (pdf-tools-install)
     :bind (:map pdf-view-mode-map
-                ("\C-s" . 'isearch-forward) ; "Swiper" no funciona aquí.
-                ;; Mejora en los comandos básicos de movimiento.
-                ("n" . 'pdf-view-next-line-or-next-page)
-                ("p" . 'pdf-view-previous-line-or-previous-page)
-                ("d" . 'david/pdf-tools-next-lines)
-                ("u" . 'david/pdf-tools-previous-lines)
-                ("f" . 'image-forward-hscroll)
-                ("b" . 'image-backward-hscroll)
-                ("l" . 'image-forward-hscroll)
-                ("h" . 'image-backward-hscroll)
-                ("." . 'pdf-view-next-page-command)
-                ("," . 'pdf-view-previous-page-command)))
+                ("C-s" . 'isearch-forward)))
 #+end_src
 
 Slices are really useful:
 - =s r= reset slice.
 - =s m= set slice with mouse.
 - =s b= set slice using bounding box.
-#+begin_src emacs-lisp
-  ;; (add-hook 'pdf-view-mode-hook 'pdf-view-auto-slice-minor-mode)
-#+end_src
-
 
 * Music Player
 Para controlar la reproducción de música desde Emacs. Debe estar instalado
