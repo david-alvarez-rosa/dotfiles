@@ -15,9 +15,7 @@
 # Emacs
 !/.emacs.d
 /.emacs.d/*
-!/.emacs.d/config.org
-!/.emacs.d/init.el
-!/.emacs.d/custom.el
+!/.emacs.d/init.org
 
 # Bash.
 !/.bashrc
