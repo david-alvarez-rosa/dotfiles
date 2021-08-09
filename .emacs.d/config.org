@@ -1516,24 +1516,6 @@ Mejorar la gestión de los archivos adjuntos (con =dired=).
   (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 #+end_src
 
-Comprobar si se ha adjunto el archivo cuando se debería. TODO: esto no está
-funcionando.
-#+begin_src emacs-lisp
-  (defvar david/message-attachment-regexp
-    "\\([Tt]e mando\\|[Tt]e mandamos\\|[Aa]djunto|pdf|[Aa]rchivo\\)")
-  (defun david/message-check-attachment nil
-    "Comprueba si hay realmente un archivo adjuntado cuando yo lo menciono."
-    (save-excursion
-      (message-goto-body)
-      (when (search-forward-regexp david/message-attachment-regexp nil t nil)
-        (message-goto-body)
-        (unless (or (search-forward "<#part" nil t nil)
-                   (message-y-or-n-p
-                    "No attachment. Send the message ?" nil nil))
-          (error "No message sent")))))
-  (add-hook 'message-send-hook 'david/message-check-attachment)
-#+end_src
-
 ** Imágenes
 Configurar cómo se muestran las imágenes en =mu4e=
 #+begin_src emacs-lisp
