@@ -515,24 +515,6 @@ Utility to center buffer (distraction-free editing).
 
 * Programación
 ** General
-*** Indentar automáticamente
-Corrige la indentación automáticamente al cambiar de linea con la tecla =RET=.
-#+begin_src emacs-lisp
-  (define-key global-map (kbd "RET") 'newline-and-indent)
-#+end_src
-
-*** =nlinum-relative=
-Numera lineas de manera relativa solo en modo de programación.
-#+begin_src emacs-lisp :tangle no
-  (use-package nlinum-relative
-    :config
-    (setq linum-relative-current-symbol "")
-    (add-hook 'prog-mode-hook 'nlinum-relative-mode)
-    (add-hook 'LaTeX-mode-hook 'nlinum-relative-mode)
-    (add-hook 'Octave-mode-hook 'nlinum-relative-mode)
-    :diminish)
-#+end_src
-
 *** Tabulador
 Configurar el tamaño del tabulador a 2 espacios.
 #+begin_src emacs-lisp
