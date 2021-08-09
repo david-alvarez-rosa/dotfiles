@@ -421,13 +421,14 @@ Settings related to interface.
 ** Theme
 I am using Doom Themes. I find creating own theme is too much work and it's now
 worth your time. In the past I used Spacemacs theme and I was nice, but I
-became bored of it.
-#+begin_src emacs-lisp
+became bored of it. Doom Themes provides nice themes such as =doom-one=,
+=doom-one-ligth=, and the classic =zenburn= of course.
+#+begin_src emacs-lisp :tangle no
   (use-package doom-themes
     :config
     (setq doom-themes-enable-bold t
           doom-themes-enable-italic t)
-    (load-theme 'doom-one t)
+    (load-theme 'doom-zenburn t)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 #+end_src
