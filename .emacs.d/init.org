@@ -114,6 +114,15 @@ corresponding buffer.
 Buffers, in Emacs terminology, hold the contents that display/edit in
 windows. This are the configurations I use.
 
+Ignore some buffers when using Ivy to switch buffer (see below for Ivy
+settings). I am ignoring all buffers with =*= asterisks, that denote that they
+do not have a file. While using Ivy is always possible to list all buffers
+pressing =C-c C-a=, but probably you won't need this, since Ivy will display
+ignored buffers when there is no match.
+#+begin_src emacs-lisp
+  (setq ivy-ignore-buffers '("\\` " "\\`\\*"))
+#+end_src
+
 *** Ibuffer Mode
 Ibuffer is an advanced replacement for BufferMenu, which lets you operate on
 buffers much in the same manner as Dired. The most important Ibuffer features
