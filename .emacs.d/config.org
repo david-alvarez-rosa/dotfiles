@@ -102,13 +102,16 @@ corresponding buffer.
 #+end_src
 
 ** Buffer Management
-*** =ibuffer=
-Para mejorar la gestión de las ventanas.
+*** Ibuffer Mode
+Ibuffer is an advanced replacement for BufferMenu, which lets you operate on
+buffers much in the same manner as Dired. The most important Ibuffer features
+are highlighting and various alternate layouts. Ibuffer is part of Emacs since
+version 22.
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
-En modo experto siempre, no pedir confirmación.
+Start in expert mode (without asking for confirmation).
 #+begin_src emacs-lisp
   (setq ibuffer-expert t)
 #+end_src
