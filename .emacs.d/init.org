@@ -30,13 +30,11 @@ conflict here. Lastly, Emacs is a gift from God.
 
 
 * Package Management
-
-Add MELPA
+Add MELPA package repositories.
 #+begin_src emacs-lisp
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 #+end_src
-
 
 =use-package= will be used for general package management. Ensure it is
 installed and load the package.
@@ -137,6 +135,11 @@ Start in expert mode (without asking for confirmation).
   (setq ibuffer-expert t)
 #+end_src
 
+Kill current buffer without asking for which buffer to kill.
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x k") 'kill-current-buffer)
+#+end_src
+
 *** Kill All Function
 Kill all buffers except current and *scratch*. Useful for "restarting" Emacs
 without closing it.
@@ -177,17 +180,11 @@ Split and follow for creating new windows.
   (global-set-key (kbd "C-x 3") 'david/split-and-follow-vertically)
 #+end_src
 
-Kill current buffer without asking for which buffer to kill.
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-x k") 'kill-current-buffer)
-#+end_src
-
 New bind for killing buffer *and* window at the same time. To do this press
 =C-x C-k=, by default is bind to =C-x 4 0=, that is far more complex.
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
 #+end_src
-
 
 *** Wind Move
 Is built into Emacs (since version 21). It lets you move point from window to
