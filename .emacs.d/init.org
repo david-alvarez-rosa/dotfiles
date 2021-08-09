@@ -1514,25 +1514,8 @@ Ignore current entry (i.e., tag it with =no= TAG).
     (elfeed-tag entry tag)
     (elfeed-search-update-entry entry)
     (forward-line))
-    ;; (elfeed-search-update--force))
   (define-key elfeed-show-mode-map (kbd "i") 'david/elfeed-ignore)
   (define-key elfeed-search-mode-map (kbd "i") 'david/elfeed-ignore)
-#+end_src
-
-
-* Configuraciones antiguas
-** =htmlize=
-Convierte un buffer o un archivo a HTML (respetando estilo).
-#+begin_src emacs-lisp :tangle no
-  (use-package htmlize)
-#+end_src
-
-** =ace-window=
-Mejorar la gestión de ventanas, especialmente cuando hay más de 2.
-#+begin_src emacs-lisp :tangle no
-  (use-package ace-window)
-  (global-set-key (kbd "C-x o") 'ace-window)
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 #+end_src
 
 
