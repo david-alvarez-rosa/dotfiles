@@ -110,6 +110,9 @@ corresponding buffer.
 #+end_src
 
 ** Buffer Management
+Buffers, in Emacs terminology, hold the contents that display/edit in
+windows. This are the configurations I use.
+
 *** Ibuffer Mode
 Ibuffer is an advanced replacement for BufferMenu, which lets you operate on
 buffers much in the same manner as Dired. The most important Ibuffer features
@@ -146,6 +149,35 @@ less) and =M-O= for reverse window cycling.
     (other-window -1))
   (global-set-key (kbd "M-O") 'david/reverse-window-cycling)
 #+end_src
+
+Split and follow for creating new windows.
+#+begin_src emacs-lisp
+  (defun david/split-and-follow-horizontally ()
+    (interactive)
+    (split-window-below)
+    (balance-windows)
+    (other-window 1))
+  (global-set-key (kbd "C-x 2") 'david/split-and-follow-horizontally)
+
+  (defun david/split-and-follow-vertically ()
+    (interactive)
+    (split-window-right)
+    (balance-windows)
+    (other-window 1))
+  (global-set-key (kbd "C-x 3") 'david/split-and-follow-vertically)
+#+end_src
+
+Kill current buffer without asking for which buffer to kill.
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x k") 'kill-current-buffer)
+#+end_src
+
+New bind for killing buffer *and* window at the same time. To do this press
+=C-x C-k=, by default is bind to =C-x 4 0=, that is far more complex.
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
+#+end_src
+
 
 *** Wind Move
 Is built into Emacs (since version 21). It lets you move point from window to
@@ -416,136 +448,35 @@ the terminal version of Emacs, though, so it's not set there.
   (when window-system (global-hl-line-mode t))
 #+end_src
 
-
-** Barra de estado
-Configuración de la barra de estado.
-#+begin_src emacs-lisp :tangle no
-  (use-package spaceline
-    :config
-    (require 'spaceline-config)
-    (setq spaceline-buffer-encoding-abbrev-p nil)
-    ;; (setq spaceline-line-column-p nil)
-    ;; (setq spaceline-line-p nil)
-    ;; (spaceline-spacemacs-theme)
-    (spaceline-emacs-theme)
-    (setq powerline-default-separator (quote arrow-fade))
-    ;; (setq spaceline-highlight-face-func 'spaceline-highlight-face-modified)
-    (spaceline-toggle-minor-modes-off)
-    (spaceline-toggle-hud-off)
-    (spaceline-toggle-version-control-off)
-    (spaceline-helm-mode)
-    (spaceline-info-mode))
-  (add-hook 'emacs-startup-hook #'spaceline-compile)
-#+end_src
-
-Mostrar la posición del cursor en el texto y la hora.
-#+begin_src emacs-lisp :tangle no
-  (setq line-number-mode t
-        column-number-mode t
-        display-time-24hr-format t
-        display-time-format "%d %B %H:%M"
-        display-time-default-load-average nil)
-  (display-time-mode 1)
-#+end_src
-
-Mostrar estado de la batería en la barra.
-#+begin_src emacs-lisp :tangle no
-  (use-package fancy-battery
-    :config (setq fancy-battery-show-percentage t
-                  battery-update-interval 15)
-    (if window-system
-        (fancy-battery-mode)
-      (display-battery-mode t)))
-#+end_src
-
-Mostrar posición del cursor de manera gráfica.
-#+begin_src emacs-lisp :tangle no
-  (use-package nyan-mode
-    :init (nyan-mode 1)
-    :config (setq nyan-animate-nyancat t
-                  nyan-wavy-trail t)
-    (nyan-start-animation))
-#+end_src
-
-** Transparencia
-Configurar la transparencia.
-#+begin_src emacs-lisp :tangle no
-  (setq transparency_level 0)
+** Transparency Alpha
+Functions for cycling between transparency alpha levels (deactivated, medium or
+high).
+#+begin_src emacs-lisp
+  (setq david/alpha-level 0)
   (defun david/cycle-transparency ()
-    "Permite cambiar la transparencia entre 3 modos (desactivado, medio, alto)."
+    "Cycle transparency levels, between deactivated, medium or high."
     (interactive)
-    (if (equal transparency_level 0)
+    (if (equal david/alpha-level 0)
         (progn (set-frame-parameter (selected-frame) 'alpha '(95 . 80))
-           (setq transparency_level 1))
-      (if (equal transparency_level 1)
+           (setq david/alpha-level 1))
+      (if (equal david/alpha-level 1)
       (progn (set-frame-parameter (selected-frame) 'alpha '(90 . 80))
-             (setq transparency_level 2))
-        (if (equal transparency_level 2)
+             (setq david/alpha-level 2))
+        (if (equal david/alpha-level 2)
         (progn (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
-           (setq transparency_level 0)))
+           (setq david/alpha-level 0)))
         )))
   (david/cycle-transparency)
   (define-key global-map (kbd "C-c t") 'david/cycle-transparency)
 #+end_src
 
-** Centered Buffer
+** TODO Centered Buffer
 Utility to center buffer (distraction-free editing).
 #+begin_src emacs-lisp :tangle no
   (use-package sublimity
     :config
     (require 'sublimity-attractive)
-    (setq sublimity-attractive-centering-width 100))
-#+end_src
-
-
-* Funciones
-Varias funciones extras útiles.
-
-** TODO Movimiento entre texto
-Funciones para mejorar los comandos de movimiento.
-#+begin_src emacs-lisp :tangle no
-  (defun david/next-lines ()
-    (interactive)
-    (next-line 15))
-  (global-set-key (kbd "C-v") 'david/next-lines)
-  (defun david/previous-lines ()
-    (interactive)
-    (previous-line 15))
-  (global-set-key (kbd "M-v") 'david/previous-lines)
-#+end_src
-
-** Gestión de ventanas
-Funciones para mejorar la división de la pantalla.
-#+begin_src emacs-lisp
-  (defun david/split-and-follow-horizontally()
-    (interactive)
-    (split-window-below)
-    (balance-windows)
-    (other-window 1))
-  (global-set-key (kbd "C-x 2") 'david/split-and-follow-horizontally)
-  (defun david/split-and-follow-vertically()
-    (interactive)
-    (split-window-right)
-    (balance-windows)
-    (other-window 1))
-  (global-set-key (kbd "C-x 3") 'david/split-and-follow-vertically)
-#+end_src
-
-Función para cerrar las ventanas sin pedir confirmación.
-#+begin_src emacs-lisp
-  (defun david/kill-curr-buffer ()
-    (interactive)
-    (kill-buffer (current-buffer)))
-  (global-set-key (kbd "C-x k") 'david/kill-curr-buffer)
-#+end_src
-
-Función para cerrar ventana sin pedir confirmación y quitándola.
-#+begin_src emacs-lisp
-  (defun david/kill-curr-buffer-2 ()
-    (interactive)
-    (kill-buffer (current-buffer))
-    (delete-window))
-  (global-set-key (kbd "C-x C-k") 'david/kill-curr-buffer-2)
+    (setq sublimity-attractive-centering-width 90))
 #+end_src
 
 
