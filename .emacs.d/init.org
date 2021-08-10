@@ -1002,9 +1002,6 @@ key bindings. Also, =C-c C-f= for inserting new field.
 
 
 * PDF Viewer
-Usar =pdf-tools= como visor de PDF y configurar los diferentes comandos de
-movimiento.
-
 PDF Tools PDF Tools is, among other things, a replacement of DocView for PDF
 files. The key difference is that pages are not pre-rendered by
 e.g. ghostscript and stored in the file-system, but rather created on-demand
@@ -1024,6 +1021,16 @@ Slices are really useful:
 - =s r= reset slice.
 - =s m= set slice with mouse.
 - =s b= set slice using bounding box.
+
+Multiple annotations commands are supported with keybind prefix =C-c C-a= (for
+introducing is best to use the mouse for selecting position), and for listing
+=C-c C-a l=.
+
+For displaying PDF metadata the command is =I=.
+
+Also, is pretty useful to list all lines containing a phrase (this is called
+occur), and can be access using =M-s o=.
+
 
 * Music Player
 Para controlar la reproducción de música desde Emacs. Debe estar instalado
