@@ -543,8 +543,14 @@ Usar 2 espacios en vez de un tabulador.
   (setq-default indent-tabs-mode nil)
 #+end_src
 
-*** Eliminar espacios inútiles
-Eliminar espacios al final de linea al guardar.
+*** Line Numbers
+Display line numbers.
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+end_src
+
+*** Trailing Whitespace
+Delete (nasty) trailing whitespace when saving a file.
 #+begin_src emacs-lisp
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
