@@ -29,7 +29,18 @@ KISS or Unix philosophy: Emacs--at least for me--is a container for
 conflict here. Lastly, Emacs is a gift from God.
 
 
-* Package Management
+* Loading and Package Management
+Make startup faster by reducing the frequency of garbage collection and then
+use a hook to lower threshold back after Emacs startup. The loading time can be
+check with the function =emacs-init-time=.
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold most-positive-fixnum)
+
+  ;; Lower threshold back to 8 MiB (default is 800kB)
+  (add-hook 'emacs-startup-hook
+            (lambda () (setq gc-cons-threshold (expt 2 23))))
+#+end_src
+
 Add MELPA package repositories.
 #+begin_src emacs-lisp
 (require 'package)
