@@ -65,7 +65,7 @@ particular package does not exist, it will be installed automagically.
 #+end_src
 
 
-* Default Settings Configuration
+* General Configuration
 This section contains all configuration related to main settings for built-in
 Emacs features.
 
@@ -345,8 +345,7 @@ overview of what keybindings are available based on the prefix keys you
 entered.
 #+begin_src emacs-lisp
   (use-package which-key
-    :init (which-key-mode)
-    :diminish)
+    :init (which-key-mode))
 #+end_src
 
 ** Completion Inteface
@@ -488,6 +487,12 @@ sets dark theme (i.e., doom-one).
   (global-set-key (kbd "C-c l") (lambda () (interactive) (load-theme 'doom-one-light t)))
 #+end_src
 
+Consider all custom themes as safe (don't ask for confirmation when loading
+it).
+#+begin_src emacs-lisp
+  (setq custom-safe-themes t)
+#+end_src
+
 ** Modeline
 For the modeline I am using also Doom Modeline. This package requires the fonts
 included with =all-the-icons= to be installed.
@@ -579,8 +584,7 @@ Habilitar corrección de sintaxis al momento usando =flycheck=
 #+begin_src emacs-lisp :tangle no
   (use-package flycheck
     :init
-    (add-hook 'prog-mode-hook 'global-flycheck-mode)
-    :diminish)
+    (add-hook 'prog-mode-hook 'global-flycheck-mode))
 #+end_src
 
 *** =Projectile=
@@ -626,7 +630,6 @@ p to jump to previous tag from point (comment-tags-previous-tag).
 Autocompletar los /headers/.
 #+begin_src emacs-lisp :tangle no
   (use-package company-c-headers
-    :defer t
     :config
     (add-to-list 'company-backends 'company-c-headers)
     (add-to-list 'company-c-headers-path-system "/usr/include/c++/8.2.1/"))
@@ -814,11 +817,6 @@ Don't ask for confirmation for evaluating code.
 #+end_src
 
 ** Interface
-Configurar la posición de las etiquetas.
-#+begin_src emacs-lisp :tangle no
-  (setq org-tags-column -72)
-#+end_src
-
 Cambiar los puntos suspensivos.
 #+begin_src emacs-lisp :tangle no
   (setq org-ellipsis " ⚡")
@@ -1551,3 +1549,4 @@ Ignore current entry (i.e., tag it with =no= TAG).
 - [[https://gitlab.com/protesilaos/dotfiles/-/blob/master/emacs/.emacs.d/prot-emacs.org][Protesilaos Stavrou]]
 - [[https://github.com/bradwright/emacs.d][Bradley Wright]]
 - [[https://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]]
+- [[https://github.com/emacs-tw/awesome-emacs#browser][Awesome Emacs]]
