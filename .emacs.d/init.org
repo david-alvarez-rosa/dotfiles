@@ -1049,169 +1049,122 @@ Algunos comandos para facilitar la interacción.
 #+end_src
 
 
-* Correo electrónico
-Configuración del correo electrónico (con =mu4e=). Abrir directamente los
-recibidos con =C-x m=.
+* Email Management
+Configuration for email within Emacs with =mu4e=. Open last 7 days email header
+view with =C-c e= keybinding. Disable asking for confirmation when killing.
 #+begin_src emacs-lisp
   (require 'mu4e)
   (setq mail-user-agent 'mu4e-user-agent)
-  (defun david/open-mu4e-inbox ()
-    "Mostrar los correos de todas las cuentas de los últimos 7
-  días.  Abre mu4e en pantalla completa, cerrando el resto de
-  ventanas, guarda en el registro la configuración."
-    (interactive)
-    (window-configuration-to-register :mu4e-fullscreen)
-    (mu4e-headers-search "date:7d..now")
-    (delete-other-windows))
-  (define-key global-map (kbd "C-x m") 'david/open-mu4e-inbox)
+  (global-set-key (kbd "C-c e") (lambda()
+                                  (interactive)
+                                  (mu4e-headers-search "date:7d..now")))
+  (setq mu4e-confirm-quit nil)
+  #+end_src
 
-  (defun david/mu4e-quit-session ()
-    "Restores the previous window configuration and kills the mu4e buffer."
-    (interactive)
-    (kill-buffer)
-    (jump-to-register :mu4e-fullscreen))
-
-  (define-key mu4e-headers-mode-map (kbd "q") 'david/mu4e-quit-session)
-  (define-key mu4e-main-mode-map (kbd "q") 'david/mu4e-quit-session)
-
-  (require 'smtpmail)
-  (setq message-send-mail-function 'smtpmail-send-it)
-#+end_src
-
-Configuración del tamaño máximo de columna
+Customization of header view. I don't use mailing lists that often, so I have
+remove them from headers view.
 #+begin_src emacs-lisp
-  (setq message-fill-column 72)
+  (setq mu4e-headers-fields '((:human-date . 10)
+                              (:flags . 5)
+                              (:from . 20)
+                              (:subject)))
 #+end_src
 
-** Cuentas
-Definición de las diferentes cuentas de correo electrónico.
+Add "ViewInbrowser" action both in header and view mode.
+#+begin_src emacs-lisp
+  (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+  (add-to-list 'mu4e-headers-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+#+end_src
+
+Show complete email address in view mode.
+#+begin_src emacs-lisp
+  (setq mu4e-view-show-addresses t)
+#+end_src
+
+Set get mail command for syncing. And define keybind =C-c u= to just index
+(without updating), this is faster.
+#+begin_src emacs-lisp
+  (setq mu4e-get-mail-command "mbsync -a -V")
+  (define-key mu4e-headers-mode-map (kbd "C-c u") 'mu4e-update-index)
+#+end_src
+
+Enable images in mu4e view.
+#+begin_src emacs-lisp
+  (when (fboundp 'imagemagick-register-types)
+    (imagemagick-register-types))
+  (setq mu4e-view-show-images t)
+#+end_src
+
+** Contexts for Accounts
+I am using contexts for handling two different accounts at the same time. When
+launching mu4e for the first time don't ask and just pick the first context
+(the default).
+#+begin_src emacs-lisp
+  (setq mu4e-context-policy 'pick-first)
+#+end_src
+
+First, lets define basic configuration for both accounts (contexts in mu4e
+terminology). This is, set maildir, my personal email addresses (used for not
+replying to myself) and the behavior for sent messages.
 #+begin_src emacs-lisp
   (setq mu4e-maildir "~/.mail")
   (setq mu4e-user-mail-address-list '("david@alvarezrosa.com"
-                                     "david.alvarez.rosa@yandex.com"))
-  ;; Cuenta predeterminada.
-  (setq mu4e-inbox-folder "/David/Inbox"
-        mu4e-drafts-folder "/David/Drafts"
-        mu4e-sent-folder "/David//Sent"
-        mu4e-trash-folder "/David/Inbox/Trash"
-        user-full-name "David Álvarez Rosa"
-        user-mail-address "david@alvarezrosa.com"
-        smtpmail-starttls-credentials '(("alvarezrosa.com" 587 nil nil))
-        smtpmail-default-smtp-server "alvarezrosa.com"
-        smtpmail-smtp-server "alvarezrosa.com"
-        smtpmail-smtp-service 587
-        mu4e-sent-messages-behavior 'sent)
-  (defvar david/mu4e-account-alist
-    '(("David"
-       (user-full-name "David Álvarez Rosa")
-       (mu4e-inbox-folder "/David/Inbox")
-       (mu4e-sent-folder "/David/Sent")
-       (mu4e-drafts-folder "/David/Drafts")
-       (mu4e-trash-folder "/David/Inbox/Trash")
-       (smtpmail-stream-type nil)
-       (user-mail-address "david@alvarezrosa.com")
-       (smtpmail-starttls-credentials '(("alvarezrosa.com" 587 nil nil)))
-       (smtpmail-default-smtp-server "alvarezrosa.com")
-       (smtpmail-smtp-server "alvarezrosa.com")
-       (smtpmail-smtp-service 587)
-       (mu4e-sent-messages-behavior sent))
-      ("Yandex"
-       (user-full-name "David Álvarez Rosa")
-       (mu4e-inbox-folder "/Yandex/Inbox")
-       (mu4e-sent-folder "/Yandex/Sent")
-       (mu4e-drafts-folder "/Yandex/Drafts")
-       (mu4e-trash-folder "/Yandex/Trash")
-       (smtpmail-stream-type ssl)
-       (user-mail-address "david.alvarez.rosa@yandex.com")
-       (starttls-use-gnutls t)
-       (smtpmail-smtp-server "smtp.yandex.com")
-       (smtpmail-smtp-service 465)
-       (mu4e-sent-messages-behavior sent))))
+                                      "david.alvarez.rosa@yandex.com"
+                                      "davidolazegues@gmail.com"))
+  (setq mu4e-sent-messages-behavior 'sent)
+  (setq message-signature-file "~/.emacs.d/signature.txt")
 #+end_src
 
-Configurar las carpetas dinámicamente (dependiendo de la cuenta de correo).
+The actual context accounts. Take into account that I am using the Spam/Junk
+folders the same as refiling, and this is actually incorrect, but I do not use
+any archive, so this is more useful for me.
 #+begin_src emacs-lisp
-  (setq mu4e-refile-folder
-        (lambda (msg)
-          (cond
-           ((string-match "^/Yandex.*"
-                          (mu4e-message-field msg :maildir))
-            "/Yandex/Junk")
-           ((string-match "^/david.*"
-                          (mu4e-message-field msg :maildir))
-           "/David/Inbox/Junk"))))
-
-  (setq mu4e-trash-folder
-        (lambda (msg)
-          (cond
-           ((string-match "^/Yandex.*"
-                          (mu4e-message-field msg :maildir))
-            "/Yandex/Trash")
-           ((string-match "^/david.*"
-                          (mu4e-message-field msg :maildir))
-           "/David/Inbox/Trash"))))
+  (setq mu4e-contexts
+        `( ,(make-mu4e-context
+             :name "Personal"
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/David" (mu4e-message-field msg :maildir))))
+             :vars '(
+                     (mu4e-inbox-folder . "/David/Inbox")
+                     (mu4e-sent-folder . "/David/Sent")
+                     (mu4e-drafts-folder . "/David/Drafts")
+                     (mu4e-trash-folder . "/David/Inbox/Trash")
+                     (mu4e-refile-folder . "/David/Inbox/Junk")
+                     (smtpmail-stream-type . nil)
+                     (user-mail-address . "david@alvarezrosa.com")
+                     (smtpmail-starttls-credentials . '(("alvarezrosa.com" 587 nil nil)))
+                     (smtpmail-default-smtp-server . "alvarezrosa.com")
+                     (smtpmail-smtp-server . "alvarezrosa.com")
+                     (smtpmail-smtp-service . 587)))
+           ,(make-mu4e-context
+             :name "Yandex"
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/Yandex" (mu4e-message-field msg :maildir))))
+             :vars '(
+                     (mu4e-inbox-folder . "/Yandex/Inbox")
+                     (mu4e-sent-folder . "/Yandex/Sent")
+                     (mu4e-drafts-folder . "/Yandex/Drafts")
+                     (mu4e-trash-folder . "/Yandex/Trash")
+                     (mu4e-refile-folder . "/Yandex/Spam")
+                     (smtpmail-stream-type . ssl)
+                     (user-mail-address . "david.alvarez.rosa@yandex.com")
+                     (starttls-use-gnutls . t)
+                     (smtpmail-smtp-server . "smtp.yandex.com")
+                     (smtpmail-smtp-service . 465)))
+           ))
 #+end_src
 
-** Atajos
-Añadir atajos de teclado para ir a las diferentes carpetas de las diferentes
-cuentas.
-#+begin_src emacs-lisp
-  (setq mu4e-maildir-shortcuts
-        '(("/David/Inbox" . ?i)
-          ("/David/Sent" . ?s)
-          ("/David/Inbox/Trash" . ?t)
-          ("/David/Drafts" . ?d)
-          ("/David/Inbox/Junk" . ?j)
-          ("/Yandex/Inbox" . ?I)
-          ("/Yandex/Sent" . ?S)
-          ("/Yandex/Trash" . ?T)
-          ("/Yandex/Drafts" . ?D)
-          ("/Yandex/Spam" . ?J)
-          ("/Yandex/All Mail" . ?A)
-          ("/Queue" . ?q)))
-#+end_src
-
-Añadir configuraciones personalizadas de marcadores.
-#+begin_src emacs-lisp
-  (defvar inbox-folders (string-join '("maildir:/David/Inbox"
-                                       "maildir:/Yandex/Inbox")
-                                     " OR "))
-
-  (defvar draft-folders (string-join '("maildir:/David/Drafts"
-                                       "maildir:/Yandex/Drafts")
-                                     " OR "))
-
-  (defvar spam-folders (string-join '("maildir:/David/Inbox/Junk"
-                                      "maildir:/Yandex/Spam")
-                                    " OR "))
-
-  (setq mu4e-bookmarks
-  '(("date:today..now" "Today's messages" ?t)
-         ("date:7d..now" "Last 7 days" ?w)
-         ("flag:flagged" "Flagged" ?f)
-         ("mime:image/*" "Messages with images" ?p)
-         (spam-folders "All spambuckets" ?S)
-         (draft-folders "All drafts" ?d)
-         (inbox-folders "All inbox mails" ?i)
-         ("flag:unread" "Unread messages" ?u)))
-#+end_src
-
-** Correos en cola
-Permite guardar los correos en cola (bandeja de salida) para enviarlos más
-adelante. Útil cuando se está trabajando sin conexión a internet por ejemplo.
+** Queued Email
+It allows to save the outgoing mail (output tray) to send them later. Useful
+when working without an Internet connection, for example. This can be toggled
+in mu4e main view with =m=.
 #+begin_src emacs-lisp
   (setq smtpmail-queue-dir "~/.mail/Queue/cur")
-
-  (defun david/toggle-mail-queue ()
-    "Permite conmutar entre cola de correos activda o desactivada."
-    (interactive)
-    (if smtpmail-queue-mail
-        (setq smtpmail-queue-mail nil)
-        (setq smtpmail-queue-mail t)))
-  (define-key mu4e-main-mode-map (kbd "C-c q") 'david/toggle-mail-queue)
 #+end_src
 
-** Encriptación
+** Signing and Encryption
 Encriptar todos los correos salientes /automágicamente/ si la llave existe.
 #+begin_src emacs-lisp :tangle no
   (defun david/can-encrypt-message-p ()
