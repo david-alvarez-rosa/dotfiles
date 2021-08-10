@@ -217,8 +217,10 @@ because new users often find them confusing. However, this configuration is
   (put 'LaTeX-narrow-to-environment 'disabled nil)
 #+end_src
 
-I use =C-x n n= for narrowing to region and then =C-x n p= for reverting to
-full page, but there are more narrow functions (enviroment dependent).
+I use =C-x n n= for narrowing to region and then =C-x n w= for widen (i.e.,
+reverting to full page), but there are more narrow functions (enviroment
+dependent), e.g., =C-x n d= for narrowing to defun (useful for narrowing
+functions).
 
 ** Upcase/Downcase Region
 Command for upcasing =C-x C-u= or downcasing =C-x C-l= current region are also
