@@ -216,6 +216,16 @@ and, for some users, may be more intuitive.
   (windmove-default-keybindings)
 #+end_src
 
+Also set up keybinding for directional window swap states. Keys are bound to
+commands that swap the states of the selected window with the window in the
+specified direction.
+#+begin_src emacs-lisp
+  (windmove-swap-states-default-keybindings '(super meta))
+#+end_src
+
+I am setting the modifier keys for swaping to =super-meta= because the default
+=shift-super= are already bound by my i3 (window manager) configuration.
+
 *** Winner Mode
 Global minor mode that allows to “undo” and “redo” changes in window
 configuration. It is included in GNU Emacs.
