@@ -239,6 +239,12 @@ editing (i.e., always ensure the =fill-column= limit).
   (setq-default fill-column 79)
 #+end_src
 
+I don't type double-space sentences, I end sentences just with a single space.
+This is relevant for filling.
+#+begin_src emacs-lisp
+  (setq-default sentence-end-double-space nil)
+#+end_src
+
 ** Subword Mode
 Emacs treats camelCase strings as a single word by default, change this
 behaviour.
