@@ -1439,11 +1439,7 @@ This package allows to configure the Elfeed interface.
   (use-package elfeed-goodies
     :config
     (elfeed-goodies/setup)
-    (setq elfeed-goodies/entry-pane-size 0.38
-          elfeed-goodies/entry-pane-position 'right
-          elfeed-goodies/feed-source-column-width 18
-          elfeed-goodies/tag-column-width 22
-          elfeed-goodies/powerline-default-separator nil))
+    (setq elfeed-goodies/powerline-default-separator 'utf-8))
 #+end_src
 
 ** Custom Functions
