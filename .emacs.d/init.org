@@ -101,6 +101,17 @@ interaction whereas =a= reuses the current buffer.
   (put 'dired-find-alternate-file 'disabled nil)
 #+end_src
 
+**** Dired Narrow
+This package provides live filtering of files in dired buffers. In general,
+after calling the respective narrowing function you type a filter string into
+the minibuffer. With =/= start fuzzy matching, then use the dired buffer as
+usual, and =g= for going back to the complete file listing.
+#+begin_src emacs-lisp
+  (use-package dired-narrow
+    :bind (:map dired-mode-map
+                ("/" . 'dired-narrow-fuzzy)))
+#+end_src
+
 *** File Backups and Autosaves
 Keep backups and autosaves in the "temp" directory. Take into account that this
 is a dangerous option with respect the disappearance of files, but I always use
@@ -399,15 +410,6 @@ abbreviation and automatically expand it into function templates.
     (use-package yasnippet-snippets)
     (yas-reload-all)
     :hook (prog-mode . yas-minor-mode))
-#+end_src
-
-** TODO =dired-narrow=
-Permite filtrar directorios en =dired=, usar =/= para comenzar y =g= para volver
-a vista normal.
-#+begin_src emacs-lisp
-  (use-package dired-narrow
-    :bind (:map dired-mode-map
-                ("/" . 'dired-narrow-fuzzy)))
 #+end_src
 
 ** Company Mode
