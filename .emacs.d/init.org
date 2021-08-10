@@ -172,6 +172,7 @@ without closing it.
     (delete-other-windows)
     (setq scratch (get-buffer "*scratch*"))
     (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
+  (global-set-key (kbd "C-c k") 'david/kill-all-other-buffers)
 #+end_src
 
 ** Window Management
