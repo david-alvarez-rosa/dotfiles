@@ -1198,36 +1198,39 @@ Para firmar correos salientes.
   (setq mml-secure-openpgp-sign-with-sender t)
 #+end_src
 
-** Autocompletado
-Permitir el autocompletado estándar. Y solo tener en cuenta el autocompletado
-con los correos de hace como mucho 6 meses.
+** Completion
+Use Ivy as default completion engine (instead of Ido).
 #+begin_src emacs-lisp
-  (setq mu4e-compose-complete-addresses t)
-  (setq mu4e-compose-complete-only-after
-        (format-time-string
-         "%Y-%m-%d"
-         (time-subtract (current-time) (days-to-time 150))))
+  (setq mu4e-completing-read-function 'ivy-completing-read)
 #+end_src
 
-Personalizar el autcompletado de correos (con =M + tab=).
+I have personalized the email completion with a file with contact information
+stored in =david/contact-file=. This text file has contacts in the form "Name
+<address>", one per line. This function is inspired on [[http://pragmaticemacs.com/emacs/even-better-email-contact-completion-in-mu4e/][Even better email
+contact completion in mu4e]].
 #+begin_src emacs-lisp
   (setq david/contact-file "~/Documents/Contactos/Correos.txt")
   (defun david/read-contact-list ()
     (with-temp-buffer
       (insert-file-contents david/contact-file)
       (split-string (buffer-string) "\n" t)))
-  (defun david/complete-emails ()
+  (defun david/complete-emails (&optional start)
     (interactive)
-    (helm :sources `(((name . "Email address candidates")
-                     (candidates . david/read-contact-list)
-                     (action . (("insert" . (lambda (x)
-                                              (insert
-                                               (mapconcat
-                                                'identity
-                                                (helm-marked-candidates)
-                                                ", "))))))))
-    :input (word-at-point)
-    :buffer "*helm complete email*"))
+      (let* ((end (point))
+             (start
+              (or start
+                  (save-excursion
+                    (re-search-backward "\\(\\`\\|[\n:,]\\)[ \t]*")
+                    (goto-char (match-end 0))
+                    (point))))
+             (initial-input (buffer-substring-no-properties start end)))
+
+        (delete-region start end)
+
+        (ivy-read "Contact: "
+                  (david/read-contact-list)
+                  :action (lambda(contact) (with-ivy-window (insert contact)))
+                  :initial-input initial-input)))
   (define-key mu4e-compose-mode-map (kbd "<M-tab>") 'david/complete-emails)
 #+end_src
 
