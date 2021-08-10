@@ -1403,7 +1403,8 @@ This package allows to configure the Elfeed interface.
   (use-package elfeed-goodies
     :config
     (elfeed-goodies/setup)
-    (setq elfeed-goodies/powerline-default-separator 'utf-8))
+    (setq elfeed-goodies/powerline-default-separator 'utf-8)
+    (setq elfeed-goodies/entry-pane-size 0.40))
 #+end_src
 
 ** Custom Functions
