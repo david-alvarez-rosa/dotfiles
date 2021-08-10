@@ -123,13 +123,6 @@ version control for important projects, so that is not a problem for me.
         `((".*" ,temporary-file-directory t)))
 #+end_src
 
-*** Auto Revert Mode
-When a file is modified from outside Emacs, automatically revert the
-corresponding buffer.
-#+begin_src emacs-lisp
-  (global-auto-revert-mode 1)
-#+end_src
-
 ** Buffer Management
 Buffers, in Emacs terminology, hold the contents that display/edit in
 windows. This are the configurations I use.
