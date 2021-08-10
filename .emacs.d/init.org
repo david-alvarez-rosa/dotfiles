@@ -687,8 +687,8 @@ Es una interfaz completa de Git (control de versiones) para Emacs.
 
 
 * Org Mode
-** Configuración de listas
-Considerar 'a)', 'A' y 'A)' como listas de elementos.
+** List Configuration
+Allow alphabetical list, i.e., list like "a)", "A" or "A)" as element lists.
 #+begin_src emacs-lisp
   (setq org-list-allow-alphabetical t)
 #+end_src
@@ -749,7 +749,7 @@ Set my custom capture templates. Brief description of them:
            "* %?" :empty-lines-before 1 :empty-lines-after 2)))
 #+end_src
 
-** Keywords
+** State Keywords
 Custom todo keywords. I use them as follows:
 - TODO: task that needs to be done (in order, depending priority).
 - WAIT: I am waiting for something that does not depend on myself (i.e,
@@ -759,8 +759,17 @@ Custom todo keywords. I use them as follows:
 - CANCELLED: task is cancelled.
 #+begin_src emacs-lisp
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|"
-                    "DONE(d)" "CANCELLED(c)")))
+        '((sequence "TODO(t)" "WAIT(w@/!)" "NEXT(n)" "|"
+                    "DONE(d!)" "CANCELLED(c@)")))
+#+end_src
+
+For tracking TODO state changes, the meaning of the characters is as follows
+(check [[https://orgmode.org/manual/Tracking-TODO-state-changes.html][Tracking TODO state changes]] for more information): ! for timestamp and @
+for note with timestamp.
+
+Log state changes into drawer.
+#+begin_src emacs-lisp
+  (setq org-log-into-drawer t)
 #+end_src
 
 ** Code Evaluation
@@ -786,7 +795,7 @@ Don't ask for confirmation for evaluating code.
   (setq org-confirm-babel-evaluate nil)
 #+end_src
 
-** Interfaz
+** Interface
 Configurar la posición de las etiquetas.
 #+begin_src emacs-lisp :tangle no
   (setq org-tags-column -72)
@@ -795,12 +804,6 @@ Configurar la posición de las etiquetas.
 Cambiar los puntos suspensivos.
 #+begin_src emacs-lisp :tangle no
   (setq org-ellipsis " ⚡")
-#+end_src
-
-Configurar opciones para guardar las interacciones.
-#+begin_src emacs-lisp
-  (setq org-log-done 'time)
-  (setq org-log-into-drawer t)
 #+end_src
 
 Configurar colores para las diferentes prioridades.
@@ -827,6 +830,11 @@ una versión moderna de este. Y mirar qué lista de bolas poner.
 #+end_src
 
 ** Agenda
+Comando para abrir la agenda.
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c a") 'org-agenda)
+#+end_src
+
 Gestionar los diferentes archivos para la Agenda.
 #+begin_src emacs-lisp
   (setq org-agenda-files (quote
@@ -838,47 +846,16 @@ Gestionar los diferentes archivos para la Agenda.
                           "~/Documents/Tasks.org")))
 #+end_src
 
-Comando para abrir la agenda en cualquier modo.
-#+begin_src emacs-lisp
-  ;; (defun david/org-agenda-current-week()
-  ;;   "Abrir la agenda de la semana."
-  ;;   (interactive)
-  ;;   (if (not (equal buffer-file-name "~/Documents/Notes.org"))
-  ;;       (progn (delete-other-windows)
-  ;;              (find-file "~/Documents/Notes.org")
-  ;;              (next-line 8)
-  ;;              (org-forward-heading-same-level 5)
-  ;;              (david/split-and-follow-vertically)
-  ;;              (org-agenda nil "n")
-  ;;              (other-window 1))
-  ;;     (progn (delete-other-windows)
-  ;;            (david/split-and-follow-vertically)
-  ;;            (org-agenda nil "n"))))
-  (defun david/org-agenda-current-week()
-    "Abrir la agenda de la semana."
-    (interactive)
-    (org-agenda nil " "))
-  (global-set-key (kbd "C-c a") 'david/org-agenda-current-week)
-
-  (defun david/org-agenda-current-day ()
-    "Abrir la agenda en agenda en pequeño y horizontal con el día actual."
-    (interactive)
-    ;; (david/split-and-follow-horizontally)
-    ;; (shrink-window 8)
-    (org-agenda nil "d"))
-  (global-set-key (kbd "C-c d") 'david/org-agenda-current-day)
-#+end_src
-
 Configurar agenda personalizada.
 #+begin_src emacs-lisp
   (setq org-agenda-custom-commands
-        '(("n" "Agenda and all TODOs without schedule"
+        '(("w" "Week Agenda and all TODOs without schedule"
            ((agenda "" ((org-agenda-tag-filter-preset (quote ("-SCH")))))
             (alltodo "" ((org-agenda-tag-filter-preset (quote ("-SCH"))))))
            ((org-agenda-start-with-log-mode t)))
           ("d" "Current day"
            ((agenda "" ((org-agenda-span 'day)))))
-          (" " "Agenda"
+          ("b" "Block Agenda"
            ((agenda ""
                     ((org-agenda-start-on-weekday nil)
                      (org-agenda-span 3)
@@ -910,8 +887,7 @@ Configurar agenda personalizada.
            ((org-agenda-start-with-log-mode t)))))
 #+end_src
 
-Configurar el número de días para mostrar un /deadline/. Dejarlo en una semana
-(7 días).
+Set deadline warning days to 7 (instead of the default 14 days).
 #+begin_src emacs-lisp
   (setq org-deadline-warning-days 7)
 #+end_src
@@ -919,13 +895,6 @@ Configurar el número de días para mostrar un /deadline/. Dejarlo en una semana
 With =q= bury agenda instead of killing it (faster of course).
 #+begin_src emacs-lisp
 (setq org-agenda-sticky t)
-#+end_src
-
-Utilizar =o= en la agenda para abrir los links en vez de para ampliar la
-ventana.
-#+begin_src emacs-lisp
-  (require 'org-agenda)
-  (define-key org-agenda-mode-map "o" 'org-agenda-open-link)
 #+end_src
 
 *** Habits
