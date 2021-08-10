@@ -1309,27 +1309,6 @@ Configurar la línea de cita.
 #+end_src
 
 
-Forzar que no se corten las lineas al enviar los correos.
-#+begin_src emacs-lisp :tangle no
-  (setq fill-flowed-encode-column 79)
-  (setq fill-flowed-display-column 79)
-
-  (add-hook 'mu4e-compose-mode-hook 'enriched-mode)
-  (add-hook 'mu4e-compose-mode-hook (lambda () (use-hard-newlines 1 'always)))
-
-  (defun david/mu4e-remove-soft-breaks ()
-    "Remove the soft breaks that occur with auto-fill-mode."
-    (interactive)
-    (mu4e-compose-goto-bottom)
-    (call-interactively 'set-mark-command)
-    (mu4e-compose-goto-top)
-    (set-fill-column (point-max))
-    (call-interactively 'fill-paragraph)
-    (set-fill-column 79))
-  (define-key mu4e-compose-mode-map (kbd "C-c s") 'david/mu4e-remove-soft-breaks)
-  (define-key mu4e-compose-mode-map (kbd "M-q") 'fill-paragraph)
-#+end_src
-
 Configuración para manjear más de una cuenta a la hora de enviar correo. Esta
 función es de la documentación de MU4E
 ([[http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html#Multiple-accounts]]). Siempre
@@ -1393,8 +1372,8 @@ Configurar cómo se muestran las imágenes en =mu4e=
 #+begin_src emacs-lisp
   (require 'mu4e-contrib)
   (setq mu4e-html2text-command 'mu4e-shr2text)
-  ;;(setq mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
   (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+  (add-to-list 'mu4e-headers-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
 #+end_src
 
 Hacer más probable el mostrar correos como texto.
@@ -1419,38 +1398,29 @@ Usar tabulador para moverse entre links.
   (bind-key "<backtab>" 'shr-previous-link mu4e-view-mode-map)
 #+end_src
 
-Mostrar las fechas en formato europeo. Y las horas en formato de 24 horas.
-#+begin_src emacs-lisp
-(setq mu4e-headers-time-format "  %H:%M")
-#+end_src
-
-No mostrar correos relacionados, esto se puede cambiar con =W=.
-#+begin_src emacs-lisp
-  (setq mu4e-headers-include-related nil)
-#+end_src
-
 Mostrar las direcciones de correo completadas cuando en modo de lectura.
 #+begin_src emacs-lisp
-(setq mu4e-view-show-addresses t)
+  (setq mu4e-view-show-addresses t)
 #+end_src
 
 
-* Gestor de suscripciones
-Usaremos =elfeed= para gestionar las suscripciones, es un lector de
-/feeds/ de RSS y Atom.
+* Web Feed Reader
+Elfeed is an extensible web feed reader for Emacs, supporting both Atom and
+RSS. It requires Emacs 24.3.
 #+begin_src emacs-lisp
   (use-package elfeed
+    :commands elfeed
     :bind ("C-c e" . 'elfeed)
     :config (setq elfeed-db-directory "~/.emacs.d/elfeed"
                   elfeed-search-filter "@1-week-ago -no "
                   elfeed-search-title-max-width 100))
 #+end_src
 
-Automáticamente ajustar a =fill-column= las entradas al abrirlas. Sobreescribe
-la función predetermianda.
+Configure shr engine for viewing HTML entries. I like them to be converted to
+text, without fancy fonts, and filled to 72 characters.
 #+begin_src emacs-lisp
   (setq shr-use-fonts nil)
-  (setq shr-width 70)
+  (setq shr-width 72)
 #+end_src
 
 ** Elfeed Org
