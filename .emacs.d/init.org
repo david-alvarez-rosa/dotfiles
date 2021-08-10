@@ -334,6 +334,14 @@ control. This enables us to keep specific config local to each machine.
   (load custom-file t)
 #+end_src
 
+** HTML Renderer
+Configure shr HTML render engine for converting HTML to text. I like the HTML
+to be converted to text, without fancy fonts, and filled to 72 characters.
+#+begin_src emacs-lisp
+  (setq shr-use-fonts nil)
+  (setq shr-width 72)
+#+end_src
+
 
 * General
 Esta sección contiene diferentes ajustes que no forman parte de Emacs, pero que
