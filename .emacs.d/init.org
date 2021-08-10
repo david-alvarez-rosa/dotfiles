@@ -1552,3 +1552,11 @@ Ignore current entry (i.e., tag it with =no= TAG).
 #+end_src
 
 
+* Useful Resources
+- [[https://github.com/daedreth/UncleDavesEmacs][Dawid Eckert]]
+- [[https://github.com/mxco86/emacs-config/blob/master/.emacs.d/emacs.org][Matthew Ryall]]
+- [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org#stateful-keymaps-with-hydra][David Wilson]]
+- [[https://github.com/munen/emacs.d][Alain M. Lafon]]
+- [[https://gitlab.com/protesilaos/dotfiles/-/blob/master/emacs/.emacs.d/prot-emacs.org][Protesilaos Stavrou]]
+- [[https://github.com/bradwright/emacs.d][Bradley Wright]]
+- [[https://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]]
