@@ -452,14 +452,22 @@ I am using Doom Themes. I find creating own theme is too much work and it's now
 worth your time. In the past I used Spacemacs theme and I was nice, but I
 became bored of it. Doom Themes provides nice themes such as =doom-one=,
 =doom-one-ligth=, and the classic =zenburn= of course.
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package doom-themes
     :config
     (setq doom-themes-enable-bold t
           doom-themes-enable-italic t)
-    (load-theme 'doom-zenburn t)
+    (load-theme 'doom-one-light t)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
+#+end_src
+
+Custom keybindings for switching between ligth and dark themes in
+Emacs. Currently =C-c l= sets ligths theme (i.e., doom-one-light) and =C-c d=
+sets dark theme (i.e., doom-one).
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c d") (lambda () (interactive) (load-theme 'doom-one t)))
+  (global-set-key (kbd "C-c l") (lambda () (interactive) (load-theme 'doom-one-light t)))
 #+end_src
 
 ** Modeline
@@ -504,34 +512,20 @@ the terminal version of Emacs, though, so it's not set there.
 #+end_src
 
 ** Transparency Alpha
-Functions for cycling between transparency alpha levels (deactivated, medium or
-high).
+Functions for toggling transparency alpha.
 #+begin_src emacs-lisp
-  (setq david/alpha-level 0)
-  (defun david/cycle-transparency ()
-    "Cycle transparency levels, between deactivated, medium or high."
+  (defun david/toggle-transparency ()
+    "Toggle transparency on and off."
     (interactive)
-    (if (equal david/alpha-level 0)
-        (progn (set-frame-parameter (selected-frame) 'alpha '(95 . 80))
-           (setq david/alpha-level 1))
-      (if (equal david/alpha-level 1)
-      (progn (set-frame-parameter (selected-frame) 'alpha '(90 . 80))
-             (setq david/alpha-level 2))
-        (if (equal david/alpha-level 2)
-        (progn (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
-           (setq david/alpha-level 0)))
-        )))
-  (david/cycle-transparency)
-  (define-key global-map (kbd "C-c t") 'david/cycle-transparency)
-#+end_src
-
-** TODO Centered Buffer
-Utility to center buffer (distraction-free editing).
-#+begin_src emacs-lisp :tangle no
-  (use-package sublimity
-    :config
-    (require 'sublimity-attractive)
-    (setq sublimity-attractive-centering-width 90))
+    (let ((alpha (frame-parameter nil 'alpha)))
+      (if (eq
+           (if (numberp alpha)
+               alpha
+             (cdr alpha)) ; may also be nil
+           100)
+          (set-frame-parameter nil 'alpha '(95 . 90))
+        (set-frame-parameter nil 'alpha '(100 . 100)))))
+  (define-key global-map (kbd "C-c t") 'david/toggle-transparency)
 #+end_src
 
 
