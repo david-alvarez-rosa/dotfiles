@@ -1551,18 +1551,4 @@ Ignore current entry (i.e., tag it with =no= TAG).
   ;; (erc-autojoin-enable)
 #+end_src
 
-#+begin_src emacs-lisp :tangle no
-(setq golden-ratio-auto-scale t)
-
-(setf (cdr (assq 'continuation fringe-indicator-alist))
-      '(nil nil) ;; no continuation indicators
-      ;; '(nil right-curly-arrow) ;; right indicator only
-      ;; '(left-curly-arrow nil) ;; left indicator only
-      ;; '(left-curly-arrow right-curly-arrow) ;; default
-      )
-
-(setf (cdr (assq 'truncation fringe-indicator-alist))
-      '(nil nil) ;; no continuation indicators
-      )
-#+end_src
 
