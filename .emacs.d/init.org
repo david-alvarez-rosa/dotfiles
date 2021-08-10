@@ -339,6 +339,13 @@ schemes yet highly customizable.
     (setq ivy-initial-inputs-alist nil))
 #+end_src
 
+This package comes with rich transformers for commands from ivy and counsel,
+makes the completion interface more friendly (showing more information).
+#+begin_src emacs-lisp
+  (use-package ivy-rich
+    :init (ivy-rich-mode 1))
+#+end_src
+
 Counsel is a collection of Ivy-enhanced versions of common Emacs commands, i.e,
 takes Ivy completion framework even further providing versions of common Emacs
 commands that are customised to make the best use of Ivy.
@@ -359,7 +366,8 @@ for inserting current candidate to minibuffer and =C-r= for recursive
 completion session through the command's history (works like in a Bash
 session). Also =M-o= for showing all the possible options/actions and =S-SPC=
 for deleting the current input, and reseting the candidates list to the
-currently restricted matches (narrowing search).
+currently restricted matches (narrowing search). To open the search results in
+a separate buffer, press =C-c C-o= for occur.
 
 ** Expand region
 Expand region increases the selected region by semantic units. Just keep
