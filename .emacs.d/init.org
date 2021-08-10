@@ -1457,17 +1457,6 @@ la función predetermianda.
   (setq shr-width 70)
 #+end_src
 
-#+begin_src emacs-lisp :tangle no
-  (defun david/elfeed-search-show-entry ()
-    "Show elfeed entry and fill the text to fill-column."
-    (interactive)
-    (elfeed-search-show-entry (elfeed-search-selected :single))
-    (read-only-mode 0)
-    (mark-whole-buffer)
-    (call-interactively 'fill-paragraph))
-  (define-key elfeed-search-mode-map (kbd "RET") 'david/elfeed-search-show-entry)
-#+end_src
-
 ** Elfeed Org
 Use Elfeed Org for managing subscriptions to RSS/Atom feeds using an org mode
 file.
