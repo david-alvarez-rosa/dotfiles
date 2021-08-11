@@ -338,20 +338,6 @@ Highlight matching braces.
   (show-paren-mode 1)
 #+end_src
 
-** Ediff
-Ediff provides a convenient way for simultaneous browsing through the
-differences between a pair (or a triple) of files or buffers. The files being
-compared, are shown in separate windows and the differences are highlighted as
-you step through them. You can also copy difference regions from one buffer to
-another (and recover old differences if you change your mind). Another powerful
-feature is the ability to merge a pair of files into a third buffer.
-
-Don't open new frame for setup window and prefer splitting horizontally.
-#+begin_src emacs-lisp
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-  (setq ediff-split-window-function 'split-window-horizontally)
-#+end_src
-
 ** Custom File
 Place all custom-defined variables in their own file and store the custom
 variable file in the local machine’s home directory outside of version
@@ -587,8 +573,25 @@ Functions for toggling transparency alpha.
 #+end_src
 
 
-* Programación
-** General
+* Programming Configuration
+Configuration settings related to programming languages.
+
+** General Configuration
+Programming configuration that is not specific to one programming language.
+*** Ediff
+Ediff provides a convenient way for simultaneous browsing through the
+differences between a pair (or a triple) of files or buffers. The files being
+compared, are shown in separate windows and the differences are highlighted as
+you step through them. You can also copy difference regions from one buffer to
+another (and recover old differences if you change your mind). Another powerful
+feature is the ability to merge a pair of files into a third buffer.
+
+Don't open new frame for setup window and prefer splitting horizontally.
+#+begin_src emacs-lisp
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq ediff-split-window-function 'split-window-horizontally)
+#+end_src
+
 *** Tabulador
 Configurar el tamaño del tabulador a 2 espacios.
 #+begin_src emacs-lisp
