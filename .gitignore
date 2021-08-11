@@ -16,6 +16,7 @@
 !/.emacs.d
 /.emacs.d/*
 !/.emacs.d/init.org
+!/.emacs.d/README.org
 !/.emacs.d/signature.txt
 
 # Bash.
