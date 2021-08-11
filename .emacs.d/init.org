@@ -226,16 +226,6 @@ dependent), e.g., =C-x n d= for narrowing to defun (useful for narrowing
 functions).
 
 ** Window Management
-Faster commands for cycling windows: =M-o= instead of =C-x o= (one key press
-less) and =M-O= for reverse window cycling.
-#+begin_src emacs-lisp
-  (global-set-key (kbd "M-o") 'other-window)
-  (defun david/reverse-window-cycling ()
-    (interactive)
-    (other-window -1))
-  (global-set-key (kbd "M-O") 'david/reverse-window-cycling)
-#+end_src
-
 Split and follow for creating new windows.
 #+begin_src emacs-lisp
   (defun david/split-and-follow-horizontally ()
@@ -283,6 +273,27 @@ configuration. It is included in GNU Emacs.
 #+begin_src emacs-lisp
   (winner-mode 1)
 #+end_src
+
+*** Ace Window
+Package for selecting a window to switch to. What it does is: when there are
+two windows, Ace Window will call =other-window=. If there are more, each
+window will have the first character of its window label highlighted at the
+upper left of the window. Pressing that character will either switch to that
+window or filter to the next character needed to select a specific window.
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :bind ("M-o" . 'ace-window))
+#+end_src
+
+Some useful features, is the posibility to swap windows, by calling
+=ace-window= with a prefix argument, i.e., =C-u=. And is also posbile to delete
+the selected window by prefixing double, i.e., with =C-u C-u=.
+
+You can also start by calling ace-window and then decide to switch the action
+to =delete= or =swap= etc. There are a bunch of command here (check them with
+=?= when =ace-window= is activated), but the ones I use the most are:
+- Delete window with =x=.
+- Swap windows with =m= ("m" from move).
 
 ** Upcase/Downcase Region
 Command for upcasing =C-x C-u= or downcasing =C-x C-l= current region are also
