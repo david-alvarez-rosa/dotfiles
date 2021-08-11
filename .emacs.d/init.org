@@ -462,8 +462,8 @@ completion candidates.
     :bind ("C-:" . company-complete))
 #+end_src
 
-Completion will start automatically after you type a few letters. Use =M-n= and
-=M-p= to select, =RET= to complete or =TAB= to complete the common part. Search
+Completion will start automatically after you type a few letters. Use =C-n= and
+=C-p= to select, =RET= to complete or =TAB= to complete the common part. Search
 through the completions with =C-s=, =C-r= and =C-o=. Press =M-(digit)= to
 quickly complete with one of the first 10 candidates.
 
