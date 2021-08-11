@@ -595,15 +595,18 @@ Don't open new frame for setup window and prefer splitting horizontally.
   (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
-*** Tabulador
-Configurar el tamaño del tabulador a 2 espacios.
+*** Tabs vs Spaces
+A good programmer knows that spaces are by far a better alternative than tabs.
+This doesn't mean you need to insert the spaces manually. Emacs will take care
+of this for you.
+
+Configure default tab width to 4 spaces.
 #+begin_src emacs-lisp
-  (setq-default tab-width 2)
+  (setq-default tab-width 4)
 #+end_src
 
-Usar 2 espacios en vez de un tabulador.
+Ensure spaces are entered when pressing the =TAB= key.
 #+begin_src emacs-lisp
-  (setq-default tab-width 2 indent-tabs-mode nil)
   (setq-default indent-tabs-mode nil)
 #+end_src
 
@@ -614,7 +617,8 @@ Display line numbers.
 #+end_src
 
 *** Trailing Whitespace
-Delete (nasty) trailing whitespace when saving a file.
+Delete (nasty) trailing whitespace when saving a file (this includes emtpy
+lines at the end of the file and empty spaces at the end of lines).
 #+begin_src emacs-lisp
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
