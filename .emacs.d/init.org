@@ -88,6 +88,14 @@ particular package does not exist, it will be installed automagically.
 This section contains all configuration related to main settings for built-in
 Emacs features.
 
+** Personal Information
+Basic personal information (name and mail address). Email variable will be
+changed accordingly when using =mu4e= contexts (see configuration below).
+#+begin_src emacs-lisp
+  (setq user-full-name "David Álvarez Rosa")
+  (setq user-mail-address "david@alvarezrosa.com")
+#+end_src
+
 ** Server Mode
 Start the Emacs server mode from this instance, so that all =emacsclient= calls
 are routed here. This way, files can be sent to the current Emacs instance,
