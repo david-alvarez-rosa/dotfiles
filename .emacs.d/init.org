@@ -691,22 +691,25 @@ mapped to a non-command-line interface. Magit is both faster and more intuitive
 than either the command line or any GUI and these holds for both Git beginners
 and experts alike.
 
+
+** C/C++
+*** Header Completion
+This library enables the completion of C/C++ header file names using Company
+mode for Emacs.
 #+begin_src emacs-lisp :tangle no
   (use-package company-c-headers
     :config
-    (add-to-list 'company-backends 'company-c-headers)
-    (add-to-list 'company-c-headers-path-system "/usr/include/c++/8.2.1/"))
+    (add-to-list 'company-backends 'company-c-headers))
 #+end_src
 
 ** Python
-Paquete para mejorar y facilitar la edición de Python.
+Elpy is the Emacs Python Development Environment. It aims to provide an easy to
+install, fully-featured environment for Python development.
 #+begin_src emacs-lisp
   (use-package elpy
     :init
     (elpy-enable))
 #+end_src
-
-This is from the documentation.
 
 Once installed, Elpy will automatically provide code completion, syntax error
 highlighting and code hinting (in the modeline) for python files. Elpy offers a
