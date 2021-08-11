@@ -32,8 +32,8 @@ conflict here. Lastly, Emacs is a gift from God.
 * Preamble
 ** Installation
 ** About the Configuration
-Underlaying princicples:
-- Built-in alternatives have been prefered to standalone (M)ELPA packages.
+Underlying principles:
+- Built-in alternatives have been preferred to standalone (M)ELPA packages.
 - User define commands are usually bound with =C-c= prefix, to avoid clashing
   with Emacs defaults (that usually use =C-x=).
 - Minimalist, yet powerful.
@@ -48,6 +48,19 @@ Some utilities:
 - Light/Dark theme. Bound to =C-c d= ("d" for dark) and =C-c l= ("l" for
   light).
 - Git, with Magit, bound to =C-c g= ("g" for git).
+
+Conventions:
+- Functions and variables defined by me are prefixed with my name and a slash,
+  i.e., =david/= to namespace them and avoid conflicts.
+
+** License and Copyright
+Copyright 2021 David Álvarez Rosa.
+
+Files are licensed under the same license as Emacs (GPL) unless otherwise
+specified. See the LICENSE file for more information.
+
+Any external/third party works included in this work are licensed under their
+own licenses--refer to the submodules or packages for more information.
 
 
 * Loading and Package Management
