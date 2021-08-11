@@ -489,14 +489,37 @@ Completion will start automatically after you type a few letters. Use =C-n= and
 through the completions with =C-s=, =C-r= and =C-o=. Press =M-(digit)= to
 quickly complete with one of the first 10 candidates.
 
-** TODO Spell Checking
-Corrector (configurado en español). Para buscar siguiente error =C-,= y para
-autocorregir con otras palabras =C-.=
+** Spell Checking and Correcting
+Commands to check the spelling of a single word or of a portion of a buffer.
+These commands only work if a spelling checker program, one of Hunspell,
+Aspell, Ispell or Enchant, is installed. These programs are not part of Emacs,
+but one of them is usually installed on GNU/Linux and other free operating
+systems. I have installed Aspell with =pacman -S aspell aspell-es aspell-en=
+(for isntalling english and spanish dictionaries).
+
+I set the default dictionary to english, since I write more in english than in
+spanish these days. This can be changed with =ispell-change-dictionary=
+function.
 #+begin_src emacs-lisp
   (setq ispell-dictionary "english")
-  ;; (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-  ;; (add-hook 'LaTeX-mode-hook 'flyspell-buffer)
 #+end_src
+
+Main command for spell checking is =M-$= for check and correct pelling of the
+word at point, but if the region is active, do it for all words in the region
+instead. When this command encounters what appears to be an incorrect word, it
+asks you what to do, here are some valid responses (see them all with =?=):
+- =digit= for replacing the word.
+- =SPC= for skipping this word, and continue.
+- =r= replace the word with some user-defined string.
+- =a= accept the word only in this editing session (there is =A= variant, for
+  only in this buffer).
+- =i= insert word to personal dictionary (there is =u= variant, for inserting
+  the lowercase version of that word in the dictionary).
+
+It is also useful the use spelling *on the fly* with =flyspell-mode=, that
+highlights all misspelled words (the variant =flyspell-prog-mode= is for
+programming language, where spelling should occur only for comments and
+strings).
 
 
 * User Interface
