@@ -734,14 +734,6 @@ Some more things that are pretty sweet.
 - =M-*= go back from definition where I was.
 - =C-c C-o= occur definition. All places where a function/class is used.
 
-*** Virtual environments
-For handling Python virtual environments, we will use
-#+begin_src emacs-lisp :tangle no
-  (use-package pyenv-mode
-    :init
-    (pyenv-mode))
-#+end_src
-
 ** Web Development
 =web-mode= Para editar PHP-HTML-CSS-JS.
 #+begin_src emacs-lisp
