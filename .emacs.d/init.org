@@ -29,6 +29,25 @@ KISS or Unix philosophy: Emacs--at least for me--is a container for
 conflict here. Lastly, Emacs is a gift from God.
 
 
+* Preamble
+** Installation
+** About the Configuration
+Underlaying princicples:
+- Built-in alternatives have been prefered to standalone (M)ELPA packages.
+- User define commands are usually bound with =C-c= prefix, to avoid clashing
+  with Emacs defaults (that usually use =C-x=).
+- Minimalist, yet powerful.
+
+Some utilities:
+- Email Management, with mu4e and bound to =C-c e= ("e" for email).
+- Web Feed Reader, with Elfeed. Bound to =C-c f= ("f" for feed).
+- Org mode Agenda, bound to =C-c a= ("a" for agenda).
+- Music Management, bound to =C-c m= ("m" for music).
+- IRC client, with ERC. Bound to =C-c i= ("i" for IRC).
+- Trasparency alpha toggler. Bound to =C-c t= ("t" for transparency).
+- Light/Dark theme. Bound to =C-c d= ("d" for dark) and =C-c l= ("l" for
+  light).
+
 * Loading and Package Management
 Make startup faster by reducing the frequency of garbage collection and then
 use a hook to lower threshold back after Emacs startup. The loading time can be
