@@ -1452,8 +1452,7 @@ Elfeed is an extensible web feed reader for Emacs, supporting both Atom and
 RSS. It requires Emacs 24.3.
 #+begin_src emacs-lisp
   (use-package elfeed
-    :commands elfeed
-    :bind ("C-c e" . 'elfeed)
+    :bind ("C-c f" . 'elfeed)
     :config (setq elfeed-db-directory "~/.emacs.d/elfeed"
                   elfeed-search-filter "@1-week-ago -no "
                   elfeed-search-title-max-width 100))
