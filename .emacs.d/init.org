@@ -47,6 +47,8 @@ Some utilities:
 - Trasparency alpha toggler. Bound to =C-c t= ("t" for transparency).
 - Light/Dark theme. Bound to =C-c d= ("d" for dark) and =C-c l= ("l" for
   light).
+- Git, with Magit, bound to =C-c g= ("g" for git).
+
 
 * Loading and Package Management
 Make startup faster by reducing the frequency of garbage collection and then
@@ -673,6 +675,29 @@ p to jump to previous tag from point (comment-tags-previous-tag).
 ** TODO C/C++
 *** TODO =company-c-headers=
 Autocompletar los /headers/.
+*** Magit
+Magit is one of the killer features in Emacs, is a complete text-based user
+interface to Git. It fills the glaring gap between the Git command-line
+interface and various GUIs, letting you perform trivial as well as elaborate
+version control tasks with just a couple of mnemonic key presses. Magit looks
+like a prettified version of what you get after running a few Git commands but
+in Magit every bit of visible information is also actionable to an extent that
+goes far beyond what any Git GUI provides and it takes care of automatically
+refreshing this output when it becomes outdated. In the background Magit just
+runs Git commands and if you wish you can see what exactly is being run, making
+it possible for you to learn the git command-line by using Magit.
+#+begin_src emacs-lisp
+  (use-package magit
+    :bind ("C-c g" . 'magit-status))
+#+end_src
+
+Using Magit for a while will make you a more effective version control user.
+Magit supports and streamlines the use of Git features that most users and
+developers of other Git clients apparently thought could not be reasonably
+mapped to a non-command-line interface. Magit is both faster and more intuitive
+than either the command line or any GUI and these holds for both Git beginners
+and experts alike.
+
 #+begin_src emacs-lisp :tangle no
   (use-package company-c-headers
     :config
@@ -739,14 +764,6 @@ Añadir paquete ESS ("Emacs Speaks Statistics") para editor código de R.
 #+begin_src emacs-lisp
   (use-package ess)
 #+end_src
-
-** =Magit=
-Es una interfaz completa de Git (control de versiones) para Emacs.
-#+begin_src emacs-lisp
-  (use-package magit
-    :bind ("C-x g" . 'magit-status))
-#+end_src
-
 
 * Org Mode
 ** List Configuration
