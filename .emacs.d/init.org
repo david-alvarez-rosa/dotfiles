@@ -383,10 +383,10 @@ to be converted to text, without fancy fonts, and filled to 72 characters.
   (setq shr-width 72)
 #+end_src
 
-** Keybinding Panel =which-key=
-Nice utility for displaying available keybindings in a popup panel. You get an
-overview of what keybindings are available based on the prefix keys you
-entered.
+** Keybinding Panel
+Nice utility (=which-key=) for displaying available keybindings in a popup
+panel. You get an overview of what keybindings are available based on the
+prefix keys you entered.
 #+begin_src emacs-lisp
   (use-package which-key
     :init (which-key-mode))
