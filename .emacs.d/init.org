@@ -453,25 +453,6 @@ Completion will start automatically after you type a few letters. Use =C-n= and
 through the completions with =C-s=, =C-r= and =C-o=. Press =M-(digit)= to
 quickly complete with one of the first 10 candidates.
 
-** TODO =winum=
-Numera las diferentes ventanas para facilitar el movimiento entre las mismas.
-#+begin_src emacs-lisp :tangle no
-  (use-package winum
-    :bind (("C-`" . 'winum-select-window-by-number)
-           ("C-²" . 'winum-select-window-by-number)
-           ("M-0" . 'winum-select-window-0-or-10)
-           ("M-1" . 'winum-select-window-1)
-           ("M-2" . 'winum-select-window-2)
-           ("M-3" . 'winum-select-window-3)
-           ("M-4" . 'winum-select-window-4)
-           ("M-5" . 'winum-select-window-5)
-           ("M-6" . 'winum-select-window-6)
-           ("M-7" . 'winum-select-window-7)
-           ("M-8" . 'winum-select-window-8))
-    :config (setq winum-auto-setup-mode-line nil)
-    (winum-mode))
-#+end_src
-
 ** TODO Spell Checking
 Corrector (configurado en español). Para buscar siguiente error =C-,= y para
 autocorregir con otras palabras =C-.=
