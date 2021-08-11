@@ -301,14 +301,6 @@ to =delete= or =swap= etc. There are a bunch of command here (check them with
 - Delete window with =x=.
 - Swap windows with =m= ("m" from move).
 
-** Upcase/Downcase Region
-Command for upcasing =C-x C-u= or downcasing =C-x C-l= current region are also
-disabled by default, enable them.
-#+begin_src emacs-lisp
-  (put 'upcase-region 'disabled nil)
-  (put 'downcase-region 'disabled nil)
-#+end_src
-
 ** Auto Fill Mode
 Long lines are a bad practice. Please, don't use them, I find them quite
 annoying. Stick to at most 80 characters. Use =M-q= for filling paragraphs when
@@ -331,7 +323,7 @@ behaviour.
   (global-subword-mode 1)
 #+end_src
 
-** Region
+** Region Selection
 In Emacs terminology the region is the selected portion of the text.
 
 Real Emacs knights don't use shift to mark things, so disable it.
@@ -344,6 +336,24 @@ selection is active. Otherwise, typed text is just inserted at point regardless
 of any selection.
 #+begin_src emacs-lisp
   (delete-selection-mode 1)
+#+end_src
+
+*** Expand Region
+Expand region increases the selected region by semantic units. Just keep
+pressing the key until it selects what you want. Expand region is done by
+pressing ~C-=~ and contracting by prefixing the shortcut with a negative
+argument argument, i.e., ~C-- C-=~.
+#+begin_src emacs-lisp
+  (use-package expand-region
+    :bind ("C-=" . 'er/expand-region))
+#+end_src
+
+*** Upcase/Downcase Region
+Command for upcasing =C-x C-u= or downcasing =C-x C-l= current region are also
+disabled by default, enable them.
+#+begin_src emacs-lisp
+  (put 'upcase-region 'disabled nil)
+  (put 'downcase-region 'disabled nil)
 #+end_src
 
 ** Scrolling
@@ -385,15 +395,6 @@ to be converted to text, without fancy fonts, and filled to 72 characters.
 #+begin_src emacs-lisp
   (setq shr-use-fonts nil)
   (setq shr-width 72)
-#+end_src
-
-** Keybinding Panel
-Nice utility (=which-key=) for displaying available keybindings in a popup
-panel. You get an overview of what keybindings are available based on the
-prefix keys you entered.
-#+begin_src emacs-lisp
-  (use-package which-key
-    :init (which-key-mode))
 #+end_src
 
 ** Completion Inteface
@@ -443,28 +444,7 @@ for deleting the current input, and reseting the candidates list to the
 currently restricted matches (narrowing search). To open the search results in
 a separate buffer, press =C-c C-o= for occur.
 
-** Expand region
-Expand region increases the selected region by semantic units. Just keep
-pressing the key until it selects what you want. Expand region is done by
-pressing ~C-=~ and contracting by prefixing the shortcut with a negative
-argument argument, i.e., ~C-- C-=~.
-#+begin_src emacs-lisp
-  (use-package expand-region
-    :bind ("C-=" . 'er/expand-region))
-#+end_src
-
-** Snippets
-YASnippets is a template system for Emacs. It allows you to type an
-abbreviation and automatically expand it into function templates.
-#+begin_src emacs-lisp
-  (use-package yasnippet
-    :config
-    (use-package yasnippet-snippets)
-    (yas-reload-all)
-    :hook (prog-mode . yas-minor-mode))
-#+end_src
-
-** Company Mode
+*** Text/Code Completion
 Company is a text completion framework for Emacs. The name stands for "complete
 anything". It uses pluggable back-ends and front-ends to retrieve and display
 completion candidates.
@@ -479,6 +459,15 @@ Completion will start automatically after you type a few letters. Use =C-n= and
 =C-p= to select, =RET= to complete or =TAB= to complete the common part. Search
 through the completions with =C-s=, =C-r= and =C-o=. Press =M-(digit)= to
 quickly complete with one of the first 10 candidates.
+
+*** Keybinding Panel
+Nice utility (=which-key=) for displaying available keybindings in a popup
+panel. You get an overview of what keybindings are available based on the
+prefix keys you entered.
+#+begin_src emacs-lisp
+  (use-package which-key
+    :init (which-key-mode))
+#+end_src
 
 ** Spell Checking and Correcting
 Commands to check the spelling of a single word or of a portion of a buffer.
@@ -718,12 +707,22 @@ mapped to a non-command-line interface. Magit is both faster and more intuitive
 than either the command line or any GUI and these holds for both Git beginners
 and experts alike.
 
+*** Snippets
+YASnippets is a template system for Emacs. It allows you to type an
+abbreviation and automatically expand it into function templates.
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :config
+    (use-package yasnippet-snippets)
+    (yas-reload-all)
+    :hook (prog-mode . yas-minor-mode))
+#+end_src
 
 ** C/C++
 *** Header Completion
 This library enables the completion of C/C++ header file names using Company
 mode for Emacs.
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package company-c-headers
     :config
     (add-to-list 'company-backends 'company-c-headers))
@@ -757,7 +756,7 @@ Some more things that are pretty sweet.
 - =M-*= go back from definition where I was.
 - =C-c C-o= occur definition. All places where a function/class is used.
 
-** Web Development
+** TODO Web Development
 =web-mode= Para editar PHP-HTML-CSS-JS.
 #+begin_src emacs-lisp
   (use-package web-mode
@@ -775,10 +774,11 @@ Open Matlab files (.m) in Octave mode by default.
 #+end_src
 
 ** R
-Añadir paquete ESS ("Emacs Speaks Statistics") para editor código de R.
+Use ESS package ("Emacs Speaks Statistics") for editing R code.
 #+begin_src emacs-lisp
   (use-package ess)
 #+end_src
+
 
 * Org Mode
 ** List Configuration
@@ -1098,26 +1098,6 @@ Also, is pretty useful to list all lines containing a phrase (this is called
 occur), and can be access using =M-s o=.
 
 
-* Music Player
-Para controlar la reproducción de música desde Emacs. Debe estar instalado
-=mpd= (Music Player Daemon) e interactuaremos con él haciendo uso del cliente
-=mpc= construido en Emacs.
-
-Para lanzarlo usar el comando =C-c m= ("m" de music) y luego quitarlo siempre
-con =q=.
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c m") 'mpc)
-#+end_src
-
-Algunos comandos para facilitar la interacción.
-#+begin_src emacs-lisp
-  (require 'mpc)
-  (define-key mpc-mode-map "a" 'mpc-playlist-add)
-  (define-key mpc-mode-map "l" 'mpc-playlist)
-  (define-key mpc-mode-map "d" 'mpc-playlist-delete)
-#+end_src
-
-
 * Email Management
 Configuration for email within Emacs with =mu4e=. Open last 7 days email header
 view with =C-c e= keybinding. Disable asking for confirmation when killing.
@@ -1322,7 +1302,7 @@ Set default send mail function.
 Configure citation line (the one that says "On 20 April David wrote...") .
 #+begin_src emacs-lisp
   (setq message-citation-line-function 'message-insert-formatted-citation-line)
-  (setq message-citation-line-format "On %a %d %b %Y at %R, %f wrote:")
+  (setq message-citation-line-format "On %a %d %b %Y at %R, %N wrote:")
 #+end_src
 
 *** Org Mode HTML
@@ -1334,7 +1314,7 @@ environments of any kind (the only requirement is that the ‘\begin’ statemen
 appears on a new line, preceded by only whitespace). It's very useful when
 dealing with LaTeX formulas to use =C-c C-x C-l= for producing a preview image
 of the LaTeX fragment at point and overlay it over the source code (f there is
-no fragment at point, process all fragments in the current entry—between two
+no fragment at point, process all fragments in the current entry-—between two
 headlines).
 #+begin_src emacs-lisp
   (use-package org-mime
@@ -1405,6 +1385,26 @@ well.
 #+end_src
 
 
+* Music Player
+Para controlar la reproducción de música desde Emacs. Debe estar instalado
+=mpd= (Music Player Daemon) e interactuaremos con él haciendo uso del cliente
+=mpc= construido en Emacs.
+
+Para lanzarlo usar el comando =C-c m= ("m" de music) y luego quitarlo siempre
+con =q=.
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c m") 'mpc)
+#+end_src
+
+Algunos comandos para facilitar la interacción.
+#+begin_src emacs-lisp
+  (require 'mpc)
+  (define-key mpc-mode-map "a" 'mpc-playlist-add)
+  (define-key mpc-mode-map "l" 'mpc-playlist)
+  (define-key mpc-mode-map "d" 'mpc-playlist-delete)
+#+end_src
+
+
 * Web Feed Reader
 Elfeed is an extensible web feed reader for Emacs, supporting both Atom and
 RSS. It requires Emacs 24.3.
@@ -1414,13 +1414,6 @@ RSS. It requires Emacs 24.3.
     :config (setq elfeed-db-directory "~/.emacs.d/elfeed"
                   elfeed-search-filter "@1-week-ago -no "
                   elfeed-search-title-max-width 100))
-#+end_src
-
-Configure shr engine for viewing HTML entries. I like them to be converted to
-text, without fancy fonts, and filled to 72 characters.
-#+begin_src emacs-lisp
-  (setq shr-use-fonts nil)
-  (setq shr-width 72)
 #+end_src
 
 ** Elfeed Org
@@ -1505,11 +1498,15 @@ Ignore current entry (i.e., tag it with =no= TAG).
 
 
 * Useful Resources
-- [[https://github.com/daedreth/UncleDavesEmacs][Dawid Eckert]]
+- [[https://github.com/daedreth/UncleDavesEmacs][Dawid Eckert]] has a Youtube channel with nice Emacs tutorials (is called
+  UncleDave).
 - [[https://github.com/mxco86/emacs-config/blob/master/.emacs.d/emacs.org][Matthew Ryall]]
-- [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org#stateful-keymaps-with-hydra][David Wilson]]
-- [[https://github.com/munen/emacs.d][Alain M. Lafon]]
-- [[https://gitlab.com/protesilaos/dotfiles/-/blob/master/emacs/.emacs.d/prot-emacs.org][Protesilaos Stavrou]]
+- [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org#stateful-keymaps-with-hydra][David Wilson]] is the owner of SystemCrafters channel.
+- [[https://github.com/munen/emacs.d][Alain M. Lafon]] is the author of "Play Emacs like an instrument" video, and
+  has a very neat configuration.
+- [[https://gitlab.com/protesilaos/dotfiles/-/blob/master/emacs/.emacs.d/prot-emacs.org][Protesilaos Stavrou]] this guy is amazing, he also has a youtube channel.
 - [[https://github.com/bradwright/emacs.d][Bradley Wright]]
-- [[https://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]]
-- [[https://github.com/emacs-tw/awesome-emacs#browser][Awesome Emacs]]
+- [[https://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua ]]she is a well known Emacs blogger.
+- [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] is a community driven list of useful Emacs packages, utilities
+  and libraries
+- [[http://doc.norang.ca/org-mode.html][Bernt Hansen]] has an amazing Org mode configuration.
