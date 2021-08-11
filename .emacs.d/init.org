@@ -104,6 +104,21 @@ instead of opening a new one (much faster).
   (server-start)
 #+end_src
 
+** Custom File
+Place all custom-defined variables in their own file and store the custom
+variable file in the local machine’s home directory outside of version
+control. This enables us to keep specific config local to each machine.
+#+begin_src emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file t)
+#+end_src
+
+** Change yes/no Questions to y/n
+Shorter and faster.
+#+begin_src emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
 ** File Management
 Configuration related to file management.
 
@@ -195,6 +210,21 @@ without closing it.
   (global-set-key (kbd "C-c k") 'david/kill-all-other-buffers)
 #+end_src
 
+*** Narrowing
+Narrowing buffers is very useful, however this commands are disabled by default
+because new users often find them confusing. However, this configuration is
+*not* for newbies, so enable them.
+#+begin_src emacs-lisp
+  (put 'narrow-to-region 'disabled nil)
+  (put 'narrow-to-page 'disabled nil)
+  (put 'LaTeX-narrow-to-environment 'disabled nil)
+#+end_src
+
+I use =C-x n n= for narrowing to region and then =C-x n w= for widen (i.e.,
+reverting to full page), but there are more narrow functions (enviroment
+dependent), e.g., =C-x n d= for narrowing to defun (useful for narrowing
+functions).
+
 ** Window Management
 Faster commands for cycling windows: =M-o= instead of =C-x o= (one key press
 less) and =M-O= for reverse window cycling.
@@ -254,27 +284,6 @@ configuration. It is included in GNU Emacs.
   (winner-mode 1)
 #+end_src
 
-** Change yes/no Questions to y/n
-Shorter and faster.
-#+begin_src emacs-lisp
-  (defalias 'yes-or-no-p 'y-or-n-p)
-#+end_src
-
-** Narrowing
-Narrowing buffers is very useful, however this commands are disabled by default
-because new users often find them confusing. However, this configuration is
-*not* for newbies, so enable them.
-#+begin_src emacs-lisp
-  (put 'narrow-to-region 'disabled nil)
-  (put 'narrow-to-page 'disabled nil)
-  (put 'LaTeX-narrow-to-environment 'disabled nil)
-#+end_src
-
-I use =C-x n n= for narrowing to region and then =C-x n w= for widen (i.e.,
-reverting to full page), but there are more narrow functions (enviroment
-dependent), e.g., =C-x n d= for narrowing to defun (useful for narrowing
-functions).
-
 ** Upcase/Downcase Region
 Command for upcasing =C-x C-u= or downcasing =C-x C-l= current region are also
 disabled by default, enable them.
@@ -303,6 +312,21 @@ Emacs treats camelCase strings as a single word by default, change this
 behaviour.
 #+begin_src emacs-lisp
   (global-subword-mode 1)
+#+end_src
+
+** Region
+In Emacs terminology the region is the selected portion of the text.
+
+Real Emacs knights don't use shift to mark things, so disable it.
+#+begin_src emacs-lisp
+  (setq shift-select-mode nil)
+#+end_src
+
+Set delete selection mode, so typed text replaces the selection if the
+selection is active. Otherwise, typed text is just inserted at point regardless
+of any selection.
+#+begin_src emacs-lisp
+  (delete-selection-mode 1)
 #+end_src
 
 ** Scrolling
@@ -338,15 +362,6 @@ Highlight matching braces.
   (show-paren-mode 1)
 #+end_src
 
-** Custom File
-Place all custom-defined variables in their own file and store the custom
-variable file in the local machine’s home directory outside of version
-control. This enables us to keep specific config local to each machine.
-#+begin_src emacs-lisp
-  (setq custom-file "~/.emacs.d/custom.el")
-  (load custom-file t)
-#+end_src
-
 ** HTML Renderer
 Configure shr HTML render engine for converting HTML to text. I like the HTML
 to be converted to text, without fancy fonts, and filled to 72 characters.
@@ -354,11 +369,6 @@ to be converted to text, without fancy fonts, and filled to 72 characters.
   (setq shr-use-fonts nil)
   (setq shr-width 72)
 #+end_src
-
-
-* General
-Esta sección contiene diferentes ajustes que no forman parte de Emacs, pero que
-no son específicos de ningún modo.
 
 ** Keybinding Panel =which-key=
 Nice utility for displaying available keybindings in a popup panel. You get an
@@ -1461,7 +1471,7 @@ Ignore current entry (i.e., tag it with =no= TAG).
 #+end_src
 
 
-* Pendiente
+* TODO IRC Client
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c i") (lambda () (interactive)
                                   (erc :server "irc.freenode.net"
