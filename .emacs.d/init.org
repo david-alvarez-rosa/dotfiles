@@ -482,7 +482,7 @@ autocorregir con otras palabras =C-.=
 #+end_src
 
 
-* Interface
+* User Interface
 Settings related to interface.
 
 ** Theme
@@ -558,6 +558,7 @@ the terminal version of Emacs, though, so it's not set there.
 ** Transparency Alpha
 Functions for toggling transparency alpha.
 #+begin_src emacs-lisp
+  (set-frame-parameter nil 'alpha '(95 . 90))
   (defun david/toggle-transparency ()
     "Toggle transparency on and off."
     (interactive)
