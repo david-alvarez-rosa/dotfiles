@@ -1125,10 +1125,11 @@ remove them from headers view.
                               (:subject)))
 #+end_src
 
-Add "ViewInbrowser" action both in header and view mode.
+Add "ViewInbrowser" action in and view mode (in header mode this does not
+work).
 #+begin_src emacs-lisp
-  (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-  (add-to-list 'mu4e-headers-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+  (add-to-list 'mu4e-view-actions '("ViewInBrowser" .
+  mu4e-action-view-in-browser) t)
 #+end_src
 
 Show complete email address in view mode.
