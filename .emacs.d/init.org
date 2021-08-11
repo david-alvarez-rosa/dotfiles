@@ -634,17 +634,40 @@ Habilitar corrección de sintaxis al momento usando =flycheck=
     (add-hook 'prog-mode-hook 'global-flycheck-mode))
 #+end_src
 
-*** =Projectile=
-Añadir el Projectile.
+*** Projectile
+Projectile is a project interaction library for Emacs. Its goal is to provide a
+nice set of features operating on a project level without introducing external
+dependencies (when feasible). It is very nice, because it integrates seamlessly
+with version control (like Git) and takes into account =.gitignore= files.
 #+begin_src emacs-lisp
   (use-package projectile
     :config (projectile-mode +1)
     :bind (:map projectile-mode-map ("C-c p" . 'projectile-command-map)))
 #+end_src
 
-** TODO C/C++
-*** TODO =company-c-headers=
-Autocompletar los /headers/.
+Some of the projectile features:
+- Jump to a file in project
+- Jump to files at point in project
+- Jump to a directory in project
+- Jump to a file in a directory
+- Jump to a project buffer
+- Jump to a test in project
+- Toggle between files with same names but different extensions (e.g. .h <->
+  .c/.cpp, Gemfile <-> Gemfile.lock)
+- Toggle between code and its test (e.g. main.service.js <->
+  main.service.spec.js)
+- Jump to recently visited files in the project
+- Switch between projects you have worked on
+- Kill all project buffers
+- Replace in project
+- Multi-occur in project buffers
+- Grep in project
+- Regenerate project etags or gtags (requires ggtags).
+- Visit project in dired
+- Run make in a project with a single key chord
+- Check for dirty repositories
+- Toggle read-only mode for the entire project
+
 *** Magit
 Magit is one of the killer features in Emacs, is a complete text-based user
 interface to Git. It fills the glaring gap between the Git command-line
