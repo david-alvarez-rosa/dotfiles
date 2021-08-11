@@ -1263,7 +1263,7 @@ Encriptar todos los correos salientes /automágicamente/ si la llave existe.
   (add-hook 'message-send-hook #'david/add-encryption-mark-if-possible)
 #+end_src
 
-Para firmar correos salientes.
+For signing emails (when the key is available).
 #+begin_src emacs-lisp
   (setq mml-secure-openpgp-sign-with-sender t)
 #+end_src
@@ -1286,6 +1286,14 @@ contact completion in mu4e]].
       (split-string (buffer-string) "\n" t)))
   (defun david/complete-emails (&optional start)
     (interactive)
+
+    (let ((eoh ;; end-of-headers
+           (save-excursion
+             (goto-char (point-min))
+             (search-forward-regexp mail-header-separator nil t))))
+
+    ;; Only run if we are in the headers section
+    (when (and eoh (> eoh (point)) (mail-abbrev-in-expansion-header-p))
       (let* ((end (point))
              (start
               (or start
@@ -1300,88 +1308,90 @@ contact completion in mu4e]].
         (ivy-read "Contact: "
                   (david/read-contact-list)
                   :action (lambda(contact) (with-ivy-window (insert contact)))
-                  :initial-input initial-input)))
+                  :initial-input initial-input)))))
   (define-key mu4e-compose-mode-map (kbd "<M-tab>") 'david/complete-emails)
 #+end_src
 
-** Composición
-Usar =C-c x= para pasar a =org-mu4e-compose=, que permite componer correos
-usando =org-mode=. Después, convertir el mensaje en =org= a HTML (al enviar).
+** Composition/Sending
+Set default send mail function.
 #+begin_src emacs-lisp
-  (require 'org-mu4e)
-  (define-key mu4e-compose-mode-map (kbd "C-c x") 'org-mu4e-compose-org-mode)
-  (setq org-mu4e-convert-to-html t)
+  (require 'smtpmail)
+  (setq message-send-mail-function 'smtpmail-send-it)
 #+end_src
 
-Añadir =org-mime= para poder convertir de =Org= a HTML (para mandar LaTeX como
-imágenes por ejemplo).
+Configure citation line (the one that says "On 20 April David wrote...") .
 #+begin_src emacs-lisp
-  (use-package org-mime)
-  (require 'org-mime)
-#+end_src
-
-Añadir automáticamente la firma.
-#+begin_src emacs-lisp
-  (setq message-signature-file "~/.emacs.d/signature.txt")
-  (setq mu4e-compose-signature-auto-include nil)
-#+end_src
-
-Activar el autocorrector en español al estar en modo de composición.
-#+begin_src emacs-lisp
-  (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
-  (add-hook 'mu4e-compose-mode-hook (lambda ()
-                                      (ispell-change-dictionary "spanish")))
-#+end_src
-
-
-Configurar la línea de cita.
-
-#+begin_src emacs-lisp
-
   (setq message-citation-line-function 'message-insert-formatted-citation-line)
   (setq message-citation-line-format "On %a %d %b %Y at %R, %f wrote:")
 #+end_src
 
-
-Configuración para manjear más de una cuenta a la hora de enviar correo. Esta
-función es de la documentación de MU4E
-([[http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html#Multiple-accounts]]). Siempre
-que se quiera componer un nuevo correo, cambiar toda las variables de
-configuración relevantes a la cuenta elegida.
+*** Org Mode HTML
+This program sends HTML email using Org-mode HTML export. This approximates a
+WYSiWYG HTML mail editor from within Emacs, and can be useful for sending
+tables, fontified source code, and inline images in email. LaTeX formulas can
+be sent using the modern math delimiters such as \(...\) and \[...\], and also
+environments of any kind (the only requirement is that the ‘\begin’ statement
+appears on a new line, preceded by only whitespace). It's very useful when
+dealing with LaTeX formulas to use =C-c C-x C-l= for producing a preview image
+of the LaTeX fragment at point and overlay it over the source code (f there is
+no fragment at point, process all fragments in the current entry—between two
+headlines).
 #+begin_src emacs-lisp
-  (defun david/mu4e-set-account ()
-    "Set the account for composing a message."
-    (let* ((account
-            (if mu4e-compose-parent-message
-                (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
-                  (string-match "/\\(.*?\\)/" maildir)
-                  (match-string 1 maildir))
-              (completing-read (format "Compose with account: (%s) "
-                                       (mapconcat #'(lambda (var) (car var))
-                                                  david/mu4e-account-alist "/"))
-                               (mapcar #'(lambda (var) (car var)) david/mu4e-account-alist)
-                               nil t nil nil (caar david/mu4e-account-alist))))
-           (account-vars (cdr (assoc account david/mu4e-account-alist))))
-      (if account-vars
-          (mapc #'(lambda (var)
-                    (set (car var) (cadr var)))
-                account-vars)
-        (error "No email account found"))))
-
-  (add-hook 'mu4e-compose-pre-hook 'david/mu4e-set-account)
+  (use-package org-mime
+    :config
+    (setq org-mime-export-options '(:with-latex dvipng
+                                    :section-numbers nil
+                                    :with-author nil
+                                    :with-toc nil))
+    :bind (:map message-mode-map
+                (("C-c o" . 'org-mime-edit-mail-in-org-mode)
+                 ("C-c M-o" . 'org-mime-htmlize))))
 #+end_src
 
-** Archivos adjuntos
-Configuración el directorio de descarga.
+Some useful functions are =org-mime-edit-mail-in-org-mode= (press =C-c o=) for
+editing the mail in a special buffer in Org mode, and then =org-mime-htmilize=
+(with =C-c M-o=) from within a mail composition buffer to export either the
+entire buffer or just the active region to html, and embed the results into the
+buffer as a text/html mime section. After =org-mime-htmlize=, you can always
+run =org-mime-revert-to-plain-text-mail= restore the original plain text mail.
+
+For embedding image into mail body the syntax is as follows:
+=[[/full/path/to/your.jpg]]=.
+
+The function =org-mime-org-buffer-htmlize= can be called from an Org mode
+buffer to export either he whole buffer or the narrowed subtree or active
+region to HTML, and open a new email buffer including the resulting HTML
+content as an embedded mime section.
+
+The function =org-mime-org-subtree-htmlize= is similar to
+=org-mime-org-buffer-htmlize= but works on subtree. It can also read subtree
+properties MAIL_SUBJECT, MAIL_TO, MAIL_CC, and MAIL_BCC. Here is the sample of
+subtree:
+#+begin_example
+  ,* mail one
+   :PROPERTIES:
+   :MAIL_SUBJECT: mail title
+   :MAIL_TO: person1@gmail.com
+   :MAIL_CC: person2@gmail.com
+   :MAIL_BCC: person3@gmail.com
+   :END:
+  some text here ...
+#+end_example
+
+** Attachment Management
+Configure attachment directory for downloading.
 #+begin_src emacs-lisp
   (setq mu4e-attachment-dir "~/Downloads")
 #+end_src
 
-Mejorar la gestión de los archivos adjuntos (con =dired=).
+For attaching files while composing new email. To attach file, just mark in
+dired and =C-c RET C-a=. This is useful for attaching multiple files, but the
+default =C-c C-a= command for attaching (in composition buffer) works just
+well.
 #+begin_src emacs-lisp
   (require 'gnus-dired)
   (defun gnus-dired-mail-buffers ()
-    "Devuelve una lista de las ventanas con mensajes activos."
+    "Return a list of active message buffers."
     (let (buffers)
       (save-current-buffer
         (dolist (buffer (buffer-list t))
@@ -1392,49 +1402,6 @@ Mejorar la gestión de los archivos adjuntos (con =dired=).
       (nreverse buffers)))
   (setq gnus-dired-mail-mode 'mu4e-user-agent)
   (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
-#+end_src
-
-** Imágenes
-Configurar cómo se muestran las imágenes en =mu4e=
-#+begin_src emacs-lisp
-  (when (fboundp 'imagemagick-register-types)
-    (imagemagick-register-types))
-  (setq mu4e-view-show-images t)
-#+end_src
-
-** Correos HTML
-#+begin_src emacs-lisp
-  (require 'mu4e-contrib)
-  (setq mu4e-html2text-command 'mu4e-shr2text)
-  (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-  (add-to-list 'mu4e-headers-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-#+end_src
-
-Hacer más probable el mostrar correos como texto.
-#+begin_src emacs-lisp
-  (setq mu4e-view-html-plaintext-ratio-heuristic  most-positive-fixnum)
-#+end_src
-
-** Otros
-Configuraciones varias.
-#+begin_src emacs-lisp
-  ;; Eliminar los 'buffers' de mensajes.
-  (setq message-kill-buffer-on-exit t)
-  ;; Usar 'U' para actualizar en principal.
-  (setq mu4e-get-mail-command "mbsync -a -V")
-  ;; Usar 'C-c u' para actualizar (solo indexando).
-  (define-key mu4e-headers-mode-map (kbd "C-c u") 'mu4e-update-index)
-#+end_src
-
-Usar tabulador para moverse entre links.
-#+begin_src emacs-lisp
-  (bind-key "<tab>" 'shr-next-link mu4e-view-mode-map)
-  (bind-key "<backtab>" 'shr-previous-link mu4e-view-mode-map)
-#+end_src
-
-Mostrar las direcciones de correo completadas cuando en modo de lectura.
-#+begin_src emacs-lisp
-  (setq mu4e-view-show-addresses t)
 #+end_src
 
 
