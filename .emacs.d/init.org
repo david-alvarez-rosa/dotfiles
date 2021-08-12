@@ -806,6 +806,12 @@ Use ESS package ("Emacs Speaks Statistics") for editing R code.
   (use-package ess)
 #+end_src
 
+Some useful commands:
+- =C-c C-b= to eval buffer.
+- =C-c C-j= to eval line.
+- =C-c C-r= to eval region.
+- =C-c C-f= to eval function.
+
 
 * Org Mode
 ** List Configuration
@@ -1537,3 +1543,4 @@ Ignore current entry (i.e., tag it with =no= TAG).
 - [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] is a community driven list of useful Emacs packages, utilities
   and libraries
 - [[http://doc.norang.ca/org-mode.html][Bernt Hansen]] has an amazing Org mode configuration.
+- [[https://github.com/SirPscl/emacs.d][Pascal Huber]] another nice Emacs configuration to take into account.
