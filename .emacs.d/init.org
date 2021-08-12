@@ -560,10 +560,13 @@ it).
 
 ** Modeline
 For the modeline I am using also Doom Modeline. This package requires the fonts
-included with =all-the-icons= to be installed.
+included with =all-the-icons= to be installed. I have configured it to show
+column number instead of percentage buffer position.
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    :init (doom-modeline-mode 1))
+    :init (doom-modeline-mode 1)
+    :config (setq column-number-mode t)
+    (setq doom-modeline-percent-position nil))
 #+end_src
 
 ** Font
