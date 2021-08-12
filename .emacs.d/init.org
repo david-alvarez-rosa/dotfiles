@@ -531,22 +531,6 @@ for deleting the current input, and reseting the candidates list to the
 currently restricted matches (narrowing search). To open the search results in
 a separate buffer, press =C-c C-o= for occur.
 
-*** Text/Code Completion
-Company is a text completion framework for Emacs. The name stands for "complete
-anything". It uses pluggable back-ends and front-ends to retrieve and display
-completion candidates.
-#+begin_src emacs-lisp
-  (use-package company
-    :config (setq company-show-quick-access t)
-    :init (global-company-mode)
-    :bind ("C-:" . company-complete))
-#+end_src
-
-Completion will start automatically after you type a few letters. Use =C-n= and
-=C-p= to select, =RET= to complete or =TAB= to complete the common part. Search
-through the completions with =C-s=, =C-r= and =C-o=. Press =M-(digit)= to
-quickly complete with one of the first 10 candidates.
-
 *** Keybinding Panel
 Nice utility (=which-key=) for displaying available keybindings in a popup
 panel. You get an overview of what keybindings are available based on the
@@ -695,6 +679,16 @@ compared, are shown in separate windows and the differences are highlighted as
 you step through them. You can also copy difference regions from one buffer to
 another (and recover old differences if you change your mind). Another powerful
 feature is the ability to merge a pair of files into a third buffer.
+*** Code Completion
+Company is a text/code completion framework for Emacs. The name stands for
+"complete anything". It uses pluggable back-ends and front-ends to retrieve and
+display completion candidates.
+#+begin_src emacs-lisp
+  (use-package company
+    :config (setq company-show-quick-access t)
+    :hoook (prog-mode . company-mode)
+    :bind ("C-:" . company-complete))
+#+end_src
 
 Don't open new frame for setup window and prefer splitting horizontally.
 #+begin_src emacs-lisp
