@@ -526,7 +526,8 @@ strings).
 
 
 * User Interface
-Settings related to interface.
+Settings related to the user interface, such as the theme, the modeline, the
+font, other basic interface settings, and the transparency alpha.
 
 ** Theme
 I am using Doom Themes. I find creating own theme is too much work and it's now
@@ -643,7 +644,7 @@ of this for you.
 
 Configure default tab width to 4 spaces.
 #+begin_src emacs-lisp
-  (setq-default tab-width 4)
+  (setq-default tab-width 2)
 #+end_src
 
 Ensure spaces are entered when pressing the =TAB= key.
