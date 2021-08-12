@@ -579,8 +579,8 @@ font, other basic interface settings, and the transparency alpha.
 ** Theme
 I am using Doom Themes. I find creating own theme is too much work and it's now
 worth your time. In the past I used Spacemacs theme and I was nice, but I
-became bored of it. Doom Themes provides nice themes such as =doom-one=,
-=doom-one-ligth=, and the classic =zenburn= of course.
+became bored of it. Doom Themes provides nice themes such as =doom-one= (dark),
+=doom-one-ligth= (light), and the classic =zenburn= of course.
 #+begin_src emacs-lisp
   (use-package doom-themes
     :config
@@ -590,6 +590,9 @@ became bored of it. Doom Themes provides nice themes such as =doom-one=,
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 #+end_src
+
+Some themes I also like are =doom-peacock= (dark) and =doom-tomorrow-day=
+(light).
 
 Custom keybindings for switching between ligth and dark themes in
 Emacs. Currently =C-c l= sets ligths theme (i.e., doom-one-light) and =C-c d=
@@ -672,13 +675,6 @@ Configuration settings related to programming languages.
 
 ** General Configuration
 Programming configuration that is not specific to one programming language.
-*** Ediff
-Ediff provides a convenient way for simultaneous browsing through the
-differences between a pair (or a triple) of files or buffers. The files being
-compared, are shown in separate windows and the differences are highlighted as
-you step through them. You can also copy difference regions from one buffer to
-another (and recover old differences if you change your mind). Another powerful
-feature is the ability to merge a pair of files into a third buffer.
 *** Code Completion
 Company is a text/code completion framework for Emacs. The name stands for
 "complete anything". It uses pluggable back-ends and front-ends to retrieve and
@@ -690,10 +686,15 @@ display completion candidates.
     :bind ("C-:" . company-complete))
 #+end_src
 
-Don't open new frame for setup window and prefer splitting horizontally.
+Completion will start automatically after you type a few letters. Use =C-n= and
+=C-p= to select, =RET= to complete or =TAB= to complete the common part. Search
+through the completions with =C-s=, =C-r= and =C-o=. Press =M-(digit)= to
+quickly complete with one of the first 10 candidates.
+
+*** Line Numbers
+Display line numbers.
 #+begin_src emacs-lisp
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-  (setq ediff-split-window-function 'split-window-horizontally)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+end_src
 
 *** Tabs vs Spaces
@@ -709,12 +710,6 @@ Configure default tab width to 4 spaces.
 Ensure spaces are entered when pressing the =TAB= key.
 #+begin_src emacs-lisp
   (setq-default indent-tabs-mode nil)
-#+end_src
-
-*** Line Numbers
-Display line numbers.
-#+begin_src emacs-lisp
-  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+end_src
 
 *** Trailing Whitespace
@@ -799,6 +794,20 @@ abbreviation and automatically expand it into function templates.
     (use-package yasnippet-snippets)
     (yas-reload-all)
     :hook (prog-mode . yas-minor-mode))
+#+end_src
+
+*** Ediff
+Ediff provides a convenient way for simultaneous browsing through the
+differences between a pair (or a triple) of files or buffers. The files being
+compared, are shown in separate windows and the differences are highlighted as
+you step through them. You can also copy difference regions from one buffer to
+another (and recover old differences if you change your mind). Another powerful
+feature is the ability to merge a pair of files into a third buffer.
+
+Don't open new frame for setup window and prefer splitting horizontally.
+#+begin_src emacs-lisp
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
 ** C/C++
