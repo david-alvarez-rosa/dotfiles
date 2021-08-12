@@ -32,7 +32,7 @@ conflict here. Lastly, Emacs is a gift from God.
 * Table of Contents                                                     :TOC:
 - [[#preamble][Preamble]]
   - [[#installation][Installation]]
-  - [[#about-the-configuration][About the Configuration]]
+  - [[#about-this-configuration][About this Configuration]]
   - [[#license-and-copyright][License and Copyright]]
 - [[#loading-and-package-management][Loading and Package Management]]
 - [[#general-configuration][General Configuration]]
@@ -81,7 +81,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#latex][LaTeX]]
 - [[#pdf-viewer][PDF Viewer]]
 - [[#email-management][Email Management]]
-  - [[#contexts-for-accounts][Contexts for Accounts]]
+  - [[#contexts-for-multiple-accounts][Contexts for Multiple Accounts]]
   - [[#queued-email][Queued Email]]
   - [[#signing-and-encryption][Signing and Encryption]]
   - [[#completion][Completion]]
@@ -97,7 +97,7 @@ conflict here. Lastly, Emacs is a gift from God.
 
 * Preamble
 ** Installation
-** About the Configuration
+** About this Configuration
 Underlying principles:
 - Built-in alternatives have been preferred to standalone (M)ELPA packages.
 - User define commands are usually bound with =C-c= prefix, to avoid clashing
@@ -127,7 +127,6 @@ specified. See the LICENSE file for more information.
 
 Any external/third party works included in this work are licensed under their
 own licenses--refer to the submodules or packages for more information.
-
 
 * Loading and Package Management
 Make startup faster by reducing the frequency of garbage collection and then
@@ -163,7 +162,6 @@ particular package does not exist, it will be installed automagically.
 #+begin_src emacs-lisp
   (setq use-package-always-ensure t)
 #+end_src
-
 
 * General Configuration
 This section contains all configuration related to main settings for built-in
@@ -590,7 +588,6 @@ highlights all misspelled words (the variant =flyspell-prog-mode= is for
 programming language, where spelling should occur only for comments and
 strings).
 
-
 * User Interface
 Settings related to the user interface, such as the theme, the modeline, the
 font, other basic interface settings, and the transparency alpha.
@@ -685,7 +682,6 @@ Functions for toggling transparency alpha.
         (set-frame-parameter nil 'alpha '(100 . 100)))))
   (define-key global-map (kbd "C-c t") 'david/toggle-transparency)
 #+end_src
-
 
 * Programming Configuration
 Configuration settings related to programming languages.
@@ -812,6 +808,8 @@ abbreviation and automatically expand it into function templates.
 #+end_src
 
 ** C/C++
+Configuration for C/C++ programming languages.
+
 *** Header Completion
 This library enables the completion of C/C++ header file names using Company
 mode for Emacs.
@@ -878,8 +876,12 @@ Some useful commands:
 - =C-c C-r= to eval region.
 - =C-c C-f= to eval function.
 
-
 * Org Mode
+Configuration for Org mode, one of the best major modes in Emacs (org mode is
+definately a killed feature). Org mode is for keeping notes, maintaining to-do
+lists, planning projects, authoring documents, computational notebooks,
+literate programming and more — in a fast and effective plain text system.
+
 ** List Configuration
 Allow alphabetical list, i.e., list like "a)", "A" or "A)" as element lists.
 #+begin_src emacs-lisp
@@ -1165,7 +1167,6 @@ key bindings. Also, =C-c C-f= for inserting new field.
   (setq bibtex-autokey-year-title-separator ":")
 #+end_src
 
-
 * PDF Viewer
 PDF Tools PDF Tools is, among other things, a replacement of DocView for PDF
 files. The key difference is that pages are not pre-rendered by
@@ -1195,7 +1196,6 @@ For displaying PDF metadata the command is =I=.
 
 Also, is pretty useful to list all lines containing a phrase (this is called
 occur), and can be access using =M-s o=.
-
 
 * Email Management
 Configuration for email within Emacs with =mu4e=. Open last 7 days email header
@@ -1244,7 +1244,7 @@ Enable images in mu4e view.
   (setq mu4e-view-show-images t)
 #+end_src
 
-** Contexts for Accounts
+** Contexts for Multiple Accounts
 I am using contexts for handling two different accounts at the same time. When
 launching mu4e for the first time don't ask and just pick the first context
 (the default).
@@ -1483,7 +1483,6 @@ well.
   (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 #+end_src
 
-
 * Music Player
 Para controlar la reproducción de música desde Emacs. Debe estar instalado
 =mpd= (Music Player Daemon) e interactuaremos con él haciendo uso del cliente
@@ -1502,7 +1501,6 @@ Algunos comandos para facilitar la interacción.
   (define-key mpc-mode-map "l" 'mpc-playlist)
   (define-key mpc-mode-map "d" 'mpc-playlist-delete)
 #+end_src
-
 
 * Web Feed Reader
 Elfeed is an extensible web feed reader for Emacs, supporting both Atom and
@@ -1576,7 +1574,6 @@ Ignore current entry (i.e., tag it with =no= TAG).
   (define-key elfeed-search-mode-map (kbd "i") 'david/elfeed-ignore)
 #+end_src
 
-
 * TODO IRC Client
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c i") (lambda () (interactive)
@@ -1595,12 +1592,11 @@ Ignore current entry (i.e., tag it with =no= TAG).
   ;; (erc-autojoin-enable)
 #+end_src
 
-
 * Useful Resources
 - [[https://github.com/daedreth/UncleDavesEmacs][Dawid Eckert]] has a Youtube channel with nice Emacs tutorials (is called
   UncleDave).
 - [[https://github.com/mxco86/emacs-config/blob/master/.emacs.d/emacs.org][Matthew Ryall]]
-- [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org#stateful-keymaps-with-hydra][David Wilson]] is the owner of SystemCrafters channel.
+- [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org][David Wilson]] is the owner of SystemCrafters channel.
 - [[https://github.com/munen/emacs.d][Alain M. Lafon]] is the author of "Play Emacs like an instrument" video, and
   has a very neat configuration.
 - [[https://gitlab.com/protesilaos/dotfiles/-/blob/master/emacs/.emacs.d/prot-emacs.org][Protesilaos Stavrou]] this guy is amazing, he also has a youtube channel.
@@ -1610,3 +1606,5 @@ Ignore current entry (i.e., tag it with =no= TAG).
   and libraries
 - [[http://doc.norang.ca/org-mode.html][Bernt Hansen]] has an amazing Org mode configuration.
 - [[https://github.com/SirPscl/emacs.d][Pascal Huber]] another nice Emacs configuration to take into account.
+- [[https://cestlaz.github.io/stories/emacs/][Mike Zamansky]] a well known Emacs guru, that has a blog called "C'est la Z"
+  with a nice Emacs series (+75 blog entries, each one of them with video).
