@@ -847,15 +847,28 @@ Some more things that are pretty sweet.
 - =M-*= go back from definition where I was.
 - =C-c C-o= occur definition. All places where a function/class is used.
 
-** TODO Web Development
-=web-mode= Para editar PHP-HTML-CSS-JS.
+** Web Development
+Web mode is an autonomous emacs major-mode for editing web templates. HTML
+documents can embed parts (CSS/JavaScript) and blocks (client/server side).
 #+begin_src emacs-lisp
   (use-package web-mode
     :config
-    (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
     (setq web-mode-markup-indent-offset 2))
 #+end_src
+
+Some useful commands:
+- Jumping with =C-c C-n= between opening/closing HTML tags or control blocks.
+- Code folding with =C-c C-f= for HTML elements and control blocks.
+- Snippet insertion with =C-c C-s= (auto indented, aware of text selection, engine
+  specific).
+- Clever selection and expansion with =C-c C-m=.
 
 ** Octave/Matlab
 Open Matlab files (.m) in Octave mode by default.
