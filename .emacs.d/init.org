@@ -46,7 +46,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#auto-fill-mode][Auto Fill Mode]]
   - [[#subword-mode][Subword Mode]]
   - [[#region-selection][Region Selection]]
-  - [[#scrolling][Scrolling]]
+  - [[#scrolling-and-point-location][Scrolling and Point Location]]
   - [[#character-pairs][Character Pairs]]
   - [[#html-renderer][HTML Renderer]]
   - [[#completion-inteface][Completion Inteface]]
@@ -702,6 +702,9 @@ Completion will start automatically after you type a few letters. Use =C-n= and
 =C-p= to select, =RET= to complete or =TAB= to complete the common part. Search
 through the completions with =C-s=, =C-r= and =C-o=. Press =M-(digit)= to
 quickly complete with one of the first 10 candidates.
+
+When the completion candidates are shown, press =<f1>= to display the
+documentation for the selected candidate, or =C-w= to see its source.
 
 *** Line Numbers
 Display line numbers.
