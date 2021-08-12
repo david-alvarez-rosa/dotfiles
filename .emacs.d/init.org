@@ -420,7 +420,7 @@ disabled by default, enable them.
   (put 'downcase-region 'disabled nil)
 #+end_src
 
-** Scrolling
+** Scrolling and Point Location
 I personally don't like automatic scrolling (centering point vertically in the
 window when point moves out of the visible portion of the text) so I have it
 disabled (just set the following number to a large number, greater than 100).
@@ -462,6 +462,19 @@ Right and left scrolling commands are trigered with =C-c >= and =C-c <=
 respectively. Scroll left is disabled by default, I enable it.
 #+begin_src emacs-lisp
   (put 'scroll-left 'disabled nil)
+#+end_src
+
+Two very useful commands for recentering window are =C-l= and =C-M-l=, the
+former is a well-known Emacs command, and the latter is for =reposition-window=
+function, that makes the current definition and/or comment visible (i.e., it
+attempts to scroll the window so the maximum content is visible).
+
+*** Avy
+Package for jumping to visible text using a char-based decision tree.
+#+begin_src emacs-lisp
+  (use-package avy
+    :bind (("C-:" . 'avy-goto-char-2)
+           ("M-g w" . 'avy-goto-word-1)))
 #+end_src
 
 ** Character Pairs
@@ -682,8 +695,7 @@ display completion candidates.
 #+begin_src emacs-lisp
   (use-package company
     :config (setq company-show-quick-access t)
-    :hoook (prog-mode . company-mode)
-    :bind ("C-:" . company-complete))
+    :hook (prog-mode . company-mode))
 #+end_src
 
 Completion will start automatically after you type a few letters. Use =C-n= and
