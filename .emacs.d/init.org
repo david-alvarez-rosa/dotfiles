@@ -1113,6 +1113,18 @@ Set default org archive location.
   (setq org-archive-location "~/Documents/Archive//%s::")
 #+end_src
 
+** Table of Contents
+It’s nice to have a table of contents section (without exporting) for long
+literate configuration files (like this one!) so I use org-toc-org to
+automatically update the ToC in any header with a property named TOC.
+#+begin_src emacs-lisp
+  (use-package toc-org
+    :hook (org-mode . toc-org-mode))
+#+end_src
+
+The default ToC depth is 2. Is possible to change this with the following tag
+format =:TOC_3:= for seting the max depth of the headlines in the table of
+contents to 3.
 
 * Edición de documentos
 ** Markdown Mode
