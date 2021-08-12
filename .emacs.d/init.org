@@ -377,6 +377,29 @@ Scroll window pane with keyboard, but without changing cursor line.
   (global-set-key (kbd "C-M-p") 'scroll-down-line)
 #+end_src
 
+Controls if scroll commands move point to keep its screen position unchanged. A
+value of t means point keeps its screen position if the scroll command moved it
+vertically out of the window, e.g. when scrolling by full screens.
+#+begin_src emacs-lisp
+  (setq scroll-preserve-screen-position t)
+#+end_src
+
+With =C-x C-n= Use the current column of point as the semipermanent goal column
+for =C-n= and =C-p= in the current buffer. When a semipermanent goal column is
+in effect, those commands always try to move to this column, or as close as
+possible to it, after moving vertically. The goal column remains in effect
+until canceled (with =C-u C-x C-n=). This command is disabled by default, I
+enable it.
+#+begin_src emacs-lisp
+  (put 'set-goal-column 'disabled nil)
+#+end_src
+
+Right and left scrolling commands are trigered with =C-c >= and =C-c <=
+respectively. Scroll left is disabled by default, I enable it.
+#+begin_src emacs-lisp
+  (put 'scroll-left 'disabled nil)
+#+end_src
+
 ** Character Pairs
 It can be useful to insert parentheses, braces, quotes and the like in matching
 pairs, e.g., pressing “(” inserts "()", with the cursor in between.
