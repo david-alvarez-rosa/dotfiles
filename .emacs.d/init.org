@@ -92,11 +92,11 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#elfeed-org][Elfeed Org]]
   - [[#elfeed-goodies][Elfeed Goodies]]
   - [[#custom-functions][Custom Functions]]
-- [[#irc-client][IRC Client]]
+- [[#internet-relay-chat-irc][Internet Relay Chat (IRC)]]
 - [[#useful-resources][Useful Resources]]
 
 * Preamble
-** Installation
+** TODO Installation
 ** About this Configuration
 Underlying principles:
 - Built-in alternatives have been preferred to standalone (M)ELPA packages.
@@ -114,6 +114,9 @@ Some utilities:
 - Light/Dark theme. Bound to =C-c d= ("d" for dark) and =C-c l= ("l" for
   light).
 - Git, with Magit, bound to =C-c g= ("g" for git).
+- Kill all buffers except current and *scratch*. Bound to =C-c k= ("k" for
+  killing). This is kind of "restaring" Emacs session without actually closing
+  it.
 
 Conventions:
 - Functions and variables defined by me are prefixed with my name and a slash,
@@ -470,7 +473,10 @@ function, that makes the current definition and/or comment visible (i.e., it
 attempts to scroll the window so the maximum content is visible).
 
 *** Avy
-Package for jumping to visible text using a char-based decision tree.
+Package for jumping to visible text using a char-based decision tree. I use
+both =C-:= for jumping to the currently visible CHAR1 followed by CHAR2 (i.e.,
+jump to a sequence of 2 chars in any window/frame) and =M-g w= for jumping to
+the currently visible CHAR at a word start.
 #+begin_src emacs-lisp
   (use-package avy
     :bind (("C-:" . 'avy-goto-char-2)
