@@ -1616,16 +1616,20 @@ have bind the ERC client, with TLS support, to =C-c i= ("i" for IRC).
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c i") 'erc-tls)
 
-  (setq erc-server "irc.libera.chat")
+  (setq erc-server "irc.alvarezrosa.com")
   (setq erc-nick "dalv")
   (setq erc-user-full-name "David Álvarez Rosa")
-  (setq erc-autojoin-channels-alist '(("libera.chat"
-                                       "#emacs" "#archlinux")))
-#+end_src
+  (setq erc-prompt-for-password nil)
+  #+end_src
 
 If you are an IRC user, you may find me out there. I usually hang out in
 libera.chat these days (after the freenode management debacle) with the =dalv=
 nick.
+
+I have configured =~/.authinfo= file with password information so I don't need
+to enter it every time. I am actually connecting to a personal IRC Bouncer
+(ZNC) hosted in my personal VPS at irc.alvarezrosa.com, so I do most of the
+configuration there.
 
 After quiting server, query or parting a channel I want the buffer to be killed
 automatically.
@@ -1633,7 +1637,6 @@ automatically.
   (setq erc-kill-buffer-on-part t)
   (setq erc-kill-queries-on-quit t)
   (setq erc-kill-server-buffer-on-quit t)
-  (setq erc-quit-reason (lambda (s) (or s "Ejecting from cyberspace")))
 #+end_src
 
 Some minor tweaks for displaying (and buffer) configuration.
