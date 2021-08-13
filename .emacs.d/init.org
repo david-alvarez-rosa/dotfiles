@@ -1598,13 +1598,12 @@ Ignore current entry (i.e., tag it with =no= TAG).
 #+begin_src emacs-lisp
   (defun david/elfeed-ignore ()
     (interactive)
-    (setq entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
+    (setq entry (elfeed-search-selected :single))
     (setq tag (intern "no"))
     (elfeed-tag entry tag)
     (elfeed-search-update-entry entry)
     (forward-line))
   (define-key elfeed-show-mode-map (kbd "i") 'david/elfeed-ignore)
-  (define-key elfeed-search-mode-map (kbd "i") 'david/elfeed-ignore)
 #+end_src
 
 * Internet Relay Chat (IRC)
