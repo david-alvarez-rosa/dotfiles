@@ -1617,22 +1617,49 @@ Ignore current entry (i.e., tag it with =no= TAG).
   (define-key elfeed-search-mode-map (kbd "i") 'david/elfeed-ignore)
 #+end_src
 
-* TODO IRC Client
+* Internet Relay Chat (IRC)
+IRC is a text-based chat system. It enables discussions among any number of
+participants in so-called conversation channels, as well as discussions between
+only two partners--for example, in question-and-answer dialogues. This
+protocol is actually older than the World Wide Web. There are several built-in
+Emacs IRC clients, but I use the default ERC, that I think is the best one. I
+have bind the ERC client, with TLS support, to =C-c i= ("i" for IRC).
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c i") (lambda () (interactive)
-                                  (erc :server "irc.freenode.net"
-                                       :port "6667"
-                                       :nick "davidLinux")))
+  (global-set-key (kbd "C-c i") 'erc-tls)
 
-  (setq erc-prompt-for-password nil)
+  (setq erc-server "irc.libera.chat")
+  (setq erc-nick "dalv")
+  (setq erc-user-full-name "David Álvarez Rosa")
+  (setq erc-autojoin-channels-alist '(("libera.chat"
+                                       "#emacs" "#archlinux")))
+#+end_src
+
+If you are an IRC user, you may find me out there. I usually hang out in
+libera.chat these days (after the freenode management debacle) with the =dalv=
+nick.
+
+After quiting server, query or parting a channel I want the buffer to be killed
+automatically.
+#+begin_src emacs-lisp
+  (setq erc-kill-buffer-on-part t)
+  (setq erc-kill-queries-on-quit t)
+  (setq erc-kill-server-buffer-on-quit t)
+  (setq erc-quit-reason (lambda (s) (or s "Ejecting from cyberspace")))
+#+end_src
+
+Some minor tweaks for displaying (and buffer) configuration.
+#+begin_src emacs-lisp
   (setq erc-fill-function 'erc-fill-static)
+  (setq erc-fill-static-center 22)
+  (setq erc-rename-buffers t)
+#+end_src
 
-  ;; (setq erc-fill-static-center 22)
-
-  ;; (require 'erc-join)
-  ;; (setq erc-autojoin-channels-alist
-  ;;       '(("freenode.net" "#thoughtbot" "#emacs" "#emacsnyc")))
-  ;; (erc-autojoin-enable)
+I use ERC channel tracking (it is enabled by default). Basically, show in the
+modeline unread chat messages from current openend channels and use =C-c C-SPC=
+repeatedly for switching between them (in *any* mode).
+#+begin_src emacs-lisp
+  (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
+  (setq erc-track-exclude-server-buffer t)
 #+end_src
 
 * Useful Resources
