@@ -1584,30 +1584,14 @@ This package allows to configure the Elfeed interface.
 
 ** Custom Functions
 For interacting with video (e.g., Youtube subscriptions). This allows to open
-the media with mpv.
+the media with mpv. Just press =v= and the video will be openend with mpv.
 #+begin_src emacs-lisp
   (defun david/elfeed-play-with-mpv ()
     (interactive)
-    (setq entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
-    (message "Opening %s with mpv..." (elfeed-entry-link entry))
-    (start-process "elfeed-mpv" nil "mpv" "--ytdl-format=[height<=1080]" (elfeed-entry-link entry))
+    (setq url (elfeed-entry-link (elfeed-search-selected :single)))
+    (start-process "elfeed-mpv" nil "mpv" "--ytdl-format=[height<=720]" url)
     (elfeed-search-untag-all-unread))
-  (define-key elfeed-show-mode-map (kbd "o") 'david/elfeed-play-with-mpv)
-  (define-key elfeed-search-mode-map (kbd "o") 'david/elfeed-play-with-mpv)
-
-  (defun david/elfeed-play-with-mpv-with-quality ()
-    (interactive)
-    (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
-          (quality-arg "")
-          (quality-val (completing-read "Max height resolution (0 for unlimited): " '("1080" "720" "480" "0") nil nil)))
-      (setq quality-val (string-to-number quality-val))
-      (message "Opening %s with height≤%s with mpv..." (elfeed-entry-link entry) quality-val)
-      (when (< 0 quality-val)
-        (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val)))
-      (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry)))
-    (elfeed-search-untag-all-unread))
-  (define-key elfeed-show-mode-map (kbd "O") 'david/elfeed-play-with-mpv-with-quality)
-  (define-key elfeed-search-mode-map (kbd "O") 'david/elfeed-play-with-mpv-with-quality)
+  (define-key elfeed-search-mode-map (kbd "v") 'david/elfeed-play-with-mpv)
 #+end_src
 
 Ignore current entry (i.e., tag it with =no= TAG).
