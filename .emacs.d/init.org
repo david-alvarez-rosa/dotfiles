@@ -91,6 +91,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#elfeed-goodies][Elfeed Goodies]]
   - [[#custom-functions][Custom Functions]]
 - [[#internet-relay-chat-irc][Internet Relay Chat (IRC)]]
+  - [[#nickname-highlighter][Nickname Highlighter]]
 - [[#useful-resources][Useful Resources]]
 
 * Preamble
@@ -372,7 +373,8 @@ upper left of the window. Pressing that character will either switch to that
 window or filter to the next character needed to select a specific window.
 #+begin_src emacs-lisp
   (use-package ace-window
-    :bind ("M-o" . 'ace-window))
+    :bind ("M-o" . 'ace-window)
+    :config (setq aw-scope 'frame))
 #+end_src
 
 Some useful features, is the posibility to swap windows, by calling
@@ -1211,7 +1213,8 @@ AUCTeX is an extensible package for writing and formatting TeX files in GNU
 Emacs. It supports many different TEX macro packages, including AMS-TeX, LaTeX,
 Texinfo, ConTeXt, and docTeX (dtx files).
 #+begin_src emacs-lisp
-  (use-package auctex
+  (use-package latex
+    :ensure auctex
     :config
     ;; Always in math mode
     (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
@@ -1725,6 +1728,14 @@ repeatedly for switching between them (in *any* mode).
 #+begin_src emacs-lisp
   (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
   (setq erc-track-exclude-server-buffer t)
+#+end_src
+
+** Nickname Highlighter
+This package will auto colorize (highglight) nicknames, ignoring certain
+characters that IRC clients add to nicknames to avoid duplicates (nickname,
+nickname’, nickname”, etc.)
+#+begin_src emacs-lisp
+  (use-package erc-hl-nicks)
 #+end_src
 
 * Useful Resources
