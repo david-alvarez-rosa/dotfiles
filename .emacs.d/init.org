@@ -517,7 +517,8 @@ schemes yet highly customizable.
     (setq ivy-use-virtual-buffers t)
     (setq enable-recursive-minibuffers t)
     (setq ivy-count-format "%d/%d ")
-    (setq ivy-initial-inputs-alist nil))
+    (setq ivy-initial-inputs-alist nil)
+    (setq ivy-wrap t))
 #+end_src
 
 This package comes with rich transformers for commands from ivy and counsel,
@@ -913,7 +914,7 @@ Some useful commands:
 - =C-c C-r= to eval region.
 - =C-c C-f= to eval function.
 
-* Org Mode
+* TODO Org Mode
 Configuration for Org mode, one of the best major modes in Emacs (org mode is
 definately a killed feature). Org mode is for keeping notes, maintaining to-do
 lists, planning projects, authoring documents, computational notebooks,
@@ -1150,7 +1151,7 @@ The default ToC depth is 2. Is possible to change this with the following tag
 format =:TOC_3:= for seting the max depth of the headlines in the table of
 contents to 3.
 
-* Edición de documentos
+* TODO Edición de documentos
 ** Markdown Mode
 Major mode for editting Markdown-formatted text.
 #+begin_src emacs-lisp
@@ -1532,7 +1533,7 @@ well.
   (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 #+end_src
 
-* Music Player
+* TODO Music Player
 Para controlar la reproducción de música desde Emacs. Debe estar instalado
 =mpd= (Music Player Daemon) e interactuaremos con él haciendo uso del cliente
 =mpc= construido en Emacs.
@@ -1666,7 +1667,8 @@ repeatedly for switching between them (in *any* mode).
 - [[https://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua ]]she is a well known Emacs blogger.
 - [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] is a community driven list of useful Emacs packages, utilities
   and libraries
-- [[http://doc.norang.ca/org-mode.html][Bernt Hansen]] has an amazing Org mode configuration.
+- [[http://doc.norang.ca/org-mode.html][Bernt Hansen]] has an amazing Org mode configuration called "Organize Your Life
+  In Plain Text!" and it's probably the most complete configuration out there.
 - [[https://github.com/SirPscl/emacs.d][Pascal Huber]] another nice Emacs configuration to take into account.
 - [[https://cestlaz.github.io/stories/emacs/][Mike Zamansky]] a well known Emacs guru, that has a blog called "C'est la Z"
   with a nice Emacs series (+75 blog entries, each one of them with video).
