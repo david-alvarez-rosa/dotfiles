@@ -741,13 +741,17 @@ lines at the end of the file and empty spaces at the end of lines).
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
 
-*** TODO Corrección de sintaxis
-Habilitar corrección de sintaxis al momento usando =flycheck=
-(http://www.flycheck.org/).
-#+begin_src emacs-lisp :tangle no
+*** Syntax Checking
+Flycheck is a modern on-the-fly syntax checking extension for GNU Emacs,
+intended as replacement for the older Flymake extension which is part of GNU
+Emacs. It uses various syntax checking and linting tools to automatically check
+the contents of buffers while you type, and reports warnings and errors
+directly in the buffer, or in an optional error list.
+
+#+begin_src emacs-lisp
   (use-package flycheck
     :init
-    (add-hook 'prog-mode-hook 'global-flycheck-mode))
+    (add-hook 'prog-mode-hook 'flycheck-mode))
 #+end_src
 
 *** Projectile
