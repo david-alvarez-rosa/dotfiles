@@ -118,7 +118,7 @@ Some utilities:
 
 Conventions:
 - Functions and variables defined by me are prefixed with my name and a slash,
-  i.e., =david/= to namespace them and avoid conflicts.
+  i.e., =dalv/= to namespace them and avoid conflicts.
 
 ** License and Copyright
 Copyright 2021 David Álvarez Rosa.
@@ -272,13 +272,13 @@ Kill current buffer without asking for which buffer to kill.
 Kill all buffers except current and *scratch*. Useful for "restarting" Emacs
 without closing it.
 #+begin_src emacs-lisp
-  (defun david/kill-all-other-buffers ()
+  (defun dalv/kill-all-other-buffers ()
     "Kill all buffers except current and *scratch*."
     (interactive)
     (delete-other-windows)
     (setq scratch (get-buffer "*scratch*"))
     (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
-  (global-set-key (kbd "C-c k") 'david/kill-all-other-buffers)
+  (global-set-key (kbd "C-c k") 'dalv/kill-all-other-buffers)
 #+end_src
 
 *** Narrowing
@@ -299,19 +299,19 @@ functions).
 ** Window Management
 Split and follow for creating new windows.
 #+begin_src emacs-lisp
-  (defun david/split-and-follow-horizontally ()
+  (defun dalv/split-and-follow-horizontally ()
     (interactive)
     (split-window-below)
     (balance-windows)
     (other-window 1))
-  (global-set-key (kbd "C-x 2") 'david/split-and-follow-horizontally)
+  (global-set-key (kbd "C-x 2") 'dalv/split-and-follow-horizontally)
 
-  (defun david/split-and-follow-vertically ()
+  (defun dalv/split-and-follow-vertically ()
     (interactive)
     (split-window-right)
     (balance-windows)
     (other-window 1))
-  (global-set-key (kbd "C-x 3") 'david/split-and-follow-vertically)
+  (global-set-key (kbd "C-x 3") 'dalv/split-and-follow-vertically)
 #+end_src
 
 New bind for killing buffer *and* window at the same time. To do this press
@@ -676,7 +676,7 @@ the terminal version of Emacs, though, so it's not set there.
 Functions for toggling transparency alpha.
 #+begin_src emacs-lisp
   (set-frame-parameter nil 'alpha '(95 . 90))
-  (defun david/toggle-transparency ()
+  (defun dalv/toggle-transparency ()
     "Toggle transparency on and off."
     (interactive)
     (let ((alpha (frame-parameter nil 'alpha)))
@@ -687,7 +687,7 @@ Functions for toggling transparency alpha.
            100)
           (set-frame-parameter nil 'alpha '(95 . 90))
         (set-frame-parameter nil 'alpha '(100 . 100)))))
-  (define-key global-map (kbd "C-c t") 'david/toggle-transparency)
+  (define-key global-map (kbd "C-c t") 'dalv/toggle-transparency)
 #+end_src
 
 * Programming Configuration
@@ -1112,7 +1112,7 @@ With =q= bury agenda instead of killing it (faster of course).
 I don't like empty blocks to show in customized agenda, so I hide them (this
 code is from [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266.html][emacs mail list]]).
 #+begin_src emacs-lisp
-  (defun david/org-agenda-delete-empty-blocks ()
+  (defun dalv/org-agenda-delete-empty-blocks ()
     "Remove empty agenda blocks.
     A block is identified as empty if there are fewer than 2
     non-empty lines in the block (excluding the line with
@@ -1145,7 +1145,7 @@ code is from [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266
           (delete-region (point) (1+ (point-at-eol))))))
     (setq buffer-read-only t))
 
-  (add-hook 'org-agenda-finalize-hook #'david/org-agenda-delete-empty-blocks)
+  (add-hook 'org-agenda-finalize-hook #'dalv/org-agenda-delete-empty-blocks)
 #+end_src
 
 *** Habits
@@ -1374,8 +1374,7 @@ any archive, so this is more useful for me.
                      (user-mail-address . "david.alvarez.rosa@yandex.com")
                      (starttls-use-gnutls . t)
                      (smtpmail-smtp-server . "smtp.yandex.com")
-                     (smtpmail-smtp-service . 465)))
-           ))
+                     (smtpmail-smtp-service . 465)))))
 #+end_src
 
 ** Queued Email
@@ -1386,10 +1385,13 @@ in mu4e main view with =m=.
   (setq smtpmail-queue-dir "~/.mail/Queue/cur")
 #+end_src
 
-** Signing and Encryption
+** TODO Signing and Encryption
+:LOGBOOK:
+- State "TODO"       from              [2021-08-15 Sun 17:50]
+:END:
 Encriptar todos los correos salientes /automágicamente/ si la llave existe.
 #+begin_src emacs-lisp :tangle no
-  (defun david/can-encrypt-message-p ()
+  (defun dalv/can-encrypt-message-p ()
     "Return non-nil if current message can be encrypted.
   I.e., the keyring has a public key for each recipient."
     (let ((recipients
@@ -1406,13 +1408,13 @@ Encriptar todos los correos salientes /automágicamente/ si la llave existe.
                      (not (seq-empty-p (epg-list-keys context recipient))))
                    recipients)))
 
-  (defun david/add-encryption-mark-if-possible ()
+  (defun dalv/add-encryption-mark-if-possible ()
     "Add MML tag to encrypt message when there is a key for each
   recipient."
-    (when (david/can-encrypt-message-p)
+    (when (dalv/can-encrypt-message-p)
       (mml-secure-message-sign-encrypt)))
 
-  (add-hook 'message-send-hook #'david/add-encryption-mark-if-possible)
+  (add-hook 'message-send-hook #'dalv/add-encryption-mark-if-possible)
 #+end_src
 
 For signing emails (when the key is available).
@@ -1427,16 +1429,16 @@ Use Ivy as default completion engine (instead of Ido).
 #+end_src
 
 I have personalized the email completion with a file with contact information
-stored in =david/contact-file=. This text file has contacts in the form "Name
+stored in =dalv/contact-file=. This text file has contacts in the form "Name
 <address>", one per line. This function is inspired on [[http://pragmaticemacs.com/emacs/even-better-email-contact-completion-in-mu4e/][Even better email
 contact completion in mu4e]].
 #+begin_src emacs-lisp
-  (setq david/contact-file "~/Documents/Contactos/Correos.txt")
-  (defun david/read-contact-list ()
+  (setq dalv/contact-file "~/Documents/Contactos/Correos.txt")
+  (defun dalv/read-contact-list ()
     (with-temp-buffer
-      (insert-file-contents david/contact-file)
+      (insert-file-contents dalv/contact-file)
       (split-string (buffer-string) "\n" t)))
-  (defun david/complete-emails (&optional start)
+  (defun dalv/complete-emails (&optional start)
     (interactive)
 
     (let ((eoh ;; end-of-headers
@@ -1458,10 +1460,10 @@ contact completion in mu4e]].
         (delete-region start end)
 
         (ivy-read "Contact: "
-                  (david/read-contact-list)
+                  (dalv/read-contact-list)
                   :action (lambda(contact) (with-ivy-window (insert contact)))
                   :initial-input initial-input)))))
-  (define-key mu4e-compose-mode-map (kbd "<M-tab>") 'david/complete-emails)
+  (define-key mu4e-compose-mode-map (kbd "<M-tab>") 'dalv/complete-emails)
 #+end_src
 
 ** Composition/Sending
@@ -1610,24 +1612,24 @@ This package allows to configure the Elfeed interface.
 For interacting with video (e.g., Youtube subscriptions). This allows to open
 the media with mpv. Just press =v= and the video will be openend with mpv.
 #+begin_src emacs-lisp
-  (defun david/elfeed-play-with-mpv ()
+  (defun dalv/elfeed-play-with-mpv ()
     (interactive)
     (setq url (elfeed-entry-link (elfeed-search-selected :single)))
     (start-process "elfeed-mpv" nil "mpv" "--ytdl-format=[height<=720]" url)
     (elfeed-search-untag-all-unread))
-  (define-key elfeed-search-mode-map (kbd "v") 'david/elfeed-play-with-mpv)
+  (define-key elfeed-search-mode-map (kbd "v") 'dalv/elfeed-play-with-mpv)
 #+end_src
 
 Ignore current entry (i.e., tag it with =no= TAG).
 #+begin_src emacs-lisp
-  (defun david/elfeed-ignore ()
+  (defun dalv/elfeed-ignore ()
     (interactive)
     (setq entry (elfeed-search-selected :single))
     (setq tag (intern "no"))
     (elfeed-tag entry tag)
     (elfeed-search-update-entry entry)
     (forward-line))
-  (define-key elfeed-show-mode-map (kbd "i") 'david/elfeed-ignore)
+  (define-key elfeed-show-mode-map (kbd "i") 'dalv/elfeed-ignore)
 #+end_src
 
 * Internet Relay Chat (IRC)
