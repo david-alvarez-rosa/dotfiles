@@ -968,7 +968,7 @@ Set my custom capture templates. Brief description of them:
   (setq org-capture-templates
         '(("t" "Task" entry
            (file+olp "~/Documents/Tasks.org" "Refile")
-           "* TODO [#C] %?\n\n\n" :empty-lines 1)
+           "* TODO [#C] %?" :empty-lines 1)
           ("e" "Email" entry
            (file+olp "~/Documents/Tasks.org" "Reply to Email")
            "* TODO [#C] Reply: %a\n %?" :empty-lines 1)
@@ -996,7 +996,7 @@ Custom todo keywords. I use them as follows:
   - CANCELLED: task is cancelled.
 #+begin_src emacs-lisp
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAIT(w@/!)" "NEXT(n)" "|"
+        '((sequence "TODO(t!)" "WAIT(w@/!)" "NEXT(n!)" "|"
                     "DONE(d!)" "CANCELLED(c@)")))
 #+end_src
 
@@ -1072,8 +1072,8 @@ Custom agenda views. I use a custom view that contains the following:
   - WAIT tasks.
   - Project tasks (i.e., tasks with :PROJECT: tag). Only those that are not
     schedule or with deadline.
-  - Rest of standalone tasks (i.e., tasks with :SINGLE: tag). Also only those
-    that are not schedule or with deadline.
+  - Rest of standalone tasks. Also only those that are not schedule or with
+    deadline.
 #+begin_src emacs-lisp
   (setq org-agenda-custom-commands
         '((" " "Block Agenda"
@@ -1083,11 +1083,12 @@ Custom agenda views. I use a custom view that contains the following:
                    (org-agenda-skip-function
                     '(org-agenda-skip-entry-if 'deadline 'scheduled))))
             (todo "WAIT" ((org-agenda-overriding-header "Waiting")))
+            (tags-todo "+REFILE" ((org-agenda-overriding-header "Refile")))
             (tags-todo "TODO=\"TODO\"+PROJECT"
                        ((org-agenda-overriding-header "Projects")
                         (org-agenda-skip-function
                          '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-            (tags-todo "TODO=\"TODO\"+SINGLE"
+            (tags-todo "TODO=\"TODO\"-REFILE-PROJECT"
                        ((org-agenda-overriding-header "Standalone Tasks")
                         (org-agenda-skip-function
                          '(org-agenda-skip-entry-if 'deadline 'scheduled)))))
@@ -1106,6 +1107,45 @@ Set deadline warning days to 7 (instead of the default 14 days).
 With =q= bury agenda instead of killing it (faster of course).
 #+begin_src emacs-lisp
 (setq org-agenda-sticky t)
+#+end_src
+
+I don't like empty blocks to show in customized agenda, so I hide them (this
+code is from [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266.html][emacs mail list]]).
+#+begin_src emacs-lisp
+  (defun david/org-agenda-delete-empty-blocks ()
+    "Remove empty agenda blocks.
+    A block is identified as empty if there are fewer than 2
+    non-empty lines in the block (excluding the line with
+    `org-agenda-block-separator' characters)."
+    (when org-agenda-compact-blocks
+      (user-error "Cannot delete empty compact blocks"))
+    (setq buffer-read-only nil)
+    (save-excursion
+      (goto-char (point-min))
+      (let* ((blank-line-re "^\\s-*$")
+             (content-line-count (if (looking-at-p blank-line-re) 0 1))
+             (start-pos (point))
+             (block-re (format "%c\\{10,\\}" org-agenda-block-separator)))
+        (while (and (not (eobp)) (forward-line))
+          (cond
+           ((looking-at-p block-re)
+            (when (< content-line-count 2)
+              (delete-region start-pos (1+ (point-at-bol))))
+            (setq start-pos (point))
+            (forward-line)
+            (setq content-line-count (if (looking-at-p blank-line-re) 0 1)))
+           ((not (looking-at-p blank-line-re))
+            (setq content-line-count (1+ content-line-count)))))
+        (when (< content-line-count 2)
+          (delete-region start-pos (point-max)))
+        (goto-char (point-min))
+        ;; The above strategy can leave a separator line at the beginning
+        ;; of the buffer.
+        (when (looking-at-p block-re)
+          (delete-region (point) (1+ (point-at-eol))))))
+    (setq buffer-read-only t))
+
+  (add-hook 'org-agenda-finalize-hook #'david/org-agenda-delete-empty-blocks)
 #+end_src
 
 *** Habits
