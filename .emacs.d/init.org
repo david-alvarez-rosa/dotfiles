@@ -65,11 +65,9 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#octavematlab][Octave/Matlab]]
   - [[#r][R]]
 - [[#org-mode][Org Mode]]
-  - [[#list-configuration][List Configuration]]
-  - [[#indent-mode][Indent Mode]]
   - [[#speed-commands][Speed Commands]]
   - [[#refile][Refile]]
-  - [[#capture-templates][Capture templates]]
+  - [[#capture-templates][Capture Templates]]
   - [[#state-keywords][State Keywords]]
   - [[#code-evaluation][Code Evaluation]]
   - [[#interface][Interface]]
@@ -914,23 +912,13 @@ Some useful commands:
 - =C-c C-r= to eval region.
 - =C-c C-f= to eval function.
 
-* TODO Org Mode
-Configuration for Org mode, one of the best major modes in Emacs (org mode is
-definately a killed feature). Org mode is for keeping notes, maintaining to-do
+* Org Mode
+Configuration for Org mode, one of the best major modes (org mode is definately
+an Emacs killer feature). Org mode is for keeping notes, maintaining to-do
 lists, planning projects, authoring documents, computational notebooks,
-literate programming and more — in a fast and effective plain text system.
-
-** List Configuration
-Allow alphabetical list, i.e., list like "a)", "A" or "A)" as element lists.
-#+begin_src emacs-lisp
-  (setq org-list-allow-alphabetical t)
-#+end_src
-
-** Indent Mode
-Launch org mode in indent mode.
-#+begin_src emacs-lisp
-  (add-hook 'org-mode-hook 'org-indent-mode)
-#+end_src
+literate programming and more-—in a fast and effective plain text system. I
+mainly use it for organize my life, literate programming and even writting
+emails.
 
 ** Speed Commands
 Activate single letter commands at beginning of a headline.
@@ -943,7 +931,7 @@ This is very useful for navigating/modifying org mode files. I usually use
 left/right.
 
 ** Refile
-Configuration for refiling command =C-c w=.
+Configuration for refiling command =C-c C-w=.
 #+begin_src emacs-lisp
   (setq org-refile-targets '((nil :maxlevel . 2)
                                   (org-agenda-files :maxlevel . 2)))
@@ -951,45 +939,59 @@ Configuration for refiling command =C-c w=.
   (setq org-refile-use-outline-path 'file)
 #+end_src
 
-** Capture templates
-Permitir tomar notas rápidamente.
+** Capture Templates
+Take notes quickly within Emacs with =C-c c=.
 #+begin_src emacs-lisp
   (setq org-default-notes-file "~/Documents/Tasks.org")
   (define-key global-map (kbd "C-c c") 'org-capture)
 #+end_src
 
 Set my custom capture templates. Brief description of them:
-- Standalone Tasks: main template for TODO tasks.
-- Email Tasks: template for capturing emails I need to reply to (with link of
-  course).
+- Task: basic template for TODO tasks. This is inside my =Tasks.org= file under
+  "Refile" heading. Then I manually refile this tasks under a particular
+  projects or into a "Standalone Tasks" heading.
+- Reply to Email: template for capturing emails I need to reply to (with link
+  of course). This is inside my =Tasks.org= file under "Reply to Email"
+  heading.
+- Read Task: read something. I usually capture tasks within Elfeed (i.e., mark
+  an entry for reading later). This is inside my =Tasks.org= file under "Read"
+  heading.
 - Link Tasks: similar to standalone tasks, but with link (e.g., email or Elfeed
-  link).
-- Text: tempalte for taking quick notes.
+  link). This is inside my =Tasks.org= file under "Refile" heading.
+- Shopping: add something to my personal shopping list (as a checkitem). This
+  is inside my =Tasks.org= file under "Shopping" heading.
+- Text Note: template for taking quick notes. This is inside my =Notes.org=
+  file.
 #+begin_src emacs-lisp
   (setq org-capture-templates
-        '(("t" "Standalone Tasks" entry
-           (file+headline "~/Documents/Tasks.org" "Standalone Tasks")
-           "* TODO [#C] %?" :empty-lines-before 1 :empty-lines-after 2)
+        '(("t" "Task" entry
+           (file+olp "~/Documents/Tasks.org" "Refile")
+           "* TODO [#C] %?\n\n\n" :empty-lines 1)
           ("e" "Email" entry
-           (file+headline "~/Documents/Tasks.org" "Email Tasks")
-           "* TODO [#C] Reply: %a"
-           :immediate-finish t :empty-lines-before 1 :empty-lines-after 2)
-          ("l" "Link" entry
-           (file+headline "~/Documents/Tasks.org" "Email")
-           "* TODO [#C] %a" :empty-lines-before 1 :empty-lines-after 2)
-          ("o" "Text" entry
-           (file+headline "~/Documents/Notes.org" "Varios")
-           "* %?" :empty-lines-before 1 :empty-lines-after 2)))
+           (file+olp "~/Documents/Tasks.org" "Reply to Email")
+           "* TODO [#C] Reply: %a\n %?" :empty-lines 1)
+          ("r" "Read" entry
+           (file+olp "~/Documents/Tasks.org" "Read")
+           "* TODO [#C] Read: %a\n %?" :empty-lines 1)
+          ("l" "Link Task" entry
+           (file+olp "~/Documents/Tasks.org" "Refile")
+           "* TODO [#C] %? %a" :empty-lines 1)
+          ("s" "Shopping" checkitem
+           (file+olp "~/Documents/Tasks.org" "Shopping" "Refile")
+           "" :empty-lines-after 1)
+          ("n" "Text Note" entry
+           (file+olp "~/Documents/Notes.org" "Refile")
+           "* %?" :empty-lines 1)))
 #+end_src
 
 ** State Keywords
 Custom todo keywords. I use them as follows:
-- TODO: task that needs to be done (in order, depending priority).
-- WAIT: I am waiting for something that does not depend on myself (i.e,
+  - TODO: task that needs to be done (in order, depending priority).
+  - WAIT: I am waiting for something that does not depend on myself (i.e,
   something external).
-- NEXT: todo task, that is on-going or is next task to be done.
-- DONE: task is done.
-- CANCELLED: task is cancelled.
+  - NEXT: todo task, that is on-going or is next task to be done.
+  - DONE: task is done.
+  - CANCELLED: task is cancelled.
 #+begin_src emacs-lisp
   (setq org-todo-keywords
         '((sequence "TODO(t)" "WAIT(w@/!)" "NEXT(n)" "|"
@@ -1029,91 +1031,70 @@ Don't ask for confirmation for evaluating code.
 #+end_src
 
 ** Interface
-Cambiar los puntos suspensivos.
-#+begin_src emacs-lisp :tangle no
-  (setq org-ellipsis " ⚡")
-#+end_src
-
-Configurar colores para las diferentes prioridades.
-#+begin_src emacs-lisp :tangle no
-  (setq org-priority-faces '((65 :foreground "#e45649" :weight bold :face bold)
-                             (66 :foreground "#dc752f" :weight bold :face bold)
-                             (67 :foreground "#0098dd" :weight bold :face bold)))
-#+end_src
-
 Restore windows after quitting org agenda.
 #+begin_src emacs-lisp
   (setq org-agenda-restore-windows-after-quit t)
-  ;; (setq org-agenda-window-setup "current-window")
 #+end_src
 
-*** TODO =org-bullets=
-Cambia los asteriscos por bolas. Aquí mirar el paquete =org-superstar= que es
-una versión moderna de este. Y mirar qué lista de bolas poner.
-#+begin_src emacs-lisp :tangle no
-  (use-package org-bullets
-    :config
-    (add-hook 'org-mode-hook(lambda () (org-bullets-mode)))
-    (setq org-bullets-bullet-list '("✙" "○" "✜" "✿")))
+*** List Configuration
+Allow alphabetical list, i.e., list like "a)", "A" or "A)" as element lists.
+#+begin_src emacs-lisp
+  (setq org-list-allow-alphabetical t)
+#+end_src
+
+*** Indent Mode
+Launch org mode in indent mode.
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'org-indent-mode)
 #+end_src
 
 ** Agenda
-Comando para abrir la agenda.
+Set =C-c a= for opening org agenda. This is one of the features that I like the
+most of Emacs. It's great.
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c a") 'org-agenda)
 #+end_src
 
-Gestionar los diferentes archivos para la Agenda.
+Set files to show in agenda.
 #+begin_src emacs-lisp
   (setq org-agenda-files (quote
                           ("~/Documents/Contactos/Cumpleaños.org"
-                          "~/Documents/UPC/Cuatrimestre 9/UPC.org"
-                          ;; "~/Documents/UPC/Cuatrimestre 9/Schedule.org"
                           "~/Documents/Notes.org"
                           "~/Documents/Career/Career.org"
                           "~/Documents/Tasks.org")))
 #+end_src
 
-Configurar agenda personalizada.
+Custom agenda views. I use a custom view that contains the following:
+  - Agenda for the following 3 days (including habits).
+  - NEXT tasks (that are not scheduled or with deadline).
+  - WAIT tasks.
+  - Project tasks (i.e., tasks with :PROJECT: tag). Only those that are not
+    schedule or with deadline.
+  - Rest of standalone tasks (i.e., tasks with :SINGLE: tag). Also only those
+    that are not schedule or with deadline.
 #+begin_src emacs-lisp
   (setq org-agenda-custom-commands
-        '(("w" "Week Agenda and all TODOs without schedule"
-           ((agenda "" ((org-agenda-tag-filter-preset (quote ("-SCH")))))
-            (alltodo "" ((org-agenda-tag-filter-preset (quote ("-SCH"))))))
-           ((org-agenda-start-with-log-mode t)))
-          ("d" "Current day"
-           ((agenda "" ((org-agenda-span 'day)))))
-          ("b" "Block Agenda"
-           ((agenda ""
-                    ((org-agenda-start-on-weekday nil)
-                     (org-agenda-span 3)
-                     ;; (org-agenda-start-day "-3d")
-         (org-agenda-overriding-header "Main Week Agenda (Scheduled and Deadline Tasks)")
-                     (org-agenda-skip-function
-                      '(org-agenda-skip-entry-if 'regexp ":HABIT:"))))
+        '((" " "Block Agenda"
+           ((agenda "" ((org-agenda-span 3)))
             (todo "NEXT"
                   ((org-agenda-overriding-header "Next")
                    (org-agenda-skip-function
-                           '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-            (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting")
-                   (org-agenda-skip-function
-                           '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+                    '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+            (todo "WAIT" ((org-agenda-overriding-header "Waiting")))
             (tags-todo "TODO=\"TODO\"+PROJECT"
                        ((org-agenda-overriding-header "Projects")
                         (org-agenda-skip-function
-                           '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-            (tags-todo "TODO=\"TODO\"-PROJECT-HABIT-SOMEDAY"
+                         '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+            (tags-todo "TODO=\"TODO\"+SINGLE"
                        ((org-agenda-overriding-header "Standalone Tasks")
                         (org-agenda-skip-function
-                         '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-            (agenda ""
-                    ((org-agenda-span 'day)
-                     (org-agenda-overriding-header "Daily Habits Agenda")
-                     (org-agenda-skip-function
-                      '(org-agenda-skip-entry-if 'notregexp ":HABIT:")))))
+                         '(org-agenda-skip-entry-if 'deadline 'scheduled)))))
            ((org-agenda-start-with-log-mode t)))))
 #+end_src
+
+While in this agenda view press =w= for changing the agenda span to full week
+or =d= for just showing curren day. Also, it is posible to toggle log mode with
+=l=.
 
 Set deadline warning days to 7 (instead of the default 14 days).
 #+begin_src emacs-lisp
