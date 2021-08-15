@@ -94,7 +94,26 @@ conflict here. Lastly, Emacs is a gift from God.
 - [[#useful-resources][Useful Resources]]
 
 * Preamble
-** TODO Installation
+** Installation
+This configuration is written in a literate style using Org mode (an Emacs
+major mode). I do not recommend using this configuration "as is", but take it
+as an inspiration for your own personal config. However, if you want to use it
+that way, it's posible. You just need to start with a bare Emacs installation
+(i.e., without any =.emacs= file in your home directory or =.emacs.d=
+directory). With this done, just:
+- Download this =init.org= file
+- Open it with Emacs and press the function =C-c C-v C-t= for tangling all the
+  source code blocks, i.e, call the function =org-babel-tangle= that will
+  extract all source blocks from this file and write them into a file called
+  =init.el=.
+- Move =init.el= file into =~/.emacs.d/= directory (if it does not exist, you
+  will need to manually create it).
+- Open Emacs and enjoy!
+
+  *NOTE* First time you launch Emacs all needed packages will be
+  /automagically/ installed for you, so you will need to wait for a couple of
+  minutes. After that, Emacs will launch much faster.
+
 ** About this Configuration
 Underlying principles:
 - Built-in alternatives have been preferred to standalone (M)ELPA packages.
