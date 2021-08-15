@@ -640,7 +640,7 @@ column number instead of percentage buffer position.
 ** Font
 Set default font. I'm currently using Hack (in the past I used Inconsolata).
 #+begin_src emacs-lisp
-  (set-frame-font "Hack 9")
+  (set-face-attribute 'default nil :font "Hack" :height 90)
 #+end_src
 
 ** Basic Interface Settings
@@ -649,11 +649,13 @@ external package.
 
 *** Disable Menus and Scrollbars
 Disable tool bar, menu bar and scroll bar. All three are very ugly and
-unnecesary. Might be handy for normies, but not for chad Emacs users.
+unnecesary. Might be handy for normies, but not for chad Emacs users. Basically
+this turns off al the mouse interface.
 #+begin_src emacs-lisp
   (tool-bar-mode 0)
   (menu-bar-mode 0)
   (scroll-bar-mode 0)
+  (tooltip-mode 0)
 #+end_src
 
 *** Remove Startup Screen
@@ -1653,3 +1655,6 @@ repeatedly for switching between them (in *any* mode).
 - [[https://github.com/SirPscl/emacs.d][Pascal Huber]] another nice Emacs configuration to take into account.
 - [[https://cestlaz.github.io/stories/emacs/][Mike Zamansky]] a well known Emacs guru, that has a blog called "C'est la Z"
   with a nice Emacs series (+75 blog entries, each one of them with video).
+- [[https://github.com/rememberYou/.emacs.d/blob/master/config.org/][Terencio Agozzino]] is a computer engineer with a very nice (literate) Emacs
+  configuration. He has written in Reddit (as =u/rmberYou/=) several Emacs
+  tips that are worth checking out.
