@@ -74,9 +74,9 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#agenda][Agenda]]
   - [[#archive][Archive]]
   - [[#table-of-contents][Table of Contents]]
-- [[#edición-de-documentos][Edición de documentos]]
+- [[#markup-languages][Markup Languages]]
   - [[#markdown-mode][Markdown Mode]]
-  - [[#latex][LaTeX]]
+  - [[#texlatex][TeX/LaTeX]]
 - [[#pdf-viewer][PDF Viewer]]
 - [[#email-management][Email Management]]
   - [[#contexts-for-multiple-accounts][Contexts for Multiple Accounts]]
@@ -1178,17 +1178,20 @@ The default ToC depth is 2. Is possible to change this with the following tag
 format =:TOC_3:= for seting the max depth of the headlines in the table of
 contents to 3.
 
-* TODO Edición de documentos
+* Markup Languages
+Section for markup languages.
+
 ** Markdown Mode
 Major mode for editting Markdown-formatted text.
 #+begin_src emacs-lisp
   (use-package markdown-mode)
 #+end_src
 
-** LaTeX
-Configuración de LaTeX con AUCTeX.
-Siempre en modo matemático.
-#+begin_src emacs-lisp :tangle no
+** TeX/LaTeX
+AUCTeX is an extensible package for writing and formatting TeX files in GNU
+Emacs. It supports many different TEX macro packages, including AMS-TeX, LaTeX,
+Texinfo, ConTeXt, and docTeX (dtx files).
+#+begin_src emacs-lisp
   (use-package auctex
     :config
     ;; Always in math mode
@@ -1196,36 +1199,57 @@ Siempre en modo matemático.
     ;; Set PDF viewer to pdf-tools with correlation
     (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
     (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-    ;; Close pairs automagically (electric behavior)
-    (setq  LaTeX-electric-left-right-brace t)
+    ;; Enable electric behavior.
+    (setq TeX-electric-math t)
+    (setq TeX-electric-sub-and-superscript t)
+    ;; I want \items indented.
+    (setq LaTeX-item-indent 0)
     :bind (
            :map LaTeX-mode-map
            ;; Command for cleaning auxiliary files
-           ("C-x M-k" . 'TeX-clean))
-    )
+           ("C-x M-k" . 'TeX-clean)))
 #+end_src
 
-Usar =reftex=.
-- =C-c= show ToC.
+AUCTex is not just great, it's the best framework for writting LaTeX. This are
+the commands I use the most:
+- =C-c C-e= for inserting environment (figure, equation, table, etc.).
+- =C-c C-m= for inserting macro (documentclass, usepackage, frac, etc.).
+- =C-c C-s= for inserting section (chapter, section, subsection, etc.).
+- =C-f- C-f C-*= is a font specifier (e.g., =C-c C-f C-b= inserts bold face).
+  Very useful when region is active. For deleting (innermost) font
+  specification use =C-c C-f C-d=.
+- =C-c ]= for ending current environment.
+- =C-M-a= and =C-M-e= for moving point to begin or end of current environment.
+- =` *= for entering mathematical symbols (e.g., =` a= for inserting =\alpha=).
+- =C-c .= for marking current environment and =C-c *= for marking current
+  section.
+
+*** RefTeX
+RefTeX is a specialized package for support of labels, references, citations,
+and the index in LaTeX. RefTeX wraps itself round four LaTeX macros: =\label=,
+=\ref=, =\cite=, and =\index=. Using these macros usually requires looking up
+different parts of the document and searching through BibTeX database files.
+RefTeX automates these time-consuming tasks almost entirely. It also provides
+functions to display the structure of a document and to move around in this
+structure quickly.
+- =C-c == show ToC.
 - =C-c (= create label.
 - =C-c )= reference label.
 - =C-c [= create cite.
+- =C-c /= for creating an index.
 #+begin_src emacs-lisp
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (setq reftex-plug-into-AUCTeX t)
   (setq reftex-toc-split-windows-fraction 0.2)
 #+end_src
 
-#+begin_src emacs-lisp
-  (setq LaTeX-item-indent 0)
-#+end_src
-
-*** Compilación
-Compilar con =-shell-escape= siempre.
+*** Compilation
+Compile always with =-shell-escape= flag. I usually need this for PGF/TikZ or
+Minted.
 #+begin_src emacs-lisp
   (setq TeX-command-extra-options "-shell-escape -synctex=1")
 #+end_src
 
-No preguntar para guardar y actualizar el /pdf/ después de compilar.
+Don't ask for confirmation when saving and update output PDF after compilation.
 #+begin_src emacs-lisp
   (setq TeX-save-query nil)
   (add-hook 'TeX-after-compilation-finished-functions
