@@ -1692,7 +1692,7 @@ Ignore current entry (i.e., tag it with =no= TAG).
     (elfeed-tag entry tag)
     (elfeed-search-update-entry entry)
     (forward-line))
-  (define-key elfeed-show-mode-map (kbd "i") 'dalv/elfeed-ignore)
+  (define-key elfeed-search-mode-map (kbd "i") 'dalv/elfeed-ignore)
 #+end_src
 
 * Internet Relay Chat (IRC)
