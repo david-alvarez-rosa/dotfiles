@@ -1075,6 +1075,13 @@ Launch org mode in indent mode.
   (add-hook 'org-mode-hook 'org-indent-mode)
 #+end_src
 
+*** Initial Visibility
+When Emacs first visits an Org file, set the global state to =content=, to show
+only headers.
+#+begin_src emacs-lisp
+  (setq org-startup-folded 'content)
+#+end_src
+
 ** Agenda
 Set =C-c a= for opening org agenda. This is one of the features that I like the
 most of Emacs. It's great.
@@ -1113,7 +1120,7 @@ Custom agenda views. I use a custom view that contains the following:
                        ((org-agenda-overriding-header "Projects")
                         (org-agenda-skip-function
                          '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-            (tags-todo "TODO=\"TODO\"-REFILE-PROJECT"
+            (tags-todo "TODO=\"TODO\"-REFILE-PROJECT-SOMEDAY"
                        ((org-agenda-overriding-header "Standalone Tasks")
                         (org-agenda-skip-function
                          '(org-agenda-skip-entry-if 'deadline 'scheduled)))))
@@ -1178,6 +1185,12 @@ Show a nice graph for recurring habits. See [[https://orgmode.org/manual/Trackin
 Org-mode manual for more information.
 #+begin_src emacs-lisp
   (require 'org-habit)
+#+end_src
+
+Configure the column the absolute column at which to insert habit consistency
+graphs (consistency graph overwrites anything else in the buffer).
+#+begin_src emacs-lisp
+  (setq org-habit-graph-column 55)
 #+end_src
 
 ** Archive
