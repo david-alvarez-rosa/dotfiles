@@ -537,8 +537,22 @@ schemes yet highly customizable.
     (setq enable-recursive-minibuffers t)
     (setq ivy-count-format "%d/%d ")
     (setq ivy-initial-inputs-alist nil)
-    (setq ivy-wrap t))
+    (setq ivy-wrap t)
+    :bind (("C-c v" . 'ivy-push-view)
+           ("C-c V" . 'ivy-pop-view)
+           ("C-c C-r" 'ivy-resume)))
 #+end_src
+
+I have enable Ivy virtual buffers so that Ivy will add additional virtual
+buffers to the buffers list, such as recent files and bookmarks (those are
+highlighted with ivy-virtual face).
+
+Also I have bind =C-c v= to save current window configuration and =C-v V= to
+delete it. This configuration can be search with same switch buffer ivy
+function.
+
+Another nice feature is using =C-c C-r= for resuming previous
+Ivy/Counsel/Swiper instance.
 
 This package comes with rich transformers for commands from ivy and counsel,
 makes the completion interface more friendly (showing more information).
@@ -559,7 +573,7 @@ Swiper is an alternative to isearch that uses Ivy to show an overview of all
 matches.
 #+begin_src emacs-lisp
   (use-package swiper
-    :bind ("C-s" . 'swiper))
+    :bind ("C-s" . 'swiper-isearch))
 #+end_src
 
 Some useful commands for the Ivy/Counsel/Swiper framework that I use are =M-i=
@@ -783,6 +797,7 @@ with version control (like Git) and takes into account =.gitignore= files.
 #+begin_src emacs-lisp
   (use-package projectile
     :config (projectile-mode +1)
+    (setq projectile-completion-system 'ivy)
     :bind (:map projectile-mode-map ("C-c p" . 'projectile-command-map)))
 #+end_src
 
