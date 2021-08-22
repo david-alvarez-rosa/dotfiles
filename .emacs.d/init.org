@@ -887,6 +887,9 @@ abbreviation and automatically expand it into function templates.
     :hook (prog-mode . yas-minor-mode))
 #+end_src
 
+Custom snippets are located in =.emacs.d/snippets= directory (best way to
+create them is using =yas-new-snippet= function).
+
 *** Ediff
 Ediff provides a convenient way for simultaneous browsing through the
 differences between a pair (or a triple) of files or buffers. The files being
