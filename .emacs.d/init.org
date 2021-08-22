@@ -1052,6 +1052,13 @@ client used in this configuration), it is needed the following.
   (require 'org-mu4e)
 #+end_src
 
+Add some global key binding for storing link =C-c l= and jumping (goto) to
+current clocked task.
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c j") 'org-clock-goto)
+#+end_src
+
 ** State Keywords
 Custom todo keywords. I use them as follows:
   - TODO: task that needs to be done (in order, depending priority).
