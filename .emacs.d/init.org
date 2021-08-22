@@ -1722,7 +1722,7 @@ file.
   (use-package elfeed-org
     :config
     (elfeed-org)
-    (setq rmh-elfeed-org-files (list "~/Documents/Suscripciones.org")))
+    (setq rmh-elfeed-org-files (list "~/Documents/Subscriptions.org")))
 #+end_src
 
 ** Elfeed Goodies
