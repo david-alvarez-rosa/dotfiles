@@ -640,7 +640,7 @@ became bored of it. Doom Themes provides nice themes such as =doom-one= (dark),
     :config
     (setq doom-themes-enable-bold t
           doom-themes-enable-italic t)
-    (load-theme 'doom-zenburn t)
+    (load-theme 'doom-one t)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 #+end_src
@@ -648,12 +648,25 @@ became bored of it. Doom Themes provides nice themes such as =doom-one= (dark),
 Some themes I also like are =doom-peacock= (dark) and =doom-tomorrow-day=
 (light).
 
-Custom keybindings for switching between ligth and dark themes in
-Emacs. Currently =C-c l= sets ligths theme (i.e., doom-one-light) and =C-c d=
-sets dark theme (i.e., doom-one).
+Custom keybindings for cycling between themes in Emacs with =C-c d=. Binding
+cames from toggling dark theme (d for "dark").
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c d") (lambda () (interactive) (load-theme 'doom-zenburn t)))
-  (global-set-key (kbd "C-c l") (lambda () (interactive) (load-theme 'doom-one-light t)))
+  (setq dalv/themes '(doom-one doom-one-light doom-zenburn))
+  (setq dalv/themes-index 0)
+
+  (defun dalv/cycle-theme ()
+    "Cycle through themes defined in dalv/themes variable."
+    (interactive)
+    ;; Disable current themes.
+    (mapc #'disable-theme custom-enabled-themes)
+    ;; Load new theme.
+    (setq dalv/themes-index (% (1+ dalv/themes-index) (length dalv/themes)))
+    (setq dalv/theme (nth dalv/themes-index dalv/themes))
+    (load-theme dalv/theme t)
+    ;; Resets powerline.
+    (when (fboundp 'powerline-reset)
+      (powerline-reset)))
+  (global-set-key (kbd "C-c d") 'dalv/cycle-theme)
 #+end_src
 
 Consider all custom themes as safe (don't ask for confirmation when loading
