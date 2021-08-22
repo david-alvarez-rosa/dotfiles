@@ -1120,7 +1120,7 @@ Allow alphabetical list, i.e., list like "a)", "A" or "A)" as element lists.
 *** Indent Mode
 Launch org mode in indent mode.
 #+begin_src emacs-lisp
-  (add-hook 'org-mode-hook 'org-indent-mode)
+  (setq org-startup-indented t)
 #+end_src
 
 *** Initial Visibility
