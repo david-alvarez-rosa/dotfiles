@@ -1390,7 +1390,7 @@ installed, this program is designed to enable super-efficient handling of
 e-mail; searching, reading, replying, moving, deleting. Also Isync should be
 installed and configured (this program is the same as mbsync, which is the name
 of the isync executable). This program will sync email computer <-> server,
-check out my [[file:~/.mbsyncrc][isync configuration]].
+check out my [[file:~/.mbsyncrc.org][isync configuration]].
 
 Open last 7 days email header view with =C-c e= keybinding.
 #+begin_src emacs-lisp
@@ -1451,7 +1451,7 @@ replying to myself) and the behavior for sent messages.
   (setq mu4e-maildir "~/.mail")
   (setq mu4e-user-mail-address-list '("david@alvarezrosa.com"
                                       "david.alvarez.rosa@yandex.com"
-                                      "davidolazegues@gmail.com"))
+                                      "dalvarez553@alumno.uned.es"))
   (setq mu4e-sent-messages-behavior 'sent)
   (setq message-signature-file "~/.emacs.d/signature.txt")
 #+end_src
@@ -1472,10 +1472,8 @@ any archive, so this is more useful for me.
                      (mu4e-drafts-folder . "/David/Drafts")
                      (mu4e-trash-folder . "/David/Inbox/Trash")
                      (mu4e-refile-folder . "/David/Inbox/Junk")
-                     (smtpmail-stream-type . nil)
+                     (smtpmail-stream-type . starttls)
                      (user-mail-address . "david@alvarezrosa.com")
-                     (smtpmail-starttls-credentials . '(("alvarezrosa.com" 587 nil nil)))
-                     (smtpmail-default-smtp-server . "alvarezrosa.com")
                      (smtpmail-smtp-server . "alvarezrosa.com")
                      (smtpmail-smtp-service . 587)))
            ,(make-mu4e-context
@@ -1491,9 +1489,25 @@ any archive, so this is more useful for me.
                      (mu4e-refile-folder . "/Yandex/Spam")
                      (smtpmail-stream-type . ssl)
                      (user-mail-address . "david.alvarez.rosa@yandex.com")
-                     (starttls-use-gnutls . t)
                      (smtpmail-smtp-server . "smtp.yandex.com")
-                     (smtpmail-smtp-service . 465)))))
+                     (smtpmail-smtp-service . 465)))
+           , (make-mu4e-context
+              :name "University"
+              :match-func (lambda (msg)
+                            (when msg
+                              (string-match-p "^/University" (mu4e-message-field msg :maildir))))
+              :vars '(
+                      (mu4e-inbox-folder . "/University/Inbox")
+                      (mu4e-sent-folder . "/University/Sent Items")
+                      (mu4e-drafts-folder . "/University/Drafts")
+                      (mu4e-trash-folder . "/University/Deleted Items")
+                      (mu4e-refile-folder . "/University/Junk Email")
+                      (smtpmail-stream-type . starttls)
+                      (user-mail-address . "dalvarez553@alumno.uned.es")
+                      (smtpmail-smtp-server . "smtp.office365.com")
+                      (smtpmail-smtp-service . 587)))))
+#+end_src
+
 ** Automatic Update and Notification
 Let's init mu4e on the background when launching Emacs and set up automatic
 email updates every 10 minutes.
