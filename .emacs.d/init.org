@@ -81,6 +81,7 @@ conflict here. Lastly, Emacs is a gift from God.
 - [[#pdf-viewer][PDF Viewer]]
 - [[#email-management][Email Management]]
   - [[#contexts-for-multiple-accounts][Contexts for Multiple Accounts]]
+  - [[#automatic-update-and-notification][Automatic Update and Notification]]
   - [[#queued-email][Queued Email]]
   - [[#signing-and-encryption][Signing and Encryption]]
   - [[#completion][Completion]]
@@ -1484,6 +1485,23 @@ any archive, so this is more useful for me.
                      (starttls-use-gnutls . t)
                      (smtpmail-smtp-server . "smtp.yandex.com")
                      (smtpmail-smtp-service . 465)))))
+** Automatic Update and Notification
+Let's init mu4e on the background when launching Emacs and set up automatic
+email updates every 10 minutes.
+#+begin_src emacs-lisp
+  (mu4e t)
+  (setq mu4e-update-interval (* 10 60))
+#+end_src
+
+Use mu4e alert package for displaying unread email in modeline and enable
+notifications.
+#+begin_src emacs-lisp
+  (setq doom-modeline-mu4e t)
+
+  (use-package mu4e-alert
+    :config
+    (mu4e-alert-enable-mode-line-display)
+    (mu4e-alert-enable-notifications))
 #+end_src
 
 ** Queued Email
