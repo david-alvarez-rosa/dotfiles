@@ -1025,32 +1025,19 @@ Set my custom capture templates. Brief description of them:
 - Task: basic template for TODO tasks. This is inside my =Tasks.org= file under
   "Refile" heading. Then I manually refile this tasks under a particular
   projects or into a "Standalone Tasks" heading.
-- Reply to Email: template for capturing emails I need to reply to (with link
-  of course). This is inside my =Tasks.org= file under "Reply to Email"
-  heading.
-- Read Task: read something. I usually capture tasks within Elfeed (i.e., mark
-  an entry for reading later). This is inside my =Tasks.org= file under "Read"
-  heading.
-- Link Tasks: similar to standalone tasks, but with link (e.g., email or Elfeed
-  link). This is inside my =Tasks.org= file under "Refile" heading.
 - Shopping: add something to my personal shopping list (as a checkitem). This
   is inside my =Tasks.org= file under "Shopping" heading.
+- Feed subscription: add new feed to subscriptions file (for Elfeed).
 - Text Note: template for taking quick notes. This is inside my =Notes.org=
   file.
 #+begin_src emacs-lisp
   (setq org-capture-templates
         '(("t" "Task" entry
            (file+olp "~/Documents/Tasks.org" "Refile")
-           "* TODO [#C] %?" :empty-lines 1)
-          ("e" "Email" entry
-           (file+olp "~/Documents/Tasks.org" "Reply to Email")
-           "* TODO [#C] Reply: %a\n %?" :empty-lines 1)
-          ("r" "Read" entry
-           (file+olp "~/Documents/Tasks.org" "Read")
-           "* TODO [#C] Read: %a\n %?" :empty-lines 1)
-          ("l" "Link Task" entry
-           (file+olp "~/Documents/Tasks.org" "Refile")
-           "* TODO [#C] %? %a" :empty-lines 1)
+           "* TODO [#C] %?\n%a\n%i" :empty-lines 1)
+          ("f" "Feed Subscription" entry
+           (file+olp "~/Documents/Subscriptions.org" "Refile")
+           "* %?" )
           ("s" "Shopping" checkitem
            (file+olp "~/Documents/Tasks.org" "Shopping" "Refile")
            "" :empty-lines-after 1)
