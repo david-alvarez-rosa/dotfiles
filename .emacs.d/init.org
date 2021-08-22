@@ -1629,6 +1629,11 @@ Configure citation line (the one that says "On 20 April David wrote...") .
   (setq message-citation-line-format "On %a %d %b %Y at %R, %N wrote:")
 #+end_src
 
+Kill message buffer after sending a message.
+#+begin_src emacs-lisp
+  (setq message-kill-buffer-on-exit t)
+#+end_src
+
 *** Org Mode HTML
 This program sends HTML email using Org-mode HTML export. This approximates a
 WYSiWYG HTML mail editor from within Emacs, and can be useful for sending
