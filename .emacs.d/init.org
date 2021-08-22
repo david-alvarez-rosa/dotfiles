@@ -57,6 +57,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#font][Font]]
   - [[#basic-interface-settings][Basic Interface Settings]]
   - [[#transparency-alpha][Transparency Alpha]]
+  - [[#distraction-free-mode][Distraction Free Mode]]
 - [[#programming-configuration][Programming Configuration]]
   - [[#general-configuration-1][General Configuration]]
   - [[#cc][C/C++]]
@@ -724,6 +725,21 @@ Functions for toggling transparency alpha.
         (set-frame-parameter nil 'alpha '(100 . 100)))))
   (define-key global-map (kbd "C-c t") 'dalv/toggle-transparency)
 #+end_src
+
+** Distraction Free Mode
+Olivetti is a simple Emacs minor mode for a nice writing environment, that sets
+a desired text body width to automatically resize window margins to keep the
+text comfortably in the middle of the window. I use the default text body
+width, that is =fill-colum= +2.
+#+begin_src emacs-lisp
+  (use-package olivetti)
+#+end_src
+
+This mode can be enabled with =olivetti-mode= in any buffer (everything it does
+is buffer-local). And the, it has some commands:
+- Shrink =C-c { { { ...=
+- Expand =C-c } } } ...=
+- Set width =C-c |=
 
 * Programming Configuration
 Configuration settings related to programming languages.
