@@ -540,18 +540,12 @@ schemes yet highly customizable.
     (setq ivy-count-format "%d/%d ")
     (setq ivy-initial-inputs-alist nil)
     (setq ivy-wrap t)
-    :bind (("C-c v" . 'ivy-push-view)
-           ("C-c V" . 'ivy-pop-view)
-           ("C-c C-r" 'ivy-resume)))
+    :bind ("C-c C-r" . 'ivy-resume))
 #+end_src
 
 I have enable Ivy virtual buffers so that Ivy will add additional virtual
 buffers to the buffers list, such as recent files and bookmarks (those are
 highlighted with ivy-virtual face).
-
-Also I have bind =C-c v= to save current window configuration and =C-v V= to
-delete it. This configuration can be search with same switch buffer ivy
-function.
 
 Another nice feature is using =C-c C-r= for resuming previous
 Ivy/Counsel/Swiper instance.
@@ -568,8 +562,13 @@ takes Ivy completion framework even further providing versions of common Emacs
 commands that are customised to make the best use of Ivy.
 #+begin_src emacs-lisp
   (use-package counsel
-    :init (counsel-mode))
+    :init (counsel-mode)
+    :bind ("C-c r" . 'counsel-register))
 #+end_src
+
+I have added =C-c r= for interactively choosing a register. Register are very
+useful for saving window/frame configuration =C-x r w=/=C-x r f=, current point
+position =C-x r SPC= and saving text =C-x r s=.
 
 Swiper is an alternative to isearch that uses Ivy to show an overview of all
 matches.
