@@ -1429,6 +1429,13 @@ Enable images in mu4e view.
   (setq mu4e-view-show-images t)
 #+end_src
 
+This package provides a minor mode that allows using individual faces for the
+columns in mu4e’s email overview.
+#+begin_src emacs-lisp
+  (use-package mu4e-column-faces
+    :config (mu4e-column-faces-mode))
+#+end_src
+
 ** Contexts for Multiple Accounts
 I am using contexts for handling two different accounts at the same time. When
 launching mu4e for the first time don't ask and just pick the first context
