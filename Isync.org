@@ -1,0 +1,95 @@
+#+TITLE: Isync Configuration
+#+LANGUAGE: en
+#+AUTHOR: David Álvarez Rosa
+#+EMAIL: david@alvarezrosa.com
+#+DESCRIPTION: My Isync configuration file.
+#+PROPERTY: header-args :tangle ~/.mbsyncrc
+
+
+Isync is a command line application to synchronize mailboxes; it supports
+Maildir and IMAP4 mailboxes. New messages, message deletions and flag changes
+can be propagated both ways.
+
+Synchronization is based on unique message identifiers (UIDs), so no
+identification conflicts can occur (as opposed to some other mail
+synchronizers). Synchronization state is kept in one local text file per
+mailbox pair; multiple replicas of a mailbox can be maintained.
+
+
+* David
+Configuration for my personal email account.
+#+begin_src conf
+  IMAPAccount David
+  Host mail.alvarezrosa.com
+  User david@alvarezrosa.com
+  PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep imap.alvarezrosa.com | awk '{print $6}'"
+  SSLType IMAPS
+
+  IMAPStore david-remote
+  Account   David
+
+  MaildirStore david-local
+  Path ~/.mail/David/
+  Inbox ~/.mail/David/Inbox
+  SubFolders Verbatim
+
+  Channel david
+  Far :david-remote:
+  Near :david-local:
+  Patterns *
+  Create Near
+  Expunge Near
+  SyncState *
+#+end_src
+
+* Yandex
+Configuration for Yandex email account.
+#+begin_src conf
+  IMAPAccount Yandex
+  Host imap.yandex.com
+  User david.alvarez.rosa@yandex.com
+  PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep imap.yandex.com | awk '{print $6}'"
+  SSLType IMAPS
+
+  IMAPStore yandex-remote
+  Account Yandex
+
+  MaildirStore yandex-local
+  Path ~/.mail/Yandex/
+  Inbox ~/.mail/Yandex/Inbox
+  SubFolders Verbatim
+
+  Channel yandex
+  Far :yandex-remote:
+  Near :yandex-local:
+  Patterns *
+  Create Near
+  Expunge Near
+  SyncState *
+#+end_src
+
+* University
+Configuration for university email account.
+#+begin_src conf
+  IMAPAccount University
+  Host outlook.office365.com
+  User dalvarez553@alumno.uned.es
+  PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep outlook.office365.com | awk '{print $6}'"
+  SSLType IMAPS
+
+  IMAPStore university-remote
+  Account University
+
+  MaildirStore university-local
+  Path ~/.mail/University/
+  Inbox ~/.mail/University/Inbox
+  SubFolders Verbatim
+
+  Channel university
+  Far :university-remote:
+  Near :university-local:
+  Patterns *
+  Create Near
+  Expunge Near
+  SyncState *
+#+end_src
