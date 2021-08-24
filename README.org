@@ -1,0 +1,48 @@
+#+TITLE: Dotfiles
+#+AUTHOR: David Álvarez Rosa
+#+STARTUP: showall
+
+
+* Dotfiles
+This repository is intended to be a backup of my personal configuration files
+(also know as dotfiles). Most of the configuration files are written in literate
+style using Emacs Org Mode. And then this files are tangled so can actually be
+used as configuration files.
+
+I use this dotfiles in my main work machine running Arch Linux as my prefered
+Linux distribution. Please, if you are planning to use this dotfiles in your
+machine, don't expect them to work out of the box. There might be some fixes you
+will need to perform to adapt this configuration to your distro of choice.
+
+Here you can take a look at some screenshots from the configuration.
+
+** Bash
+The configuration file can be found [[file:.bashrc][here]].
+
+[[file:Pictures/Dotfiles/bash_prompt.png]]
+
+** Qutebrowser
+This is the web browser that I'm currently using.
+The configuration file can be found [[file:.config/qutebrowser/config.org][here]].
+
+** Emacs
+This is my beloved text editor.
+The configuration file can be found here.
+
+[[file:Pictures/Dotfiles/emacs.png]]
+
+
+[[file:Pictures/Dotfiles/emacs_auctex.png]]
+
+
+#+BEGIN_SRC html
+<img src="Pictures/Dotfiles/emacs_auctex.png" width="48"></img>
+#+END_SRC
+
+** Git
+This is the Git configuration.
+The configuration file can be found here.
+
+** i3wm
+This is the window manager I'm currently using. Probably I will be switching to
+dwm in the future. The configuration file can be found here.
