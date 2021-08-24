@@ -1162,7 +1162,7 @@ Custom agenda views. I use a custom view that contains the following:
         '((" " "Block Agenda"
            ((agenda "" ((org-agenda-span 3)))
             (todo "NEXT"
-                  ((org-agenda-overriding-header "Next")
+                  ((org-agenda-overriding-header "Next Actions")
                    (org-agenda-skip-function
                     '(org-agenda-skip-entry-if 'deadline 'scheduled))))
             (todo "WAIT" ((org-agenda-overriding-header "Waiting")))
