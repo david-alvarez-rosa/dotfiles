@@ -1421,13 +1421,6 @@ Set get mail command for syncing. And define keybind =C-c u= to just index
   (define-key mu4e-headers-mode-map (kbd "C-c u") 'mu4e-update-index)
 #+end_src
 
-Enable images in mu4e view.
-#+begin_src emacs-lisp
-  (when (fboundp 'imagemagick-register-types)
-    (imagemagick-register-types))
-  (setq mu4e-view-show-images t)
-#+end_src
-
 This package provides a minor mode that allows using individual faces for the
 columns in mu4e’s email overview.
 #+begin_src emacs-lisp
