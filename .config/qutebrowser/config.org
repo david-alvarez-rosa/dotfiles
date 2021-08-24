@@ -1,14 +1,24 @@
-#+TITLE: Archivo de configuración de Qutebrowser
+#+TITLE: Qutebrowser configuration file
 #+AUTHOR: David Álvarez Rosa
+#+STARTUP: showall
+
 
 * Qutebrowser
 :PROPERTIES:
 :HEADER-ARGS+: :tangle yes
 :END:
 
-** Básicos
-*** Movimiento
-Movimiento en página.
+
+** Introduction
+This is my personal configuration for Qutebrowser.
+
+** Usage
+
+** Installation
+
+** Basic configuration
+*** Scroll
+Configuration of scroll.
 #+BEGIN_SRC python
   config.bind('n', 'scroll down')
   config.bind('p', 'scroll up')
@@ -22,8 +32,8 @@ Movimiento en página.
   config.bind('>', 'scroll-to-perc')
 #+END_SRC
 
-*** Búsqueda
-Configurar comandos de búsqueda.
+*** Search
+Different search commands.
 #+BEGIN_SRC python
   config.bind('<Ctrl-s>', 'set-cmd-text /', mode='normal')
   config.bind('<Ctrl-r>', 'set-cmd-text ?', mode='normal')
@@ -35,9 +45,8 @@ Configurar comandos de búsqueda.
   config.bind('<Alt-p>', 'search-prev', mode='normal')
 #+END_SRC
 
-
-*** Pestañas
-Movimiento entre pestañas.
+*** Tabs
+Movement between tabs.
 #+BEGIN_SRC python
   config.bind('K', 'tab-next')
   config.bind('J', 'tab-prev')
@@ -47,7 +56,7 @@ Movimiento entre pestañas.
   config.bind('P', 'tab-prev')
 #+END_SRC
 
-Movimiento de pestañas.
+Movement of tabs.
 #+BEGIN_SRC python
   config.bind('<Ctrl-K>', 'tab-move +')
   config.bind('<Ctrl-J>', 'tab-move -')
@@ -57,9 +66,8 @@ Movimiento de pestañas.
   config.bind('<Ctrl-Shift-P>', 'tab-move -')
 #+END_SRC
 
-
-*** /Escape/
-Convertir "C-g" en una tecla de escape.
+*** Escape
+Convert "C-g" in an escape key.
 #+BEGIN_SRC python
   config.bind("<Ctrl-g>", 'leave-mode', mode="prompt")
   config.bind("<Ctrl-g>", 'leave-mode', mode="hint")
@@ -70,9 +78,8 @@ Convertir "C-g" en una tecla de escape.
   config.bind("<Ctrl-g>", 'leave-mode', mode="yesno")
 #+END_SRC
 
-
-*** Otros
-Movimiento en modo de entrada de texto.
+*** Others
+Movement shortcuts in insert mode.
 #+BEGIN_SRC python
   config.bind('<Ctrl-f>', 'scroll right', mode='insert')
   config.bind('<Ctrl-b>', 'scroll left', mode='insert')
@@ -81,7 +88,7 @@ Movimiento en modo de entrada de texto.
   config.bind('<Alt-f>', 'move-to-next-word', mode='insert')
 #+END_SRC
 
-Movimiento en modo de selección.
+Movement shortcuts in visual mode.
 #+BEGIN_SRC python
   config.bind('<Ctrl-f>', 'move-to-next-char', mode='caret')
   config.bind('<Ctrl-b>', 'move-to-prev-char', mode='caret')
@@ -95,21 +102,26 @@ Movimiento en modo de selección.
   config.bind('>', 'move-to-end-of-document', mode='caret')
   config.bind('<', 'move-to-start-of-document', mode='caret')
   config.bind('<Ctrl-Space>', 'toggle-selection', mode='caret')
-  config.bind('<Ctrl-Space>', 'enter-mode caret', mode='normal')
-  config.bind('<Ctrl-Space>', 'enter-mode caret', mode='insert')
-
-  # Modo de inserción (desactivando el resto).
-  config.bind('<Ctrl-i>', 'enter-mode passthrough')
-  config.bind('<Ctrl-g>', 'enter-mode normal', mode='passthrough')
-  config.bind('<Ctrl-i>', 'enter-mode normal', mode='passthrough')
+  config.bind('<Ctrl-Space>', 'mode-enter caret', mode='normal')
+  config.bind('<Ctrl-Space>', 'mode-enter caret', mode='insert')
 #+END_SRC
 
-** Otros
+Passthrough mdoe.
 #+BEGIN_SRC python
-  # Configurar editor externo.
-  c.editor.command = ['st', '-e', 'emacsclient', '{}']
-  # c.editor.command = ['st', '-e', 'vim', '{}']
+  config.bind('<Ctrl-i>', 'mode-enter passthrough')
+  config.bind('<Ctrl-g>', 'mode-enter normal', mode='passthrough')
+  config.bind('<Ctrl-i>', 'mode-enter normal', mode='passthrough')
+#+END_SRC
 
+
+** Others
+Configure external editor.
+#+BEGIN_SRC python
+  c.editor.command = ['st', '-e', 'emacsclient', '{}']
+#+END_SRC
+
+Closing tabs.
+#+BEGIN_SRC python
   # Permitir deshacer el cerrar una pestaña.
   config.bind('U', 'undo')
 
@@ -152,61 +164,60 @@ Movimiento en modo de selección.
   c.completion.scrollbar.width = 0
 
   # No mostrar barra de estado.
-  c.statusbar.hide = False
+  # c.statusbar.hide = False
 
   # No mostrar pdfs en web.
   c.content.pdfjs = False
 #+END_SRC
 
 
-** Fuente
+** Font
+Configuration of font depending of mode.
 #+BEGIN_SRC python
-  ############################### Configuración de fuente #################################
-
   ## Encoding to use for the editor.
   ## Type: Encoding
   c.editor.encoding = 'utf-8'
 
   ## Font used in the completion categories.
   ## Type: Font
-  c.fonts.completion.category = 'bold 10pt monospace'
+  c.fonts.completion.category = 'bold 10pt Inconsolata'
 
   ## Font used in the completion widget.
   ## Type: Font
-  c.fonts.completion.entry = '10pt monospace'
+  c.fonts.completion.entry = '10pt Inconsolata'
 
   ## Font used for the debugging console.
   ## Type: QtFont
-  c.fonts.debug_console = '10pt monospace'
+  c.fonts.debug_console = '10pt Inconsolata'
 
   ## Font used for the downloadbar.
   ## Type: Font
-  c.fonts.downloads = '10pt monospace'
+  c.fonts.downloads = '10pt Inconsolata'
 
   ## Font used for the hints.
   ## Type: Font
-  c.fonts.hints = 'bold 10pt monospace'
+  c.fonts.hints = 'bold 10pt Inconsolata'
 
   ## Font used in the keyhint widget.
   ## Type: Font
-  c.fonts.keyhint = '10pt monospace'
+  c.fonts.keyhint = '10pt Inconsolata'
 
   ## Font used for error messages.
   ## Type: Font
-  c.fonts.messages.error = '10pt monospace'
+  c.fonts.messages.error = '10pt Inconsolata'
 
   ## Font used for info messages.
   ## Type: Font
-  c.fonts.messages.info = '10pt monospace'
+  c.fonts.messages.info = '10pt Inconsolata'
 
   ## Font used for warning messages.
   ## Type: Font
-  c.fonts.messages.warning = '10pt monospace'
+  c.fonts.messages.warning = '10pt Inconsolata'
 
   ## Default monospace fonts. Whenever "monospace" is used in a font
   ## setting, it's replaced with the fonts listed here.
   ## Type: Font
-  c.fonts.monospace = '"Inconsolata", "xos4 Terminus", Terminus, Monospace, "DejaVu Sans Mono", Monaco, "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, "Liberation Mono", monospace, Fixed, Consolas, Terminal'
+  # c.fonts.monospace = '"Inconsolata", "xos4 Terminus", Terminus, Monospace, "DejaVu Sans Mono", Monaco, "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, "Liberation Mono", monospace, Fixed, Consolas, Terminal'
 
   ## Font used for prompts.
   ## Type: Font
@@ -214,11 +225,11 @@ Movimiento en modo de selección.
 
   ## Font used in the statusbar.
   ## Type: Font
-  c.fonts.statusbar = '10pt monospace'
+  c.fonts.statusbar = '10pt Inconsolata'
 
   ## Font used in the tab bar.
   ## Type: QtFont
-  c.fonts.tabs = '10pt monospace'
+  c.fonts.tabs = '10pt Inconsolata'
 
   ## Font family for cursive fonts.
   ## Type: FontFamily
@@ -259,18 +270,12 @@ Movimiento en modo de selección.
   ## The minimum logical font size that is applied when zooming out.
   ## Type: Int
   c.fonts.web.size.minimum_logical = 6
-
 #+END_SRC
 
 
-** Colores
+** Theme
+Configuration of theme, it's from [[https://github.com/theova/base16-qutebrowser][here]].
 #+BEGIN_SRC python
-  ############################### Configuración de colores #################################
-
-  # base16-qutebrowser (https://github.com/theova/base16-qutebrowser)
-  # Base16 qutebrowser template by theova
-  # Default Dark scheme by Chris Kempson (http://chriskempson.com)
-
   base00 = "#181818"
   base01 = "#282828"
   base02 = "#383838"
@@ -519,9 +524,12 @@ Movimiento en modo de selección.
   # Background color for webpages if unset (or empty to use the theme's
   # color).
   # c.colors.webpage.bg = base00
+#+END_SRC
 
 
-  # Añadir los atajos.
+** More
+Add some more shortcuts.
+#+BEGIN_SRC python
   config.unbind('D')
   config.source('shortcuts.py')
 #+END_SRC
@@ -531,8 +539,6 @@ Movimiento en modo de selección.
 Faltaría configurarlo todo.....
 
 #+BEGIN_SRC python
-
-
   # Configuración muy interesante de comandos que está en https://github.com/dustinlacewell/dotfiles/blob/c9eead887206652481d97e7623d2a5fe98916d1e/modules/home/linux/workstation/qutebrowser/config/keys.py
   # En general su configuración está muy bien: https://github.com/dustinlacewell/dotfiles/tree/c9eead887206652481d97e7623d2a5fe98916d1e/modules/home/linux/workstation/qutebrowser
 
@@ -662,4 +668,31 @@ Faltaría configurarlo todo.....
   #     # escape hatch
   #     '<ctrl-g>': 'leave-mode',
   # }
+#+END_SRC
+
+
+
+
+* Add custom CSS
+#+BEGIN_SRC python
+c.content.user_stylesheets = "github.css"
+#+END_SRC
+
+
+* Set common user-agent
+Set a generic user-agent to minimize fingerprinting.
+
+#+BEGIN_SRC python
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0"
+#+END_SRC
+
+* TODO Backspace fix
+I am using =xmodmap= for backspace key. Fix bug in qutebrowser.
+
+Not working!
+
+#+BEGIN_SRC python :tangle no
+  config.bind('<backspace>', 'rl-delete-char', mode='insert')
+  config.bind('<Alt-b>', 'rl-backward-word', mode='insert')
+  config.bind('<Alt-f>', 'rl-forward-word', mode='insert')
 #+END_SRC
