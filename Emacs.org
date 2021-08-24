@@ -3,7 +3,7 @@
 #+AUTHOR: David Álvarez Rosa
 #+EMAIL: david@alvarezrosa.com
 #+DESCRIPTION: My personal GNU Emacs configuration file.
-#+PROPERTY: header-args :tangle ~/.config/.emacs.d/init.el
+#+PROPERTY: header-args :tangle ~/.config/emacs/init.el
 
 
 GNU Emacs is a free (as in /freedom/) +operating system+ text editor, created
@@ -105,15 +105,14 @@ that way, it's posible. You just need to start with a bare Emacs installation
 (i.e., without any =.emacs= file in your home directory or =.emacs.d=
 directory). With this done, just:
 - Download this =init.org= file
+- Create =.config/emacs/= directory if it does not exists.
 - Open it with Emacs and press the function =C-c C-v C-t= for tangling all the
   source code blocks, i.e, call the function =org-babel-tangle= that will
   extract all source blocks from this file and write them into a file called
-  =init.el=.
-- Move =init.el= file into =~/.emacs.d/= directory (if it does not exist, you
-  will need to manually create it).
+  =init.el= (inside the previously created directory).
 - Open Emacs and enjoy!
 
-  *NOTE* First time you launch Emacs all needed packages will be
+  *NOTE:* First time you launch Emacs all needed packages will be
   /automagically/ installed for you, so you will need to wait for a couple of
   minutes. After that, Emacs will launch much faster.
 
@@ -210,7 +209,7 @@ Place all custom-defined variables in their own file and store the custom
 variable file in the local machine’s home directory outside of version
 control. This enables us to keep specific config local to each machine.
 #+begin_src emacs-lisp
-  (setq custom-file "~/.emacs.d/custom.el")
+  (setq custom-file "~/.config/emacs/custom.el")
   (load custom-file t)
 #+end_src
 
@@ -886,7 +885,7 @@ abbreviation and automatically expand it into function templates.
     :hook (prog-mode . yas-minor-mode))
 #+end_src
 
-Custom snippets are located in =.emacs.d/snippets= directory (best way to
+Custom snippets are located in =.config/emacs/snippets= directory (best way to
 create them is using =yas-new-snippet= function).
 
 *** Ediff
@@ -1445,7 +1444,7 @@ replying to myself) and the behavior for sent messages.
                                       "david.alvarez.rosa@yandex.com"
                                       "dalvarez553@alumno.uned.es"))
   (setq mu4e-sent-messages-behavior 'sent)
-  (setq message-signature-file "~/.emacs.d/signature.txt")
+  (setq message-signature-file "~/Documents/Signature.txt")
 #+end_src
 
 The actual context accounts. Take into account that I am using the Spam/Junk
@@ -1730,7 +1729,7 @@ RSS. It requires Emacs 24.3.
 #+begin_src emacs-lisp
   (use-package elfeed
     :bind ("C-c f" . 'elfeed)
-    :config (setq elfeed-db-directory "~/.emacs.d/elfeed"
+    :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
                   elfeed-search-filter "@1-week-ago -no "
                   elfeed-search-title-max-width 100))
 #+end_src
