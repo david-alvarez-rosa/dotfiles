@@ -1,14 +1,12 @@
 #+TITLE: Qutebrowser configuration file
+#+LANGUAGE: en
 #+AUTHOR: David Álvarez Rosa
-#+STARTUP: showall
+#+EMAIL: david@alvarezrosa.com
+#+DESCRIPTION: My personal Qutebrowser configuration file.
+#+PROPERTY: header-args :tangle ~/.config/qutebrowser/config.py
 
 
 * Qutebrowser
-:PROPERTIES:
-:HEADER-ARGS+: :tangle yes
-:END:
-
-
 ** Introduction
 This is my personal configuration for Qutebrowser.
 

@@ -3,7 +3,7 @@
 #+AUTHOR: David Álvarez Rosa
 #+EMAIL: david@alvarezrosa.com
 #+DESCRIPTION: My personal GNU Emacs configuration file.
-#+PROPERTY: header-args :tangle yes
+#+PROPERTY: header-args :tangle ~/.config/.emacs.d/init.el
 
 
 GNU Emacs is a free (as in /freedom/) +operating system+ text editor, created
@@ -131,8 +131,7 @@ Some utilities:
 - Music Management, bound to =C-c m= ("m" for music).
 - IRC client, with ERC. Bound to =C-c i= ("i" for IRC).
 - Trasparency alpha toggler. Bound to =C-c t= ("t" for transparency).
-- Light/Dark theme. Bound to =C-c d= ("d" for dark) and =C-c l= ("l" for
-  light).
+- Light/Dark theme. Bound to =C-c d= ("d" for dark). This cycles themes.
 - Git, with Magit, bound to =C-c g= ("g" for git).
 - Kill all buffers except current and *scratch*. Bound to =C-c k= ("k" for
   killing). This is kind of "restaring" Emacs session without actually closing
