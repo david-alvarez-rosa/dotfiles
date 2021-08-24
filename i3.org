@@ -1,0 +1,333 @@
+#+TITLE: i3 Window Manager Configuration
+#+LANGUAGE: en
+#+AUTHOR: David Álvarez Rosa
+#+EMAIL: david@alvarezrosa.com
+#+DESCRIPTION: My personal i3 Window Manager configuration file.
+#+PROPERTY: header-args :tangle ~/.config/i3/config
+
+
+
+#+begin_src conf
+  # Archivo de configuración de i3.
+  set $mod Mod4
+
+  # Fuente para los títulos de las ventanas.
+  # font pango:mono 11
+  font pango:DejaVu Sans Mono 8
+
+  # Configuración inicial de espacios.
+  gaps inner 6
+  gaps outer 4
+
+  # No mostrar bordes de las ventanas.
+  new_window 1pixel
+  default_border pixel 1
+
+  # Configurar la imagen de fondo de escritorio.
+  exec_always --no-startup-id "feh --bg-scale ~/.config/wallpaper.png"
+  # Configurar dunst para notificaciones:
+  exec --no-startup-id dunst
+  # Permitir transparencia.
+  exec --no-startup-id "picom --xrender-sync-fence -i 1.0 -m 1.0 -e 1.0"
+  # Iniciar i3.
+  exec --no-startup-id ".scripts/i3start"
+  # Configurar teclado.
+  exec --no-startup-id ".scripts/keyboard"
+  # Hacer el ratón invisible cuando no se usa.
+  exec --no-startup-id "unclutter --timeout 2"
+  # Encender el teclado numérico
+  exec --no-startup-id "numlockx on"
+
+  # Use Mouse+$mod to drag floating windows to their wanted position
+  floating_modifier $mod
+
+  # Abrir una terminal.
+  bindsym $mod+Return exec i3-sensible-terminal
+
+  # Permite cambiar entre los dos últimos espacios de trabajo.
+  bindsym $mod+Tab workspace back_and_forth
+
+  # Cerrar la ventana actual.
+  bindsym $mod+q kill
+
+  # Abrir "dmenu": menú para lanzar programas.
+  bindsym $mod+d exec dmenu_run
+
+  # Abrir "rofi": menú para lanzar programas.
+  bindsym $mod+r                 exec rofi -show drun
+  # bindsym XF86Search             exec rofi -show drun
+
+  # Activar/Desactivar "touchpad".
+  # bindsym XF86
+
+  # Cambiar ventana seleccionada.
+  bindsym $mod+b                 focus left
+  bindsym $mod+n                 focus down
+  bindsym $mod+p                 focus up
+  bindsym $mod+f                 focus right
+  # Cambiar ventana seleccionada (alternativo).
+  bindsym $mod+Left              focus left
+  bindsym $mod+Down              focus down
+  bindsym $mod+Up                focus up
+  bindsym $mod+Right             focus right
+  # No circular al cambiar.
+  focus_wrapping no
+
+  # Mover la ventana actual.
+  bindsym $mod+Shift+b           move left 20px
+  bindsym $mod+Shift+n           move down 20px
+  bindsym $mod+Shift+p           move up 20px
+  bindsym $mod+Shift+f           move right 20px
+  # Mover la ventana actual (alternativo).
+  bindsym $mod+Shift+Left        move left 20px
+  bindsym $mod+Shift+Down        move down 20px
+  bindsym $mod+Shift+Up          move up 20px
+  bindsym $mod+Shift+Right       move right 20px
+
+  # Cambiar el modo de división de pantalla.
+  bindsym $mod+v                 split vertical
+  bindsym $mod+h                 split horizontal
+
+  # Entrar/Salir del modo de pantalla completa.
+  bindsym $mod+o                 fullscreen toggle
+
+  # Modificar espacio entre ventanas.
+  bindsym $mod+z                 gaps inner current plus 2
+  bindsym $mod+Shift+z           gaps inner current minus 2; border pixel 1
+  bindsym  $mod+g                gaps inner current set 0; gaps outer current set 0; border pixel 0
+  bindsym  $mod+Shift+g          gaps inner current set 6; gaps outer current set 4; border pixel 1
+
+  # Bloquear la pantalla
+  bindsym $mod+l                 exec --no-startup-id "betterlockscreen -l"
+
+  # Poner/Quitar en todos los espacios de trabajo.
+  bindsym $mod+Shift+w           sticky toggle
+
+  # change container layout (stacked, tabbed, toggle split)
+  bindsym $mod+s layout stacking
+  bindsym $mod+t layout tabbed
+  bindsym $mod+e layout toggle split
+
+  # toggle tiling / floating
+  bindsym $mod+Shift+space floating toggle
+
+  # change focus between tiling / floating windows
+  bindsym $mod+space focus mode_toggle
+
+  # focus the parent container
+  bindsym $mod+a focus parent
+
+  # focus the child container
+  #bindsym $mod+d focus child
+
+  # Comando para el navegador ("qutebrowser")
+  bindsym $mod+w exec --no-startup-id "qutebrowser &"
+
+  # Comando para abrir Transmission (para los torrents).
+  bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission tremc"
+  for_window [title="Transmission"] floating enable, resize grow left 175, resize grow right 175, resize grow down 75, resize grow up 75
+
+  # Comando para abrir Skype.
+  bindsym $mod+Shift+s exec --no-startup-id "skypeforlinux &"
+
+  # Comando para actualizar el correo.
+  bindsym $mod+Shift+m exec --no-startup-id "~/.scripts/cronjobs/updateMail '' 'yes'"
+
+  # Comandos para el volumen.
+  bindsym XF86AudioMute                    exec --no-startup-id "pamixer --allow-boost -t && pkill -RTMIN+10 i3blocks"
+  bindsym XF86AudioLowerVolume             exec --no-startup-id "pamixer --allow-boost -d 5 && pkill -RTMIN+10 i3blocks"
+  bindsym Shift+XF86AudioLowerVolume       exec --no-startup-id "pamixer --allow-boost -d 10 && pkill -RTMIN+10 i3blocks"
+  bindsym Control+XF86AudioLowerVolume     exec --no-startup-id "pamixer --allow-boost -d 1 && pkill -RTMIN+10 i3blocks"
+  bindsym XF86AudioRaiseVolume             exec --no-startup-id "pamixer --allow-boost -i 5 && pkill -RTMIN+10 i3blocks"
+  bindsym Shift+XF86AudioRaiseVolume       exec --no-startup-id "pamixer --allow-boost -i 10 && pkill -RTMIN+10 i3blocks"
+  bindsym Control+XF86AudioRaiseVolume     exec --no-startup-id "pamixer --allow-boost -i 1 && pkill -RTMIN+10 i3blocks"
+
+  # Comandos para el brillo.
+  bindsym XF86MonBrightnessDown            exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x-25)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
+  bindsym Shift+XF86MonBrightnessDown      exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x-50)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
+  bindsym Control+XF86MonBrightnessDown    exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x-10)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
+  bindsym XF86MonBrightnessUp              exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x+25)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
+  bindsym Shift+XF86MonBrightnessUp        exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x+50)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
+  bindsym Control+XF86MonBrightnessUp      exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x+10)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
+
+  # Comandos para captura de pantalla.
+  bindsym Print                            exec --no-startup-id "~/.scripts/screenshot"
+  bindsym $mod+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
+  bindsym Control+Print              	     exec --no-startup-id "~/.scripts/screenshot s"
+
+  # Mover ventana abajo a la derecha (para vídeo).
+  bindsym $mod+Shift+v                     floating toggle; exec --no-startup-id ~/.scripts/bottomright; sticky enable
+
+  # Abrir "mpv" siempre en pequeño abajo a la derecha.
+  for_window [class="mpv"]                 floating enable; exec --no-startup-id ~/.scripts/bottomright
+  for_window [class="mpv"]                 sticky enable
+
+  # Definición de nombres para los diferentes espacios de trabajo.
+  set $ws1 "1. Emacs"
+  set $ws2 "2. Browser"
+  set $ws3 "3. Terminal"
+  set $ws4 "4. Ranger"
+  set $ws5 "5. Communication"
+  set $ws6 "6. Executing"
+  set $ws7 "7. Media"
+  set $ws8 "8. Firefox"
+  set $ws9 "9. Auxiliar"
+  set $ws10 "10"
+
+  # Ir al un espacio de trabajo.
+  bindsym $mod+1 workspace $ws1
+  bindsym $mod+2 workspace $ws2
+  bindsym $mod+3 workspace $ws3
+  bindsym $mod+4 workspace $ws4
+  bindsym $mod+5 workspace $ws5
+  bindsym $mod+6 workspace $ws6
+  bindsym $mod+7 workspace $ws7
+  bindsym $mod+8 workspace $ws8
+  bindsym $mod+9 workspace $ws9
+  bindsym $mod+0 workspace $ws10
+
+  # Mover ventana actual a otro espacio de trabajo.
+  bindsym $mod+Shift+1 move container to workspace $ws1
+  bindsym $mod+Shift+2 move container to workspace $ws2
+  bindsym $mod+Shift+3 move container to workspace $ws3
+  bindsym $mod+Shift+4 move container to workspace $ws4
+  bindsym $mod+Shift+5 move container to workspace $ws5
+  bindsym $mod+Shift+6 move container to workspace $ws6
+  bindsym $mod+Shift+7 move container to workspace $ws7
+  bindsym $mod+Shift+8 move container to workspace $ws8
+  bindsym $mod+Shift+9 move container to workspace $ws9
+  bindsym $mod+Shift+0 move container to workspace $ws10
+
+  # Abrir inicialmente los vídeos ("mpv") en su espacio de trabajo.
+  # assign [class="mpv"] $ws7
+
+  # Abrir inicialmente "Skype" en su espacio de trabajo.
+  assign [class="Skype"] $ws5
+  for_window [class="Skype"] floating disable
+
+  # Abrir inicialmente "Slack" en su espacio de trabajo.
+  assign [class="Slack"] $ws5
+
+  # Abrir inicialmente "qutebrowser" en su espacio de trabajo.
+  assign [class="qutebrowser"] $ws2
+
+  # Abrir inicialmente "emacs" en su espacio de trabajo.
+  assign [class="Emacs"] $ws1
+
+  # Abrir inicialmente imágenes de "octave" en su espacio de trabajo.
+  assign [class="GNU Octave"] $ws6
+
+  # Abrir inicialmente imágenes de "python" en su espacio de trabajo.
+  assign [class="matplotlib"] $ws6
+
+  # Abrir inicialmente "Firefox" en su espacio de trabajo.
+  assign [class="firefox"] $ws8
+
+  # Abrir inicialmente "LibrOffice" y "Gimp" en espacio de trabajo auxiliar.
+  assign [class="(?i)office.*"] $ws9
+  assign [class="(?i)gimp.*"] $ws9
+
+  # Abrir inicialmente "ranger" en su espacio de trabajo.
+  # assign [class="ranger"] $ws4
+
+  # Apagar el ordenador.
+  bindsym $mod+x                  exec --no-startup-id ~/.scripts/i3shutdown
+  bindsym $mod+Shift+x            exec --no-startup-id ~/.scripts/i3reboot
+
+  # Recargar la configuración de i3.
+  bindsym $mod+Shift+c reload
+  # Reiniciar i3.
+  bindsym $mod+Shift+r restart
+  # Salir de i3.
+  bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+  # Ocultar/Mostrar la barra.
+  bindsym $mod+m bar mode toggle
+
+  # resize window (you can also use the mouse for that)
+  mode "resize" {
+          # These bindings trigger as soon as you enter the resize mode
+
+          # Pressing left will shrink the window’s width.
+          # Pressing right will grow the window’s width.
+          # Pressing up will shrink the window’s height.
+          # Pressing down will grow the window’s height.
+          bindsym h resize shrink width 10 px or 10 ppt
+          bindsym j resize grow height 10 px or 10 ppt
+          bindsym k resize shrink height 10 px or 10 ppt
+          bindsym l resize grow width 10 px or 10 ppt
+
+          # same bindings, but for the arrow keys
+          bindsym Left resize shrink width 10 px or 10 ppt
+          bindsym Down resize grow height 10 px or 10 ppt
+          bindsym Up resize shrink height 10 px or 10 ppt
+          bindsym Right resize grow width 10 px or 10 ppt
+
+          # back to normal: Enter or Escape or $mod+r
+          bindsym Return mode "default"
+          bindsym Escape mode "default"
+          bindsym $mod+r mode "default"
+  }
+  # bindsym $mod+r mode "resize"
+
+  # Atajos para controlar el tamaño de la ventana sin necesidad de entrar en modo
+  # "resize".
+  bindsym $mod+Control+f exec --no-startup-id "bash ~/.scripts/i3resize right"
+  bindsym $mod+Control+p exec --no-startup-id "bash ~/.scripts/i3resize up"
+  bindsym $mod+Control+n exec --no-startup-id "bash ~/.scripts/i3resize down"
+  bindsym $mod+Control+b exec --no-startup-id "bash ~/.scripts/i3resize left"
+
+  # class                 border  backgr. text    indicator child_border
+  client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
+  client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+  client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+  client.urgent           #2f343a #900000 #ffffff #900000   #900000
+  client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+  client.background       #ffffff
+
+
+  # Leer colores de .Xdefaults.
+  set_from_resource $darkblack    color0  #000000
+  set_from_resource $black        color8  #000000
+  set_from_resource $darkred      color1  #000000
+  set_from_resource $red          color9  #000000
+  set_from_resource $darkgreen    color2  #000000
+  set_from_resource $green        color10 #000000
+  set_from_resource $darkyellow   color3  #000000
+  set_from_resource $yellow       color11 #000000
+  set_from_resource $darkblue     color4  #000000
+  set_from_resource $blue         color12 #000000
+  set_from_resource $darkmagenta  color5  #000000
+  set_from_resource $magenta      color13 #000000
+  set_from_resource $darkcyan     color6  #000000
+  set_from_resource $cyan         color14 #000000
+  set_from_resource $darkwhite    color7  #000000
+  set_from_resource $white        color15 #000000
+  set $transparent                #00000000
+
+  # # Configuración de los colores.
+  # #                       BORDE         FONDO           TEXTO           INDICADOR               BORDE HIJO
+  # client.focused                $red            $red            $magenta        $darkmagenta            $darkblue
+  # client.unfocused      $transparent    $blue           $white          $darkblue               $darkblack
+  # client.focused_inactive       $transparent    $blue           $white          $darkblue               $darkblack
+  # client.urgent         $darkred        $darkred        $black          $darkred                $darkred
+  # client.background $black
+
+  # Configuración de la barra.
+  bar {
+          font pango:mono 9
+          colors {
+                          background $darkblack
+                          statusline $darkwhite
+                          separator $cyan
+                          focused_workspace  $blue $darkblue $white
+                          active_workspace   $blue $blue $white
+                          inactive_workspace $darkblack $darkblack $darkwhite
+                          urgent_workspace   $darkblack $darkblack $white
+                  }
+          status_command i3blocks
+          position top
+          mode dock
+          modifier None
+  }
+#+end_src
