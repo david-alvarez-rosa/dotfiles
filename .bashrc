@@ -196,3 +196,16 @@ function atenea {
 
 export EDITOR="vim"
 export GPG_AGENT_INFO=""
+# Remove less history file
+export LESSHISTFILE=-
+# Set up Vim to obey XDG Base Directory specification
+export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+# Set up XDG Base Directory specification
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share/"
+
+
+export TEXMFHOME="$XDG_DATA_HOME/texmf"
+export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
+export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
