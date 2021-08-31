@@ -1705,6 +1705,9 @@ well.
 #+end_src
 
 * TODO Music Player
+*NOTE:* This is an old configuration (I'm still using it, but is obsolete). I'm
+thinking of using EMMS in the future as =mpd= client.
+
 Para controlar la reproducción de música desde Emacs. Debe estar instalado
 =mpd= (Music Player Daemon) e interactuaremos con él haciendo uso del cliente
 =mpc= construido en Emacs.
