@@ -7,8 +7,6 @@
 
 
 #+begin_src bash
-  # Archivo de configuración de bash.
-
   # If not running interactively, don't do anything
   case $- in
       ,*i*) ;;
@@ -39,14 +37,6 @@
   then export PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h\[$(tput setaf 7)\] Arch Linux  \[$(tput setaf 5)\]\w\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\n  \\$ \[$(tput sgr0)\]"
   else export PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]ROOT\[$(tput setaf 2)\]@\[$(tput setaf 4)\]$(hostname | awk '{print toupper($0)}')\[$(tput setaf 7)\] Arch Linux  \[$(tput setaf 5)\]\w\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\n  \\$ \[$(tput sgr0)\]"
   fi
-
-  # # Configuración de "powerline" (solo en emulador).
-  # if [ "$TERM" == "st-256color" ]; then
-  #     powerline-daemon -q
-  #     POWERLINE_BASH_CONTINUATION=1
-  #     POWERLINE_BASH_SELECT=1
-  #     . /usr/share/powerline/bindings/bash/powerline.sh
-  # fi
 
   # Permitir acceder a una carpeta escribiendo el nombre.
   shopt -s autocd
