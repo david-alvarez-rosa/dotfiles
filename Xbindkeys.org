@@ -1,0 +1,72 @@
+#+TITLE: Xbindkeys Configuration
+#+LANGUAGE: en
+#+AUTHOR: David Álvarez Rosa
+#+EMAIL: david@alvarezrosa.com
+#+DESCRIPTION: My personal Xbindkeys configuration file.
+#+PROPERTY: header-args :tangle ~/.config/xbindkeys/config
+
+
+Xbindkeys is a program that allows to bind commands to certain keys or key
+combinations on the keyboard. Xbindkeys works with multimedia keys and is
+independent of the window manager and desktop environment.
+
+
+* Volume
+Commands for controlling the volume. This binds laptop =Fn= keys for adjust
+audio, such as volume (increase, drecrease) and toggle mute status.
+
+Commands for increasing and decreasing the volume have an step size of 5, but
+using =Shift= modifier on this keys will change step size to 10 and using
+=Ctrl= modifier to 1.
+#+begin_src conf
+  "pamixer -i 5"
+    XF86AudioRaiseVolume
+  "pamixer -i 10"
+    Shift + XF86AudioRaiseVolume
+  "pamixer -i 1"
+    Control + XF86AudioRaiseVolume
+
+  "pamixer -d 5"
+    XF86AudioLowerVolume
+  "pamixer -d 10"
+    Shift + XF86AudioLowerVolume
+  "pamixer -d 1"
+    Control + XF86AudioLowerVolume
+#+end_src
+
+Remember that is possible to allow volume boost (volume above 100%), from the
+command line with =pamixer -i --allow-boost <arg>=.
+
+Toggle mute status.
+#+begin_src conf
+  "pamixer -t"
+    XF86AudioMute
+#+end_src
+
+* Backlight Brightness
+Due to incompatibility problems, I am using Acpilight (a backward-compatible
+xbacklight replacement) for setting the display brightness. This programm uses
+the ACPI interface and can control both display and keyboard backlight
+uniformly on either X11, the console or Wayland. Personally I am just using
+this for display brightness in X.
+
+Similarly to the volume control bindings, I am providing here functionality for
+increasing and decreasing brightness with =Fn= laptop keys with a step size
+of 5. If this keys are combined with =Shift= modifier the step size changes to
+10, and when combined with =Ctrl= to 1.
+
+#+begin_src conf
+  "xbacklight -inc 5"
+    XF86MonBrightnessUp
+  "xbacklight -inc 10"
+    Shift + XF86MonBrightnessUp
+  "xbacklight -inc 1"
+    Control + XF86MonBrightnessUp
+
+  "xbacklight -dec 5"
+    XF86MonBrightnessDown
+  "xbacklight -dec 10"
+    Shift + XF86MonBrightnessDown
+  "xbacklight -dec 1"
+    Control + XF86MonBrightnessDown
+#+end_src
