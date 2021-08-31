@@ -43,7 +43,10 @@ Toggle mute status.
     XF86AudioMute
 #+end_src
 
-* Backlight Brightness
+* Backlight
+Configuration both for display brightness and display.
+
+** Brightness
 Due to incompatibility problems, I am using Acpilight (a backward-compatible
 xbacklight replacement) for setting the display brightness. This programm uses
 the ACPI interface and can control both display and keyboard backlight
@@ -70,3 +73,57 @@ of 5. If this keys are combined with =Shift= modifier the step size changes to
   "xbacklight -dec 1"
     Control + XF86MonBrightnessDown
 #+end_src
+
+** Display
+Switching off the backlight can be useful to conserve battery energy. I have
+bind this to the =F4= key, because why not.
+#+begin_src conf
+  "xset dpms force off"
+    XF86Display
+#+end_src
+
+This same display =Fn= laptop key is also bound with the =Ctrl= and =Shift=
+modifiers for toggling graphical output and volume to a external monitor (very
+useful whenever I connect laptop to a TV).
+#+begin_src conf
+  "xrandr --output HDMI-1 --auto --output eDP-1 --off; pactl set-card-profile 0 output:hdmi-stereo"
+    Control + XF86Display
+  "xrandr --output HDMI-1 --off --output eDP-1 --auto; pactl set-card-profile 0 output:hdmi-surround"
+    Shift + XF86Display
+#+end_src
+
+* Music Player
+For listening to music and other audio files I use, of course, the =mpd=
+daemon. I set some basic binds for next/prev song and toggling between play and
+pause status.
+#+begin_src conf
+  "mpc toggle"
+    XF86AudioPlay
+  "mpc prev"
+    XF86AudioPrev
+  "mpc next"
+    XF86AudioNext
+#+end_src
+
+* Network Manager
+Toggle wifi status: enabled/disabled. Wi-Fi status can be check in the command
+line with the command =nmcli radio wifi=. I am using NetworkManager program
+(originally developep by Red Hat) for network configuration (both wireless and
+wired). For interacting with the daemon I use the command-line tool nmcli.
+#+begin_src conf
+  "[[ $(nmcli radio wifi) == 'enabled' ]] && nmcli radio wifi off || nmcli radio wifi on"
+    XF86WLAN
+#+end_src
+
+* Touchpad
+Any real Emacs user knows that touchpads are annoying. I set the laptop =Fn=
+key for toggling between touchpad status: enabled/disabled.
+#+begin_src conf :tangle no
+  "if xinput list-props 'SynPS/2 Synaptics TouchPad' | grep 'Enabled'; then xinput disable 'SynPS/2 Synaptics TouchPad'; else xinput enable 'SynPS/2 Synaptics TouchPad'; fi"
+#+end_src
+
+Of course, take into account that the name for the touchpad must be changed
+accordingly to the laptop, in my case it is called "SynPS/2 Synaptics
+Touchpad". The touchpad name can be search with =xinput=.
+
+*NOTE:* The key it's not working! Don't know why.
