@@ -94,6 +94,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#custom-functions][Custom Functions]]
 - [[#internet-relay-chat-irc][Internet Relay Chat (IRC)]]
   - [[#nickname-highlighter][Nickname Highlighter]]
+- [[#emacs-x-window-manager][Emacs X Window Manager]]
 - [[#useful-resources][Useful Resources]]
 
 * Preamble
@@ -1835,6 +1836,77 @@ characters that IRC clients add to nicknames to avoid duplicates (nickname,
 nickname’, nickname”, etc.)
 #+begin_src emacs-lisp
   (use-package erc-hl-nicks)
+#+end_src
+
+* TODO Emacs X Window Manager
+:LOGBOOK:
+- State "TODO"       from              [2021-08-24 Tue 18:53]
+:END:
+
+Take into account that this section maps a bunch of bindings involving the
+=Super= key, and might interfere with you Window Manager (WM) and, therefore if
+you are not thinking in using Emacs as a WM, don't tangle any block from this
+section.
+
+Important!! Take a look to [[https://github.com/Ambrevar/dotfiles/blob/master/.emacs.d/lisp/init-exwm.el][this configuration]], that is explained in this [[https://www.reddit.com/r/emacs/comments/6huok9/exwm_configs/][reddit]].
+#+begin_src emacs-lisp
+  (use-package exwm
+    :config
+    (exwm-input-set-key (kbd "s-r") 'exwm-reset)
+    (exwm-input-set-key (kbd "s-w") 'exwm-workspace-switch)
+
+    (exwm-input-set-key (kbd "s-b") 'windmove-left)
+    (exwm-input-set-key (kbd "s-n") 'windmove-down)
+    (exwm-input-set-key (kbd "s-p") 'windmove-up)
+    (exwm-input-set-key (kbd "s-f") 'windmove-right)
+
+    (exwm-input-set-key (kbd "s-B") 'windmove-swap-states-left)
+    (exwm-input-set-key (kbd "s-N") 'windmove-swap-states-down)
+    (exwm-input-set-key (kbd "s-P") 'windmove-swap-states-up)
+    (exwm-input-set-key (kbd "s-F") 'windmove-swap-states-right)
+
+    (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
+    (exwm-input-set-key (kbd "s-<tab>") 'switch-to-prev-buffer)
+    (exwm-input-set-key (kbd "s-<iso-lefttab>") 'switch-to-next-buffer)
+
+    ;; ;; an easy way to make keybindings work *only* in line mode
+    ;; (push ?\C-q exwm-input-prefix-keys)
+    ;; (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
+
+    ;; ;; Rename buffer to window title.
+    (add-hook 'exwm-update-class-hook
+              (lambda ()
+                (exwm-workspace-rename-buffer exwm-class-name)))
+
+  ;;; System tray
+    (require 'exwm-systemtray)
+    (exwm-systemtray-enable)
+
+    (setq exwm-input-simulation-keys
+          '(([?\C-b] . [left])
+            ([?\M-b] . C-left)
+            ([?\C-f] . [right])
+            ([?\M-f] . C-right)
+            ([?\C-p] . [up])
+            ([?\C-n] . [down])
+            ([?\C-a] . [home])
+            ([?\C-e] . [end])
+            ([?\M-v] . [prior])
+            ([?\C-v] . [next])
+            ([?\C-d] . [delete])
+            ([?\C-k] . [S-end delete])
+            ;; cut/paste
+            ([?\C-w] . ?\C-x)
+            ([?\M-w] . ?\C-c)
+            ([?\C-y] . ?\C-v)
+            ;; search
+            ([?\C-s] . ?\C-f)))
+
+
+    (exwm-input-set-key (kbd "<s-return>") 'eshell)
+    (exwm-enable)
+
+    )
 #+end_src
 
 * Useful Resources
