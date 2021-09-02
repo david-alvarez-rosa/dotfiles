@@ -115,6 +115,20 @@ wired). For interacting with the daemon I use the command-line tool nmcli.
     XF86WLAN
 #+end_src
 
+** TODO Think about changing to this
+:LOGBOOK:
+- State "TODO"       from              [2021-09-02 Thu 08:40]
+- State "TODO"       from              [2021-09-02 Thu 08:40]
+:END:
+This approach might be a better alternative (in general for all commands), but
+this will only be needed if not using any status bar.
+#+begin_src conf :tangle no
+  "nmcli radio wifi off"
+    XF86WLAN
+  "nmcli radio wifi on"
+    Control + XF86WLAN
+#+end_src
+
 * Touchpad
 Any real Emacs user knows that touchpads are annoying. I set the laptop =Fn=
 key for toggling between touchpad status: enabled/disabled.
