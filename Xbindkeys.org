@@ -141,3 +141,10 @@ accordingly to the laptop, in my case it is called "SynPS/2 Synaptics
 Touchpad". The touchpad name can be search with =xinput=.
 
 *NOTE:* The key it's not working! Don't know why.
+
+* Screen lock
+Lock the screen using =slock= programm from Suckless, with =Super+l=.
+#+begin_src conf
+  "slock"
+    Mod2+Mod4 + l
+#+end_src
