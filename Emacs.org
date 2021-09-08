@@ -51,6 +51,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#html-renderer][HTML Renderer]]
   - [[#completion-inteface][Completion Inteface]]
   - [[#spell-checking-and-correcting][Spell Checking and Correcting]]
+  - [[#sudo-edit][Sudo Edit]]
 - [[#user-interface][User Interface]]
   - [[#theme][Theme]]
   - [[#modeline][Modeline]]
@@ -624,6 +625,12 @@ It is also useful the use spelling *on the fly* with =flyspell-mode=, that
 highlights all misspelled words (the variant =flyspell-prog-mode= is for
 programming language, where spelling should occur only for comments and
 strings).
+
+** Sudo Edit
+Utility for opening files with =sudo= (call the =sudo-edit= function).
+#+begin_src emacs-lisp
+  (use-package sudo-edit)
+#+end_src
 
 * User Interface
 Settings related to the user interface, such as the theme, the modeline, the
