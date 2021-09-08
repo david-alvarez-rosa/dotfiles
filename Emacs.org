@@ -692,6 +692,17 @@ column number instead of percentage buffer position.
     (setq doom-modeline-percent-position nil))
 #+end_src
 
+Some configuration concerning the modeline: show battery status and time in
+24hr format. I have disabled the load average and I have enabled displaying
+also the date.
+#+begin_src emacs-lisp
+  (setq display-time-24hr-format t)
+  (setq display-time-default-load-average nil)
+  (setq display-time-day-and-date t)
+  (display-time-mode 1)
+  (display-battery-mode 1)
+#+end_src
+
 ** Font
 Set default font. I'm currently using Hack (in the past I used Inconsolata).
 #+begin_src emacs-lisp
