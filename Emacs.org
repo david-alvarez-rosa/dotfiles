@@ -683,8 +683,9 @@ it).
 
 ** Modeline
 For the modeline I am using also Doom Modeline. This package requires the fonts
-included with =all-the-icons= to be installed. I have configured it to show
-column number instead of percentage buffer position.
+included with =all-the-icons= to be installed with =M-x
+all-the-icons-install-fonts=. I have configured it to show column number
+instead of percentage buffer position.
 #+begin_src emacs-lisp
   (use-package doom-modeline
     :init (doom-modeline-mode 1)
