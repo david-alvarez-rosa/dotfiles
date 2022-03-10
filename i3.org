@@ -79,22 +79,8 @@
   # Entrar/Salir del modo de pantalla completa.
   bindsym $mod+o                 fullscreen toggle
 
-  # Modificar espacio entre ventanas.
-  bindsym $mod+z                 gaps inner current plus 2
-  bindsym $mod+Shift+z           gaps inner current minus 2; border pixel 1
-  bindsym  $mod+g                gaps inner current set 0; gaps outer current set 0; border pixel 0
-  bindsym  $mod+Shift+g          gaps inner current set 6; gaps outer current set 4; border pixel 1
-
-  # Bloquear la pantalla
-  bindsym $mod+l                 exec --no-startup-id "betterlockscreen -l"
-
   # Poner/Quitar en todos los espacios de trabajo.
   bindsym $mod+Shift+w           sticky toggle
-
-  # change container layout (stacked, tabbed, toggle split)
-  bindsym $mod+s layout stacking
-  bindsym $mod+t layout tabbed
-  bindsym $mod+e layout toggle split
 
   # toggle tiling / floating
   bindsym $mod+Shift+space floating toggle
@@ -102,21 +88,12 @@
   # change focus between tiling / floating windows
   bindsym $mod+space focus mode_toggle
 
-  # focus the parent container
-  bindsym $mod+a focus parent
-
-  # focus the child container
-  #bindsym $mod+d focus child
-
   # Comando para el navegador ("qutebrowser")
   bindsym $mod+w exec --no-startup-id "qutebrowser &"
 
   # Comando para abrir Transmission (para los torrents).
   bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission tremc"
   for_window [title="Transmission"] floating enable, resize grow left 175, resize grow right 175, resize grow down 75, resize grow up 75
-
-  # Comando para abrir Skype.
-  bindsym $mod+Shift+s exec --no-startup-id "skypeforlinux &"
 
   # Comando para actualizar el correo.
   bindsym $mod+Shift+m exec --no-startup-id "~/.scripts/cronjobs/updateMail '' 'yes'"
@@ -200,7 +177,6 @@
   bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
   # Ocultar/Mostrar la barra.
   bindsym $mod+m bar mode toggle
-
 
   # comandos para resize
   bindsym $mod+Control+f exec --no-startup-id "bash ~/.scripts/i3resize right"
