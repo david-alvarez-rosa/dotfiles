@@ -15,6 +15,21 @@ identification conflicts can occur (as opposed to some other mail
 synchronizers). Synchronization state is kept in one local text file per
 mailbox pair; multiple replicas of a mailbox can be maintained.
 
+The =.authinfo.gpg= file should be properly configured and encrypted with, at
+least, the following information.
+#+begin_src conf :tangle no
+  machine mail.alvarezrosa.com login david@alvarezrosa.com password "***pass***"
+  machine imap.yandex.com login david.alvarez.rosa@yandex.com password "***pass***"
+  machine imap.hotmail.com login dalvarez553@alumno.uned.es password "***pass***"
+#+end_src
+
+After the first sync of emails, the =mu= database must be started. It is useful
+to specify personal email addresses (e.g., for not replying to yourself in a
+"Reply All").
+#+begin_src conf :tangle no
+  mu init -m ~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=david.alvarez.rosa@yandex.com --my-address=dalvarez553@alumno.uned.es --my-address=davidolazegues@gmail.com --my-address=davidalvarezrosa@protonmail.com --my-address=david.alvarez.rosa@eestudiant.upc.edu --my-address=david.alvarez.rosa@estudiantat.upc.edu
+#+end_src
+
 
 * David
 Configuration for my personal email account.
@@ -22,15 +37,15 @@ Configuration for my personal email account.
   IMAPAccount David
   Host mail.alvarezrosa.com
   User david@alvarezrosa.com
-  PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep imap.alvarezrosa.com | awk '{print $6}'"
+  PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $6}'"
   SSLType IMAPS
 
   IMAPStore david-remote
   Account   David
 
   MaildirStore david-local
-  Path ~/.mail/David/
-  Inbox ~/.mail/David/Inbox
+  Path ~/.local/share/mail/David/
+  Inbox ~/.local/share/mail/David/Inbox
   SubFolders Verbatim
 
   Channel david
@@ -55,8 +70,8 @@ Configuration for Yandex email account.
   Account Yandex
 
   MaildirStore yandex-local
-  Path ~/.mail/Yandex/
-  Inbox ~/.mail/Yandex/Inbox
+  Path ~/.local/share/mail/Yandex/
+  Inbox ~/.local/share/mail/Yandex/Inbox
   SubFolders Verbatim
 
   Channel yandex
@@ -81,8 +96,8 @@ Configuration for university email account.
   Account University
 
   MaildirStore university-local
-  Path ~/.mail/University/
-  Inbox ~/.mail/University/Inbox
+  Path ~/.local/share/mail/University/
+  Inbox ~/.local/share/mail/University/Inbox
   SubFolders Verbatim
 
   Channel university
