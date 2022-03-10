@@ -181,16 +181,6 @@
   bindsym $mod+Shift+9 move container to workspace $ws9
   bindsym $mod+Shift+0 move container to workspace $ws10
 
-  # Abrir inicialmente los vídeos ("mpv") en su espacio de trabajo.
-  # assign [class="mpv"] $ws7
-
-  # Abrir inicialmente "Skype" en su espacio de trabajo.
-  assign [class="Skype"] $ws5
-  for_window [class="Skype"] floating disable
-
-  # Abrir inicialmente "Slack" en su espacio de trabajo.
-  assign [class="Slack"] $ws5
-
   # Abrir inicialmente "qutebrowser" en su espacio de trabajo.
   assign [class="qutebrowser"] $ws2
 
@@ -209,9 +199,6 @@
   # Abrir inicialmente "LibrOffice" y "Gimp" en espacio de trabajo auxiliar.
   assign [class="(?i)office.*"] $ws9
   assign [class="(?i)gimp.*"] $ws9
-
-  # Abrir inicialmente "ranger" en su espacio de trabajo.
-  # assign [class="ranger"] $ws4
 
   # Apagar el ordenador.
   bindsym $mod+x                  exec --no-startup-id ~/.scripts/i3shutdown
@@ -287,14 +274,6 @@
   set_from_resource $darkwhite    color7  #000000
   set_from_resource $white        color15 #000000
   set $transparent                #00000000
-
-  # # Configuración de los colores.
-  # #                       BORDE         FONDO           TEXTO           INDICADOR               BORDE HIJO
-  # client.focused                $red            $red            $magenta        $darkmagenta            $darkblue
-  # client.unfocused      $transparent    $blue           $white          $darkblue               $darkblack
-  # client.focused_inactive       $transparent    $blue           $white          $darkblue               $darkblack
-  # client.urgent         $darkred        $darkred        $black          $darkred                $darkred
-  # client.background $black
 
   # Configuración de la barra.
   bar {
