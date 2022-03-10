@@ -142,14 +142,6 @@
   bindsym Shift+XF86AudioRaiseVolume       exec --no-startup-id "pamixer --allow-boost -i 10 && pkill -RTMIN+10 i3blocks"
   bindsym Control+XF86AudioRaiseVolume     exec --no-startup-id "pamixer --allow-boost -i 1 && pkill -RTMIN+10 i3blocks"
 
-  # Comandos para el brillo.
-  bindsym XF86MonBrightnessDown            exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x-25)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
-  bindsym Shift+XF86MonBrightnessDown      exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x-50)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
-  bindsym Control+XF86MonBrightnessDown    exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x-10)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
-  bindsym XF86MonBrightnessUp              exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x+25)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
-  bindsym Shift+XF86MonBrightnessUp        exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x+50)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
-  bindsym Control+XF86MonBrightnessUp      exec --no-startup-id "x=$(</sys/class/backlight/radeon_bl0/brightness) && x=$(($x+10)) && echo $x > /sys/class/backlight/radeon_bl0/brightness"
-
   # Comandos para captura de pantalla.
   bindsym Print                            exec --no-startup-id "~/.scripts/screenshot"
   bindsym $mod+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
