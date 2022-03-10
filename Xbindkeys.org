@@ -10,6 +10,10 @@ Xbindkeys is a program that allows to bind commands to certain keys or key
 combinations on the keyboard. Xbindkeys works with multimedia keys and is
 independent of the window manager and desktop environment.
 
+This program should be added to the =.xinitrc= file as follows.
+#+begin_src conf :tangle no
+  xbindkeys -f .config/xbindkeys/config
+#+end_src
 
 * Volume
 Commands for controlling the volume. This binds laptop =Fn= keys for adjust
@@ -79,7 +83,7 @@ Switching off the backlight can be useful to conserve battery energy. I have
 bind this to the =F4= key, because why not.
 #+begin_src conf
   "xset dpms force off"
-    XF86Display
+    Mod4 + p
 #+end_src
 
 This same display =Fn= laptop key is also bound with the =Ctrl= and =Shift=
@@ -87,9 +91,9 @@ modifiers for toggling graphical output and volume to a external monitor (very
 useful whenever I connect laptop to a TV).
 #+begin_src conf
   "xrandr --output HDMI-1 --auto --output eDP-1 --off; pactl set-card-profile 0 output:hdmi-stereo"
-    Control + XF86Display
+    Control + Mod4 + p
   "xrandr --output HDMI-1 --off --output eDP-1 --auto; pactl set-card-profile 0 output:hdmi-surround"
-    Shift + XF86Display
+    Shift + Mod4 + p
 #+end_src
 
 * Music Player
@@ -132,8 +136,9 @@ this will only be needed if not using any status bar.
 * Touchpad
 Any real Emacs user knows that touchpads are annoying. I set the laptop =Fn=
 key for toggling between touchpad status: enabled/disabled.
-#+begin_src conf :tangle no
-  "if xinput list-props 'SynPS/2 Synaptics TouchPad' | grep 'Enabled'; then xinput disable 'SynPS/2 Synaptics TouchPad'; else xinput enable 'SynPS/2 Synaptics TouchPad'; fi"
+#+begin_src conf
+  "if xinput list-props 'ELAN1200:00 04F3:309F Touchpad' | grep 'Device Enabled (149):.*1'; then xinput disable 'ELAN1200:00 04F3:309F Touchpad'; else xinput enable 'ELAN1200:00 04F3:309F Touchpad'; fi"
+    XF86TouchpadToggle
 #+end_src
 
 Of course, take into account that the name for the touchpad must be changed
