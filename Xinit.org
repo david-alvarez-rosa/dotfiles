@@ -32,15 +32,15 @@ Unclutter hides your X mouse cursor when you do not need it, to prevent it from
 getting in the way. You have only to move the mouse to restore the mouse
 cursor. Unclutter is very useful in tiling window managers where you do not
 need the mouse often.
-#+begin_src conf
-  unclutter --timeout 2
+#+begin_src conf :tangle no
+  unclutter --timeout 2 &
 #+end_src
 
 * Transparency
 Picom is a standalone compositor for Xorg, suitable for use with window
 managers that do not provide compositing.
 #+begin_src conf
-  picom --xrender-sync-fence
+  picom --xrender-sync-fence &
 #+end_src
 
 * i3 Window Manager
