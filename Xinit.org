@@ -1,0 +1,50 @@
+#+TITLE: xinit Configuration
+#+LANGUAGE: en
+#+AUTHOR: David Álvarez Rosa
+#+EMAIL: david@alvarezrosa.com
+#+DESCRIPTION: My personal xinit configuration file.
+#+PROPERTY: header-args :tangle ~/.xinitrc
+
+
+The xinit program allows a user to manually start an Xorg display server. The
+=startx= script is a front-end for xinit.
+
+* Xbindkeys
+Load Xbindkeys program for binding key chords.
+#+begin_src conf
+  xbindkeys -f ~/.config/xbindkeys/config
+#+end_src
+
+* Wallpaper
+Set wallpaper.
+#+begin_src conf
+  feh --bg-scale ~/.local/share/wallpaper.png
+#+end_src
+
+* Number Lock
+Enable numlock at boot time.
+#+begin_src conf
+  numlockx on
+#+end_src
+
+* Unclutter
+Unclutter hides your X mouse cursor when you do not need it, to prevent it from
+getting in the way. You have only to move the mouse to restore the mouse
+cursor. Unclutter is very useful in tiling window managers where you do not
+need the mouse often.
+#+begin_src conf
+  unclutter --timeout 2
+#+end_src
+
+* Transparency
+Picom is a standalone compositor for Xorg, suitable for use with window
+managers that do not provide compositing.
+#+begin_src conf
+  picom --xrender-sync-fence
+#+end_src
+
+* i3 Window Manager
+Load i3wm (Window Manager), this must be always at the end.
+#+begin_src conf
+  exec i3
+#+end_src
