@@ -1454,7 +1454,7 @@ First, lets define basic configuration for both accounts (contexts in mu4e
 terminology). This is, set maildir, my personal email addresses (used for not
 replying to myself) and the behavior for sent messages.
 #+begin_src emacs-lisp
-  (setq mu4e-maildir "~/.mail")
+  (setq mu4e-maildir "~/.local/share/mail")
   (setq mu4e-user-mail-address-list '("david@alvarezrosa.com"
                                       "david.alvarez.rosa@yandex.com"
                                       "dalvarez553@alumno.uned.es"))
@@ -1538,7 +1538,7 @@ It allows to save the outgoing mail (output tray) to send them later. Useful
 when working without an Internet connection, for example. This can be toggled
 in mu4e main view with =m=.
 #+begin_src emacs-lisp
-  (setq smtpmail-queue-dir "~/.mail/Queue/cur")
+  (setq smtpmail-queue-dir "~/.local/share/mail/Queue/cur")
 #+end_src
 
 ** TODO Signing and Encryption
