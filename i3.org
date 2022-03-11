@@ -6,108 +6,44 @@
 #+PROPERTY: header-args :tangle ~/.config/i3/config
 
 
+i3 is a tiling window manager, completely written from scratch. The target
+platforms are GNU/Linux and BSD operating systems, the code is Free and Open
+Source Software (FOSS) under the BSD license. i3 is primarily targeted at
+advanced users and developers. This is my personal configuration, primarily
+based on the principles of minimalism (simplicity is the key for success). All
+key bindings are set following the holy Emacs philosophy.
 
+* Theme
+Set default font (for window title).
 #+begin_src conf
-  # Archivo de configuración de i3.
-  set $mod Mod4
+  font pango:mono 11
+#+end_src
 
-  # Fuente para los títulos de las ventanas.
-  # font pango:mono 11
-  font pango:DejaVu Sans Mono 8
-
-  # Configuración inicial de espacios.
+Set initial inner and outer gaps.
+#+begin_src conf
   gaps inner 6
   gaps outer 4
+#+end_src
 
-  # No mostrar bordes de las ventanas.
+Set window border to 1 pixel.
+#+begin_src conf
   new_window 1pixel
   default_border pixel 1
+#+end_src
 
-  # Configurar dunst para notificaciones:
-  exec --no-startup-id dunst
-  # Iniciar i3.
-  exec --no-startup-id ".scripts/i3start"
-  # Configurar teclado.
-  exec --no-startup-id ".scripts/keyboard"
+* Functionality
+Set modifier key to Super (Windows key).
+#+begin_src conf
+  set $mod Mod4
+#+end_src
 
-  # Use Mouse+$mod to drag floating windows to their wanted position
-  floating_modifier $mod
-
-  # Abrir una terminal.
-  bindsym $mod+Return exec i3-sensible-terminal
-
-  # Permite cambiar entre los dos últimos espacios de trabajo.
-  bindsym $mod+Tab workspace back_and_forth
-
-  # Cerrar la ventana actual.
-  bindsym $mod+q kill
-
-  # Abrir "dmenu": menú para lanzar programas.
-  bindsym $mod+d exec dmenu_run
-
-  # Abrir "rofi": menú para lanzar programas.
-  bindsym $mod+r                 exec rofi -show drun
-
-  # Cambiar ventana seleccionada.
-  bindsym $mod+b                 focus left
-  bindsym $mod+n                 focus down
-  bindsym $mod+p                 focus up
-  bindsym $mod+f                 focus right
-  # Cambiar ventana seleccionada (alternativo).
-  bindsym $mod+Left              focus left
-  bindsym $mod+Down              focus down
-  bindsym $mod+Up                focus up
-  bindsym $mod+Right             focus right
-  # No circular al cambiar.
+Disable focus wrapping (I have always found this feature annoying).
+#+begin_src conf
   focus_wrapping no
+#+end_src
 
-  # Mover la ventana actual.
-  bindsym $mod+Shift+b           move left 20px
-  bindsym $mod+Shift+n           move down 20px
-  bindsym $mod+Shift+p           move up 20px
-  bindsym $mod+Shift+f           move right 20px
-  # Mover la ventana actual (alternativo).
-  bindsym $mod+Shift+Left        move left 20px
-  bindsym $mod+Shift+Down        move down 20px
-  bindsym $mod+Shift+Up          move up 20px
-  bindsym $mod+Shift+Right       move right 20px
-
-  # Cambiar el modo de división de pantalla.
-  bindsym $mod+v                 split vertical
-  bindsym $mod+h                 split horizontal
-
-  # Entrar/Salir del modo de pantalla completa.
-  bindsym $mod+o                 fullscreen toggle
-
-  # Poner/Quitar en todos los espacios de trabajo.
-  bindsym $mod+Shift+w           sticky toggle
-
-  # toggle tiling / floating
-  bindsym $mod+Shift+space floating toggle
-
-  # change focus between tiling / floating windows
-  bindsym $mod+space focus mode_toggle
-
-  # Comando para abrir Transmission (para los torrents).
-  bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission tremc"
-  for_window [title="Transmission"] floating enable, resize grow left 175, resize grow right 175, resize grow down 75, resize grow up 75
-
-  # Comando para actualizar el correo.
-  bindsym $mod+Shift+m exec --no-startup-id "~/.scripts/cronjobs/updateMail '' 'yes'"
-
-  # Comandos para captura de pantalla.
-  bindsym Print                            exec --no-startup-id "~/.scripts/screenshot"
-  bindsym $mod+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
-  bindsym Control+Print              	     exec --no-startup-id "~/.scripts/screenshot s"
-
-  # Mover ventana abajo a la derecha (para vídeo).
-  bindsym $mod+Shift+v                     floating toggle; exec --no-startup-id ~/.scripts/bottomright; sticky enable
-
-  # Abrir "mpv" siempre en pequeño abajo a la derecha.
-  for_window [class="mpv"]                 floating enable; exec --no-startup-id ~/.scripts/bottomright
-  for_window [class="mpv"]                 sticky enable
-
-  # Definición de nombres para los diferentes espacios de trabajo.
+Set workspace names.
+#+begin_src conf
   set $ws1 "1. Emacs"
   set $ws2 "2. Browser"
   set $ws3 "3. Terminal"
@@ -117,9 +53,34 @@
   set $ws7 "7. Media"
   set $ws8 "8. Firefox"
   set $ws9 "9. Auxiliar"
-  set $ws10 "10"
+  set $ws10 "10. Workspace"
+#+end_src
 
-  # Ir al un espacio de trabajo.
+* Key bindings
+** General
+Key bindings related to i3wm, such as reloading the configuration, restarting,
+or ending the X session.
+#+begin_src conf
+  bindsym $mod+Shift+c reload
+  bindsym $mod+Shift+r restart
+  bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+#+end_src
+
+Open a terminal.
+#+begin_src conf
+  bindsym $mod+Return exec i3-sensible-terminal
+#+end_src
+
+Toggle status bar.
+#+begin_src conf
+  bindsym $mod+m bar mode toggle
+#+end_src
+
+** Workspaces
+Key bindings related to workspaces.
+
+Switching to a workspace.
+#+begin_src conf
   bindsym $mod+1 workspace $ws1
   bindsym $mod+2 workspace $ws2
   bindsym $mod+3 workspace $ws3
@@ -130,8 +91,10 @@
   bindsym $mod+8 workspace $ws8
   bindsym $mod+9 workspace $ws9
   bindsym $mod+0 workspace $ws10
+#+end_src
 
-  # Mover ventana actual a otro espacio de trabajo.
+Moving a container/window to a workspace.
+#+begin_src conf
   bindsym $mod+Shift+1 move container to workspace $ws1
   bindsym $mod+Shift+2 move container to workspace $ws2
   bindsym $mod+Shift+3 move container to workspace $ws3
@@ -142,7 +105,131 @@
   bindsym $mod+Shift+8 move container to workspace $ws8
   bindsym $mod+Shift+9 move container to workspace $ws9
   bindsym $mod+Shift+0 move container to workspace $ws10
+#+end_src
 
+Switching between the last two used workspaces.
+#+begin_src conf
+  bindsym $mod+Tab workspace back_and_forth
+#+end_src
+
+** Windows
+Key bindings related to windows (inside a workspace).
+
+Killing current window.
+#+begin_src conf
+  bindsym $mod+q kill
+#+end_src
+
+*** Window focus
+Set key bindings for changing window focus (following the holy Emacs "bfnp"
+moving set).
+#+begin_src conf
+  bindsym $mod+b focus left
+  bindsym $mod+n focus down
+  bindsym $mod+p focus up
+  bindsym $mod+f focus right
+#+end_src
+
+Alternative with arrow keys.
+#+begin_src conf
+  bindsym $mod+Left focus left
+  bindsym $mod+Down focus down
+  bindsym $mod+Up focus up
+  bindsym $mod+Right focus right
+  #+end_src
+
+Change focus between tiling/floating windows.
+#+begin_src conf
+  bindsym $mod+space focus mode_toggle
+#+end_src
+
+*** Window moving
+Set key bindings for moving windows around with same commands as window focus,
+but with =Shift= modifier.
+#+begin_src conf
+  bindsym $mod+Shift+b move left 20px
+  bindsym $mod+Shift+n move down 20px
+  bindsym $mod+Shift+p move up 20px
+  bindsym $mod+Shift+f move right 20px
+#+end_src
+
+Alternative with arrow keys.
+#+begin_src conf
+  bindsym $mod+Shift+Left move left 20px
+  bindsym $mod+Shift+Down move down 20px
+  bindsym $mod+Shift+Up move up 20px
+  bindsym $mod+Shift+Right move right 20px
+#+end_src
+
+Use $mod+Mouse for moving floating windows.
+#+begin_src conf
+  floating_modifier $mod
+#+end_src
+
+*** Window resize
+Set key bindings for window resizing with same commands as window focus, but
+with =Control= modifier.
+  #+begin_src conf
+  bindsym $mod+Control+f exec --no-startup-id "bash ~/.scripts/i3resize right"
+  bindsym $mod+Control+p exec --no-startup-id "bash ~/.scripts/i3resize up"
+  bindsym $mod+Control+n exec --no-startup-id "bash ~/.scripts/i3resize down"
+  bindsym $mod+Control+b exec --no-startup-id "bash ~/.scripts/i3resize left"
+  #+end_src
+
+Alternative with arrow keys.
+  #+begin_src conf
+    bindsym $mod+Control+Right exec --no-startup-id "bash ~/.scripts/i3resize right"
+    bindsym $mod+Control+Upc exec --no-startup-id "bash ~/.scripts/i3resize up"
+    bindsym $mod+Control+Down exec --no-startup-id "bash ~/.scripts/i3resize down"
+    bindsym $mod+Control+Left exec --no-startup-id "bash ~/.scripts/i3resize left"
+  #+end_src
+
+*** Window splitting
+Customize splitting direction for windows.
+#+begin_src conf
+  bindsym $mod+v split vertical
+  bindsym $mod+h split horizontal
+#+end_src
+
+*** Window floating
+Set key for the toggle between tiling/floating.
+#+begin_src conf
+  bindsym $mod+Shift+space floating toggle
+#+end_src
+
+*** Window sticky
+Binding for sticky window toggle.
+#+begin_src conf
+  bindsym $mod+Shift+w sticky toggle
+#+end_src
+
+*** Window fullscreen
+Binding for toggling window fullscreen.
+#+begin_src conf
+  bindsym $mod+o fullscreen toggle
+#+end_src
+
+*** Window video multitasking
+The following creates a small floating sticky window in the bottom right of the
+screen. Very useful for multitasking while watching a video (not recommended
+for productivity, though).
+#+begin_src conf
+  bindsym $mod+Shift+v floating toggle; exec --no-startup-id ~/.scripts/bottomright; sticky enable
+#+end_src
+
+* Status bar
+Status bar configuration.
+#+begin_src conf
+  bar {
+      font pango:mono 8
+      status_command i3blocks
+      position top
+      mode dock
+  }
+#+end_src
+
+* Old
+#+begin_src conf
   # Abrir inicialmente "qutebrowser" en su espacio de trabajo.
   assign [class="qutebrowser"] $ws2
 
@@ -162,47 +249,45 @@
   assign [class="(?i)office.*"] $ws9
   assign [class="(?i)gimp.*"] $ws9
 
+  for_window [title="Transmission"] floating enable, resize grow left 175, resize grow right 175, resize grow down 75, resize grow up 75
+
+  # Abrir "mpv" siempre en pequeño abajo a la derecha.
+  for_window [class="mpv"]                 floating enable; exec --no-startup-id ~/.scripts/bottomright
+  for_window [class="mpv"]                 sticky enable
+#+end_src
+
+** TODO Comands to replicate in Xbindkeys
+:LOGBOOK:
+- State "TODO"       from              [2022-03-11 Fri 16:36]
+:END:
+#+begin_src conf
   # Apagar el ordenador.
   bindsym $mod+x                  exec --no-startup-id ~/.scripts/i3shutdown
   bindsym $mod+Shift+x            exec --no-startup-id ~/.scripts/i3reboot
+#+end_src
 
-  # Recargar la configuración de i3.
-  bindsym $mod+Shift+c reload
-  # Reiniciar i3.
-  bindsym $mod+Shift+r restart
-  # Salir de i3.
-  bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-  # Ocultar/Mostrar la barra.
-  bindsym $mod+m bar mode toggle
+#+begin_src conf
+  # Comando para abrir Transmission (para los torrents).
+  bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission tremc"
 
-  # comandos para resize
-  bindsym $mod+Control+f exec --no-startup-id "bash ~/.scripts/i3resize right"
-  bindsym $mod+Control+p exec --no-startup-id "bash ~/.scripts/i3resize up"
-  bindsym $mod+Control+n exec --no-startup-id "bash ~/.scripts/i3resize down"
-  bindsym $mod+Control+b exec --no-startup-id "bash ~/.scripts/i3resize left"
+  # Comando para actualizar el correo.
+  bindsym $mod+Shift+m exec --no-startup-id "~/.scripts/cronjobs/updateMail '' 'yes'"
 
-  # Leer colores de .Xdefaults.
-  set_from_resource $darkblack    color0
-  set_from_resource $darkblue     color4
-  set_from_resource $blue         color1
-  set_from_resource $cyan         color1
-  set_from_resource $darkwhite    color7
-  set_from_resource $white        color1
+  # Comandos para captura de pantalla.
+  bindsym Print                            exec --no-startup-id "~/.scripts/screenshot"
+  bindsym $mod+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
+  bindsym Control+Print              	     exec --no-startup-id "~/.scripts/screenshot s"
+  #+end_src
 
-  # Configuración de la barra.
-  bar {
-      font pango:mono 8
-      # colors {
-      #     background $darkblack
-      #     statusline $darkwhite
-      #     separator $cyan
-      #     focused_workspace  $blue $darkblue $white
-      #     active_workspace   $blue $blue $white
-      #     inactive_workspace $darkblack $darkblack $darkwhite
-      #     urgent_workspace   $darkblack $darkblack $white
-      # }
-      status_command i3blocks
-      position top
-      mode dock
-  }
+#+begin_src conf
+  # Iniciar i3.
+  exec --no-startup-id ".scripts/i3start"
+#+end_src
+
+#+begin_src conf
+  # Abrir "dmenu": menú para lanzar programas.
+  bindsym $mod+d exec dmenu_run
+
+  # Abrir "rofi": menú para lanzar programas.
+  bindsym $mod+r exec rofi -show drun
 #+end_src
