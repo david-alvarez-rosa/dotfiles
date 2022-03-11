@@ -124,72 +124,11 @@
       fi
   fi
 
-  # Cronómetro con límite de tiempo.
-  function chrono {
-      if [[ $1 == "--help" || $1 == "-h" ]]; then
-          echo "Cronómetro con límite de tiempo."
-          echo -e "\nAdmite un parámetro tiempo máximo, a partir del cual se bloquea la pantalla."
-          echo -e "\nDavid Álvarez Rosa"
-          return
-      fi
-      max=$(echo $1 / 1 | bc)
-      x=0; sec=0; min=0;
-      while true; do
-          [ $sec -le 9 ] && echo -ne "\r$min:0$sec" || echo -ne "\r$min:$sec";
-          x=$(( x + 1 )); min=$(( x/60 )); sec=$(( x%60 ));
-          if [[ $min%15 -eq 0 && $sec -eq 0 ]]; then
-              remaining=$(( $1 - $min ))
-              notify-send --urgency normal "Cronómetro" "$min minutos. Quedan $remaining";
-          fi
-          if [[ $min -eq $max && $sec -eq 0 ]]; then
-              betterlockscreen -l;
-              notify-send -t 0 --urgency normal "Cronómetro" "Tiempo alcanzado: $min minutos.";
-          fi;
-          sleep 1;
-      done
-  }
-
-  function academia {
-      if [[ $1 == "--help" || $1 == "-h" ]]; then
-          echo "Academia."
-          echo -e "\nPasar como variable el tiempo en minutos."
-          echo -e "\nDavid Álvarez Rosa"
-          return
-      fi
-      startDate=$(date +%s)
-      endDate=$(( startDate + $1 * 60 ))
-      echo $endDate > /home/david/.cache/endDate.txt
-      nmcli networking off
-      sudo systemctl stop NetworkManager
-      chmod -R g=rwX ~/.mail/ ~/.mu/log/ ~/.config/pulse/ ~/.local/share/qutebrowser
-      if [[ $2 == "off" ]]; then
-          pkill i3
-          logout
-      fi
-  }
 
   function jbl {
       sudo systemctl start bluetooth
       bluetoothctl power on
       bluetoothctl connect 00:22:37:46:71:7A
-  }
-
-  # Update Atenea's local copy.
-  function atenea {
-      pass=$(cat /home/david/.cache/atenea.txt)
-      wget --save-cookies=$HOME/Documents/UPC/Cuatrimestre\ 8/Atenea\ -\ Versión\ local/cookies.txt \
-           --directory-prefix=$HOME/Documents/UPC/Cuatrimestre\ 8/Atenea\ -\ Versión\ local/ \
-           --keep-session-cookies \
-           --post-data "adAS_i18n_theme=ca&adAS_mode=authn&adAS_username=david.alvarez.rosa&adAS_password=$pass&adAS_submit=" \
-           https://sso.upc.edu/CAS/login?service=https%3A%2F%2Fatenea.upc.edu%2Flogin%2Findex.php%3FauthCAS%3DCAS
-      rm $HOME/Documents/UPC/Cuatrimestre\ 8/Atenea\ -\ Versión\ local/login*
-      wget -m -E -k -p \
-           --directory-prefix=$HOME/Documents/UPC/Cuatrimestre\ 8/Atenea\ -\ Versión\ local/ \
-           --exclude-directories=calendar,/grade,/recent.php,/enrol,/mod/forum,/wiki,/lib,/repository,/message,/profile,/preferences \
-           --reject-regex "(logout|user)" \
-           --load-cookies=$HOME/Documents/UPC/Cuatrimestre\ 8/Atenea\ -\ Versión\ local/cookies.txt \
-           https://atenea.upc.edu/
-      notify-send -t 0 --urgency low "Atenea UPC" "Descarga completa.";
   }
 
 
