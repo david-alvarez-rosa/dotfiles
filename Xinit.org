@@ -36,6 +36,13 @@ need the mouse often.
   unclutter --timeout 2 &
 #+end_src
 
+* Notification
+Dunst is a lightweight replacement for the notification-daemons provided by
+most desktop environments.
+#+begin_src conf
+  dunst &
+#+end_src
+
 * Transparency
 Picom is a standalone compositor for Xorg, suitable for use with window
 managers that do not provide compositing.
