@@ -9,41 +9,75 @@
 The xinit program allows a user to manually start an Xorg display server. The
 =startx= script is a front-end for xinit.
 
-* Xbindkeys
+* Keyboard
+Set default Xorg keyboard configuration to =es= and =us= and set =Menu= key for
+toggling between keyboard layouts.
+#+begin_src conf
+  setxkbmap -layout es,us -option grp:menu_toggle
+#+end_src
+
+Modify the keyboard layout, with two symmetric =Control= keys in the home row,
+for a great Emacs experience:
+- =CapsLock= will behave as =Escape= when pressed alone and as =Control= when
+  combined with other keys. =CapsLock= functionality can be retrieved with
+  =Shift+CapsLock=.
+- =Enter= will behave as =Enter= when pressed alone and as =Control= when
+  combined with other keys.
+The configuration that follows is pretty ugly and difficult to understand,
+sorry for that. Take a look at xcape man page for more information about how
+this has been done.
+#+begin_src conf
+  xmodmap -e "clear lock"
+  xmodmap -e "add Control = Caps_Lock"
+  xmodmap -e "keycode 66 = Control_L Caps_Lock NoSymbol NoSymbol"
+  spare_modifier="Hyper_L"
+  xmodmap -e "keycode 36 = $spare_modifier"
+  xmodmap -e "remove mod4 = $spare_modifier"
+  xmodmap -e "add Control = $spare_modifier"
+  xmodmap -e "keycode any = Return"
+  xcape -e "Control_L=Escape;$spare_modifier=Return"
+#+end_src
+
+Adjusting typematic delay and rate. The typematic delay indicates the amount of
+time (typically in milliseconds) a key needs to be pressed and held in order
+for the repeating process to begin. After the repeating process has been
+triggered, the character will be repeated with a certain frequency (usually
+given in Hz) specified by the typematic rate. This can be configured with
+=xset= utility, specifying /rate/ and /delay/ in this order.
+#+begin_src conf
+  xset r rate 275 60
+#+end_src
+
 Load Xbindkeys program for binding key chords.
 #+begin_src conf
   xbindkeys -f ~/.config/xbindkeys/config
 #+end_src
 
-* Wallpaper
-Set wallpaper.
-#+begin_src conf
-  feh --bg-scale ~/.local/share/wallpaper.png
-#+end_src
-
-* Number Lock
 Enable numlock at boot time.
 #+begin_src conf
   numlockx on
 #+end_src
 
-* Unclutter
+* Theme
+Set wallpaper.
+#+begin_src conf
+  feh --bg-scale ~/.local/share/wallpaper.png
+#+end_src
+
 Unclutter hides your X mouse cursor when you do not need it, to prevent it from
 getting in the way. You have only to move the mouse to restore the mouse
 cursor. Unclutter is very useful in tiling window managers where you do not
 need the mouse often.
-#+begin_src conf :tangle no
+#+begin_src conf
   unclutter --timeout 2 &
 #+end_src
 
-* Notification
 Dunst is a lightweight replacement for the notification-daemons provided by
 most desktop environments.
 #+begin_src conf
   dunst &
 #+end_src
 
-* Transparency
 Picom is a standalone compositor for Xorg, suitable for use with window
 managers that do not provide compositing.
 #+begin_src conf
