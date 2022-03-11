@@ -88,9 +88,6 @@
   # change focus between tiling / floating windows
   bindsym $mod+space focus mode_toggle
 
-  # Comando para el navegador ("qutebrowser")
-  bindsym $mod+w exec --no-startup-id "qutebrowser &"
-
   # Comando para abrir Transmission (para los torrents).
   bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission tremc"
   for_window [title="Transmission"] floating enable, resize grow left 175, resize grow right 175, resize grow down 75, resize grow up 75
@@ -184,50 +181,28 @@
   bindsym $mod+Control+n exec --no-startup-id "bash ~/.scripts/i3resize down"
   bindsym $mod+Control+b exec --no-startup-id "bash ~/.scripts/i3resize left"
 
-  # class                 border  backgr. text    indicator child_border
-  client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
-  client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
-  client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-  client.urgent           #2f343a #900000 #ffffff #900000   #900000
-  client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-
-  client.background       #ffffff
-
-
   # Leer colores de .Xdefaults.
-  set_from_resource $darkblack    color0  #000000
-  set_from_resource $black        color8  #000000
-  set_from_resource $darkred      color1  #000000
-  set_from_resource $red          color9  #000000
-  set_from_resource $darkgreen    color2  #000000
-  set_from_resource $green        color10 #000000
-  set_from_resource $darkyellow   color3  #000000
-  set_from_resource $yellow       color11 #000000
-  set_from_resource $darkblue     color4  #000000
-  set_from_resource $blue         color12 #000000
-  set_from_resource $darkmagenta  color5  #000000
-  set_from_resource $magenta      color13 #000000
-  set_from_resource $darkcyan     color6  #000000
-  set_from_resource $cyan         color14 #000000
-  set_from_resource $darkwhite    color7  #000000
-  set_from_resource $white        color15 #000000
-  set $transparent                #00000000
+  set_from_resource $darkblack    color0
+  set_from_resource $darkblue     color4
+  set_from_resource $blue         color1
+  set_from_resource $cyan         color1
+  set_from_resource $darkwhite    color7
+  set_from_resource $white        color1
 
   # Configuración de la barra.
   bar {
-          font pango:mono 9
-          colors {
-                          background $darkblack
-                          statusline $darkwhite
-                          separator $cyan
-                          focused_workspace  $blue $darkblue $white
-                          active_workspace   $blue $blue $white
-                          inactive_workspace $darkblack $darkblack $darkwhite
-                          urgent_workspace   $darkblack $darkblack $white
-                  }
-          status_command i3blocks
-          position top
-          mode dock
-          modifier None
+      font pango:mono 8
+      # colors {
+      #     background $darkblack
+      #     statusline $darkwhite
+      #     separator $cyan
+      #     focused_workspace  $blue $darkblue $white
+      #     active_workspace   $blue $blue $white
+      #     inactive_workspace $darkblack $darkblack $darkwhite
+      #     urgent_workspace   $darkblack $darkblack $white
+      # }
+      status_command i3blocks
+      position top
+      mode dock
   }
 #+end_src
