@@ -88,14 +88,12 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#completion][Completion]]
   - [[#compositionsending][Composition/Sending]]
   - [[#attachment-management][Attachment Management]]
-- [[#music-player][Music Player]]
 - [[#web-feed-reader][Web Feed Reader]]
   - [[#elfeed-org][Elfeed Org]]
   - [[#elfeed-goodies][Elfeed Goodies]]
   - [[#custom-functions][Custom Functions]]
 - [[#internet-relay-chat-irc][Internet Relay Chat (IRC)]]
   - [[#nickname-highlighter][Nickname Highlighter]]
-- [[#emacs-x-window-manager][Emacs X Window Manager]]
 - [[#useful-resources][Useful Resources]]
 
 * Preamble
@@ -707,7 +705,7 @@ also the date.
 ** Font
 Set default font. I'm currently using Hack (in the past I used Inconsolata).
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Hack" :height 90)
+  (set-face-attribute 'default nil :font "Hack" :height 105)
 #+end_src
 
 ** Basic Interface Settings
