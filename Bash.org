@@ -6,145 +6,113 @@
 #+PROPERTY: header-args :tangle ~/.bashrc
 
 
+If not running interactively, don't do anything.
 #+begin_src bash
-  # If not running interactively, don't do anything
   case $- in
       ,*i*) ;;
       ,*) return;;
   esac
+#+end_src
 
-  # Acaemia setup.
-  if [[ $USER != "academia" || $UID -eq 0 ]]
-  then
-      [ $(date +%s) -le $(cat /home/david/.cache/endDate.txt) ] && exit
-      time=$(date +%k%M)
-  #    [ $time -ge 1530 -a $time -le 1630 ] && exit
-  fi
-
-  # No poner lineas duplicadas o empezando con un espacio en la historia.
-  export HISTCONTROL=ignoreboth
-  # Añadir al archivo de historia, no sobreescribir.
-  shopt -s histappend
-  # Tamaños máximos de la historia.
-  export HISTSIZE=5000
-  export HISTFILESIZE=5000
-  # Definición de variables.
-  # export BROWSER="qutebrowser"
-
-
-  # Configuración de "Bash prompt".
-  if [ "$EUID" -ne 0 ]
-  then export PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h\[$(tput setaf 7)\] Arch Linux  \[$(tput setaf 5)\]\w\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\n  \\$ \[$(tput sgr0)\]"
-  else export PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]ROOT\[$(tput setaf 2)\]@\[$(tput setaf 4)\]$(hostname | awk '{print toupper($0)}')\[$(tput setaf 7)\] Arch Linux  \[$(tput setaf 5)\]\w\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\n  \\$ \[$(tput sgr0)\]"
-  fi
-
-  # Permitir acceder a una carpeta escribiendo el nombre.
+Allow automatic =cd= (change directory), i.e., typing just the directory name
+is enough.
+#+begin_src bash
   shopt -s autocd
+#+end_src
 
-  # check the window size after each command and, if necessary,
-  # update the values of LINES and COLUMNS.
+Check the window size after each command and, if necessary, update the values
+of LINES and COLUMNS.
+#+begin_src bash
   shopt -s checkwinsize
+#+end_src
 
-  # Mejora (globstar matching).
+Globstar matching.
+#+begin_src bash
   shopt -s globstar
+#+end_src
 
-
-  # Completar también con los siguientes comandos.
+Enable completion features for the following commands.
+#+begin_src bash
   complete -c man which whereis
   complete -cf sudo
+#+end_src
 
-  # Cambiar la variable "PATH".
-  PATH="$PATH:/usr/local/AMPL/:/usr/local/AMPL/amplide:/home/david/.scripts/global"
+Update "PATH" variable so scripts inside =.local/bin/global= can be executed.
+#+begin_src bash
+  PATH="$PATH:$HOME/.local/bin/global"
+#+end_src
 
-  # If set, the pattern "**" used in a pathname expansion context will
-  # match all files and zero or more directories and subdirectories.
-  #shopt -s globstar
+Enable programmable completion features (you don't need to enable this, if it's
+already enabled in /etc/bash.bashrc and /etc/profile sources /etc/bash.bashrc).
+#+begin_src bash
+  if ! shopt -oq posix; then
+      if [ -f /usr/share/bash-completion/bash_completion ]; then
+          . /usr/share/bash-completion/bash_completion
+      elif [ -f /etc/bash_completion ]; then
+          . /etc/bash_completion
+      fi
+  fi
+#+end_src
 
-  # make less more friendly for non-text input files, see lesspipe(1)
-  [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+Bash prompt configuration.
+#+begin_src bash
+  if [ "$EUID" -ne 0 ]
+  then
+      export PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h\[$(tput setaf 7)\] Arch Linux  \[$(tput setaf 5)\]\w\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\n  \\$ \[$(tput sgr0)\]"
+  else
+      export PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]ROOT\[$(tput setaf 2)\]@\[$(tput setaf 4)\]$(hostname | awk '{print toupper($0)}')\[$(tput setaf 7)\] Arch Linux  \[$(tput setaf 5)\]\w\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\n  \\$ \[$(tput sgr0)\]"
+  fi
 
-  # "Mejorar" los colores de listado.
+#+end_src
+
+Configure bash history.
+#+begin_src bash
+  export HISTCONTROL=ignoreboth
+  shopt -s histappend
+  export HISTSIZE=5000
+  export HISTFILESIZE=5000
+#+end_src
+
+Enable colors for the following commands.
+#+begin_src bash
+  # Colores
   eval "$(dircolors)"
-
-  # Algunos alias básicos.
   alias ls="ls -hN --color=auto --group-directories-first -v --time-style='+%d %b %H:%M'"
   alias l="exa --icons --group-directories-first"
   alias ll="l -lag"
   alias grep="grep --color"
   alias diff="diff --color"
-  alias p="pacman"
-  alias sp="sudo pacman"
+
+#+end_src
+
+Set aliases for basic commands (among them, make =mv= and =cp= interactive).
+#+begin_src bash
+  # Comandos básicos (interactivo mv y cp)
   alias sp-Syu="sp -Syu --noconfirm && pkill -RTMIN+1 i3blocks"
-  alias sc="systemctl"
-  alias ssc="sudo systemctl"
   alias ..='cd ..'
   alias ...='cd ../../'
-  alias hg="history | grep"
   alias mv="mv -i"
   alias cp="cp -i"
+#+end_src
 
+More aliases.
+#+begin_src bash
   # Más alias.
-  alias q="qutebrowser &"
-  alias f="firefox &"
-  alias e="emacs"
-  alias se="emacs"
-  alias ec="emacsclient"
-  alias sec="sudo emacsclient"
-  alias v="vim"
-  alias sv="sudo vim"
-  alias r="ranger"
-  alias sr="sudo ranger"
   alias cpc="xclip -selection clipboard"
-  alias sdn="shutdown -h now"
   alias yt="youtube-dl --add-metadata -ic --output \"%(uploader)s%(title)s.%(ext)s\"" # Download video link
   alias yta="yt -x -f bestaudio/best" # Download only audio
-  alias nano="vim" # Just for the meme life
-  alias remainingTime='echo $(( ($(cat ~/.cache/endDate.txt) - $(date +%s))/60 ))'
-  alias vs='cd ~/.scripts/; vim $(fzf); cd -'
+#+end_src
 
-
-  # Configuración de fzf.
-  export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
-
-  # Add an "alert" alias for long running commands.  Use like so:
-  #   sleep 10; alert
-  alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-  # Añadir atajos a diferentes carpetas.
-  [ -f ~/.shortcuts ] && source ~/.shortcuts
-
-  # enable programmable completion features (you don't need to enable
-  # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-  # sources /etc/bash.bashrc).
-  if ! shopt -oq posix; then
-      if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-      elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-      fi
-  fi
-
-
-  function jbl {
-      sudo systemctl start bluetooth
-      bluetoothctl power on
-      bluetoothctl connect 00:22:37:46:71:7A
-  }
-
-
-  export EDITOR="vim"
-  export GPG_AGENT_INFO=""
-  # Remove less history file
-  export LESSHISTFILE=-
-  # Set up Vim to obey XDG Base Directory specification
-  export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
-  # Set up XDG Base Directory specification
+Set up XDG Base Directory specification.
+#+begin_src bash
   export XDG_CONFIG_HOME="$HOME/.config"
   export XDG_CACHE_HOME="$HOME/.cache"
   export XDG_DATA_HOME="$HOME/.local/share/"
+#+end_src
 
-
-  export TEXMFHOME="$XDG_DATA_HOME/texmf"
-  export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
-  export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
+Cleanup programs.
+#+begin_src bash
+  export LESSHISTFILE=-
+  export HISTFILE="$XDG_DATA_HOME/history"
+  export INPUTRC="$XDG_CONFIG_HOME/bash/inputrc"
 #+end_src
