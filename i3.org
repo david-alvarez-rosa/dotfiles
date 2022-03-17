@@ -221,14 +221,15 @@ for productivity, though).
 Status bar configuration.
 #+begin_src conf
   bar {
-      font pango:mono 8
+      font pango:mono 12
       status_command i3blocks
       position top
       mode dock
   }
 #+end_src
 
-* Old
+* TODO Old
+Need to rewrite this old configuration.
 #+begin_src conf
   # Abrir inicialmente "qutebrowser" en su espacio de trabajo.
   assign [class="qutebrowser"] $ws2
@@ -254,40 +255,4 @@ Status bar configuration.
   # Abrir "mpv" siempre en pequeño abajo a la derecha.
   for_window [class="mpv"]                 floating enable; exec --no-startup-id ~/.scripts/bottomright
   for_window [class="mpv"]                 sticky enable
-#+end_src
-
-** TODO Comands to replicate in Xbindkeys
-:LOGBOOK:
-- State "TODO"       from              [2022-03-11 Fri 16:36]
-:END:
-#+begin_src conf
-  # Apagar el ordenador.
-  bindsym $mod+x                  exec --no-startup-id ~/.scripts/i3shutdown
-  bindsym $mod+Shift+x            exec --no-startup-id ~/.scripts/i3reboot
-#+end_src
-
-#+begin_src conf
-  # Comando para abrir Transmission (para los torrents).
-  bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission tremc"
-
-  # Comando para actualizar el correo.
-  bindsym $mod+Shift+m exec --no-startup-id "~/.scripts/cronjobs/updateMail '' 'yes'"
-
-  # Comandos para captura de pantalla.
-  bindsym Print                            exec --no-startup-id "~/.scripts/screenshot"
-  bindsym $mod+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
-  bindsym Control+Print              	     exec --no-startup-id "~/.scripts/screenshot s"
-  #+end_src
-
-#+begin_src conf
-  # Iniciar i3.
-  exec --no-startup-id ".scripts/i3start"
-#+end_src
-
-#+begin_src conf
-  # Abrir "dmenu": menú para lanzar programas.
-  bindsym $mod+d exec dmenu_run
-
-  # Abrir "rofi": menú para lanzar programas.
-  bindsym $mod+r exec rofi -show drun
 #+end_src

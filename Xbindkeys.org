@@ -109,30 +109,6 @@ pause status.
     XF86AudioNext
 #+end_src
 
-* Network Manager
-Toggle wifi status: enabled/disabled. Wi-Fi status can be check in the command
-line with the command =nmcli radio wifi=. I am using NetworkManager program
-(originally developep by Red Hat) for network configuration (both wireless and
-wired). For interacting with the daemon I use the command-line tool nmcli.
-#+begin_src conf
-  "[[ $(nmcli radio wifi) == 'enabled' ]] && nmcli radio wifi off || nmcli radio wifi on"
-    XF86WLAN
-#+end_src
-
-** TODO Think about changing to this
-:LOGBOOK:
-- State "TODO"       from              [2021-09-02 Thu 08:40]
-- State "TODO"       from              [2021-09-02 Thu 08:40]
-:END:
-This approach might be a better alternative (in general for all commands), but
-this will only be needed if not using any status bar.
-#+begin_src conf :tangle no
-  "nmcli radio wifi off"
-    XF86WLAN
-  "nmcli radio wifi on"
-    Control + XF86WLAN
-#+end_src
-
 * Touchpad
 Any real Emacs user knows that touchpads are annoying. I set the laptop =Fn=
 key for toggling between touchpad status: enabled/disabled.
@@ -152,4 +128,62 @@ Lock the screen using =slock= programm from Suckless, with =Super+l=.
 #+begin_src conf
   "slock"
     Mod2+Mod4 + l
+#+end_src
+
+* TODO More ideas
+** From i3
+#+begin_src conf
+  # Apagar el ordenador.
+  bindsym $mod+x                  exec --no-startup-id ~/.scripts/i3shutdown
+  bindsym $mod+Shift+x            exec --no-startup-id ~/.scripts/i3reboot
+#+end_src
+
+#+begin_src conf
+  # Comando para abrir Transmission (para los torrents).
+  bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission tremc"
+
+  # Comando para actualizar el correo.
+  bindsym $mod+Shift+m exec --no-startup-id "~/.scripts/cronjobs/updateMail '' 'yes'"
+
+  # Comandos para captura de pantalla.
+  bindsym Print                            exec --no-startup-id "~/.scripts/screenshot"
+  bindsym $mod+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
+  bindsym Control+Print              	     exec --no-startup-id "~/.scripts/screenshot s"
+  #+end_src
+
+#+begin_src conf
+  # Iniciar i3.
+  exec --no-startup-id ".scripts/i3start"
+#+end_src
+
+#+begin_src conf
+  # Abrir "dmenu": menú para lanzar programas.
+  bindsym $mod+d exec dmenu_run
+
+  # Abrir "rofi": menú para lanzar programas.
+  bindsym $mod+r exec rofi -show drun
+#+end_src
+
+** Network Manager
+Toggle wifi status: enabled/disabled. Wi-Fi status can be check in the command
+line with the command =nmcli radio wifi=. I am using NetworkManager program
+(originally developep by Red Hat) for network configuration (both wireless and
+wired). For interacting with the daemon I use the command-line tool nmcli.
+#+begin_src conf
+  "[[ $(nmcli radio wifi) == 'enabled' ]] && nmcli radio wifi off || nmcli radio wifi on"
+    XF86WLAN
+#+end_src
+
+*** TODO Think about changing to this
+:LOGBOOK:
+- State "TODO"       from              [2021-09-02 Thu 08:40]
+- State "TODO"       from              [2021-09-02 Thu 08:40]
+:END:
+This approach might be a better alternative (in general for all commands), but
+this will only be needed if not using any status bar.
+#+begin_src conf :tangle no
+  "nmcli radio wifi off"
+    XF86WLAN
+  "nmcli radio wifi on"
+    Control + XF86WLAN
 #+end_src
