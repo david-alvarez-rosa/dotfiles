@@ -1157,7 +1157,6 @@ Set files to show in agenda.
   (setq org-agenda-files (quote
                           ("~/Documents/Contactos/Cumpleaños.org"
                           "~/Documents/Notes.org"
-                          "~/Documents/Career/Career.org"
                           "~/Documents/Tasks.org")))
 #+end_src
 
@@ -1402,7 +1401,7 @@ installed, this program is designed to enable super-efficient handling of
 e-mail; searching, reading, replying, moving, deleting. Also Isync should be
 installed and configured (this program is the same as mbsync, which is the name
 of the isync executable). This program will sync email computer <-> server,
-check out my [[file:~/.mbsyncrc.org][isync configuration]].
+check out my [[file:Isync.org][isync configuration]].
 
 Open last 7 days email header view with =C-c e= keybinding.
 #+begin_src emacs-lisp
@@ -1430,7 +1429,7 @@ Show complete email address in view mode.
 Set get mail command for syncing. And define keybind =C-c u= to just index
 (without updating), this is faster.
 #+begin_src emacs-lisp
-  (setq mu4e-get-mail-command "mbsync -a -V")
+  (setq mu4e-get-mail-command "mbsync -c \"$XDG_CONFIG_HOME\"/isync/mbsyncrc -a -V")
   (define-key mu4e-headers-mode-map (kbd "C-c u") 'mu4e-update-index)
 #+end_src
 
