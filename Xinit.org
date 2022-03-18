@@ -84,6 +84,12 @@ managers that do not provide compositing.
   picom --xrender-sync-fence &
 #+end_src
 
+* Autostart programs
+Automatically start Emacs.
+#+begin_src conf
+  emacs &
+#+end_src
+
 * i3 Window Manager
 Load i3wm (Window Manager), this must be always at the end.
 #+begin_src conf
