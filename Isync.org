@@ -3,7 +3,7 @@
 #+AUTHOR: David Álvarez Rosa
 #+EMAIL: david@alvarezrosa.com
 #+DESCRIPTION: My Isync configuration file.
-#+PROPERTY: header-args :tangle ~/.mbsyncrc
+#+PROPERTY: header-args :tangle ~/.config/isync/mbsyncrc
 
 
 Isync is a command line application to synchronize mailboxes; it supports
