@@ -87,7 +87,6 @@ Enable colors for the following commands.
 
 Set aliases for basic commands (among them, make =mv= and =cp= interactive).
 #+begin_src bash
-  # Comandos básicos (interactivo mv y cp)
   alias sp-Syu="sp -Syu --noconfirm && pkill -RTMIN+1 i3blocks"
   alias ..='cd ..'
   alias ...='cd ../../'
@@ -97,7 +96,6 @@ Set aliases for basic commands (among them, make =mv= and =cp= interactive).
 
 More aliases.
 #+begin_src bash
-  # Más alias.
   alias cpc="xclip -selection clipboard"
   alias yt="youtube-dl --add-metadata -ic --output \"%(uploader)s%(title)s.%(ext)s\"" # Download video link
   alias yta="yt -x -f bestaudio/best" # Download only audio
