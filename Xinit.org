@@ -61,7 +61,7 @@ Enable numlock at boot time.
 * Theme
 Set wallpaper.
 #+begin_src conf
-  feh --bg-scale ~/.local/share/wallpaper.png
+  feh --bg-scale --no-fehbg ~/.local/share/wallpaper.png
 #+end_src
 
 Unclutter hides your X mouse cursor when you do not need it, to prevent it from
