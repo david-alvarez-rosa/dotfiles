@@ -1044,8 +1044,6 @@ Set my custom capture templates. Brief description of them:
 - Task: basic template for TODO tasks. This is inside my =Tasks.org= file under
   "Refile" heading. Then I manually refile this tasks under a particular
   projects or into a "Standalone Tasks" heading.
-- Shopping: add something to my personal shopping list (as a checkitem). This
-  is inside my =Tasks.org= file under "Shopping" heading.
 - Text Note: template for taking quick notes. This is inside my =Notes.org=
   file.
 #+begin_src emacs-lisp
@@ -1053,9 +1051,6 @@ Set my custom capture templates. Brief description of them:
         '(("t" "Task" entry
            (file+olp "~/Documents/Tasks.org" "Refile")
            "* TODO [#C] %?\n%a\n%i" :empty-lines 1)
-          ("s" "Shopping" checkitem
-           (file+olp "~/Documents/Tasks.org" "Shopping" "Refile")
-           "" :empty-lines-after 1)
           ("n" "Text Note" entry
            (file+olp "~/Documents/Notes.org" "Refile")
            "* %?" :empty-lines 1)))
@@ -1795,7 +1790,10 @@ nick.
 I have configured =~/.authinfo= file with password information so I don't need
 to enter it every time. I am actually connecting to a personal IRC Bouncer
 (ZNC) hosted in my personal VPS at irc.alvarezrosa.com, so I do most of the
-configuration there.
+configuration there. The line added to this file looks as follows:
+#+begin_src conf :tangle no
+  machine irc.alvarezrosa.com port 6697 login dalv password david:***pass***
+#+end_src
 
 After quiting server, query or parting a channel I want the buffer to be killed
 automatically.
