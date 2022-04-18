@@ -8,7 +8,7 @@
 
 i3blocks config file
 
-nerd fonts should be installed.
+nerd fonts must be installed.
 
 * General
 
