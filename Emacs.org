@@ -920,21 +920,15 @@ Don't open new frame for setup window and prefer splitting horizontally.
   (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
-** C/C++
+** TODO C/C++
+:LOGBOOK:
+- State "TODO"       from              [2022-04-23 Sat 22:49]
+:END:
 Configuration for C/C++ programming languages. Take a look at this websites for
 further customization (especially the one from Reddit):
 - [[https://www.reddit.com/r/emacs/comments/audffp/tip_how_to_use_a_stable_and_fast_environment_to/][How to use a stable and fast environment to develop in C++]]
 - [[https://tuhdo.github.io/c-ide.html][C/C++ Development Environment for Emacs]]
 - [[http://syamajala.github.io/c-ide.html][Emacs as C++ IDE]]
-
-*** Header Completion
-This library enables the completion of C/C++ header file names using Company
-mode for Emacs.
-#+begin_src emacs-lisp
-  (use-package company-c-headers
-    :config
-    (add-to-list 'company-backends 'company-c-headers))
-#+end_src
 
 ** Python
 Elpy is the Emacs Python Development Environment. It aims to provide an easy to
