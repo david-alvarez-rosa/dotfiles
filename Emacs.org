@@ -1137,7 +1137,7 @@ most of Emacs. It's great.
 Set files to show in agenda.
 #+begin_src emacs-lisp
   (setq org-agenda-files (quote
-                          ("~/Documents/Contactos/Cumpleaños.org"
+                          ("~/Documents/Contactos/Birthdays.org"
                           "~/Documents/Notes.org"
                           "~/Documents/Tasks.org")))
 #+end_src
