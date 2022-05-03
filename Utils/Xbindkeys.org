@@ -78,10 +78,16 @@ of 5. If this keys are combined with =Shift= modifier the step size changes to
     Control + XF86MonBrightnessDown
 #+end_src
 
-** Display
+** TODO Display
+:LOGBOOK:
+- State "TODO"       from              [2022-05-01 Sun 12:56]
+:END:
+*Disclaimer* This is not working currently (there is clash between the =Fn= key
+and =Mod + p=, I am not tangling the blocks to follow.
+
 Switching off the backlight can be useful to conserve battery energy. I have
 bind this to the =F4= key, because why not.
-#+begin_src conf
+#+begin_src conf :tangle no
   "xset dpms force off"
     Mod4 + p
 #+end_src
@@ -89,7 +95,7 @@ bind this to the =F4= key, because why not.
 This same display =Fn= laptop key is also bound with the =Ctrl= and =Shift=
 modifiers for toggling graphical output and volume to a external monitor (very
 useful whenever I connect laptop to a TV).
-#+begin_src conf
+#+begin_src conf :tangle no
   "xrandr --output HDMI-1 --auto --output eDP-1 --off; pactl set-card-profile 0 output:hdmi-stereo"
     Control + Mod4 + p
   "xrandr --output HDMI-1 --off --output eDP-1 --auto; pactl set-card-profile 0 output:hdmi-surround"
@@ -150,11 +156,6 @@ Lock the screen using =slock= programm from Suckless, with =Super+l=.
   bindsym $mod+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
   bindsym Control+Print              	     exec --no-startup-id "~/.scripts/screenshot s"
   #+end_src
-
-#+begin_src conf
-  # Iniciar i3.
-  exec --no-startup-id ".scripts/i3start"
-#+end_src
 
 #+begin_src conf
   # Abrir "dmenu": menú para lanzar programas.

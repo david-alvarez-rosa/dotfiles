@@ -140,7 +140,7 @@ Some utilities:
 
 Conventions:
 - Functions and variables defined by me are prefixed with my name and a slash,
-  i.e., =dalv/= to namespace them and avoid conflicts.
+  i.e., =dalvrosa/= to namespace them and avoid conflicts.
 
 ** License and Copyright
 Copyright 2021 David Álvarez Rosa.
@@ -313,13 +313,13 @@ Kill current buffer without asking for which buffer to kill.
 Custom function for killing all buffers except current and *scratch*. Useful
 for "restarting" Emacs without closing it.
 #+begin_src emacs-lisp
-  (defun dalv/kill-all-other-buffers ()
+  (defun dalvrosa/kill-all-other-buffers ()
     "Kill all buffers except current and *scratch*."
     (interactive)
     (delete-other-windows)
     (setq scratch (get-buffer "*scratch*"))
     (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
-  (global-set-key (kbd "C-c k") 'dalv/kill-all-other-buffers)
+  (global-set-key (kbd "C-c k") 'dalvrosa/kill-all-other-buffers)
 #+end_src
 
 *** Narrowing
@@ -340,19 +340,19 @@ functions).
 ** Window Management
 Split and follow for creating new windows.
 #+begin_src emacs-lisp
-  (defun dalv/split-and-follow-horizontally ()
+  (defun dalvrosa/split-and-follow-horizontally ()
     (interactive)
     (split-window-below)
     (balance-windows)
     (other-window 1))
-  (global-set-key (kbd "C-x 2") 'dalv/split-and-follow-horizontally)
+  (global-set-key (kbd "C-x 2") 'dalvrosa/split-and-follow-horizontally)
 
-  (defun dalv/split-and-follow-vertically ()
+  (defun dalvrosa/split-and-follow-vertically ()
     (interactive)
     (split-window-right)
     (balance-windows)
     (other-window 1))
-  (global-set-key (kbd "C-x 3") 'dalv/split-and-follow-vertically)
+  (global-set-key (kbd "C-x 3") 'dalvrosa/split-and-follow-vertically)
 #+end_src
 
 New bind for killing buffer *and* window at the same time. To do this press
@@ -558,7 +558,6 @@ schemes yet highly customizable.
     (setq enable-recursive-minibuffers t)
     (setq ivy-count-format "%d/%d ")
     (setq ivy-initial-inputs-alist nil)
-    (setq ivy-wrap t)
     :bind ("C-c C-r" . 'ivy-resume))
 #+end_src
 
@@ -676,22 +675,22 @@ Some themes I also like are =doom-one= (dark), =doom-peacock= (dark) and
 Custom keybindings for cycling between themes in Emacs with =C-c d=. Binding
 cames from toggling dark theme (d for "dark").
 #+begin_src emacs-lisp
-  (setq dalv/themes '(doom-one-light doom-zenburn))
-  (setq dalv/themes-index 0)
+  (setq dalvrosa/themes '(doom-one doom-one-light doom-zenburn))
+  (setq dalvrosa/themes-index 0)
 
-  (defun dalv/cycle-theme ()
-    "Cycle through themes defined in dalv/themes variable."
+  (defun dalvrosa/cycle-theme ()
+    "Cycle through themes defined in dalvrosa/themes variable."
     (interactive)
     ;; Disable current themes.
     (mapc #'disable-theme custom-enabled-themes)
     ;; Load new theme.
-    (setq dalv/themes-index (% (1+ dalv/themes-index) (length dalv/themes)))
-    (setq dalv/theme (nth dalv/themes-index dalv/themes))
-    (load-theme dalv/theme t)
+    (setq dalvrosa/themes-index (% (1+ dalvrosa/themes-index) (length dalvrosa/themes)))
+    (setq dalvrosa/theme (nth dalvrosa/themes-index dalvrosa/themes))
+    (load-theme dalvrosa/theme t)
     ;; Resets powerline.
     (when (fboundp 'powerline-reset)
       (powerline-reset)))
-  (global-set-key (kbd "C-c d") 'dalv/cycle-theme)
+  (global-set-key (kbd "C-c d") 'dalvrosa/cycle-theme)
 #+end_src
 
 Consider all custom themes as safe (don't ask for confirmation when loading
@@ -712,15 +711,9 @@ instead of percentage buffer position.
     (setq doom-modeline-percent-position nil))
 #+end_src
 
-Some configuration concerning the modeline: show battery status and time in
-24hr format. I have disabled the load average and I have enabled displaying
-also the date.
+Disable load average.
 #+begin_src emacs-lisp
-  (setq display-time-24hr-format t)
   (setq display-time-default-load-average nil)
-  (setq display-time-day-and-date t)
-  (display-time-mode 1)
-  (display-battery-mode 1)
 #+end_src
 
 ** Font
@@ -768,7 +761,7 @@ the terminal version of Emacs, though, so it's not set there.
 Functions for toggling transparency alpha.
 #+begin_src emacs-lisp
   ;; (add-to-list 'default-frame-alist '(alpha . (93 . 84)))
-  (defun dalv/toggle-transparency ()
+  (defun dalvrosa/toggle-transparency ()
     "Toggle transparency on and off."
     (interactive)
     (let ((alpha (frame-parameter nil 'alpha)))
@@ -779,7 +772,7 @@ Functions for toggling transparency alpha.
            100)
           (set-frame-parameter nil 'alpha '(93 . 84))
         (set-frame-parameter nil 'alpha '(100 . 100)))))
-  (define-key global-map (kbd "C-c t") 'dalv/toggle-transparency)
+  (define-key global-map (kbd "C-c t") 'dalvrosa/toggle-transparency)
 #+end_src
 
 ** Distraction Free Mode
@@ -1002,15 +995,6 @@ further customization (especially the one from Reddit):
 - [[https://tuhdo.github.io/c-ide.html][C/C++ Development Environment for Emacs]]
 - [[http://syamajala.github.io/c-ide.html][Emacs as C++ IDE]]
 
-*** Header Completion
-This library enables the completion of C/C++ header file names using Company
-mode for Emacs.
-#+begin_src emacs-lisp
-  (use-package company-c-headers
-    :config
-    (add-to-list 'company-backends 'company-c-headers))
-#+end_src
-
 ** Python
 Elpy is the Emacs Python Development Environment. It aims to provide an easy to
 install, fully-featured environment for Python development.
@@ -1225,7 +1209,7 @@ most of Emacs. It's great.
 Set files to show in agenda.
 #+begin_src emacs-lisp
   (setq org-agenda-files (quote
-                          ("~/Documents/Contactos/Cumpleaños.org"
+                          ("~/Documents/Contactos/Birthdays.org"
                           "~/Documents/Notes.org"
                           "~/Documents/Tasks.org")))
 #+end_src
@@ -1276,7 +1260,7 @@ With =q= bury agenda instead of killing it (faster of course).
 I don't like empty blocks to show in customized agenda, so I hide them (this
 code is from [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266.html][emacs mail list]]).
 #+begin_src emacs-lisp
-  (defun dalv/org-agenda-delete-empty-blocks ()
+  (defun dalvrosa/org-agenda-delete-empty-blocks ()
     "Remove empty agenda blocks.
     A block is identified as empty if there are fewer than 2
     non-empty lines in the block (excluding the line with
@@ -1309,7 +1293,7 @@ code is from [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266
           (delete-region (point) (1+ (point-at-eol))))))
     (setq buffer-read-only t))
 
-  (add-hook 'org-agenda-finalize-hook #'dalv/org-agenda-delete-empty-blocks)
+  (add-hook 'org-agenda-finalize-hook #'dalvrosa/org-agenda-delete-empty-blocks)
 #+end_src
 
 *** Habits
@@ -1639,13 +1623,13 @@ Encriptar todos los correos salientes /automágicamente/ si la llave existe.
                      (not (seq-empty-p (epg-list-keys context recipient))))
                    recipients)))
 
-  (defun dalv/add-encryption-mark-if-possible ()
+  (defun dalvrosa/add-encryption-mark-if-possible ()
     "Add MML tag to encrypt message when there is a key for each
   recipient."
-    (when (dalv/can-encrypt-message-p)
+    (when (dalvrosa/can-encrypt-message-p)
       (mml-secure-message-sign-encrypt)))
 
-  (add-hook 'message-send-hook #'dalv/add-encryption-mark-if-possible)
+  (add-hook 'message-send-hook #'dalvrosa/add-encryption-mark-if-possible)
 #+end_src
 
 For signing emails (when the key is available).
@@ -1660,16 +1644,16 @@ Use Ivy as default completion engine (instead of Ido).
 #+end_src
 
 I have personalized the email completion with a file with contact information
-stored in =dalv/contact-file=. This text file has contacts in the form "Name
+stored in =dalvrosa/contact-file=. This text file has contacts in the form "Name
 <address>", one per line. This function is inspired on [[http://pragmaticemacs.com/emacs/even-better-email-contact-completion-in-mu4e/][Even better email
 contact completion in mu4e]].
 #+begin_src emacs-lisp
-  (setq dalv/contact-file "~/Documents/Contactos/Correos.txt")
-  (defun dalv/read-contact-list ()
+  (setq dalvrosa/contact-file "~/Documents/Contactos/Correos.txt")
+  (defun dalvrosa/read-contact-list ()
     (with-temp-buffer
-      (insert-file-contents dalv/contact-file)
+      (insert-file-contents dalvrosa/contact-file)
       (split-string (buffer-string) "\n" t)))
-  (defun dalv/complete-emails (&optional start)
+  (defun dalvrosa/complete-emails (&optional start)
     (interactive)
 
     (let ((eoh ;; end-of-headers
@@ -1691,10 +1675,10 @@ contact completion in mu4e]].
         (delete-region start end)
 
         (ivy-read "Contact: "
-                  (dalv/read-contact-list)
+                  (dalvrosa/read-contact-list)
                   :action (lambda(contact) (with-ivy-window (insert contact)))
                   :initial-input initial-input)))))
-  (define-key mu4e-compose-mode-map (kbd "<M-tab>") 'dalv/complete-emails)
+  (define-key mu4e-compose-mode-map (kbd "<M-tab>") 'dalvrosa/complete-emails)
 #+end_src
 
 ** Composition/Sending
@@ -1829,52 +1813,52 @@ This package allows to configure the Elfeed interface.
 For interacting with video (e.g., Youtube subscriptions). This allows to open
 the media with mpv. Just press =v= and the video will be openend with mpv.
 #+begin_src emacs-lisp
-  (defun dalv/elfeed-play-with-mpv ()
+  (defun dalvrosa/elfeed-play-with-mpv ()
     (interactive)
     (setq url (elfeed-entry-link (elfeed-search-selected :single)))
     (start-process "elfeed-mpv" nil "mpv" "--ytdl-format=[height<=720]" url)
     (elfeed-search-untag-all-unread))
-  (define-key elfeed-search-mode-map (kbd "v") 'dalv/elfeed-play-with-mpv)
+  (define-key elfeed-search-mode-map (kbd "v") 'dalvrosa/elfeed-play-with-mpv)
 #+end_src
 
 Ignore current entry (i.e., tag it with =no= TAG).
 #+begin_src emacs-lisp
-  (defun dalv/elfeed-ignore ()
+  (defun dalvrosa/elfeed-ignore ()
     (interactive)
     (setq entry (elfeed-search-selected :single))
     (setq tag (intern "no"))
     (elfeed-tag entry tag)
     (elfeed-search-update-entry entry)
     (forward-line))
-  (define-key elfeed-search-mode-map (kbd "i") 'dalv/elfeed-ignore)
+  (define-key elfeed-search-mode-map (kbd "i") 'dalvrosa/elfeed-ignore)
 #+end_src
 
 * Internet Relay Chat (IRC)
 IRC is a text-based chat system. It enables discussions among any number of
 participants in so-called conversation channels, as well as discussions between
-only two partners--for example, in question-and-answer dialogues. This
-protocol is actually older than the World Wide Web. There are several built-in
-Emacs IRC clients, but I use the default ERC, that I think is the best one. I
-have bind the ERC client, with TLS support, to =C-c i= ("i" for IRC).
+only two partners--for example, in question-and-answer dialogues. This protocol
+is actually older than the World Wide Web. There are several built-in Emacs IRC
+clients, but I use the default ERC, that I think is the best one. I have bind
+the ERC client, with TLS support, to =C-c i= ("i" for IRC).
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c i") 'erc-tls)
 
   (setq erc-server "irc.alvarezrosa.com")
-  (setq erc-nick "dalv")
+  (setq erc-nick "dalvrosa")
   (setq erc-user-full-name "David Álvarez Rosa")
   (setq erc-prompt-for-password nil)
   #+end_src
 
 If you are an IRC user, you may find me out there. I usually hang out in
-libera.chat these days (after the freenode management debacle) with the =dalv=
-nick.
+libera.chat these days (after the freenode management debacle) with the
+=dalvrosa= nick.
 
 I have configured =~/.authinfo= file with password information so I don't need
 to enter it every time. I am actually connecting to a personal IRC Bouncer
 (ZNC) hosted in my personal VPS at irc.alvarezrosa.com, so I do most of the
 configuration there. The line added to this file looks as follows:
 #+begin_src conf :tangle no
-  machine irc.alvarezrosa.com port 6697 login dalv password david:***pass***
+  machine irc.alvarezrosa.com port 6697 login dalvrosa password david:***pass***
 #+end_src
 
 After quiting server, query or parting a channel I want the buffer to be killed

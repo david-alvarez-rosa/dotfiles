@@ -112,6 +112,13 @@ Switching between the last two used workspaces.
   bindsym $mod+Tab workspace back_and_forth
 #+end_src
 
+*** Default Workspaces
+Open =mpv= in a window video for multitasking.
+#+begin_src conf
+  for_window [class="mpv"]                 floating enable; exec --no-startup-id ~/.local/bin/bottomright
+  for_window [class="mpv"]                 sticky enable
+#+end_src
+
 ** Windows
 Key bindings related to windows (inside a workspace).
 
@@ -226,33 +233,4 @@ Status bar configuration.
       position top
       mode dock
   }
-#+end_src
-
-* TODO Old
-Need to rewrite this old configuration.
-#+begin_src conf
-  # Abrir inicialmente "qutebrowser" en su espacio de trabajo.
-  assign [class="qutebrowser"] $ws2
-
-  # Abrir inicialmente "emacs" en su espacio de trabajo.
-  assign [class="Emacs"] $ws1
-
-  # Abrir inicialmente imágenes de "octave" en su espacio de trabajo.
-  assign [class="GNU Octave"] $ws6
-
-  # Abrir inicialmente imágenes de "python" en su espacio de trabajo.
-  assign [class="matplotlib"] $ws6
-
-  # Abrir inicialmente "Firefox" en su espacio de trabajo.
-  assign [class="firefox"] $ws8
-
-  # Abrir inicialmente "LibrOffice" y "Gimp" en espacio de trabajo auxiliar.
-  assign [class="(?i)office.*"] $ws9
-  assign [class="(?i)gimp.*"] $ws9
-
-  for_window [title="Transmission"] floating enable, resize grow left 175, resize grow right 175, resize grow down 75, resize grow up 75
-
-  # Abrir "mpv" siempre en pequeño abajo a la derecha.
-  for_window [class="mpv"]                 floating enable; exec --no-startup-id ~/.local/bin/bottomright
-  for_window [class="mpv"]                 sticky enable
 #+end_src
