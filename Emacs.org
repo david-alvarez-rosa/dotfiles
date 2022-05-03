@@ -39,6 +39,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#personal-information][Personal Information]]
   - [[#server-mode][Server Mode]]
   - [[#custom-file][Custom File]]
+  - [[#mac-os][Mac OS]]
   - [[#change-yesno-questions-to-yn][Change yes/no Questions to y/n]]
   - [[#file-management][File Management]]
   - [[#buffer-management][Buffer Management]]
@@ -79,6 +80,7 @@ conflict here. Lastly, Emacs is a gift from God.
 - [[#markup-languages][Markup Languages]]
   - [[#markdown-mode][Markdown Mode]]
   - [[#texlatex][TeX/LaTeX]]
+  - [[#ledger][Ledger]]
 - [[#pdf-viewer][PDF Viewer]]
 - [[#email-management][Email Management]]
   - [[#contexts-for-multiple-accounts][Contexts for Multiple Accounts]]
@@ -211,6 +213,25 @@ control. This enables us to keep specific config local to each machine.
 #+begin_src emacs-lisp
   (setq custom-file "~/.config/emacs/custom.el")
   (load custom-file t)
+#+end_src
+
+** Mac OS
+I currently use Mac on my work laptop, and there are some specific things to
+OS X.
+
+Ensure environment variable inside Emacs look the same as shell.
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+    :config
+    (when (eq system-type 'darwin)
+      (exec-path-from-shell-initialize)))
+#+end_src
+
+Append to path for using mu4e.
+#+begin_src emacs-lisp
+  (when (eq system-type 'darwin)
+    (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e")
+    (setq mac-command-modifier 'meta))
 #+end_src
 
 ** Change yes/no Questions to y/n
@@ -643,13 +664,13 @@ became bored of it. Doom Themes provides nice themes such as =doom-one= (dark),
     :config
     (setq doom-themes-enable-bold t
           doom-themes-enable-italic t)
-    (load-theme 'doom-one t)
+    (load-theme 'doom-one-light t)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 #+end_src
 
-Some themes I also like are =doom-peacock= (dark) and =doom-tomorrow-day=
-(light).
+Some themes I also like are =doom-one= (dark), =doom-peacock= (dark) and
+=doom-tomorrow-day= (light).
 
 Custom keybindings for cycling between themes in Emacs with =C-c d=. Binding
 cames from toggling dark theme (d for "dark").
@@ -698,7 +719,13 @@ Disable load average.
 ** Font
 Set default font. I'm currently using Hack (in the past I used Inconsolata).
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Hack" :height 105)
+  (set-face-attribute 'default nil :font "Hack" :height 110)
+#+end_src
+
+Add ability to scale font for frame, instead that for an specifically buffer.
+#+begin_src emacs-lisp
+  (use-package default-text-scale
+    :init (default-text-scale-mode))
 #+end_src
 
 ** Basic Interface Settings
@@ -733,7 +760,7 @@ the terminal version of Emacs, though, so it's not set there.
 ** Transparency Alpha
 Functions for toggling transparency alpha.
 #+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist '(alpha . (93 . 84)))
+  ;; (add-to-list 'default-frame-alist '(alpha . (93 . 84)))
   (defun dalvrosa/toggle-transparency ()
     "Toggle transparency on and off."
     (interactive)
@@ -786,6 +813,23 @@ quickly complete with one of the first 10 candidates.
 When the completion candidates are shown, press =<f1>= to display the
 documentation for the selected candidate, or =C-w= to see its source.
 
+*** Language Server Protocol
+The goal of the language server protocol is to allow programming language
+support to be implemented and distributed independently of any given editor.
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :hook (prog-mode . lsp))
+
+  (use-package lsp-ui)
+#+end_src
+
+*** Code Formatting
+Use Clang for code formatting.
+#+begin_src emacs-lisp
+  (use-package clang-format
+    :config (global-set-key [C-M-tab] 'clang-format-region))
+#+end_src
+
 *** Line Numbers
 Display line numbers.
 #+begin_src emacs-lisp
@@ -797,7 +841,7 @@ A good programmer knows that spaces are by far a better alternative than tabs.
 This doesn't mean you need to insert the spaces manually. Emacs will take care
 of this for you.
 
-Configure default tab width to 4 spaces.
+Configure default tab width to 2 spaces.
 #+begin_src emacs-lisp
   (setq-default tab-width 2)
 #+end_src
@@ -862,6 +906,12 @@ Some of the projectile features:
 - Check for dirty repositories
 - Toggle read-only mode for the entire project
 
+I like to use The Silver Searcher for searching instead of standard grep
+mainly because is way faster.
+#+begin_src emacs-lisp
+  (use-package ag)
+#+end_src
+
 *** Magit
 Magit is one of the killer features in Emacs, is a complete text-based user
 interface to Git. It fills the glaring gap between the Git command-line
@@ -913,10 +963,32 @@ Don't open new frame for setup window and prefer splitting horizontally.
   (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
-** TODO C/C++
-:LOGBOOK:
-- State "TODO"       from              [2022-04-23 Sat 22:49]
-:END:
+*** File Tree
+Treemacs is a file and project explorer that shows the file system outlines of
+your projects in a simple tree laout allowing quick navigation and exploration.
+I like to use it with the icons from all-the-icons package, so make sure to
+have that installed.
+#+begin_src emacs-lisp
+  (use-package treemacs
+    :config
+    (add-hook 'treemacs-mode-hook  (lambda () (setq-local truncate-lines t)))
+    :bind
+    (:map global-map
+          ("M-0"       . treemacs-select-window)
+          ("C-x t 1"   . treemacs-delete-other-windows)
+          ("C-x t t"   . treemacs)
+          ("C-x t d"   . treemacs-select-directory)
+          ("C-x t B"   . treemacs-bookmark)
+          ("C-x t C-t" . treemacs-find-file)
+          ("C-x t M-t" . treemacs-find-tag)))
+
+  (use-package treemacs-all-the-icons
+    :config
+    (setq treemacs-indentation 1)
+    (treemacs-load-theme "all-the-icons"))
+#+end_src
+
+** C/C++
 Configuration for C/C++ programming languages. Take a look at this websites for
 further customization (especially the one from Reddit):
 - [[https://www.reddit.com/r/emacs/comments/audffp/tip_how_to_use_a_stable_and_fast_environment_to/][How to use a stable and fast environment to develop in C++]]
@@ -1345,6 +1417,13 @@ key bindings. Also, =C-c C-f= for inserting new field.
                               last-comma delimiters unify-case
                               braces sort-fields))
   (setq bibtex-autokey-year-title-separator ":")
+#+end_src
+
+** Ledger
+Ledger is a powerful, double-entry accounting system that is accesed from the
+UNIX command line.
+#+begin_src emacs-lisp
+  (use-package ledger-mode)
 #+end_src
 
 * PDF Viewer
