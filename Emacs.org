@@ -675,7 +675,7 @@ Some themes I also like are =doom-one= (dark), =doom-peacock= (dark) and
 Custom keybindings for cycling between themes in Emacs with =C-c d=. Binding
 cames from toggling dark theme (d for "dark").
 #+begin_src emacs-lisp
-  (setq dalvrosa/themes '(doom-one doom-one-light doom-zenburn))
+  (setq dalvrosa/themes '(doom-one-light doom-zenburn))
   (setq dalvrosa/themes-index 0)
 
   (defun dalvrosa/cycle-theme ()
