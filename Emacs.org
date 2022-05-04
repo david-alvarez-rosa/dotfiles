@@ -1427,10 +1427,9 @@ UNIX command line.
 #+end_src
 
 * PDF Viewer
-PDF Tools PDF Tools is, among other things, a replacement of DocView for PDF
-files. The key difference is that pages are not pre-rendered by
-e.g. ghostscript and stored in the file-system, but rather created on-demand
-and stored in memory.
+PDF Tools is, among other things, a replacement of DocView for PDF files. The
+key difference is that pages are not pre-rendered by e.g. ghostscript and
+stored in the file-system, but rather created on-demand and stored in memory.
 
 Disable here Swiper for searching, and fallback to Isearch, since Swiper
 searchs in the source code rather than in the PDF itself.
