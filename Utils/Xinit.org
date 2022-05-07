@@ -13,7 +13,7 @@ The xinit program allows a user to manually start an Xorg display server. The
 Set default Xorg keyboard configuration to =es= and =us= and set =Menu= key for
 toggling between keyboard layouts.
 #+begin_src conf
-  setxkbmap -layout es,us -option grp:menu_toggle
+  setxkbmap -layout us,es -option grp:menu_toggle
 #+end_src
 
 Modify the keyboard layout, with two symmetric =Control= keys in the home row,
