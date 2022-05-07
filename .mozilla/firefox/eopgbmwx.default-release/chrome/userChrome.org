@@ -3,7 +3,7 @@
 #+AUTHOR: David Álvarez Rosa
 #+EMAIL: david@alvarezrosa.com
 #+DESCRIPTION: My personal Mozilla Firefox configuration file.
-#+PROPERTY: header-args :tangle ~/.mozilla/firefox/eopgbmwx.default-release/chrome/userChrome.css
+#+PROPERTY: header-args :tangle yes
 
 
 Mozilla Firefox UI can be configured using the userChrome.css file, located

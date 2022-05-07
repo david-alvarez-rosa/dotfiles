@@ -3,7 +3,7 @@
 #+AUTHOR: David Álvarez Rosa
 #+EMAIL: david@alvarezrosa.com
 #+DESCRIPTION: My personal GNU Emacs configuration file.
-#+PROPERTY: header-args :tangle ~/.config/emacs/init.el
+#+PROPERTY: header-args :tangle yes
 
 
 GNU Emacs is a free (as in /freedom/) +operating system+ text editor, created

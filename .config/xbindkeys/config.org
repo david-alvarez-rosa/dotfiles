@@ -3,7 +3,7 @@
 #+AUTHOR: David Álvarez Rosa
 #+EMAIL: david@alvarezrosa.com
 #+DESCRIPTION: My personal Xbindkeys configuration file.
-#+PROPERTY: header-args :tangle ~/.config/xbindkeys/config
+#+PROPERTY: header-args :tangle config
 
 
 Xbindkeys is a program that allows to bind commands to certain keys or key

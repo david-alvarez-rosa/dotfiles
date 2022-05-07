@@ -3,7 +3,7 @@
 #+AUTHOR: David Álvarez Rosa
 #+EMAIL: david@alvarezrosa.com
 #+DESCRIPTION: My personal i3blocks status bar configuration file.
-#+PROPERTY: header-args :tangle ~/.config/i3blocks/config
+#+PROPERTY: header-args :tangle config
 
 
 i3blocks config file

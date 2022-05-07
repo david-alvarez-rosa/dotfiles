@@ -3,7 +3,7 @@
 #+AUTHOR: David Álvarez Rosa
 #+EMAIL: david@alvarezrosa.com
 #+DESCRIPTION: My personal i3 Window Manager configuration file.
-#+PROPERTY: header-args :tangle ~/.config/i3/config
+#+PROPERTY: header-args :tangle config
 
 
 i3 is a tiling window manager, completely written from scratch. The target
