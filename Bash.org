@@ -113,4 +113,5 @@ Cleanup programs.
   export LESSHISTFILE=-
   export HISTFILE="$XDG_DATA_HOME/history"
   export INPUTRC="$XDG_CONFIG_HOME/bash/inputrc"
+  export UNISON="$XDG_CONFIG_HOME/unison"
 #+end_src
