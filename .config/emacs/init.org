@@ -1517,7 +1517,7 @@ installed, this program is designed to enable super-efficient handling of
 e-mail; searching, reading, replying, moving, deleting. Also Isync should be
 installed and configured (this program is the same as mbsync, which is the name
 of the isync executable). This program will sync email computer <-> server,
-check out my [[file:Isync.org][isync configuration]].
+check out my [[file:~/.config/isync/mbsyncrc.org][isync configuration]].
 
 Open last 7 days email header view with =C-c e= keybinding.
 #+begin_src emacs-lisp
@@ -1545,7 +1545,7 @@ Show complete email address in view mode.
 Set get mail command for syncing. And define keybind =C-c u= to just index
 (without updating), this is faster.
 #+begin_src emacs-lisp
-  (setq mu4e-get-mail-command "mbsync -c \"$XDG_CONFIG_HOME\"/isync/mbsyncrc -a -V")
+  (setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc -a -V")
   (define-key mu4e-headers-mode-map (kbd "C-c u") 'mu4e-update-index)
 #+end_src
 
@@ -1908,10 +1908,11 @@ If you are an IRC user, you may find me out there. I usually hang out in
 libera.chat these days (after the freenode management debacle) with the
 =dalvrosa= nick.
 
-I have configured =~/.authinfo= file with password information so I don't need
-to enter it every time. I am actually connecting to a personal IRC Bouncer
-(ZNC) hosted in my personal VPS at irc.alvarezrosa.com, so I do most of the
-configuration there. The line added to this file looks as follows:
+I have configured the authentication file (see [[*Authentication File][Authentication File]]) with
+password information so I don't need to enter it every time. I am actually
+connecting to a personal IRC Bouncer (ZNC) hosted in my personal VPS at
+irc.alvarezrosa.com, so I do most of the configuration there. The line added to
+this file looks as follows:
 #+begin_src conf :tangle no
   machine irc.alvarezrosa.com port 6697 login dalvrosa password david:***pass***
 #+end_src

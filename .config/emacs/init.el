@@ -501,7 +501,7 @@
 
 (setq mu4e-view-show-addresses t)
 
-(setq mu4e-get-mail-command "mbsync -c \"$XDG_CONFIG_HOME\"/isync/mbsyncrc -a -V")
+(setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc -a -V")
 (define-key mu4e-headers-mode-map (kbd "C-c u") 'mu4e-update-index)
 
 (use-package mu4e-column-faces
