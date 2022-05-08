@@ -1,7 +1,7 @@
 IMAPAccount David
 Host mail.alvarezrosa.com
 User david@alvarezrosa.com
-PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $6}'"
+PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $6}'"
 SSLType IMAPS
 
 IMAPStore david-remote
@@ -23,7 +23,7 @@ SyncState *
 IMAPAccount Yandex
 Host imap.yandex.com
 User david.alvarez.rosa@yandex.com
-PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep imap.yandex.com | awk '{print $6}'"
+PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep imap.yandex.com | awk '{print $6}'"
 SSLType IMAPS
 
 IMAPStore yandex-remote
@@ -45,7 +45,7 @@ SyncState *
 IMAPAccount University
 Host outlook.office365.com
 User dalvarez553@alumno.uned.es
-PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep outlook.office365.com | awk '{print $6}'"
+PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep outlook.office365.com | awk '{print $6}'"
 SSLType IMAPS
 
 IMAPStore university-remote

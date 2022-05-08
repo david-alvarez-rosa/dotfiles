@@ -15,7 +15,7 @@ identification conflicts can occur (as opposed to some other mail
 synchronizers). Synchronization state is kept in one local text file per
 mailbox pair; multiple replicas of a mailbox can be maintained.
 
-The =.authinfo.gpg= file should be properly configured and encrypted with, at
+The =authinfo.gpg= file should be properly configured and encrypted with, at
 least, the following information.
 #+begin_src conf :tangle no
   machine mail.alvarezrosa.com login david@alvarezrosa.com password "***pass***"
@@ -37,7 +37,7 @@ Configuration for my personal email account.
   IMAPAccount David
   Host mail.alvarezrosa.com
   User david@alvarezrosa.com
-  PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $6}'"
+  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $6}'"
   SSLType IMAPS
 
   IMAPStore david-remote
@@ -63,7 +63,7 @@ Configuration for Yandex email account.
   IMAPAccount Yandex
   Host imap.yandex.com
   User david.alvarez.rosa@yandex.com
-  PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep imap.yandex.com | awk '{print $6}'"
+  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep imap.yandex.com | awk '{print $6}'"
   SSLType IMAPS
 
   IMAPStore yandex-remote
@@ -89,7 +89,7 @@ Configuration for university email account.
   IMAPAccount University
   Host outlook.office365.com
   User dalvarez553@alumno.uned.es
-  PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep outlook.office365.com | awk '{print $6}'"
+  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep outlook.office365.com | awk '{print $6}'"
   SSLType IMAPS
 
   IMAPStore university-remote
