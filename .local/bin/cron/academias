@@ -1,0 +1,26 @@
+#!/bin/bash
+
+
+# Academia setup.
+function unrestrict {
+    passwd -u root
+    usermod -G main,wheel david
+    cp /etc/hostsUnrestricted /etc/hosts
+    exit
+}
+
+dayOfWeek=$(date +%A)
+hour=10#$(date +%H)
+minute=10#$(date +%M)
+
+case $dayOfWeek in
+    "Sunday") unrestrict;;
+    "Saturday") [[ $hour -ge 13 ]] && unrestrict;;
+    *) [[ $hour -eq 11 && $minute -le 5 ]] && unrestrict
+       [[ $hour -eq 19 && $minute -le 5 ]] && unrestrict
+       ;;
+esac
+
+passwd -l root
+usermod -G main david
+cp /etc/hostsRestricted /etc/hosts

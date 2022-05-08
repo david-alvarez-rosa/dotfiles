@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Actualiza e indexa el correo electrónico.
+
+
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus # Para que funcione notify-send.
+
+newMailBeforeDavid=$(du -a /home/david/.mail/David/Inbox/new/* 2>/dev/null | sed -n '$=')
+newMailBeforeYandex=$(du -a /home/david/.mail/Yandex/Inbox/new/* 2>/dev/null | sed -n '$=')
+mbsync -a
+pkill -2 -u $UID -x mu
+sleep 1
+mu index -m /home/david/.mail
+newMailAfterDavid=$(du -a /home/david/.mail/David/Inbox/new/* 2>/dev/null | sed -n '$=')
+newMailAfterYandex=$(du -a /home/david/.mail/Yandex/Inbox/new/* 2>/dev/null | sed -n '$=')
+
+newMailDavid=$(( newMailAfterDavid - newMailBeforeDavid ))
+newMailYandex=$(( newMailAfterYandex - newMailBeforeYandex ))
+
+if [[ $newMailYandex -gt 0 && $newMailDavid -eq 0 ]]
+then
+    type="Yandex: "
+else
+    type=""
+fi
+
+newMail=$(( newMailDavid + newMailYandex ))
+
+if [ $newMail -gt 0 ]
+then
+    notify-send $1 --urgency low "Mail update" "$type $newMail New mail received!"
+elif [ "$2" == "yes" ]
+then
+    notify-send $1 --urgency low "Mail update" "There are no new emails."
+fi

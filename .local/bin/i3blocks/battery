@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Print battery information.
+
+function printBatteryInfo() {
+    printf $1" "$2"%%\n"
+    exit
+}
+
+
+function notifyBatteryInfo() {
+    time=$(acpi -b | awk '{print $5}')
+    percent=$(acpi -b | awk '{print $4}' | tr -d ',' | tr -d '%')
+    status=$(acpi -b | awk '{print $3}' | tr -d ',')
+    notify-send "Battery information" "Status: $status, $percent%\nTime: $time"
+}
+
+
+percent=$(acpi -b | awk '{print $4}' | tr -d ',' | tr -d '%')
+status=$(acpi -b | awk '{print $3}' | tr -d ',')
+
+
+case $BLOCK_BUTTON in
+    1) notifyBatteryInfo ;;
+    2) notifyBatteryInfo ;;
+    3) notifyBatteryInfo ;;
+esac
+
+if [ $status == "Discharging" ]
+then
+    [[ $percent -lt 20 ]] && printBatteryInfo "\uf244" $percent
+    [[ $percent -lt 40 ]] && printBatteryInfo "\uf243" $percent
+    [[ $percent -lt 60 ]] && printBatteryInfo "\uf242" $percent
+    [[ $percent -lt 85 ]] && printBatteryInfo "\uf241" $percent
+    [[ $percent -le 100 ]] && printBatteryInfo "\uf240" $percent
+elif [ $status == "Charging" ]
+then
+    printf " $percent""%%\n"
+else
+    printf " 100""%%\n"
+fi

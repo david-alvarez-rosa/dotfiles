@@ -1,0 +1,65 @@
+IMAPAccount David
+Host mail.alvarezrosa.com
+User david@alvarezrosa.com
+PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $6}'"
+SSLType IMAPS
+
+IMAPStore david-remote
+Account   David
+
+MaildirStore david-local
+Path ~/.local/share/mail/David/
+Inbox ~/.local/share/mail/David/Inbox
+SubFolders Verbatim
+
+Channel david
+Far :david-remote:
+Near :david-local:
+Patterns *
+Create Near
+Expunge Near
+SyncState *
+
+IMAPAccount Yandex
+Host imap.yandex.com
+User david.alvarez.rosa@yandex.com
+PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep imap.yandex.com | awk '{print $6}'"
+SSLType IMAPS
+
+IMAPStore yandex-remote
+Account Yandex
+
+MaildirStore yandex-local
+Path ~/.local/share/mail/Yandex/
+Inbox ~/.local/share/mail/Yandex/Inbox
+SubFolders Verbatim
+
+Channel yandex
+Far :yandex-remote:
+Near :yandex-local:
+Patterns *
+Create Near
+Expunge Near
+SyncState *
+
+IMAPAccount University
+Host outlook.office365.com
+User dalvarez553@alumno.uned.es
+PassCmd "gpg --no-tty -qd ~/.authinfo.gpg | grep outlook.office365.com | awk '{print $6}'"
+SSLType IMAPS
+
+IMAPStore university-remote
+Account University
+
+MaildirStore university-local
+Path ~/.local/share/mail/University/
+Inbox ~/.local/share/mail/University/Inbox
+SubFolders Verbatim
+
+Channel university
+Far :university-remote:
+Near :university-local:
+Patterns *
+Create Near
+Expunge Near
+SyncState *

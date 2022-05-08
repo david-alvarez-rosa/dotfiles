@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Notificador de batería baja.
+
+
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus # Para que funcione notify-send.
+
+status=$(acpi -b | grep 'Battery 0' | awk '{print $3}' | sed 's/%//' | sed 's/,//')
+percent=$(acpi -b | grep 'Battery 0' | awk '{print $4}' | sed 's/%//' | sed 's/,//')
+
+if [ $status == "Discharging" ]
+then
+    if [ $percent -le 5 ]
+    then
+	      notify-send --urgency critical "Battery" "Critical battery ($percent%)"
+    elif [ $percent -le 10 ]
+    then
+	      notify-send --urgency critical "Battery" "Low battery ($percent%)"
+	      sleep 2m
+    fi
+else
+    if [ $percent -eq 100 ]
+    then
+        running=$(pgrep batteryNotify)
+        echo $running
+        if [ -z "$running" ]
+        then
+	          notify-send --urgency normal "Battery" "Battery charged ($percent%)"
+	          sleep 10m
+        fi
+    fi
+fi

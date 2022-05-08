@@ -111,7 +111,22 @@ Set up XDG Base Directory specification.
 Cleanup programs.
 #+begin_src bash
   export LESSHISTFILE=-
-  export HISTFILE="$XDG_DATA_HOME/history"
-  export INPUTRC="$XDG_CONFIG_HOME/bash/inputrc"
-  export UNISON="$XDG_CONFIG_HOME/unison"
+  export HISTFILE="$XDG_DATA_HOME"/history
+  export INPUTRC="$XDG_CONFIG_HOME"/shell/inputrc
+  export UNISON="$XDG_CONFIG_HOME"/unison
+  export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
+  export XINITRC="$XDG_CONFIG_HOME"/X11/xinitrc
+  export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+#+end_src
+
+Use neovim for vim if present.
+#+begin_src bash
+  [ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
+#+end_src
+
+# Default programs:
+#+begin_src bash
+  export EDITOR="nvim"
+  export TERMINAL="alacritty"
+  export BROWSER="firefox"
 #+end_src

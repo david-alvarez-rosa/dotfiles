@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Backup $HOME (except cache) to drive mounted in /mnt/Drive using rsync. Based
+# on https://wiki.archlinux.org/title/Rsync#As_a_backup_utility
+
+DATE=$(date -I)
+
+rsync -a -b -v --delete --exclude .cache --backup-dir=/mnt/Drive/Backups/$DATE /home/david/ /mnt/Drive/Backup

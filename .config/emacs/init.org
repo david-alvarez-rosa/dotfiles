@@ -64,6 +64,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#general-configuration-1][General Configuration]]
   - [[#cc][C/C++]]
   - [[#python][Python]]
+  - [[#java][Java]]
   - [[#web-development][Web Development]]
   - [[#octavematlab][Octave/Matlab]]
   - [[#r][R]]
@@ -818,9 +819,31 @@ The goal of the language server protocol is to allow programming language
 support to be implemented and distributed independently of any given editor.
 #+begin_src emacs-lisp
   (use-package lsp-mode
-    :hook (prog-mode . lsp))
+    :hook
+    (cc-mode . lsp)
+    (java-mode . lsp))
 
   (use-package lsp-ui)
+#+end_src
+
+Add integration with =treemacs= package.
+#+begin_src emacs-lisp
+  (use-package lsp-treemacs
+    :config
+    (lsp-treemacs-sync-mode 1))
+#+end_src
+
+*** TODO Debug Adapter Protocol
+:LOGBOOK:
+- State "TODO"       from              [2022-05-07 Sat 23:05]
+:END:
+*Disclaimer* I'm not tangling the block to follow.
+
+Emacs client/library for Debug Adapter Protocol is a wire protocol for
+communication between client and Debug Server. It's similar to the LSP but
+provides integration with debug server.
+#+begin_src emacs-lisp :tangle no
+  (use-package dap-mode)
 #+end_src
 
 *** Code Formatting
@@ -1020,8 +1043,20 @@ Moving around and indenting is similar to Org mode.
 
 Some more things that are pretty sweet.
 - =M-.= go to definition.
-- =M-*= go back from definition where I was.
+n- =M-*= go back from definition where I was.
 - =C-c C-o= occur definition. All places where a function/class is used.
+
+*** TODO Eglot
+:LOGBOOK:
+- State "TODO"       from              [2022-05-07 Sat 22:49]
+:END:
+Take a look to eglot and lsp integration with Python.
+
+** Java
+Awesome package for LSP integration with Java.
+#+begin_src emacs-lisp
+  (use-package lsp-java)
+#+end_src
 
 ** Web Development
 Web mode is an autonomous emacs major-mode for editing web templates. HTML
@@ -1209,7 +1244,7 @@ most of Emacs. It's great.
 Set files to show in agenda.
 #+begin_src emacs-lisp
   (setq org-agenda-files (quote
-                          ("~/Documents/Contactos/Birthdays.org"
+                          ("~/Documents/Contacts/Birthdays.org"
                           "~/Documents/Tasks.org")))
 #+end_src
 
@@ -1246,6 +1281,11 @@ While in this agenda view press =w= for changing the agenda span to full week
 or =d= for just showing curren day. Also, it is posible to toggle log mode with
 =l=.
 
+Show all posible items that should in agenda log mode.
+#+begin_src emacs-lisp
+  (setq org-agenda-log-mode-items '(closed clock state))
+#+end_src
+
 Set deadline warning days to 7 (instead of the default 14 days).
 #+begin_src emacs-lisp
   (setq org-deadline-warning-days 7)
@@ -1253,7 +1293,7 @@ Set deadline warning days to 7 (instead of the default 14 days).
 
 With =q= bury agenda instead of killing it (faster of course).
 #+begin_src emacs-lisp
-(setq org-agenda-sticky t)
+  (setq org-agenda-sticky t)
 #+end_src
 
 I don't like empty blocks to show in customized agenda, so I hide them (this
@@ -1646,7 +1686,7 @@ stored in =dalvrosa/contact-file=. This text file has contacts in the form "Name
 <address>", one per line. This function is inspired on [[http://pragmaticemacs.com/emacs/even-better-email-contact-completion-in-mu4e/][Even better email
 contact completion in mu4e]].
 #+begin_src emacs-lisp
-  (setq dalvrosa/contact-file "~/Documents/Contactos/Correos.txt")
+  (setq dalvrosa/contact-file "~/Documents/Contacts/Emails.txt")
   (defun dalvrosa/read-contact-list ()
     (with-temp-buffer
       (insert-file-contents dalvrosa/contact-file)

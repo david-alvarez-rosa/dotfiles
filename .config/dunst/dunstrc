@@ -1,0 +1,36 @@
+[global]
+  width = 350
+  height = 250
+  offset = 5x25
+  padding = 6
+  transparency = 10
+  font = Monospace 11
+  monitor = 0
+  separator_height = 2
+  separator_color = frame
+  frame_width = 3
+  frame_color = "#8EC07C"
+  follow = keyboard
+  format = "<b>%s</b>\n%b"
+  close = ctrl+space
+  close_all = ctrl+shift+space
+  history = ctrl+grave
+  context = ctrl+shift+period
+
+[urgency_low]
+  frame_color = "#3B7C87"
+  foreground = "#3B7C87"
+  background = "#191311"
+  timeout = 5
+
+[urgency_normal]
+  frame_color = "#5B8234"
+  foreground = "#5B8234"
+  background = "#191311"
+  timeout = 6
+
+[urgency_critical]
+  frame_color = "#B7472A"
+  foreground = "#B7472A"
+  background = "#191311"
+  timeout = 8

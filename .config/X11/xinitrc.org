@@ -3,7 +3,7 @@
 #+AUTHOR: David Álvarez Rosa
 #+EMAIL: david@alvarezrosa.com
 #+DESCRIPTION: My personal xinit configuration file.
-#+PROPERTY: header-args :tangle ~/.xinitrc
+#+PROPERTY: header-args :tangle xinitrc
 
 
 The xinit program allows a user to manually start an Xorg display server. The

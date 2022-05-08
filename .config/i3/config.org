@@ -177,18 +177,18 @@ Use $mod+Mouse for moving floating windows.
 Set key bindings for window resizing with same commands as window focus, but
 with =Control= modifier.
   #+begin_src conf
-  bindsym $mod+Control+f exec --no-startup-id "bash ~/.local/bin/i3resize right"
-  bindsym $mod+Control+p exec --no-startup-id "bash ~/.local/bin/i3resize up"
-  bindsym $mod+Control+n exec --no-startup-id "bash ~/.local/bin/i3resize down"
-  bindsym $mod+Control+b exec --no-startup-id "bash ~/.local/bin/i3resize left"
+  bindsym $mod+Control+f exec --no-startup-id "~/.local/bin/i3resize right"
+  bindsym $mod+Control+p exec --no-startup-id "~/.local/bin/i3resize up"
+  bindsym $mod+Control+n exec --no-startup-id "~/.local/bin/i3resize down"
+  bindsym $mod+Control+b exec --no-startup-id "~/.local/bin/i3resize left"
   #+end_src
 
 Alternative with arrow keys.
   #+begin_src conf
-    bindsym $mod+Control+Right exec --no-startup-id "bash ~/.local/bin/i3resize right"
-    bindsym $mod+Control+Upc exec --no-startup-id "bash ~/.local/bin/i3resize up"
-    bindsym $mod+Control+Down exec --no-startup-id "bash ~/.local/bin/i3resize down"
-    bindsym $mod+Control+Left exec --no-startup-id "bash ~/.local/bin/i3resize left"
+    bindsym $mod+Control+Right exec --no-startup-id "~/.local/bin/i3resize right"
+    bindsym $mod+Control+Upc exec --no-startup-id "~/.local/bin/i3resize up"
+    bindsym $mod+Control+Down exec --no-startup-id "~/.local/bin/i3resize down"
+    bindsym $mod+Control+Left exec --no-startup-id "~/.local/bin/i3resize left"
   #+end_src
 
 *** Window splitting

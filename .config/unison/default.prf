@@ -1,0 +1,9 @@
+# Unison preferences file
+
+root = /home/david/.local/share/unison
+root = ssh://david@alvarezrosa.com//home/david/unison
+
+follow = Name *
+
+batch = true
+auto = true

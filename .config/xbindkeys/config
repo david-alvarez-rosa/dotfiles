@@ -1,0 +1,67 @@
+"pamixer -i 5"
+  XF86AudioRaiseVolume
+"pamixer -i 10"
+  Shift + XF86AudioRaiseVolume
+"pamixer -i 1"
+  Control + XF86AudioRaiseVolume
+
+"pamixer -d 5"
+  XF86AudioLowerVolume
+"pamixer -d 10"
+  Shift + XF86AudioLowerVolume
+"pamixer -d 1"
+  Control + XF86AudioLowerVolume
+
+"pamixer -t"
+  XF86AudioMute
+
+"xbacklight -inc 5"
+  XF86MonBrightnessUp
+"xbacklight -inc 10"
+  Shift + XF86MonBrightnessUp
+"xbacklight -inc 1"
+  Control + XF86MonBrightnessUp
+
+"xbacklight -dec 5"
+  XF86MonBrightnessDown
+"xbacklight -dec 10"
+  Shift + XF86MonBrightnessDown
+"xbacklight -dec 1"
+  Control + XF86MonBrightnessDown
+
+"mpc toggle"
+  XF86AudioPlay
+"mpc prev"
+  XF86AudioPrev
+"mpc next"
+  XF86AudioNext
+
+"if xinput list-props 'ELAN1200:00 04F3:309F Touchpad' | grep 'Device Enabled (149):.*1'; then xinput disable 'ELAN1200:00 04F3:309F Touchpad'; else xinput enable 'ELAN1200:00 04F3:309F Touchpad'; fi"
+  XF86TouchpadToggle
+
+"slock"
+  Mod2+Mod4 + l
+
+# Apagar el ordenador.
+bindsym $mod+x                  exec --no-startup-id ~/.scripts/i3shutdown
+bindsym $mod+Shift+x            exec --no-startup-id ~/.scripts/i3reboot
+
+# Comando para abrir Transmission (para los torrents).
+bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission tremc"
+
+# Comando para actualizar el correo.
+bindsym $mod+Shift+m exec --no-startup-id "~/.scripts/cronjobs/updateMail '' 'yes'"
+
+# Comandos para captura de pantalla.
+bindsym Print                            exec --no-startup-id "~/.scripts/screenshot"
+bindsym $mod+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
+bindsym Control+Print              	     exec --no-startup-id "~/.scripts/screenshot s"
+
+# Abrir "dmenu": menú para lanzar programas.
+bindsym $mod+d exec dmenu_run
+
+# Abrir "rofi": menú para lanzar programas.
+bindsym $mod+r exec rofi -show drun
+
+"[[ $(nmcli radio wifi) == 'enabled' ]] && nmcli radio wifi off || nmcli radio wifi on"
+  XF86WLAN

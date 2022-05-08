@@ -1,0 +1,61 @@
+command=~/.local/bin/i3blocks/$BLOCK_NAME
+align=center
+separator=false
+separator_block_width=20
+markup=pango
+
+[pacman]
+interval=3600
+signal=1
+color=#1793D1
+
+[ssh]
+interval=30
+color=#589df6
+
+[home]
+command=printf "\\uf015 " && df -h -P -l $HOME | awk '{print $4}' | tail -1
+interval=3600
+color=#21b089
+
+[root]
+command=printf "\\uf292 " && df -h -P -l / | awk '{print $4}' | tail -1
+interval=3600
+color=#f9555f
+
+[temperature]
+interval=30
+color=#E88939
+
+[cpu]
+interval=5
+color=#589df6
+
+[memory]
+command=printf "\\uf013 " && grep "MemAvailable" /proc/meminfo | awk '{printf("%.1fG\n", $2/1024/1024)}'
+interval=5
+color=#21b089
+
+[volume]
+interval=1
+signal=10
+color=#f9555f
+
+[battery]
+interval=30
+color=#E88939
+
+[wifi]
+instance=wlp1s0
+interval=15
+color=#589df6
+
+[time]
+command=printf "\\uf017 " && date '+%H:%M'
+interval=10
+color=#21b089
+
+[date]
+command=printf "\\uf073 " && date '+%A %e '
+interval=300
+color=#f9555f
