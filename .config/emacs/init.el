@@ -24,6 +24,8 @@
 (setq custom-file "~/.config/emacs/custom.el")
 (load custom-file t)
 
+(setq auth-sources '("~/.local/share/authinfo.gpg"))
+
 (use-package exec-path-from-shell
   :config
   (when (eq system-type 'darwin)

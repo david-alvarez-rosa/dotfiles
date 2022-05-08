@@ -39,6 +39,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#personal-information][Personal Information]]
   - [[#server-mode][Server Mode]]
   - [[#custom-file][Custom File]]
+  - [[#authentication-file][Authentication File]]
   - [[#mac-os][Mac OS]]
   - [[#change-yesno-questions-to-yn][Change yes/no Questions to y/n]]
   - [[#file-management][File Management]]
@@ -214,6 +215,22 @@ control. This enables us to keep specific config local to each machine.
 #+begin_src emacs-lisp
   (setq custom-file "~/.config/emacs/custom.el")
   (load custom-file t)
+#+end_src
+
+** Authentication File
+The auth-source library is simply a way for Emacs and Gnus, among others, to
+answer the old burning question “What are my user name and password?”
+
+This is used for email and IRC log in, among others. The authentication file
+looks as follows.
+#+begin_src conf :tangle no
+  machine mymachine login myloginname password mypassword port myport
+  #+end_src
+
+Customize location of authentication file (following XDB Base Directory
+specification).
+#+begin_src emacs-lisp
+  (setq auth-sources '("~/.local/share/authinfo.gpg"))
 #+end_src
 
 ** Mac OS
