@@ -130,3 +130,8 @@ Use neovim for vim if present.
   export TERMINAL="alacritty"
   export BROWSER="firefox"
 #+end_src
+
+Sometimes ssh doesn't work correctly without this.
+#+begin_src bash
+  export TERM=xterm-256color
+#+end_src

@@ -69,3 +69,5 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export EDITOR="nvim"
 export TERMINAL="alacritty"
 export BROWSER="firefox"
+
+export TERM=xterm-256color
