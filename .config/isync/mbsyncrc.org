@@ -20,7 +20,7 @@ least, the following information.
 #+begin_src conf :tangle no
   machine mail.alvarezrosa.com login david@alvarezrosa.com password "***pass***"
   machine imap.yandex.com login david.alvarez.rosa@yandex.com password "***pass***"
-  machine imap.hotmail.com login dalvarez553@alumno.uned.es password "***pass***"
+  machine outlook.office365.com login dalvarez553@alumno.uned.es password "***pass***"
 #+end_src
 
 After the first sync of emails, the =mu= database must be started. It is useful
