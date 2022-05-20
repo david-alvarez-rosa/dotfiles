@@ -382,7 +382,6 @@
                 ((org-agenda-overriding-header "Next Actions")
                  (org-agenda-skip-function
                   '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-          (todo "WAIT" ((org-agenda-overriding-header "Waiting")))
           (tags-todo "+REFILE" ((org-agenda-overriding-header "Refile")))
           (tags-todo "TODO=\"TODO\"+AMAZON"
                      ((org-agenda-overriding-header "Amazon")
@@ -395,7 +394,8 @@
           (tags-todo "TODO=\"TODO\"+SINGLE"
                      ((org-agenda-overriding-header "Standalone Tasks")
                       (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'deadline 'scheduled)))))
+                       '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+          (todo "WAIT" ((org-agenda-overriding-header "Waiting"))))
          ((org-agenda-start-with-log-mode t)))))
 
 (setq org-agenda-log-mode-items '(closed clock state))

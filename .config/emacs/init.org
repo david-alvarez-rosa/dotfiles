@@ -1,9 +1,9 @@
-#+TITLE: GNU Emacs Configuration
-#+LANGUAGE: en
-#+AUTHOR: David Álvarez Rosa
-#+EMAIL: david@alvarezrosa.com
-#+DESCRIPTION: My personal GNU Emacs configuration file.
-#+PROPERTY: header-args :tangle yes
+#+title: GNU Emacs Configuration
+#+language: en
+#+author: David Álvarez Rosa
+#+email: david@alvarezrosa.com
+#+description: My personal GNU Emacs configuration file.
+#+property: header-args :tangle yes
 
 
 GNU Emacs is a free (as in /freedom/) +operating system+ text editor, created
@@ -1132,8 +1132,7 @@ Activate single letter commands at beginning of a headline.
 #+end_src
 
 This is very useful for navigating/modifying org mode files. I usually use
-=n=/=p= for next/previous, =b=/=f= for backward/forward, and =l=/=r= for
-left/right.
+=n/p= for next/previous, =b/f= for backward/forward, and =l/r= for left/right.
 
 ** Refile
 Configuration for refiling command =C-c C-w=.
@@ -1265,14 +1264,16 @@ Set files to show in agenda.
                           "~/Documents/Tasks.org")))
 #+end_src
 
-Custom agenda views. I use a custom view that contains the following:
+Custom agenda views. I use a custom view that contains the following blocks:
   - Agenda for the following 3 days (including habits).
   - NEXT tasks (that are not scheduled or with deadline).
-  - WAIT tasks.
+  - Tasks in the refile tree (waiting to be refiled).
+  - Work related tasks.
   - Project tasks (i.e., tasks with :PROJECT: tag). Only those that are not
     schedule or with deadline.
   - Rest of standalone tasks. Also only those that are not schedule or with
     deadline.
+  - WAIT tasks.
 #+begin_src emacs-lisp
   (setq org-agenda-custom-commands
         '((" " "Block Agenda"
@@ -1281,7 +1282,6 @@ Custom agenda views. I use a custom view that contains the following:
                   ((org-agenda-overriding-header "Next Actions")
                    (org-agenda-skip-function
                     '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-            (todo "WAIT" ((org-agenda-overriding-header "Waiting")))
             (tags-todo "+REFILE" ((org-agenda-overriding-header "Refile")))
             (tags-todo "TODO=\"TODO\"+AMAZON"
                        ((org-agenda-overriding-header "Amazon")
@@ -1294,7 +1294,8 @@ Custom agenda views. I use a custom view that contains the following:
             (tags-todo "TODO=\"TODO\"+SINGLE"
                        ((org-agenda-overriding-header "Standalone Tasks")
                         (org-agenda-skip-function
-                         '(org-agenda-skip-entry-if 'deadline 'scheduled)))))
+                         '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+            (todo "WAIT" ((org-agenda-overriding-header "Waiting"))))
            ((org-agenda-start-with-log-mode t)))))
 #+end_src
 
