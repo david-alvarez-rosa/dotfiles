@@ -132,3 +132,10 @@ bindkey "\C-n" history-beginning-search-forward
 
 
 export GPG_TTY=$(tty)
+
+
+
+alias ibrew='arch -x86_64 /usr/local/bin/brew'
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
+
