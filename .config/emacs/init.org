@@ -1630,7 +1630,33 @@ any archive, so this is more useful for me.
                       (smtpmail-stream-type . starttls)
                       (user-mail-address . "dalvarez553@alumno.uned.es")
                       (smtpmail-smtp-server . "smtp.office365.com")
-                      (smtpmail-smtp-service . 587)))))
+                      (smtpmail-smtp-service . 587)))
+           ,(make-mu4e-context
+             :name "Amazon"
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
+             :vars '(
+                     (mu4e-inbox-folder . "/Amazon/Inbox")
+                     (mu4e-sent-folder . "/Amazon/Sent Items")
+                     (mu4e-drafts-folder . "/Amazon/Drafts")
+                     (mu4e-trash-folder . "/Amazon/Deleted Items")
+                     (mu4e-refile-folder . "/Amazon/Archive")
+                     (smtpmail-stream-type . starttls)
+                     (user-mail-address . "dalvrosa@amazon.com")
+                     (smtpmail-smtp-server . "ballard.amazon.com")
+                     (smtpmail-smtp-service . 1587)))))
+#+end_src
+
+** Bookmarks
+Add custom bookmark for all inboxes.
+#+begin_src emacs-lisp
+  (add-to-list 'mu4e-bookmarks
+               (make-mu4e-bookmark
+                :name "All Inboxes"
+                ;; :query "maildir:/Personal/Inbox OR maildir:/Amazon/Inbox OR maildir:/University/Inbox OR maildir:/Yandex/Inbox"
+                :query "maildir:/Amazon/Inbox"
+                :key ?i))
 #+end_src
 
 ** Automatic Update and Notification
