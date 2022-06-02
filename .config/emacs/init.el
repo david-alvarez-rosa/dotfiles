@@ -494,9 +494,7 @@
 
 (require 'mu4e)
 (setq mail-user-agent 'mu4e-user-agent)
-(global-set-key (kbd "C-c e") (lambda()
-                                (interactive)
-                                (mu4e-headers-search "date:7d..now")))
+(global-set-key (kbd "C-c e") 'mu4e)
 
 (setq mu4e-headers-fields '((:human-date . 10)
                             (:flags . 5)
@@ -516,7 +514,8 @@
 (setq mu4e-maildir "~/.local/share/mail")
 (setq mu4e-user-mail-address-list '("david@alvarezrosa.com"
                                     "david.alvarez.rosa@yandex.com"
-                                    "dalvarez553@alumno.uned.es"))
+                                    "dalvarez553@alumno.uned.es"
+                                    "dalvrosa@amazon.com"))
 (setq mu4e-sent-messages-behavior 'sent)
 (setq message-signature-file "~/Documents/Signature.txt")
 
@@ -525,13 +524,13 @@
            :name "Personal"
            :match-func (lambda (msg)
                          (when msg
-                           (string-match-p "^/David" (mu4e-message-field msg :maildir))))
+                           (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
            :vars '(
-                   (mu4e-inbox-folder . "/David/Inbox")
-                   (mu4e-sent-folder . "/David/Sent")
-                   (mu4e-drafts-folder . "/David/Drafts")
-                   (mu4e-trash-folder . "/David/Inbox/Trash")
-                   (mu4e-refile-folder . "/David/Inbox/Junk")
+                   (mu4e-inbox-folder . "/Personal/Inbox")
+                   (mu4e-sent-folder . "/Personal/Sent")
+                   (mu4e-drafts-folder . "/Personal/Drafts")
+                   (mu4e-trash-folder . "/Personal/Inbox/Trash")
+                   (mu4e-refile-folder . "/Personal/Inbox/Junk")
                    (smtpmail-stream-type . starttls)
                    (user-mail-address . "david@alvarezrosa.com")
                    (smtpmail-smtp-server . "alvarezrosa.com")
@@ -565,7 +564,29 @@
                     (smtpmail-stream-type . starttls)
                     (user-mail-address . "dalvarez553@alumno.uned.es")
                     (smtpmail-smtp-server . "smtp.office365.com")
-                    (smtpmail-smtp-service . 587)))))
+                    (smtpmail-smtp-service . 587)))
+         ,(make-mu4e-context
+           :name "Amazon"
+           :match-func (lambda (msg)
+                         (when msg
+                           (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
+           :vars '(
+                   (mu4e-inbox-folder . "/Amazon/Inbox")
+                   (mu4e-sent-folder . "/Amazon/Sent Items")
+                   (mu4e-drafts-folder . "/Amazon/Drafts")
+                   (mu4e-trash-folder . "/Amazon/Deleted Items")
+                   (mu4e-refile-folder . "/Amazon/Archive")
+                   (smtpmail-stream-type . starttls)
+                   (user-mail-address . "dalvrosa@amazon.com")
+                   (smtpmail-smtp-server . "ballard.amazon.com")
+                   (smtpmail-smtp-service . 1587)))))
+
+(add-to-list 'mu4e-bookmarks
+             (make-mu4e-bookmark
+              :name "All Inboxes"
+              ;; :query "maildir:/Personal/Inbox OR maildir:/Amazon/Inbox OR maildir:/University/Inbox OR maildir:/Yandex/Inbox"
+              :query "maildir:/Amazon/Inbox"
+              :key ?i))
 
 (mu4e t)
 (setq mu4e-update-interval (* 10 60))

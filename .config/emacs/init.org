@@ -86,6 +86,7 @@ conflict here. Lastly, Emacs is a gift from God.
 - [[#pdf-viewer][PDF Viewer]]
 - [[#email-management][Email Management]]
   - [[#contexts-for-multiple-accounts][Contexts for Multiple Accounts]]
+  - [[#bookmarks][Bookmarks]]
   - [[#automatic-update-and-notification][Automatic Update and Notification]]
   - [[#queued-email][Queued Email]]
   - [[#signing-and-encryption][Signing and Encryption]]
@@ -1528,9 +1529,7 @@ Open last 7 days email header view with =C-c e= keybinding.
 #+begin_src emacs-lisp
   (require 'mu4e)
   (setq mail-user-agent 'mu4e-user-agent)
-  (global-set-key (kbd "C-c e") (lambda()
-                                  (interactive)
-                                  (mu4e-headers-search "date:7d..now")))
+  (global-set-key (kbd "C-c e") 'mu4e)
   #+end_src
 
 Customization of header view. I don't use mailing lists that often, so I have
@@ -1576,7 +1575,8 @@ replying to myself) and the behavior for sent messages.
   (setq mu4e-maildir "~/.local/share/mail")
   (setq mu4e-user-mail-address-list '("david@alvarezrosa.com"
                                       "david.alvarez.rosa@yandex.com"
-                                      "dalvarez553@alumno.uned.es"))
+                                      "dalvarez553@alumno.uned.es"
+                                      "dalvrosa@amazon.com"))
   (setq mu4e-sent-messages-behavior 'sent)
   (setq message-signature-file "~/Documents/Signature.txt")
 #+end_src
@@ -1590,13 +1590,13 @@ any archive, so this is more useful for me.
              :name "Personal"
              :match-func (lambda (msg)
                            (when msg
-                             (string-match-p "^/David" (mu4e-message-field msg :maildir))))
+                             (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
              :vars '(
-                     (mu4e-inbox-folder . "/David/Inbox")
-                     (mu4e-sent-folder . "/David/Sent")
-                     (mu4e-drafts-folder . "/David/Drafts")
-                     (mu4e-trash-folder . "/David/Inbox/Trash")
-                     (mu4e-refile-folder . "/David/Inbox/Junk")
+                     (mu4e-inbox-folder . "/Personal/Inbox")
+                     (mu4e-sent-folder . "/Personal/Sent")
+                     (mu4e-drafts-folder . "/Personal/Drafts")
+                     (mu4e-trash-folder . "/Personal/Inbox/Trash")
+                     (mu4e-refile-folder . "/Personal/Inbox/Junk")
                      (smtpmail-stream-type . starttls)
                      (user-mail-address . "david@alvarezrosa.com")
                      (smtpmail-smtp-server . "alvarezrosa.com")
