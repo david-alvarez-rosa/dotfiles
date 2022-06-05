@@ -3,7 +3,7 @@
 #+author: David Álvarez Rosa
 #+email: david@alvarezrosa.com
 #+description: My personal GNU Emacs configuration file.
-#+property: header-args :tangle yes
+#+property: header-args :tangle init.el
 
 
 GNU Emacs is a free (as in /freedom/) +operating system+ text editor, created
@@ -738,7 +738,7 @@ Disable load average.
 ** Font
 Set default font. I'm currently using Hack (in the past I used Inconsolata).
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Hack" :height 105)
+  (set-face-attribute 'default nil :font "Hack" :height 102)
 #+end_src
 
 Add ability to scale font for frame, instead that for an specifically buffer.
@@ -800,7 +800,10 @@ a desired text body width to automatically resize window margins to keep the
 text comfortably in the middle of the window. I use the default text body
 width, that is =fill-colum= +2.
 #+begin_src emacs-lisp
-  (use-package olivetti)
+  (use-package olivetti
+    :config
+    (setq-default olivetti-body-width (+ fill-column 8))
+    :bind ("C-c o" . 'olivetti-mode))
 #+end_src
 
 This mode can be enabled with =olivetti-mode= in any buffer (everything it does

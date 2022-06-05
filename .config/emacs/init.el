@@ -196,7 +196,7 @@
 
 (setq display-time-default-load-average nil)
 
-(set-face-attribute 'default nil :font "Hack" :height 105)
+(set-face-attribute 'default nil :font "Hack" :height 102)
 
 (use-package default-text-scale
   :init (default-text-scale-mode))
@@ -225,7 +225,10 @@
       (set-frame-parameter nil 'alpha '(100 . 100)))))
 (define-key global-map (kbd "C-c t") 'dalvrosa/toggle-transparency)
 
-(use-package olivetti)
+(use-package olivetti
+  :config
+  (setq-default olivetti-body-width (+ fill-column 8))
+  :bind ("C-c o" . 'olivetti-mode))
 
 (use-package company
   :config (setq company-show-quick-access t)
