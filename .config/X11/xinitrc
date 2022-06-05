@@ -1,0 +1,29 @@
+setxkbmap -layout us,es -option grp:menu_toggle
+
+xmodmap -e "clear lock"
+xmodmap -e "add Control = Caps_Lock"
+xmodmap -e "keycode 66 = Control_L Caps_Lock NoSymbol NoSymbol"
+spare_modifier="Hyper_L"
+xmodmap -e "keycode 36 = $spare_modifier"
+xmodmap -e "remove mod4 = $spare_modifier"
+xmodmap -e "add Control = $spare_modifier"
+xmodmap -e "keycode any = Return"
+xcape -e "Control_L=Escape;$spare_modifier=Return"
+
+xset r rate 275 60
+
+xbindkeys -f ~/.config/xbindkeys/config
+
+numlockx on
+
+feh --bg-scale --no-fehbg ~/.local/share/wallpaper.png
+
+unclutter --timeout 2 &
+
+dunst &
+
+picom --xrender-sync-fence &
+
+emacs &
+
+exec i3
