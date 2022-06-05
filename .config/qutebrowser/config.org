@@ -1,0 +1,289 @@
+#+title: Qutebrowser configuration file
+#+language: en
+#+author: David Álvarez Rosa
+#+email: david@alvarezrosa.com
+#+description: My personal Qutebrowser configuration file.
+#+property: header-args :tangle config.py
+
+
+Qutebrowser configured the right way, i.e., with Emacs keybindings.
+
+
+* Normal Mode
+Keybindings for normal mode. All default keybindings will be disabled, and
+redefined one by one. This is needed to so we can safely disable insert mode
+completely.
+#+begin_src python
+  c.bindings.default['normal'] = {}
+  c.input.match_counts = False
+#+end_src
+
+** Editing
+For editing, fake keys will be used. This makes everything easier: take into
+account that now insert mode is disabled. This bindings need to work
+also for scrolling as well.
+#+begin_src python
+  config.bind('<Ctrl-f>', 'fake-key <Right>')
+  config.bind('<Ctrl-b>', 'fake-key <Left>')
+  config.bind('<Ctrl-a>', 'fake-key <Home>')
+  config.bind('<Ctrl-e>', 'fake-key <End>')
+  config.bind('<Ctrl-n>', 'fake-key <Down>')
+  config.bind('<Ctrl-p>', 'fake-key <Up>')
+  config.bind('<Alt-f>', 'fake-key <Ctrl-Right>')
+  config.bind('<Alt-b>', 'fake-key <Ctrl-Left>')
+  config.bind('<Ctrl-d>', 'fake-key <Delete>')
+  config.bind('<Alt-d>', 'fake-key <Ctrl-Delete>')
+  config.bind('<Alt-backspace>', 'fake-key <Ctrl-Backspace>')
+  config.bind('<Ctrl-w>', 'fake-key <Ctrl-backspace>')
+  config.bind('<Ctrl-y>', 'insert-text {primary}')
+#+end_src
+
+** Navigation
+Keybindings for basic scrolling are already configured by the editing fake
+keys.
+
+For fast scrolling.
+#+begin_src python
+  config.bind('<Ctrl-v>', 'scroll-page 0 0.5')
+  config.bind('<Alt-v>', 'scroll-page 0 -0.5')
+#+end_src
+
+Go to end/beginning of page.
+#+begin_src python
+  config.bind('<Alt-Shift-,>', 'scroll-to-perc 0')
+  config.bind('<Alt-Shift-.>', 'scroll-to-perc')
+#+end_src
+
+** Basic Commands
+Prompt and quitting keybindings.
+#+begin_src python
+  config.bind('<Alt-x>', 'set-cmd-text :')
+  config.bind('<Ctrl-x><Ctrl-c>', 'quit')
+#+end_src
+
+Convert "C-g" in an escape key.
+#+begin_src python
+  ESC_BIND = 'clear-keychain ;; search ;; fullscreen --leave'
+  config.bind('<Ctrl-g>', ESC_BIND)
+#+end_src
+
+Help utility.
+#+begin_src python
+  config.bind('<Ctrl-h>', 'set-cmd-text -s :help')
+#+end_src
+
+Enter caret mode.
+#+begin_src python
+  config.bind('<Ctrl-Space>', 'mode-enter caret')
+#+end_src
+
+Open editor.
+#+begin_src python
+  config.bind('<Ctrl-x><Ctrl-e>', 'open-editor')
+#+end_src
+
+Reload page.
+#+begin_src python
+  config.bind('<Ctrl-x><Ctrl-v>', 'reload')
+#+end_src
+
+Zooming.
+#+begin_src python
+  config.bind('<Ctrl-+>', 'zoom-in')
+  config.bind('Ctrl-->', 'zoom-out')
+#+end_src
+
+Yank current site url to clipboard.
+#+begin_src python
+  config.bind('<Alt-w>', 'yank')
+#+end_src
+
+Open videos with mpv.
+#+begin_src python
+  config.bind('<Ctrl-m>', 'spawn mpv {url}')
+  config.bind('<Alt-m>', 'hint links spawn mpv {hint-url}')
+#+end_src
+
+** Hinting
+Command for hinting (for jump).
+#+begin_src python
+  config.bind('<Ctrl-j>', 'hint all')
+  config.bind('<Ctrl-Alt-j>', 'hint all tab')
+#+end_src
+
+** Searching
+Commands for searching.
+#+begin_src python
+  config.bind('<Ctrl-s>', 'set-cmd-text /')
+  config.bind('<Ctrl-r>', 'set-cmd-text ?')
+  config.bind('<Alt-n>', 'search-next')
+  config.bind('<Alt-p>', 'search-prev')
+#+end_src
+
+** Tabs
+Movement between tabs.
+#+begin_src python
+  config.bind('<Ctrl-]>', 'tab-next')
+  config.bind('<Ctrl-[>', 'tab-prev')
+  config.bind('<Ctrl-Tab>', 'tab-next')
+  config.bind('<Ctrl-Shift-Tab>', 'tab-prev')
+#+end_src
+
+Movement of tabs.
+#+begin_src python
+  config.bind('<Alt-]>', 'tab-move +')
+  config.bind('<Alt-[>', 'tab-move -')
+#+end_src
+
+Close tab.
+#+begin_src python
+  config.bind('<Ctrl-x>k', 'tab-close')
+  config.bind('<Ctrl-x>0', 'tab-close')
+#+end_src
+
+Tab only.
+#+begin_src python
+  config.bind('<Ctrl-x>1', 'tab-only')
+#+end_src
+
+Reopen closed tab.
+#+begin_src python
+  config.bind('<Ctrl-/>', 'undo')
+#+end_src
+
+** History
+#+begin_src python
+  config.bind('<Alt-a>', 'back')
+  config.bind('<Alt-e>', 'forward')
+#+end_src
+
+** Opening Links
+For opening links use =l= key, and also standar Emacs binding for opening new
+file.
+#+begin_src python
+  config.bind('<Ctrl-l>', 'set-cmd-text -s :open')
+  config.bind('<Alt-l>', 'set-cmd-text -s :open -t')
+  config.bind('<Ctrl-x><Ctrl-f>', 'set-cmd-text -s :open -t')
+  config.bind('<Ctrl-u><Ctrl-x><Ctrl-f>', 'set-cmd-text -s :open')
+#+end_src
+
+* Insert Mode
+Insert mode will be disable completely. All keybindings in normal mode will
+have a modifier key, so it's not needed.
+#+begin_src python
+  c.input.insert_mode.auto_enter = False
+  c.input.insert_mode.plugins = False
+#+end_src
+
+All unbound keys will be forwarded.
+#+begin_src python
+  c.input.forward_unbound_keys = 'all'
+#+end_src
+
+* Command Mode
+** Completion
+Next/previous line in command mode.
+#+begin_src python
+  config.bind('<Ctrl-n>', 'completion-item-focus next', mode='command')
+  config.bind('<Ctrl-p>', 'completion-item-focus prev', mode='command')
+#+end_src
+
+Next/previous history item.
+#+begin_src python
+  config.bind('<Alt-p>', 'command-history-prev', mode='command')
+  config.bind('<Alt-n>', 'command-history-next', mode='command')
+#+end_src
+
+** Searching
+Commands for searching.
+#+begin_src python
+  config.bind('<Ctrl-s>', 'search-next', mode='command')
+  config.bind('<Ctrl-r>', 'search-prev', mode='command')
+  config.bind('<Alt-n>', 'search-next', mode='command')
+  config.bind('<Alt-p>', 'search-prev', mode='command')
+#+end_src
+
+** Escape
+Keybinding for leaving command mode.
+#+begin_src python
+  config.bind('<Ctrl-g>', 'mode-leave', mode='command')
+#+end_src
+
+* Prompt Mode
+Basic keybindigs for promtp mode.
+#+begin_src python
+  config.bind('<Ctrl-p>', 'prompt-item-focus prev', mode='prompt')
+  config.bind('<Ctrl-n>', 'prompt-item-focus next', mode='prompt')
+  config.bind('<Ctrl-g>', 'mode-leave', mode='prompt')
+#+end_src
+
+* Hint Mode
+Cofnigure escape key.
+#+begin_src python
+  config.bind('<Ctrl-g>', 'mode-leave', mode='hint')
+#+end_src
+
+* Caret Mode
+Basic commands for caret mode (i.e., visual mode).
+#+begin_src python
+  config.bind('<Alt-w>', 'yank selection', mode='caret')
+  config.bind('<Ctrl-Space>', 'selection-toggle', mode='caret')
+  config.bind('<Ctrl-g>', 'mode-leave', mode='caret')
+#+end_src
+
+* Other Settings
+Configure external editor.
+#+begin_src python
+  c.editor.command = ['emacsclient', '{}']
+#+end_src
+
+Don't load settings configured in GUI.
+#+begin_src python
+  config.load_autoconfig(False)
+#+end_src
+
+Opens new tabs next to current one.
+#+begin_src python
+  c.tabs.new_position.unrelated = 'next'
+#+end_src
+
+Don't wrap on tabs.
+#+begin_src python
+  c.tabs.wrap = False
+#+end_src
+
+** User Agent
+For privacy reasons, I'm setting a generic user-agent to minimize
+fingerprinting.
+#+begin_src python
+  c.content.headers.user_agent = 'Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0'
+#+end_src
+
+* Theme
+Height of completion menu.
+#+begin_src python
+  c.completion.height = '45%'
+#+end_src
+
+Remove scrollbar from comppletion menu..
+#+begin_src python
+  c.completion.scrollbar.padding = 0
+  c.completion.scrollbar.width = 0
+#+end_src
+
+Only show tabs when switching.
+#+begin_src python
+  c.tabs.show = 'switching'
+  c.tabs.show_switching_delay = 3000
+#+end_src
+
+Configure title format for tabs.
+#+begin_src python
+  c.tabs.title.format = '{perc} {index} {current_title}'
+#+end_src
+
+I am using the themes of [[https://github.com/theova/base16-qutebrowser][base16-qutebrowser]], I have all of them downloaded in
+=./themes/= directory.
+#+begin_src python
+  config.source('./themes/minimal/base16-gruvbox-dark-hard.config.py')
+#+end_src
