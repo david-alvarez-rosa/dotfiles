@@ -135,30 +135,3 @@ Configuration for my work email account.
   Expunge Near
   SyncState *
 #+end_src
-
-* AmazonES
-Configuration for my work email account.
-#+begin_src conf
-  IMAPAccount Amazones
-  Host ballard.amazon.com
-  Port 1993
-  User dalvrosa@amazon.es
-  Pass Txirrintas12*2
-  SSLType IMAPS
-
-  IMAPStore amazones-remote
-  Account   Amazones
-
-  MaildirStore amazones-local
-  Path ~/.local/share/mail/Amazones/
-  Inbox ~/.local/share/mail/Amazones/Inbox
-  SubFolders Verbatim
-
-  Channel amazones
-  Far :amazones-remote:
-  Near :amazones-local:
-  Patterns *
-  Create Near
-  Expunge Near
-  SyncState *
-#+end_src
