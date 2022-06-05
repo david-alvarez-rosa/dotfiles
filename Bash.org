@@ -128,7 +128,7 @@ Use neovim for vim if present.
 #+begin_src bash
   export EDITOR="nvim"
   export TERMINAL="alacritty"
-  export BROWSER="firefox"
+  export BROWSER="qutebrowser"
 #+end_src
 
 Sometimes ssh doesn't work correctly without this.
