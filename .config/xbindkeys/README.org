@@ -12,7 +12,7 @@ independent of the window manager and desktop environment.
 
 This program should be added to the =.xinitrc= file as follows.
 #+begin_src conf :tangle no
-  xbindkeys -f .config/xbindkeys/config
+  xbindkeys -f ~/.config/xbindkeys/config
 #+end_src
 
 * Volume
@@ -133,10 +133,31 @@ Touchpad". The touchpad name can be search with =xinput=.
 Lock the screen using =slock= programm from Suckless, with =Super+l=.
 #+begin_src conf
   "slock"
-    Mod2+Mod4 + l
+    Mod2 + Mod4 + l
+#+end_src
+
+* Screenshot
+For taking screenshots.
+#+begin_src conf
+  "screenshot"
+    Print
+  "screenshot u"
+    Mod4 + Print
+  "screenshot s"
+    Control + Print
+#+end_src
+
+* Application Launcher
+I am using dmenu as application launcher.
+#+begin_src conf
+  "dmenu_run"
+    Mod4 + d
 #+end_src
 
 * TODO More ideas
+:PROPERTIES:
+:header-args: :tangle no
+:END:
 ** From i3
 #+begin_src conf
   # Apagar el ordenador.
@@ -150,17 +171,9 @@ Lock the screen using =slock= programm from Suckless, with =Super+l=.
 
   # Comando para actualizar el correo.
   bindsym $mod+Shift+m exec --no-startup-id "~/.scripts/cronjobs/updateMail '' 'yes'"
-
-  # Comandos para captura de pantalla.
-  bindsym Print                            exec --no-startup-id "~/.scripts/screenshot"
-  bindsym $mod+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
-  bindsym Control+Print              	     exec --no-startup-id "~/.scripts/screenshot s"
   #+end_src
 
 #+begin_src conf
-  # Abrir "dmenu": menú para lanzar programas.
-  bindsym $mod+d exec dmenu_run
-
   # Abrir "rofi": menú para lanzar programas.
   bindsym $mod+r exec rofi -show drun
 #+end_src

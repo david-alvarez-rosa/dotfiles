@@ -40,28 +40,14 @@
   XF86TouchpadToggle
 
 "slock"
-  Mod2+Mod4 + l
+  Mod2 + Mod4 + l
 
-# Apagar el ordenador.
-bindsym $mod+x                  exec --no-startup-id ~/.scripts/i3shutdown
-bindsym $mod+Shift+x            exec --no-startup-id ~/.scripts/i3reboot
+"screenshot"
+  Print
+"screenshot u"
+  Mod4 + Print
+"screenshot s"
+  Control + Print
 
-# Comando para abrir Transmission (para los torrents).
-bindsym $mod+Shift+t exec --no-startup-id "(pgrep -x transmission-da > /dev/null || (transmission-daemon && notify-send 'Transmission daemon' 'Starting transmission daemon...')) && st -t Transmission tremc"
-
-# Comando para actualizar el correo.
-bindsym $mod+Shift+m exec --no-startup-id "~/.scripts/cronjobs/updateMail '' 'yes'"
-
-# Comandos para captura de pantalla.
-bindsym Print                            exec --no-startup-id "~/.scripts/screenshot"
-bindsym $mod+Print                    	 exec --no-startup-id "~/.scripts/screenshot u"
-bindsym Control+Print              	     exec --no-startup-id "~/.scripts/screenshot s"
-
-# Abrir "dmenu": menú para lanzar programas.
-bindsym $mod+d exec dmenu_run
-
-# Abrir "rofi": menú para lanzar programas.
-bindsym $mod+r exec rofi -show drun
-
-"[[ $(nmcli radio wifi) == 'enabled' ]] && nmcli radio wifi off || nmcli radio wifi on"
-  XF86WLAN
+"dmenu_run"
+  Mod4 + d

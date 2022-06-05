@@ -5,7 +5,7 @@
 
 
 saveDir="/home/david/Pictures/Screenshots/"
-fileName=$(date '+%d-%m-%y' | dmenu -p "Screenshot name: ")
+fileName=$(date -I | dmenu -p "Screenshot name: ")
 fullPath=$saveDir$fileName".png"
 
 while [ -f "$fullPath" ]
