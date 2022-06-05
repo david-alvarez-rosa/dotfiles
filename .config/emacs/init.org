@@ -737,7 +737,7 @@ Disable load average.
 ** Font
 Set default font. I'm currently using Hack (in the past I used Inconsolata).
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Hack" :height 110)
+  (set-face-attribute 'default nil :font "Hack" :height 105)
 #+end_src
 
 Add ability to scale font for frame, instead that for an specifically buffer.
@@ -1040,8 +1040,9 @@ Elpy is the Emacs Python Development Environment. It aims to provide an easy to
 install, fully-featured environment for Python development.
 #+begin_src emacs-lisp
   (use-package elpy
-    :init
-    (elpy-enable))
+    ;; :init
+    ;; (elpy-enable)
+    )
 #+end_src
 
 Once installed, Elpy will automatically provide code completion, syntax error

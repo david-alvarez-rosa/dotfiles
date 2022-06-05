@@ -196,7 +196,7 @@
 
 (setq display-time-default-load-average nil)
 
-(set-face-attribute 'default nil :font "Hack" :height 110)
+(set-face-attribute 'default nil :font "Hack" :height 105)
 
 (use-package default-text-scale
   :init (default-text-scale-mode))
@@ -295,8 +295,9 @@
   (treemacs-load-theme "all-the-icons"))
 
 (use-package elpy
-  :init
-  (elpy-enable))
+  ;; :init
+  ;; (elpy-enable)
+  )
 
 (use-package lsp-java)
 
