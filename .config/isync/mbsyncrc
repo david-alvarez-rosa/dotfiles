@@ -1,20 +1,20 @@
-IMAPAccount David
+IMAPAccount Personal
 Host mail.alvarezrosa.com
 User david@alvarezrosa.com
 PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $6}'"
 SSLType IMAPS
 
-IMAPStore david-remote
-Account   David
+IMAPStore personal-remote
+Account   Personal
 
-MaildirStore david-local
-Path ~/.local/share/mail/David/
-Inbox ~/.local/share/mail/David/Inbox
+MaildirStore personal-local
+Path ~/.local/share/mail/Personal/
+Inbox ~/.local/share/mail/Personal/Inbox
 SubFolders Verbatim
 
-Channel david
-Far :david-remote:
-Near :david-local:
+Channel personal
+Far :personal-remote:
+Near :personal-local:
 Patterns *
 Create Near
 Expunge Near
@@ -59,6 +59,52 @@ SubFolders Verbatim
 Channel university
 Far :university-remote:
 Near :university-local:
+Patterns *
+Create Near
+Expunge Near
+SyncState *
+
+IMAPAccount Amazon
+Host ballard.amazon.com
+Port 1993
+User dalvrosa
+PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep ballard.amazon.com | awk '{print $8}'"
+SSLType IMAPS
+
+IMAPStore amazon-remote
+Account   Amazon
+
+MaildirStore amazon-local
+Path ~/.local/share/mail/Amazon/
+Inbox ~/.local/share/mail/Amazon/Inbox
+SubFolders Verbatim
+
+Channel amazon
+Far :amazon-remote:
+Near :amazon-local:
+Patterns *
+Create Near
+Expunge Near
+SyncState *
+
+IMAPAccount Amazones
+Host ballard.amazon.com
+Port 1993
+User dalvrosa@amazon.es
+Pass Txirrintas12*2
+SSLType IMAPS
+
+IMAPStore amazones-remote
+Account   Amazones
+
+MaildirStore amazones-local
+Path ~/.local/share/mail/Amazones/
+Inbox ~/.local/share/mail/Amazones/Inbox
+SubFolders Verbatim
+
+Channel amazones
+Far :amazones-remote:
+Near :amazones-local:
 Patterns *
 Create Near
 Expunge Near

@@ -27,30 +27,30 @@ After the first sync of emails, the =mu= database must be started. It is useful
 to specify personal email addresses (e.g., for not replying to yourself in a
 "Reply All").
 #+begin_src conf :tangle no
-  mu init -m ~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=david.alvarez.rosa@yandex.com --my-address=dalvarez553@alumno.uned.es --my-address=davidolazegues@gmail.com --my-address=davidalvarezrosa@protonmail.com --my-address=david.alvarez.rosa@eestudiant.upc.edu --my-address=david.alvarez.rosa@estudiantat.upc.edu
+  mu init -m ~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=david.alvarez.rosa@yandex.com --my-address=dalvarez553@alumno.uned.es --my-address=dalvrosa@amazon.es
 #+end_src
 
 
-* David
+* Personal
 Configuration for my personal email account.
 #+begin_src conf
-  IMAPAccount David
+  IMAPAccount Personal
   Host mail.alvarezrosa.com
   User david@alvarezrosa.com
   PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $6}'"
   SSLType IMAPS
 
-  IMAPStore david-remote
-  Account   David
+  IMAPStore personal-remote
+  Account   Personal
 
-  MaildirStore david-local
-  Path ~/.local/share/mail/David/
-  Inbox ~/.local/share/mail/David/Inbox
+  MaildirStore personal-local
+  Path ~/.local/share/mail/Personal/
+  Inbox ~/.local/share/mail/Personal/Inbox
   SubFolders Verbatim
 
-  Channel david
-  Far :david-remote:
-  Near :david-local:
+  Channel personal
+  Far :personal-remote:
+  Near :personal-local:
   Patterns *
   Create Near
   Expunge Near
@@ -103,6 +103,60 @@ Configuration for university email account.
   Channel university
   Far :university-remote:
   Near :university-local:
+  Patterns *
+  Create Near
+  Expunge Near
+  SyncState *
+#+end_src
+
+* Amazon
+Configuration for my work email account.
+#+begin_src conf
+  IMAPAccount Amazon
+  Host ballard.amazon.com
+  Port 1993
+  User dalvrosa
+  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep ballard.amazon.com | awk '{print $8}'"
+  SSLType IMAPS
+
+  IMAPStore amazon-remote
+  Account   Amazon
+
+  MaildirStore amazon-local
+  Path ~/.local/share/mail/Amazon/
+  Inbox ~/.local/share/mail/Amazon/Inbox
+  SubFolders Verbatim
+
+  Channel amazon
+  Far :amazon-remote:
+  Near :amazon-local:
+  Patterns *
+  Create Near
+  Expunge Near
+  SyncState *
+#+end_src
+
+* AmazonES
+Configuration for my work email account.
+#+begin_src conf
+  IMAPAccount Amazones
+  Host ballard.amazon.com
+  Port 1993
+  User dalvrosa@amazon.es
+  Pass Txirrintas12*2
+  SSLType IMAPS
+
+  IMAPStore amazones-remote
+  Account   Amazones
+
+  MaildirStore amazones-local
+  Path ~/.local/share/mail/Amazones/
+  Inbox ~/.local/share/mail/Amazones/Inbox
+  SubFolders Verbatim
+
+  Channel amazones
+  Far :amazones-remote:
+  Near :amazones-local:
   Patterns *
   Create Near
   Expunge Near
