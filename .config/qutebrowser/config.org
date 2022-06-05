@@ -50,8 +50,8 @@ For fast scrolling.
 
 Go to end/beginning of page.
 #+begin_src python
-  config.bind('<Alt-Shift-,>', 'scroll-to-perc 0')
-  config.bind('<Alt-Shift-.>', 'scroll-to-perc')
+  config.bind('<Alt-,>', 'scroll-to-perc 0')
+  config.bind('<Alt-.>', 'scroll-to-perc')
 #+end_src
 
 ** Basic Commands
@@ -79,7 +79,7 @@ Enter caret mode.
 
 Open editor.
 #+begin_src python
-  config.bind('<Ctrl-x><Ctrl-e>', 'open-editor')
+  config.bind('<Ctrl-x><Ctrl-e>', 'edit-text')
 #+end_src
 
 Reload page.
@@ -90,7 +90,7 @@ Reload page.
 Zooming.
 #+begin_src python
   config.bind('<Ctrl-+>', 'zoom-in')
-  config.bind('Ctrl-->', 'zoom-out')
+  config.bind('<Ctrl-->', 'zoom-out')
 #+end_src
 
 Yank current site url to clipboard.
@@ -116,8 +116,6 @@ Commands for searching.
 #+begin_src python
   config.bind('<Ctrl-s>', 'set-cmd-text /')
   config.bind('<Ctrl-r>', 'set-cmd-text ?')
-  config.bind('<Alt-n>', 'search-next')
-  config.bind('<Alt-p>', 'search-prev')
 #+end_src
 
 ** Tabs
@@ -182,10 +180,21 @@ All unbound keys will be forwarded.
 
 * Command Mode
 ** Completion
-Next/previous line in command mode.
+Next/previous line in command mode (navigation in general).
 #+begin_src python
-  config.bind('<Ctrl-n>', 'completion-item-focus next', mode='command')
-  config.bind('<Ctrl-p>', 'completion-item-focus prev', mode='command')
+  config.bind('<Ctrl-f>', 'fake-key <Right>', mode='command')
+  config.bind('<Ctrl-b>', 'fake-key <Left>', mode='command')
+  config.bind('<Ctrl-a>', 'fake-key <Home>', mode='command')
+  config.bind('<Ctrl-e>', 'fake-key <End>', mode='command')
+  config.bind('<Ctrl-n>', 'fake-key <Down>', mode='command')
+  config.bind('<Ctrl-p>', 'fake-key <Up>', mode='command')
+  config.bind('<Alt-f>', 'fake-key <Ctrl-Right>', mode='command')
+  config.bind('<Alt-b>', 'fake-key <Ctrl-Left>', mode='command')
+  config.bind('<Ctrl-d>', 'fake-key <Delete>', mode='command')
+  config.bind('<Alt-d>', 'fake-key <Ctrl-Delete>', mode='command')
+  config.bind('<Alt-backspace>', 'fake-key <Ctrl-Backspace>', mode='command')
+  config.bind('<Ctrl-w>', 'fake-key <Ctrl-backspace>', mode='command')
+  config.bind('<Ctrl-y>', 'insert-text {primary}', mode='command')
 #+end_src
 
 Next/previous history item.
@@ -199,8 +208,6 @@ Commands for searching.
 #+begin_src python
   config.bind('<Ctrl-s>', 'search-next', mode='command')
   config.bind('<Ctrl-r>', 'search-prev', mode='command')
-  config.bind('<Alt-n>', 'search-next', mode='command')
-  config.bind('<Alt-p>', 'search-prev', mode='command')
 #+end_src
 
 ** Escape
@@ -218,7 +225,7 @@ Basic keybindigs for promtp mode.
 #+end_src
 
 * Hint Mode
-Cofnigure escape key.
+Configure escape key.
 #+begin_src python
   config.bind('<Ctrl-g>', 'mode-leave', mode='hint')
 #+end_src
@@ -229,6 +236,20 @@ Basic commands for caret mode (i.e., visual mode).
   config.bind('<Alt-w>', 'yank selection', mode='caret')
   config.bind('<Ctrl-Space>', 'selection-toggle', mode='caret')
   config.bind('<Ctrl-g>', 'mode-leave', mode='caret')
+#+end_src
+
+Navigation inside caret mode.
+#+begin_src python
+  config.bind('<Ctrl-f>', 'move-to-next-char', mode='caret')
+  config.bind('<Ctrl-b>', 'move-to-prev-char', mode='caret')
+  config.bind('<Ctrl-p>', 'move-to-prev-line', mode='caret')
+  config.bind('<Ctrl-n>', 'move-to-next-line', mode='caret')
+  config.bind('<Alt-f>', 'move-to-next-word', mode='caret')
+  config.bind('<Alt-b>', 'move-to-prev-word', mode='caret')
+  config.bind('<Ctrl-e>', 'move-to-end-of-line', mode='caret')
+  config.bind('<Ctrl-a>', 'move-to-start-of-line', mode='caret')
+  config.bind('<Alt-.>', 'move-to-end-of-document', mode='caret')
+  config.bind('<Alt-,>', 'move-to-start-of-document', mode='caret')
 #+end_src
 
 * Other Settings
