@@ -42,7 +42,7 @@ signal=10
 color=#f9555f
 
 [battery]
-nterval=10
+interval=10
 color=#E88939
 
 [wifi]
