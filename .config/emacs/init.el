@@ -447,7 +447,7 @@
 
 (setq org-habit-graph-column 55)
 
-(setq org-archive-location "::* Archived Tasks")
+(setq org-archive-location "::* Archived Items")
 
 (use-package toc-org
   :hook (org-mode . toc-org-mode))

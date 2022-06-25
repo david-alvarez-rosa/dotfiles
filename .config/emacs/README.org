@@ -1378,7 +1378,7 @@ graphs (consistency graph overwrites anything else in the buffer).
 ** Archive
 Set default org archive location.
 #+begin_src emacs-lisp
-  (setq org-archive-location "::* Archived Tasks")
+  (setq org-archive-location "::* Archived Items")
 #+end_src
 
 ** Table of Contents
