@@ -21,14 +21,13 @@ Set default font (for window title).
 
 Set initial inner and outer gaps.
 #+begin_src conf
-  gaps inner 6
-  gaps outer 4
+  gaps inner 4
+  gaps outer 2
 #+end_src
 
-Set window border to 1 pixel.
+Set window border to 2 pixel.
 #+begin_src conf
-  new_window 1pixel
-  default_border pixel 1
+  default_border pixel 2
 #+end_src
 
 * Functionality
