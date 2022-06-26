@@ -824,7 +824,10 @@ Company is a text/code completion framework for Emacs. The name stands for
 display completion candidates.
 #+begin_src emacs-lisp
   (use-package company
-    :config (setq company-show-quick-access t)
+    :config
+    (setq company-show-quick-access  t)
+    (setq company-idle-delay 0.0)
+    (setq company-minimum-prefix-length 1)
     :hook (prog-mode . company-mode))
 #+end_src
 
@@ -835,22 +838,42 @@ quickly complete with one of the first 10 candidates.
 
 When the completion candidates are shown, press =<f1>= to display the
 documentation for the selected candidate, or =C-w= to see its source.
+*** Tree Sitter
+Tree-sitter is a parser generator tool and an incremental parsing library. It
+can build a concrete syntax tree for a source file and efficiently update the
+syntax tree as the source file is edited. Watch this [[https://www.thestrangeloop.com/2018/tree-sitter---a-new-parsing-system-for-programming-tools.html][video]] for more
+information.
+#+begin_src emacs-lisp
+  (use-package tree-sitter
+    :config
+    (global-tree-sitter-mode)
+    (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+  (use-package tree-sitter-langs
+    :after tree-sitter)
+#+end_src
 
 *** Language Server Protocol
 The goal of the language server protocol is to allow programming language
 support to be implemented and distributed independently of any given editor.
 #+begin_src emacs-lisp
   (use-package lsp-mode
-    :hook
-    (cc-mode . lsp)
-    (java-mode . lsp))
+    :init
+    (setq lsp-keymap-prefix "C-c l")
+    :config
+    (setq lsp-idle-delay 0.1)
+    :hook ((c-mode-common . lsp)
+           (java-mode . lsp)
+           (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
 
-  (use-package lsp-ui)
+  (use-package lsp-ui :commands lsp-ui-mode)
 #+end_src
 
 Add integration with =treemacs= package.
 #+begin_src emacs-lisp
   (use-package lsp-treemacs
+    :commands lsp-treemacs-errors-list
     :config
     (lsp-treemacs-sync-mode 1))
 #+end_src
@@ -865,7 +888,8 @@ Emacs client/library for Debug Adapter Protocol is a wire protocol for
 communication between client and Debug Server. It's similar to the LSP but
 provides integration with debug server.
 #+begin_src emacs-lisp :tangle no
-  (use-package dap-mode)
+  (use-package dap-mode
+    :after lsp-mode)
 #+end_src
 
 *** Code Formatting
@@ -1104,13 +1128,9 @@ Set =C-c o= for opening code in code.amazon.com website.
 #+end_src
 
 ** C/C++
-Configuration for C/C++ programming languages. Take a look at this websites for
-further customization (especially the one from Reddit):
-- [[https://www.reddit.com/r/emacs/comments/audffp/tip_how_to_use_a_stable_and_fast_environment_to/][How to use a stable and fast environment to develop in C++]]
-- [[https://tuhdo.github.io/c-ide.html][C/C++ Development Environment for Emacs]]
-- [[http://syamajala.github.io/c-ide.html][Emacs as C++ IDE]]
+Configuration for C/C++ programming language. It's mainly done with LSP.
 
-I follow Google C/C++ [[https://google.github.io/styleguide/cppguide.html][coding styles]], who doesn't these days?
+Follow Google C/C++ [[https://google.github.io/styleguide/cppguide.html][coding styles]], who doesn't these days?
 #+begin_src elisp
   (use-package google-c-style
     :hook
