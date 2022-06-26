@@ -3,12 +3,11 @@
 # Update website
 
 sed -i "s/Last\ update:.*/Last\ update: $(date "+%B %d, %Y")/" \
-    ~/Documents/Personal\ Website/resources/license.php
+    ~/Projects/Personal\ Website/resources/license.php
 
-rsync -e "ssh -p 6969" \
-      --progress \
+rsync --progress \
       -v \
       --exclude .git \
       -l \
       -r \
-      ~/Documents/Personal\ Website/ root@alvarezrosa.com:/var/www/html
+      ~/Projects/Personal\ Website/ root@alvarezrosa.com:/var/www/html/personal-website
