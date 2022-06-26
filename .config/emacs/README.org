@@ -1618,9 +1618,10 @@ Open last 7 days email header view with =C-c e= keybinding.
 Customization of header view. I don't use mailing lists that often, so I have
 remove them from headers view.
 #+begin_src emacs-lisp
-  (setq mu4e-headers-fields '((:human-date . 10)
-                              (:flags . 5)
-                              (:from . 20)
+  (setq mu4e-headers-fields '((:human-date . 12)
+                              (:flags . 6)
+                              (:maildir . 18)
+                              (:from-or-to . 22)
                               (:subject)))
 #+end_src
 
@@ -1651,22 +1652,23 @@ launching mu4e for the first time don't ask and just pick the first context
   (setq mu4e-context-policy 'pick-first)
 #+end_src
 
-First, lets define basic configuration for both accounts (contexts in mu4e
+First, lets define basic configuration for all accounts (contexts in mu4e
 terminology). This is, set maildir, my personal email addresses (used for not
 replying to myself) and the behavior for sent messages.
 #+begin_src emacs-lisp
   (setq mu4e-maildir "~/.local/share/mail")
   (setq mu4e-user-mail-address-list '("david@alvarezrosa.com"
-                                      "david.alvarez.rosa@yandex.com"
-                                      "dalvarez553@alumno.uned.es"
-                                      "dalvrosa@amazon.com"))
+                                      "davids@alvarezrosa.com"
+                                      "dalvrosa@amazon.com"
+                                      "david.alvarez.rosa@yandex.com"))
   (setq mu4e-sent-messages-behavior 'sent)
   (setq message-signature-file "~/Documents/Signature.txt")
+  (setq smtpmail-stream-type 'starttls)
+  (setq smtpmail-smtp-service 587)
+  (setq mu4e-change-filenames-when-moving t)
 #+end_src
 
-The actual context accounts. Take into account that I am using the Spam/Junk
-folders the same as refiling, and this is actually incorrect, but I do not use
-any archive, so this is more useful for me.
+The actual context accounts.
 #+begin_src emacs-lisp
   (setq mu4e-contexts
         `( ,(make-mu4e-context
@@ -1678,12 +1680,23 @@ any archive, so this is more useful for me.
                      (mu4e-inbox-folder . "/Personal/Inbox")
                      (mu4e-sent-folder . "/Personal/Sent")
                      (mu4e-drafts-folder . "/Personal/Drafts")
-                     (mu4e-trash-folder . "/Personal/Inbox/Trash")
-                     (mu4e-refile-folder . "/Personal/Inbox/Junk")
-                     (smtpmail-stream-type . starttls)
+                     (mu4e-trash-folder . "/Personal/Trash")
+                     (mu4e-refile-folder . "/Personal/Archive")
                      (user-mail-address . "david@alvarezrosa.com")
-                     (smtpmail-smtp-server . "alvarezrosa.com")
-                     (smtpmail-smtp-service . 587)))
+                     (smtpmail-smtp-server . "mail.alvarezrosa.com")))
+           ,(make-mu4e-context
+             :name "Spam"
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/Spam" (mu4e-message-field msg :maildir))))
+             :vars '(
+                     (mu4e-inbox-folder . "/Spam/Inbox")
+                     (mu4e-sent-folder . "/Spam/Sent")
+                     (mu4e-drafts-folder . "/Spam/Drafts")
+                     (mu4e-trash-folder . "/Spam/Trash")
+                     (mu4e-refile-folder . "/Spam/Archive")
+                     (user-mail-address . "davids@alvarezrosa.com")
+                     (smtpmail-smtp-server . "mail.alvarezrosa.com")))
            ,(make-mu4e-context
              :name "Yandex"
              :match-func (lambda (msg)
@@ -1695,40 +1708,24 @@ any archive, so this is more useful for me.
                      (mu4e-drafts-folder . "/Yandex/Drafts")
                      (mu4e-trash-folder . "/Yandex/Trash")
                      (mu4e-refile-folder . "/Yandex/Spam")
-                     (smtpmail-stream-type . ssl)
                      (user-mail-address . "david.alvarez.rosa@yandex.com")
-                     (smtpmail-smtp-server . "smtp.yandex.com")
-                     (smtpmail-smtp-service . 465)))
-           , (make-mu4e-context
-              :name "University"
-              :match-func (lambda (msg)
-                            (when msg
-                              (string-match-p "^/University" (mu4e-message-field msg :maildir))))
-              :vars '(
-                      (mu4e-inbox-folder . "/University/Inbox")
-                      (mu4e-sent-folder . "/University/Sent Items")
-                      (mu4e-drafts-folder . "/University/Drafts")
-                      (mu4e-trash-folder . "/University/Deleted Items")
-                      (mu4e-refile-folder . "/University/Junk Email")
-                      (smtpmail-stream-type . starttls)
-                      (user-mail-address . "dalvarez553@alumno.uned.es")
-                      (smtpmail-smtp-server . "smtp.office365.com")
-                      (smtpmail-smtp-service . 587)))
-           ,(make-mu4e-context
-             :name "Amazon"
-             :match-func (lambda (msg)
-                           (when msg
-                             (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
-             :vars '(
-                     (mu4e-inbox-folder . "/Amazon/Inbox")
-                     (mu4e-sent-folder . "/Amazon/Sent Items")
-                     (mu4e-drafts-folder . "/Amazon/Drafts")
-                     (mu4e-trash-folder . "/Amazon/Deleted Items")
-                     (mu4e-refile-folder . "/Amazon/Archive")
-                     (smtpmail-stream-type . starttls)
-                     (user-mail-address . "dalvrosa@amazon.com")
-                     (smtpmail-smtp-server . "ballard.amazon.com")
-                     (smtpmail-smtp-service . 1587)))))
+                     (smtpmail-smtp-server . "smtp.yandex.com")))
+           ;; ,(make-mu4e-context
+           ;;   :name "Amazon"
+           ;;   :match-func (lambda (msg)
+           ;;                 (when msg
+           ;;                   (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
+           ;;   :vars '(
+           ;;           (mu4e-inbox-folder . "/Amazon/Inbox")
+           ;;           (mu4e-sent-folder . "/Amazon/Sent Items")
+           ;;           (mu4e-drafts-folder . "/Amazon/Drafts")
+           ;;           (mu4e-trash-folder . "/Amazon/Deleted Items")
+           ;;           (mu4e-refile-folder . "/Amazon/Archive")
+           ;;           (smtpmail-stream-type . starttls)
+           ;;           (user-mail-address . "dalvrosa@amazon.com")
+           ;;           (smtpmail-smtp-server . "ballard.amazon.com")
+           ;;           (smtpmail-smtp-service . 1587)))
+           ))
 #+end_src
 
 ** Bookmarks
@@ -1737,8 +1734,8 @@ Add custom bookmark for all inboxes.
   (add-to-list 'mu4e-bookmarks
                (make-mu4e-bookmark
                 :name "All Inboxes"
-                ;; :query "maildir:/Personal/Inbox OR maildir:/Amazon/Inbox OR maildir:/University/Inbox OR maildir:/Yandex/Inbox"
-                :query "maildir:/Amazon/Inbox"
+                :query "maildir:/Personal/Inbox OR maildir:/Amazon/Inbox OR maildir:/Spam/Inbox OR maildir:/Yandex/Inbox"
+                ;; :query "maildir:/Amazon/Inbox"
                 :key ?i))
 #+end_src
 
