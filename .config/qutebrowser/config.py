@@ -121,7 +121,7 @@ c.tabs.new_position.unrelated = 'next'
 
 c.tabs.wrap = False
 
-c.content.headers.user_agent = 'Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0'
+c.content.headers.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
 
 c.completion.height = '45%'
 
