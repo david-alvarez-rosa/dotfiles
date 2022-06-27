@@ -18,16 +18,15 @@ mailbox pair; multiple replicas of a mailbox can be maintained.
 The =authinfo.gpg= file should be properly configured and encrypted with, at
 least, the following information.
 #+begin_src conf :tangle no
-  machine mail.alvarezrosa.com login david@alvarezrosa.com password "***pass***"
-  machine imap.yandex.com login david.alvarez.rosa@yandex.com password "***pass***"
-  machine outlook.office365.com login dalvarez553@alumno.uned.es password "***pass***"
+  machine mail.alvarezrosa.com login david port 587 password "***pass***"
+  machine smtp.yandex.com login david.alvarez.rosa port 587 password "***pass***"
 #+end_src
 
 After the first sync of emails, the =mu= database must be started. It is useful
 to specify personal email addresses (e.g., for not replying to yourself in a
 "Reply All").
 #+begin_src conf :tangle no
-  mu init -m ~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=david.alvarez.rosa@yandex.com --my-address=dalvarez553@alumno.uned.es --my-address=dalvrosa@amazon.es
+  mu init -m ~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=davids@alvarezrosa.com --my-address=dalvrosa@amazon.com
 #+end_src
 
 
@@ -37,7 +36,7 @@ Configuration for my personal email account.
   IMAPAccount Personal
   Host mail.alvarezrosa.com
   User david@alvarezrosa.com
-  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $6}'"
+  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep alvarezrosa.com | awk '{print $8}'"
   SSLType IMAPS
 
   IMAPStore personal-remote
@@ -52,8 +51,34 @@ Configuration for my personal email account.
   Far :personal-remote:
   Near :personal-local:
   Patterns *
-  Create Near
-  Expunge Near
+  Create Both
+  Expunge Both
+  SyncState *
+#+end_src
+
+* Spam
+Configuration of my spam account.
+#+begin_src conf
+  IMAPAccount Spam
+  Host mail.alvarezrosa.com
+  User davids@alvarezrosa.com
+  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep alvarezrosa.com | awk '{print $8}'"
+  SSLType IMAPS
+
+  IMAPStore spam-remote
+  Account   Spam
+
+  MaildirStore spam-local
+  Path ~/.local/share/mail/Spam/
+  Inbox ~/.local/share/mail/Spam/Inbox
+  SubFolders Verbatim
+
+  Channel spam
+  Far :spam-remote:
+  Near :spam-local:
+  Patterns *
+  Create Both
+  Expunge Both
   SyncState *
 #+end_src
 
@@ -63,7 +88,7 @@ Configuration for Yandex email account.
   IMAPAccount Yandex
   Host imap.yandex.com
   User david.alvarez.rosa@yandex.com
-  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep imap.yandex.com | awk '{print $6}'"
+  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep yandex.com | awk '{print $8}'"
   SSLType IMAPS
 
   IMAPStore yandex-remote
@@ -78,40 +103,14 @@ Configuration for Yandex email account.
   Far :yandex-remote:
   Near :yandex-local:
   Patterns *
-  Create Near
-  Expunge Near
-  SyncState *
-#+end_src
-
-* University
-Configuration for university email account.
-#+begin_src conf
-  IMAPAccount University
-  Host outlook.office365.com
-  User dalvarez553@alumno.uned.es
-  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep outlook.office365.com | awk '{print $6}'"
-  SSLType IMAPS
-
-  IMAPStore university-remote
-  Account University
-
-  MaildirStore university-local
-  Path ~/.local/share/mail/University/
-  Inbox ~/.local/share/mail/University/Inbox
-  SubFolders Verbatim
-
-  Channel university
-  Far :university-remote:
-  Near :university-local:
-  Patterns *
-  Create Near
-  Expunge Near
+  Create Both
+  Expunge Both
   SyncState *
 #+end_src
 
 * Amazon
 Configuration for my work email account.
-#+begin_src conf
+#+begin_src conf :tangle no
   IMAPAccount Amazon
   Host ballard.amazon.com
   Port 1993

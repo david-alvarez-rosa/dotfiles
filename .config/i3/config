@@ -1,10 +1,9 @@
 font pango:mono 11
 
-gaps inner 6
-gaps outer 4
+gaps inner 4
+gaps outer 2
 
-new_window 1pixel
-default_border pixel 1
+default_border pixel 2
 
 set $mod Mod4
 
@@ -87,10 +86,10 @@ bindsym $mod+Control+p exec --no-startup-id "~/.local/bin/i3resize up"
 bindsym $mod+Control+n exec --no-startup-id "~/.local/bin/i3resize down"
 bindsym $mod+Control+b exec --no-startup-id "~/.local/bin/i3resize left"
 
-bindsym $mod+Control+Right exec --no-startup-id "bash ~/.local/bin/i3resize right"
-bindsym $mod+Control+Upc exec --no-startup-id "bash ~/.local/bin/i3resize up"
-bindsym $mod+Control+Down exec --no-startup-id "bash ~/.local/bin/i3resize down"
-bindsym $mod+Control+Left exec --no-startup-id "bash ~/.local/bin/i3resize left"
+bindsym $mod+Control+Right exec --no-startup-id "~/.local/bin/i3resize right"
+bindsym $mod+Control+Upc exec --no-startup-id "~/.local/bin/i3resize up"
+bindsym $mod+Control+Down exec --no-startup-id "~/.local/bin/i3resize down"
+bindsym $mod+Control+Left exec --no-startup-id "~/.local/bin/i3resize left"
 
 bindsym $mod+v split vertical
 bindsym $mod+h split horizontal

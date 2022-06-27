@@ -35,16 +35,18 @@ config.bind('<Ctrl-x><Ctrl-e>', 'edit-text')
 
 config.bind('<Ctrl-x><Ctrl-v>', 'reload')
 
-config.bind('<Ctrl-+>', 'zoom-in')
-config.bind('Ctrl-->', 'zoom-out')
+config.bind('<Ctrl-0>', 'zoom')
+config.bind('<Ctrl-=>', 'zoom-in')
+config.bind('<Ctrl-->', 'zoom-out')
 
-config.bind('<Alt-w>', 'yank')
+config.bind('<Alt-w>', 'yank selection')
+config.bind('<Ctrl-w>', 'yank')
 
 config.bind('<Ctrl-m>', 'spawn mpv {url}')
 config.bind('<Alt-m>', 'hint links spawn mpv {hint-url}')
 
 config.bind('<Ctrl-j>', 'hint all')
-config.bind('<Ctrl-Alt-j>', 'hint all tab')
+config.bind('<Alt-j>', 'hint all tab')
 
 config.bind('<Ctrl-s>', 'set-cmd-text /')
 config.bind('<Ctrl-r>', 'set-cmd-text ?')
@@ -77,19 +79,10 @@ c.input.insert_mode.plugins = False
 
 c.input.forward_unbound_keys = 'all'
 
-config.bind('<Ctrl-f>', 'fake-key <Right>', mode='command')
-config.bind('<Ctrl-b>', 'fake-key <Left>', mode='command')
-config.bind('<Ctrl-a>', 'fake-key <Home>', mode='command')
-config.bind('<Ctrl-e>', 'fake-key <End>', mode='command')
-config.bind('<Ctrl-n>', 'fake-key <Down>', mode='command')
-config.bind('<Ctrl-p>', 'fake-key <Up>', mode='command')
-config.bind('<Alt-f>', 'fake-key <Ctrl-Right>', mode='command')
-config.bind('<Alt-b>', 'fake-key <Ctrl-Left>', mode='command')
-config.bind('<Ctrl-d>', 'fake-key <Delete>', mode='command')
-config.bind('<Alt-d>', 'fake-key <Ctrl-Delete>', mode='command')
-config.bind('<Alt-backspace>', 'fake-key <Ctrl-Backspace>', mode='command')
-config.bind('<Ctrl-w>', 'fake-key <Ctrl-backspace>', mode='command')
-config.bind('<Ctrl-y>', 'insert-text {primary}', mode='command')
+config.bind('<Ctrl-n>', 'completion-item-focus next', mode='command')
+config.bind('<Ctrl-p>', 'completion-item-focus prev', mode='command')
+config.bind('<Ctrl-d>', 'rl-delete-char', mode='command')
+config.bind('<Ctrl-y>', 'fake-key -g <Ctrl-V>', mode='command')
 
 config.bind('<Alt-p>', 'command-history-prev', mode='command')
 config.bind('<Alt-n>', 'command-history-next', mode='command')
@@ -128,7 +121,7 @@ c.tabs.new_position.unrelated = 'next'
 
 c.tabs.wrap = False
 
-c.content.headers.user_agent = 'Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0'
+c.content.headers.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
 
 c.completion.height = '45%'
 
@@ -140,4 +133,4 @@ c.tabs.show_switching_delay = 3000
 
 c.tabs.title.format = '{perc} {index} {current_title}'
 
-config.source('./themes/minimal/base16-gruvbox-dark-hard.config.py')
+config.source('./themes/default/base16-gruvbox-dark-medium.config.py')
