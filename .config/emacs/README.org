@@ -1933,6 +1933,7 @@ subtree:
 Configure Org Msg that automatically writes HTML emails when needed.
 #+begin_src emacs-lisp
   (use-package org-msg
+    :after (mu4e)
     :config
     (setq
      org-msg-options "num:nil ^:{} toc:nil tex:dvipng"
@@ -1947,7 +1948,7 @@ Configure Org Msg that automatically writes HTML emails when needed.
 
   ,#+begin_signature
   =--= \\\\
-  ,*David* \\\\
+  David \\\\
   ,#+end_signature")
     (org-msg-mode))
 #+end_src

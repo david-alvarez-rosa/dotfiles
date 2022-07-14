@@ -726,7 +726,7 @@
 
 (use-package org-mime
   :config
-  (setq org-mime-export-options '(:with-latex imagemagick
+  (setq org-mime-export-options '(:with-latex dvipng
                                   :section-numbers nil
                                   :with-author nil
                                   :with-toc nil))
@@ -735,6 +735,7 @@
                ("C-c M-o" . 'org-mime-htmlize))))
 
 (use-package org-msg
+  :after (mu4e)
   :config
   (setq
    org-msg-options "num:nil ^:{} toc:nil tex:dvipng"
@@ -749,7 +750,7 @@ Regards,
 
 #+begin_signature
 =--= \\\\
-*David* \\\\
+David \\\\
 #+end_signature")
   (org-msg-mode))
 
