@@ -110,7 +110,7 @@ Configuration for Yandex email account.
 
 * Amazon
 Configuration for my work email account.
-#+begin_src conf :tangle no
+#+begin_src conf
   IMAPAccount Amazon
   Host ballard.amazon.com
   Port 1993
@@ -129,8 +129,8 @@ Configuration for my work email account.
   Channel amazon
   Far :amazon-remote:
   Near :amazon-local:
-  Patterns *
-  Create Near
-  Expunge Near
+  Patterns * !Contacts !Journal !Notes !Tasks !Calendar
+  Create Both
+  Expunge Both
   SyncState *
 #+end_src

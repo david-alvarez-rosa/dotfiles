@@ -63,3 +63,26 @@ Patterns *
 Create Both
 Expunge Both
 SyncState *
+
+IMAPAccount Amazon
+Host ballard.amazon.com
+Port 1993
+User dalvrosa
+PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep ballard.amazon.com | awk '{print $8}'"
+SSLType IMAPS
+
+IMAPStore amazon-remote
+Account   Amazon
+
+MaildirStore amazon-local
+Path ~/.local/share/mail/Amazon/
+Inbox ~/.local/share/mail/Amazon/Inbox
+SubFolders Verbatim
+
+Channel amazon
+Far :amazon-remote:
+Near :amazon-local:
+Patterns * !Contacts !Journal !Notes !Tasks !Calendar
+Create Both
+Expunge Both
+SyncState *
