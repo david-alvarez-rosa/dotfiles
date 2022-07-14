@@ -1657,23 +1657,11 @@ remove them from headers view.
                               (:subject)))
 #+end_src
 
-Show complete email address in view mode.
-#+begin_src emacs-lisp
-  (setq mu4e-view-show-addresses t)
-#+end_src
-
 Set get mail command for syncing. And define keybind =C-c u= to just index
 (without updating), this is faster.
 #+begin_src emacs-lisp
   (setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc -a -V")
   (define-key mu4e-headers-mode-map (kbd "C-c u") 'mu4e-update-index)
-#+end_src
-
-This package provides a minor mode that allows using individual faces for the
-columns in mu4e’s email overview.
-#+begin_src emacs-lisp
-  (use-package mu4e-column-faces
-    :config (mu4e-column-faces-mode))
 #+end_src
 
 ** Contexts for Multiple Accounts
@@ -1688,11 +1676,6 @@ First, lets define basic configuration for all accounts (contexts in mu4e
 terminology). This is, set maildir, my personal email addresses (used for not
 replying to myself) and the behavior for sent messages.
 #+begin_src emacs-lisp
-  (setq mu4e-maildir "~/.local/share/mail")
-  (setq mu4e-user-mail-address-list '("david@alvarezrosa.com"
-                                      "davids@alvarezrosa.com"
-                                      "dalvrosa@amazon.com"
-                                      "david.alvarez.rosa@yandex.com"))
   (setq mu4e-sent-messages-behavior 'sent)
   (setq message-signature-file "~/Documents/Signature.txt")
   (setq smtpmail-stream-type 'starttls)
@@ -1764,10 +1747,8 @@ The actual context accounts.
 Add custom bookmark for all inboxes.
 #+begin_src emacs-lisp
   (add-to-list 'mu4e-bookmarks
-               (make-mu4e-bookmark
-                :name "All Inboxes"
+               '(:name "All Inboxes"
                 :query "maildir:/Personal/Inbox OR maildir:/Amazon/Inbox OR maildir:/Spam/Inbox OR maildir:/Yandex/Inbox"
-                ;; :query "maildir:/Amazon/Inbox"
                 :key ?i))
 #+end_src
 
