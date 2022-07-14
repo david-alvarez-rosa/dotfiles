@@ -65,6 +65,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#general-configuration-1][General Configuration]]
   - [[#amazon-specific][Amazon Specific]]
   - [[#cc][C/C++]]
+  - [[#typescript][TypeScript]]
   - [[#python][Python]]
   - [[#java][Java]]
   - [[#web-development][Web Development]]
@@ -1136,6 +1137,14 @@ Follow Google C/C++ [[https://google.github.io/styleguide/cppguide.html][coding 
     :hook
     (c-mode-common . google-set-c-style)
     (c-mode-common . google-make-newline-indent))
+#+end_src
+
+** TypeScript
+Add typescript mode.
+#+begin_src emacs-lisp
+  (use-package typescript-mode
+    :config
+    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode)))
 #+end_src
 
 ** Python
