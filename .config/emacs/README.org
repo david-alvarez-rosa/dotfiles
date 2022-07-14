@@ -296,15 +296,18 @@ usual, and =g= for going back to the complete file listing.
                 ("/" . 'dired-narrow-fuzzy)))
 #+end_src
 
-*** File Backups and Autosaves
-Keep backups and autosaves in the "temp" directory. Take into account that this
-is a dangerous option with respect the disappearance of files, but I always use
-version control for important projects, so that is not a problem for me.
+*** File Backups, Autosaves and Interlock
+Keep backups, autosaves and interlocks in the "temp" directory. Take into
+account that this is a dangerous option with respect the disappearance of
+files, but I always use version control for important projects, so that is not
+a problem for me.
 #+begin_src emacs-lisp
   (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
-  ;; (setq auto-save-file-name-transforms
-  ;;       `((".*" ,temporary-file-directory t)))
+  (setq auto-save-file-name-transforms
+        `((".*" ,temporary-file-directory t)))
+  (setq lock-file-name-transforms
+        `((".*" ,temporary-file-directory t)))
 #+end_src
 
 ** Buffer Management
