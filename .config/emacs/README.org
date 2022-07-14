@@ -1725,22 +1725,20 @@ The actual context accounts.
                      (mu4e-refile-folder . "/Yandex/Spam")
                      (user-mail-address . "david.alvarez.rosa@yandex.com")
                      (smtpmail-smtp-server . "smtp.yandex.com")))
-           ;; ,(make-mu4e-context
-           ;;   :name "Amazon"
-           ;;   :match-func (lambda (msg)
-           ;;                 (when msg
-           ;;                   (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
-           ;;   :vars '(
-           ;;           (mu4e-inbox-folder . "/Amazon/Inbox")
-           ;;           (mu4e-sent-folder . "/Amazon/Sent Items")
-           ;;           (mu4e-drafts-folder . "/Amazon/Drafts")
-           ;;           (mu4e-trash-folder . "/Amazon/Deleted Items")
-           ;;           (mu4e-refile-folder . "/Amazon/Archive")
-           ;;           (smtpmail-stream-type . starttls)
-           ;;           (user-mail-address . "dalvrosa@amazon.com")
-           ;;           (smtpmail-smtp-server . "ballard.amazon.com")
-           ;;           (smtpmail-smtp-service . 1587)))
-           ))
+           ,(make-mu4e-context
+             :name "Amazon"
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
+             :vars '(
+                     (mu4e-inbox-folder . "/Amazon/Inbox")
+                     (mu4e-sent-folder . "/Amazon/Sent Items")
+                     (mu4e-drafts-folder . "/Amazon/Drafts")
+                     (mu4e-trash-folder . "/Amazon/Deleted Items")
+                     (mu4e-refile-folder . "/Amazon/Archive")
+                     (user-mail-address . "dalvrosa@amazon.com")
+                     (smtpmail-smtp-server . "ballard.amazon.com")
+                     (smtpmail-smtp-service . 1587)))))
 #+end_src
 
 ** Bookmarks
@@ -1930,6 +1928,29 @@ subtree:
    :END:
   some text here ...
 #+end_example
+
+*** Org Msg
+Configure Org Msg that automatically writes HTML emails when needed.
+#+begin_src emacs-lisp
+  (use-package org-msg
+    :config
+    (setq
+     org-msg-options "num:nil ^:{} toc:nil tex:dvipng"
+     org-msg-greeting-fmt "\nHi%s,\n\n"
+     org-msg-default-alternatives '((new		. (text))
+                                    (reply-to-html	. (text html))
+                                    (reply-to-text	. (text)))
+     org-msg-convert-citation t
+     org-msg-signature "
+
+  Regards,
+
+  ,#+begin_signature
+  =--= \\\\
+  ,*David* \\\\
+  ,#+end_signature")
+    (org-msg-mode))
+#+end_src
 
 ** Attachment Management
 Configure attachment directory for downloading.

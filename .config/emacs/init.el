@@ -47,8 +47,10 @@
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
-;; (setq auto-save-file-name-transforms
-;;       `((".*" ,temporary-file-directory t)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+(setq lock-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
@@ -382,6 +384,10 @@
   (c-mode-common . google-set-c-style)
   (c-mode-common . google-make-newline-indent))
 
+(use-package typescript-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode)))
+
 (use-package elpy
   ;; :init
   ;; (elpy-enable)
@@ -591,21 +597,11 @@
                             (:from-or-to . 22)
                             (:subject)))
 
-(setq mu4e-view-show-addresses t)
-
 (setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc -a -V")
 (define-key mu4e-headers-mode-map (kbd "C-c u") 'mu4e-update-index)
 
-(use-package mu4e-column-faces
-  :config (mu4e-column-faces-mode))
-
 (setq mu4e-context-policy 'pick-first)
 
-(setq mu4e-maildir "~/.local/share/mail")
-(setq mu4e-user-mail-address-list '("david@alvarezrosa.com"
-                                    "davids@alvarezrosa.com"
-                                    "dalvrosa@amazon.com"
-                                    "david.alvarez.rosa@yandex.com"))
 (setq mu4e-sent-messages-behavior 'sent)
 (setq message-signature-file "~/Documents/Signature.txt")
 (setq smtpmail-stream-type 'starttls)
@@ -652,28 +648,24 @@
                    (mu4e-refile-folder . "/Yandex/Spam")
                    (user-mail-address . "david.alvarez.rosa@yandex.com")
                    (smtpmail-smtp-server . "smtp.yandex.com")))
-         ;; ,(make-mu4e-context
-         ;;   :name "Amazon"
-         ;;   :match-func (lambda (msg)
-         ;;                 (when msg
-         ;;                   (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
-         ;;   :vars '(
-         ;;           (mu4e-inbox-folder . "/Amazon/Inbox")
-         ;;           (mu4e-sent-folder . "/Amazon/Sent Items")
-         ;;           (mu4e-drafts-folder . "/Amazon/Drafts")
-         ;;           (mu4e-trash-folder . "/Amazon/Deleted Items")
-         ;;           (mu4e-refile-folder . "/Amazon/Archive")
-         ;;           (smtpmail-stream-type . starttls)
-         ;;           (user-mail-address . "dalvrosa@amazon.com")
-         ;;           (smtpmail-smtp-server . "ballard.amazon.com")
-         ;;           (smtpmail-smtp-service . 1587)))
-         ))
+         ,(make-mu4e-context
+           :name "Amazon"
+           :match-func (lambda (msg)
+                         (when msg
+                           (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
+           :vars '(
+                   (mu4e-inbox-folder . "/Amazon/Inbox")
+                   (mu4e-sent-folder . "/Amazon/Sent Items")
+                   (mu4e-drafts-folder . "/Amazon/Drafts")
+                   (mu4e-trash-folder . "/Amazon/Deleted Items")
+                   (mu4e-refile-folder . "/Amazon/Archive")
+                   (user-mail-address . "dalvrosa@amazon.com")
+                   (smtpmail-smtp-server . "ballard.amazon.com")
+                   (smtpmail-smtp-service . 1587)))))
 
 (add-to-list 'mu4e-bookmarks
-             (make-mu4e-bookmark
-              :name "All Inboxes"
+             '(:name "All Inboxes"
               :query "maildir:/Personal/Inbox OR maildir:/Amazon/Inbox OR maildir:/Spam/Inbox OR maildir:/Yandex/Inbox"
-              ;; :query "maildir:/Amazon/Inbox"
               :key ?i))
 
 (mu4e t)
@@ -734,13 +726,32 @@
 
 (use-package org-mime
   :config
-  (setq org-mime-export-options '(:with-latex dvipng
+  (setq org-mime-export-options '(:with-latex imagemagick
                                   :section-numbers nil
                                   :with-author nil
                                   :with-toc nil))
   :bind (:map message-mode-map
               (("C-c o" . 'org-mime-edit-mail-in-org-mode)
                ("C-c M-o" . 'org-mime-htmlize))))
+
+(use-package org-msg
+  :config
+  (setq
+   org-msg-options "num:nil ^:{} toc:nil tex:dvipng"
+   org-msg-greeting-fmt "\nHi%s,\n\n"
+   org-msg-default-alternatives '((new		. (text))
+                                  (reply-to-html	. (text html))
+                                  (reply-to-text	. (text)))
+   org-msg-convert-citation t
+   org-msg-signature "
+
+Regards,
+
+#+begin_signature
+=--= \\\\
+*David* \\\\
+#+end_signature")
+  (org-msg-mode))
 
 (setq mu4e-attachment-dir "~/Downloads")
 
