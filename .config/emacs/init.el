@@ -667,7 +667,7 @@
               :key ?i))
 
 (mu4e t)
-(setq mu4e-update-interval (* 10 60))
+(setq mu4e-update-interval (* 30 60))
 
 (setq doom-modeline-mu4e t)
 
