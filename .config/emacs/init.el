@@ -19,7 +19,7 @@
 (setq user-full-name "David Álvarez Rosa")
 (setq user-mail-address "david@alvarezrosa.com")
 
-(load-file "at-work.el")
+(load-file "~/.config/emacs/at-work.el")
 
 (server-start)
 
@@ -486,7 +486,7 @@
                  (org-agenda-skip-function
                   '(org-agenda-skip-entry-if 'deadline 'scheduled))))
           (tags-todo "+REFILE" ((org-agenda-overriding-header "Refile")))
-          (tags-todo "TODO=\"TODO\"+AMAZON"
+          (tags-todo "TODO=\"TODO\"+AMZN"
                      ((org-agenda-overriding-header "Amazon")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if 'deadline 'scheduled))))
