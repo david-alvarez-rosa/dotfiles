@@ -19,6 +19,8 @@
 (setq user-full-name "David Álvarez Rosa")
 (setq user-mail-address "david@alvarezrosa.com")
 
+(load-file "at-work.el")
+
 (server-start)
 
 (setq custom-file "~/.config/emacs/custom.el")
@@ -608,6 +610,9 @@
 (setq smtpmail-smtp-service 587)
 (setq mu4e-change-filenames-when-moving t)
 
+(if dalvrosa/at-work (setq dalvrosa/smtp-server "localhost")
+  (setq dalvrosa/smtp-server "mail.alvarezrosa.com"))
+
 (setq mu4e-contexts
       `( ,(make-mu4e-context
            :name "Personal"
@@ -621,7 +626,7 @@
                    (mu4e-trash-folder . "/Personal/Trash")
                    (mu4e-refile-folder . "/Personal/Archive")
                    (user-mail-address . "david@alvarezrosa.com")
-                   (smtpmail-smtp-server . "mail.alvarezrosa.com")))
+                   (smtpmail-smtp-server . dalvrosa/smtp-server)))
          ,(make-mu4e-context
            :name "Spam"
            :match-func (lambda (msg)
@@ -634,20 +639,7 @@
                    (mu4e-trash-folder . "/Spam/Trash")
                    (mu4e-refile-folder . "/Spam/Archive")
                    (user-mail-address . "davids@alvarezrosa.com")
-                   (smtpmail-smtp-server . "mail.alvarezrosa.com")))
-         ,(make-mu4e-context
-           :name "Yandex"
-           :match-func (lambda (msg)
-                         (when msg
-                           (string-match-p "^/Yandex" (mu4e-message-field msg :maildir))))
-           :vars '(
-                   (mu4e-inbox-folder . "/Yandex/Inbox")
-                   (mu4e-sent-folder . "/Yandex/Sent")
-                   (mu4e-drafts-folder . "/Yandex/Drafts")
-                   (mu4e-trash-folder . "/Yandex/Trash")
-                   (mu4e-refile-folder . "/Yandex/Spam")
-                   (user-mail-address . "david.alvarez.rosa@yandex.com")
-                   (smtpmail-smtp-server . "smtp.yandex.com")))
+                   (smtpmail-smtp-server . dalvrosa/smtp-server)))
          ,(make-mu4e-context
            :name "Amazon"
            :match-func (lambda (msg)
@@ -805,7 +797,9 @@ David \\\\
 
 (global-set-key (kbd "C-c i") 'erc-tls)
 
-(setq erc-server "irc.alvarezrosa.com")
+(if dalvrosa/at-work
+    (setq erc-server "localhost")
+  (setq erc-server "irc.alvarezrosa.com"))
 (setq erc-nick "dalvrosa")
 (setq erc-user-full-name "David Álvarez Rosa")
 (setq erc-prompt-for-password nil)
