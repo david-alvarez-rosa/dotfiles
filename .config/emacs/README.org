@@ -1399,7 +1399,7 @@ Custom agenda views. I use a custom view that contains the following blocks:
                    (org-agenda-skip-function
                     '(org-agenda-skip-entry-if 'deadline 'scheduled))))
             (tags-todo "+REFILE" ((org-agenda-overriding-header "Refile")))
-            (tags-todo "TODO=\"TODO\"+AMAZON"
+            (tags-todo "TODO=\"TODO\"+AMZN"
                        ((org-agenda-overriding-header "Amazon")
                         (org-agenda-skip-function
                          '(org-agenda-skip-entry-if 'deadline 'scheduled))))
@@ -1755,7 +1755,7 @@ Let's init mu4e on the background when launching Emacs and set up automatic
 email updates every 10 minutes.
 #+begin_src emacs-lisp
   (mu4e t)
-  (setq mu4e-update-interval (* 10 60))
+  (setq mu4e-update-interval (* 30 60))
 #+end_src
 
 Use mu4e alert package for displaying unread email in modeline and enable

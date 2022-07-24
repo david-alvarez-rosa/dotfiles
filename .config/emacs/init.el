@@ -478,7 +478,7 @@
                  (org-agenda-skip-function
                   '(org-agenda-skip-entry-if 'deadline 'scheduled))))
           (tags-todo "+REFILE" ((org-agenda-overriding-header "Refile")))
-          (tags-todo "TODO=\"TODO\"+AMAZON"
+          (tags-todo "TODO=\"TODO\"+AMZN"
                      ((org-agenda-overriding-header "Amazon")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if 'deadline 'scheduled))))
@@ -669,7 +669,7 @@
               :key ?i))
 
 (mu4e t)
-(setq mu4e-update-interval (* 10 60))
+(setq mu4e-update-interval (* 30 60))
 
 (setq doom-modeline-mu4e t)
 
