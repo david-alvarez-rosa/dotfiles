@@ -203,6 +203,11 @@ changed accordingly when using =mu4e= contexts (see configuration below).
   (setq user-mail-address "david@alvarezrosa.com")
 #+end_src
 
+Load file containing =dalvrosa/at-work= bool.
+#+begin_src emacs-lisp
+  (load-file "at-work.el")
+#+end_src
+
 ** Server Mode
 Start the Emacs server mode from this instance, so that all =emacsclient= calls
 are routed here. This way, files can be sent to the current Emacs instance,
@@ -1683,6 +1688,18 @@ replying to myself) and the behavior for sent messages.
   (setq mu4e-change-filenames-when-moving t)
 #+end_src
 
+Define some variables depending if I'm at work. I'm using an SSH tunnel to
+bypass block in 587 port.
+#+begin_src emacs-lisp
+  (if dalvrosa/at-work (setq dalvrosa/smtp-server "localhost")
+    (setq dalvrosa/smtp-server "mail.alvarezrosa.com"))
+#+end_src
+
+The SSH tunnel can be set as:
+#+begin_src shell :tangle no
+  sudo ssh -NTfL 587:localhost:587 root@alvarezrosa.com
+#+end_src
+
 The actual context accounts.
 #+begin_src emacs-lisp
   (setq mu4e-contexts
@@ -1698,7 +1715,7 @@ The actual context accounts.
                      (mu4e-trash-folder . "/Personal/Trash")
                      (mu4e-refile-folder . "/Personal/Archive")
                      (user-mail-address . "david@alvarezrosa.com")
-                     (smtpmail-smtp-server . "mail.alvarezrosa.com")))
+                     (smtpmail-smtp-server . dalvrosa/smtp-server)))
            ,(make-mu4e-context
              :name "Spam"
              :match-func (lambda (msg)
@@ -1711,20 +1728,7 @@ The actual context accounts.
                      (mu4e-trash-folder . "/Spam/Trash")
                      (mu4e-refile-folder . "/Spam/Archive")
                      (user-mail-address . "davids@alvarezrosa.com")
-                     (smtpmail-smtp-server . "mail.alvarezrosa.com")))
-           ,(make-mu4e-context
-             :name "Yandex"
-             :match-func (lambda (msg)
-                           (when msg
-                             (string-match-p "^/Yandex" (mu4e-message-field msg :maildir))))
-             :vars '(
-                     (mu4e-inbox-folder . "/Yandex/Inbox")
-                     (mu4e-sent-folder . "/Yandex/Sent")
-                     (mu4e-drafts-folder . "/Yandex/Drafts")
-                     (mu4e-trash-folder . "/Yandex/Trash")
-                     (mu4e-refile-folder . "/Yandex/Spam")
-                     (user-mail-address . "david.alvarez.rosa@yandex.com")
-                     (smtpmail-smtp-server . "smtp.yandex.com")))
+                     (smtpmail-smtp-server . dalvrosa/smtp-server)))
            ,(make-mu4e-context
              :name "Amazon"
              :match-func (lambda (msg)
@@ -2044,11 +2048,13 @@ the ERC client, with TLS support, to =C-c i= ("i" for IRC).
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c i") 'erc-tls)
 
-  (setq erc-server "irc.alvarezrosa.com")
+  (if dalvrosa/at-work
+      (setq erc-server "localhost")
+    (setq erc-server "irc.alvarezrosa.com"))
   (setq erc-nick "dalvrosa")
   (setq erc-user-full-name "David Álvarez Rosa")
   (setq erc-prompt-for-password nil)
-  #+end_src
+#+end_src
 
 If you are an IRC user, you may find me out there. I usually hang out in
 libera.chat these days (after the freenode management debacle) with the
@@ -2061,6 +2067,13 @@ irc.alvarezrosa.com, so I do most of the configuration there. The line added to
 this file looks as follows:
 #+begin_src conf :tangle no
   machine irc.alvarezrosa.com port 6697 login dalvrosa password david:***pass***
+  machine localhost port 6697 login dalvrosa password david:***pass***
+#+end_src
+
+I'm using SSH tunneling to bypass port 6697 block. This can be done with the
+following command.
+#+begin_src shell :tangle no
+  ssh -NTfL 6697:localhost:6697 root@alvarezrosa.com
 #+end_src
 
 After quiting server, query or parting a channel I want the buffer to be killed
