@@ -70,7 +70,9 @@ config.bind('<Alt-a>', 'back')
 config.bind('<Alt-e>', 'forward')
 
 config.bind('<Ctrl-l>', 'set-cmd-text -s :open')
+config.bind('<Ctrl-Shift-l>', 'set-cmd-text -s :open {url:pretty}')
 config.bind('<Alt-l>', 'set-cmd-text -s :open -t')
+config.bind('<Alt-Shift-l>', 'set-cmd-text -s :open -t {url:pretty}')
 config.bind('<Ctrl-x><Ctrl-f>', 'set-cmd-text -s :open -t')
 config.bind('<Ctrl-u><Ctrl-x><Ctrl-f>', 'set-cmd-text -s :open')
 
