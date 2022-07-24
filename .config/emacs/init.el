@@ -19,7 +19,7 @@
 (setq user-full-name "David Álvarez Rosa")
 (setq user-mail-address "david@alvarezrosa.com")
 
-(load-file "at-work.el")
+(load-file "~/.config/emacs/at-work.el")
 
 (server-start)
 
@@ -610,8 +610,13 @@
 (setq smtpmail-smtp-service 587)
 (setq mu4e-change-filenames-when-moving t)
 
-(if dalvrosa/at-work (setq dalvrosa/smtp-server "localhost")
-  (setq dalvrosa/smtp-server "mail.alvarezrosa.com"))
+(if dalvrosa/at-work
+    (progn
+      (setq dalvrosa/smtp-server "localhost")
+     (setq dalvrosa/smtp-port 1587))
+  (progn
+    (setq dalvrosa/smtp-server "mail.alvarezrosa.com")
+   (setq dalvrosa/smtp-port 587)))
 
 (setq mu4e-contexts
       `( ,(make-mu4e-context
@@ -619,27 +624,29 @@
            :match-func (lambda (msg)
                          (when msg
                            (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
-           :vars '(
+           :vars `(
                    (mu4e-inbox-folder . "/Personal/Inbox")
                    (mu4e-sent-folder . "/Personal/Sent")
                    (mu4e-drafts-folder . "/Personal/Drafts")
                    (mu4e-trash-folder . "/Personal/Trash")
                    (mu4e-refile-folder . "/Personal/Archive")
                    (user-mail-address . "david@alvarezrosa.com")
-                   (smtpmail-smtp-server . dalvrosa/smtp-server)))
+                   (smtpmail-smtp-service . ,dalvrosa/smtp-port)
+                   (smtpmail-smtp-server . ,dalvrosa/smtp-server)))
          ,(make-mu4e-context
            :name "Spam"
            :match-func (lambda (msg)
                          (when msg
                            (string-match-p "^/Spam" (mu4e-message-field msg :maildir))))
-           :vars '(
+           :vars `(
                    (mu4e-inbox-folder . "/Spam/Inbox")
                    (mu4e-sent-folder . "/Spam/Sent")
                    (mu4e-drafts-folder . "/Spam/Drafts")
                    (mu4e-trash-folder . "/Spam/Trash")
                    (mu4e-refile-folder . "/Spam/Archive")
                    (user-mail-address . "davids@alvarezrosa.com")
-                   (smtpmail-smtp-server . dalvrosa/smtp-server)))
+                   (smtpmail-smtp-service . ,dalvrosa/smtp-port)
+                   (smtpmail-smtp-server . ,dalvrosa/smtp-server)))
          ,(make-mu4e-context
            :name "Amazon"
            :match-func (lambda (msg)

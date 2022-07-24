@@ -205,7 +205,7 @@ changed accordingly when using =mu4e= contexts (see configuration below).
 
 Load file containing =dalvrosa/at-work= bool.
 #+begin_src emacs-lisp
-  (load-file "at-work.el")
+  (load-file "~/.config/emacs/at-work.el")
 #+end_src
 
 ** Server Mode
@@ -1691,13 +1691,18 @@ replying to myself) and the behavior for sent messages.
 Define some variables depending if I'm at work. I'm using an SSH tunnel to
 bypass block in 587 port.
 #+begin_src emacs-lisp
-  (if dalvrosa/at-work (setq dalvrosa/smtp-server "localhost")
-    (setq dalvrosa/smtp-server "mail.alvarezrosa.com"))
+  (if dalvrosa/at-work
+      (progn
+        (setq dalvrosa/smtp-server "localhost")
+        (setq dalvrosa/smtp-port 1587))
+    (progn
+      (setq dalvrosa/smtp-server "mail.alvarezrosa.com")
+      (setq dalvrosa/smtp-port 587)))
 #+end_src
 
-The SSH tunnel can be set as:
+The SSH tunnel should be started.
 #+begin_src shell :tangle no
-  sudo ssh -NTfL 587:localhost:587 root@alvarezrosa.com
+  ssh -NTfL 1587:localhost:1587 root@alvarezrosa.com
 #+end_src
 
 The actual context accounts.
@@ -1708,27 +1713,29 @@ The actual context accounts.
              :match-func (lambda (msg)
                            (when msg
                              (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
-             :vars '(
+             :vars `(
                      (mu4e-inbox-folder . "/Personal/Inbox")
                      (mu4e-sent-folder . "/Personal/Sent")
                      (mu4e-drafts-folder . "/Personal/Drafts")
                      (mu4e-trash-folder . "/Personal/Trash")
                      (mu4e-refile-folder . "/Personal/Archive")
                      (user-mail-address . "david@alvarezrosa.com")
-                     (smtpmail-smtp-server . dalvrosa/smtp-server)))
+                     (smtpmail-smtp-service . ,dalvrosa/smtp-port)
+                     (smtpmail-smtp-server . ,dalvrosa/smtp-server)))
            ,(make-mu4e-context
              :name "Spam"
              :match-func (lambda (msg)
                            (when msg
                              (string-match-p "^/Spam" (mu4e-message-field msg :maildir))))
-             :vars '(
+             :vars `(
                      (mu4e-inbox-folder . "/Spam/Inbox")
                      (mu4e-sent-folder . "/Spam/Sent")
                      (mu4e-drafts-folder . "/Spam/Drafts")
                      (mu4e-trash-folder . "/Spam/Trash")
                      (mu4e-refile-folder . "/Spam/Archive")
                      (user-mail-address . "davids@alvarezrosa.com")
-                     (smtpmail-smtp-server . dalvrosa/smtp-server)))
+                     (smtpmail-smtp-service . ,dalvrosa/smtp-port)
+                     (smtpmail-smtp-server . ,dalvrosa/smtp-server)))
            ,(make-mu4e-context
              :name "Amazon"
              :match-func (lambda (msg)
