@@ -291,6 +291,12 @@
 (use-package magit
   :bind ("C-c g" . 'magit-status))
 
+(use-package git-link
+  :config
+  (global-set-key (kbd "C-c w l") 'git-link)
+  (global-set-key (kbd "C-c w c") 'git-link-commit)
+  (global-set-key (kbd "C-c w h") 'git-link-homepage))
+
 (use-package yasnippet
   :config
   (use-package yasnippet-snippets)

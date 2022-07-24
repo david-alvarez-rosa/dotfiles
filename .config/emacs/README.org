@@ -1013,6 +1013,24 @@ mapped to a non-command-line interface. Magit is both faster and more intuitive
 than either the command line or any GUI and these holds for both Git beginners
 and experts alike.
 
+*** Git Link
+Interactive Emacs functions that create URLs for files and commits in
+GitHub/Bitbucket/GitLab/... repositories.
+
+- =git-link= returns the URL for the current buffer's file location at the
+  current line number or active region.
+- =git-link-commit= returns the URL for the commit at point.
+- =git-link-homepage= returns the URL for the repository's homepage.
+
+URLs are added to the kill ring.
+#+begin_src emacs-lisp
+  (use-package git-link
+    :config
+    (global-set-key (kbd "C-c w l") 'git-link)
+    (global-set-key (kbd "C-c w c") 'git-link-commit)
+    (global-set-key (kbd "C-c w h") 'git-link-homepage))
+#+end_src
+
 *** Snippets
 YASnippets is a template system for Emacs. It allows you to type an
 abbreviation and automatically expand it into function templates.
