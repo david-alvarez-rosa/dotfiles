@@ -452,6 +452,34 @@ This is relevant for filling.
   (setq-default sentence-end-double-space nil)
 #+end_src
 
+Custom unfill function with =M-Q=.
+#+begin_src emacs-lisp
+  (defun dalvrosa/unfill-paragraph (&optional region)
+    "Takes a multi-line paragraph and makes it into a single line of text."
+    (interactive (progn (barf-if-buffer-read-only) '(t)))
+    (let ((fill-column (point-max))
+          ;; This would override `fill-column' if it's an integer.
+          (emacs-lisp-docstring-fill-column t))
+      (fill-paragraph nil region)))
+  (define-key global-map (kbd "M-Q") 'dalvrosa/unfill-paragraph)
+#+end_src
+
+Custom function for killing region after unfill with =M-W=.
+#+begin_src emacs-lisp
+  (defun dalvrosa/unfill-paragraph-and-kill (beg end)
+    "Save the current region to the kill ring after unfilling it."
+    (setq dalvrosa/previous-major-mode major-mode)
+    (interactive "r")
+    (copy-region-as-kill beg end)
+    (with-temp-buffer
+      (funcall dalvrosa/previous-major-mode)
+      (yank)
+      (dalvrosa/unfill-paragraph (mark-whole-buffer))
+      (mark-whole-buffer)
+      (kill-region (point-min) (point-max))))
+  (define-key global-map (kbd "M-W") 'dalvrosa/unfill-paragraph-and-kill)
+#+end_src
+
 ** Subword Mode
 Emacs treats camelCase strings as a single word by default, change this
 behaviour.
