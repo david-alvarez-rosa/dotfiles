@@ -103,6 +103,28 @@
 
 (setq-default sentence-end-double-space nil)
 
+(defun dalvrosa/unfill-paragraph (&optional region)
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive (progn (barf-if-buffer-read-only) '(t)))
+  (let ((fill-column (point-max))
+        ;; This would override `fill-column' if it's an integer.
+        (emacs-lisp-docstring-fill-column t))
+    (fill-paragraph nil region)))
+(define-key global-map (kbd "M-Q") 'dalvrosa/unfill-paragraph)
+
+(defun dalvrosa/unfill-paragraph-and-kill (beg end)
+  "Save the current region to the kill ring after unfilling it."
+  (setq dalvrosa/previous-major-mode major-mode)
+  (interactive "r")
+  (copy-region-as-kill beg end)
+  (with-temp-buffer
+    (funcall dalvrosa/previous-major-mode)
+    (yank)
+    (dalvrosa/unfill-paragraph (mark-whole-buffer))
+    (mark-whole-buffer)
+    (kill-region (point-min) (point-max))))
+(define-key global-map (kbd "M-W") 'dalvrosa/unfill-paragraph-and-kill)
+
 (global-subword-mode 1)
 
 (setq shift-select-mode nil)
@@ -605,8 +627,26 @@
                             (:from-or-to . 22)
                             (:subject)))
 
-(setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc -a -V")
-(define-key mu4e-headers-mode-map (kbd "C-c u") 'mu4e-update-index)
+(if dalvrosa/at-work
+    (setq dalvrosa/mailboxes "personal spam amazon")
+  (setq dalvrosa/mailboxes "personal spam"))
+(setq mu4e-get-mail-command
+      (concat "mbsync -c ~/.config/isync/mbsyncrc -V " dalvrosa/mailboxes))
+
+(defun dalvrosa/remove-nth-element (nth list)
+  (if (zerop nth) (cdr list)
+    (let ((last (nthcdr (1- nth) list)))
+      (setcdr last (cddr last))
+      list)))
+(setq mu4e-marks (dalvrosa/remove-nth-element 5 mu4e-marks))
+(add-to-list 'mu4e-marks
+             '(trash
+               :char ("d" . "▼")
+               :prompt "dtrash"
+               :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
+               :action (lambda (docid msg target)
+                         (mu4e~proc-move docid
+                                         (mu4e~mark-check-target target) "-Nu"))))
 
 (setq mu4e-context-policy 'pick-first)
 
@@ -619,10 +659,10 @@
 (if dalvrosa/at-work
     (progn
       (setq dalvrosa/smtp-server "localhost")
-     (setq dalvrosa/smtp-port 1587))
+      (setq dalvrosa/smtp-port 1587))
   (progn
     (setq dalvrosa/smtp-server "mail.alvarezrosa.com")
-   (setq dalvrosa/smtp-port 587)))
+    (setq dalvrosa/smtp-port 587)))
 
 (setq mu4e-contexts
       `( ,(make-mu4e-context
@@ -670,8 +710,16 @@
 
 (add-to-list 'mu4e-bookmarks
              '(:name "All Inboxes"
-              :query "maildir:/Personal/Inbox OR maildir:/Amazon/Inbox OR maildir:/Spam/Inbox OR maildir:/Yandex/Inbox"
+              :query "maildir:/Personal/Inbox OR maildir:/Amazon/Inbox OR maildir:/Spam/Inbox"
               :key ?i))
+
+(defun dalvrosa/mu4e-update-mail-and-index ()
+  (interactive)
+  (mu4e-update-mail-and-index t))
+
+(define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
+(define-key mu4e-main-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index)
+(define-key mu4e-headers-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index)
 
 (mu4e t)
 (setq mu4e-update-interval (* 30 60))
@@ -744,19 +792,9 @@
   :config
   (setq
    org-msg-options "num:nil ^:{} toc:nil tex:dvipng"
-   org-msg-greeting-fmt "\nHi%s,\n\n"
-   org-msg-default-alternatives '((new		. (text))
-                                  (reply-to-html	. (text html))
-                                  (reply-to-text	. (text)))
-   org-msg-convert-citation t
-   org-msg-signature "
-
-Regards,
-
-#+begin_signature
-=--= \\\\
-David \\\\
-#+end_signature")
+   org-msg-default-alternatives '((new . (text))
+                                  (reply-to-html . (text html))
+                                  (reply-to-text . (text))))
   (org-msg-mode))
 
 (setq mu4e-attachment-dir "~/Downloads")
