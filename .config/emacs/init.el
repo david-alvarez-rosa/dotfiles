@@ -645,8 +645,8 @@
                :prompt "dtrash"
                :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
                :action (lambda (docid msg target)
-                         (mu4e~proc-move docid
-                                         (mu4e~mark-check-target target) "-Nu"))))
+                         (mu4e--server-move docid
+                                         (mu4e--mark-check-target target) "-N+S-u"))))
 
 (setq mu4e-context-policy 'pick-first)
 
@@ -718,8 +718,7 @@
   (mu4e-update-mail-and-index t))
 
 (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
-(define-key mu4e-main-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index)
-(define-key mu4e-headers-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index)
+(define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index)
 
 (mu4e t)
 (setq mu4e-update-interval (* 30 60))

@@ -1733,8 +1733,8 @@ read.
                  :prompt "dtrash"
                  :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
                  :action (lambda (docid msg target)
-                           (mu4e~proc-move docid
-                                           (mu4e~mark-check-target target) "-Nu"))))
+                           (mu4e--server-move docid
+                                           (mu4e--mark-check-target target) "-N+S-u"))))
 #+end_src
 
 ** Contexts for Multiple Accounts
@@ -1837,8 +1837,7 @@ Redefine update function to always run update command in the background.
     (mu4e-update-mail-and-index t))
 
   (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
-  (define-key mu4e-main-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index)
-  (define-key mu4e-headers-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index)
+  (define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index)
 #+end_src
 
 Let's init mu4e on the background when launching Emacs and set up automatic
