@@ -721,7 +721,7 @@
 (define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index)
 
 (mu4e t)
-(setq mu4e-update-interval (* 30 60))
+(setq mu4e-update-interval (* 4 60 60))
 
 (setq doom-modeline-mu4e t)
 
@@ -790,7 +790,7 @@
   :after (mu4e)
   :config
   (setq
-   org-msg-options "num:nil ^:{} toc:nil tex:dvipng"
+   org-msg-options "html-postamble:nil num:nil ^:{} toc:nil author:nil email:nil tex:dvipng"
    org-msg-default-alternatives '((new . (text))
                                   (reply-to-html . (text html))
                                   (reply-to-text . (text))))

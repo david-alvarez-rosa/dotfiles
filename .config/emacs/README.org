@@ -1841,10 +1841,10 @@ Redefine update function to always run update command in the background.
 #+end_src
 
 Let's init mu4e on the background when launching Emacs and set up automatic
-email updates every 10 minutes.
+email updates every 4 hours.
 #+begin_src emacs-lisp
   (mu4e t)
-  (setq mu4e-update-interval (* 30 60))
+  (setq mu4e-update-interval (* 4 60 60))
 #+end_src
 
 Use mu4e alert package for displaying unread email in modeline and enable
@@ -2025,7 +2025,7 @@ Configure Org Msg that automatically writes HTML emails when needed.
     :after (mu4e)
     :config
     (setq
-     org-msg-options "num:nil ^:{} toc:nil tex:dvipng"
+     org-msg-options "html-postamble:nil num:nil ^:{} toc:nil author:nil email:nil tex:dvipng"
      org-msg-default-alternatives '((new . (text))
                                     (reply-to-html . (text html))
                                     (reply-to-text . (text))))
