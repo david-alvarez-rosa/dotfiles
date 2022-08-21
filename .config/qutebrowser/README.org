@@ -279,6 +279,7 @@ fingerprinting.
 Height of completion menu.
 #+begin_src python
   c.completion.height = '45%'
+c.window.hide_decoration = True
 #+end_src
 
 Remove scrollbar from comppletion menu..
