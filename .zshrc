@@ -160,14 +160,5 @@ export XDG_DATA_HOME="$HOME/.local/share/"
 
 
 ulimit -S -n 2048
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-
-
-
-
-
-
-
-export CPATH=/opt/homebrew/include
-export LIBRARY_PATH=/opt/homebrew/lib
-export DYLD_LIBRARY_PATH=/opt/homebrew/lib
+# export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+# export PATH=/opt/homebrew/bin:$PATH
