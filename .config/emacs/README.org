@@ -1356,13 +1356,14 @@ Custom todo keywords. I use them as follows:
   - CANCELLED: task is cancelled.
 #+begin_src emacs-lisp
   (setq org-todo-keywords
-        '((sequence "TODO(t!)" "WAIT(w@/!)" "NEXT(n!)" "|"
-                    "DONE(d!)" "CANCELLED(c@)")))
+        '((sequence "TODO(t!)" "WAIT(w!)" "NEXT(n!)" "|"
+                    "DONE(d!)" "CANCELLED(c!)")))
 #+end_src
 
 For tracking TODO state changes, the meaning of the characters is as follows
 (check [[https://orgmode.org/manual/Tracking-TODO-state-changes.html][Tracking TODO state changes]] for more information): ! for timestamp and @
-for note with timestamp.
+for note with timestamp. I'm not using automatic notes anymore, those can be
+recovered by prefixing state change with =C-u=.
 
 Log state changes into drawer.
 #+begin_src emacs-lisp

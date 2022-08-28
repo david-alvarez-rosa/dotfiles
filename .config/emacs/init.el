@@ -465,8 +465,8 @@
 (global-set-key (kbd "C-c j") 'org-clock-goto)
 
 (setq org-todo-keywords
-      '((sequence "TODO(t!)" "WAIT(w@/!)" "NEXT(n!)" "|"
-                  "DONE(d!)" "CANCELLED(c@)")))
+      '((sequence "TODO(t!)" "WAIT(w!)" "NEXT(n!)" "|"
+                  "DONE(d!)" "CANCELLED(c!)")))
 
 (setq org-log-into-drawer t)
 
