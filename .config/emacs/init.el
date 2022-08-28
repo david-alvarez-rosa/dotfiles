@@ -88,9 +88,15 @@
 
 (global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
 
-(windmove-default-keybindings)
+(global-set-key (kbd "s-f") 'windmove-right)
+(global-set-key (kbd "s-b") 'windmove-left)
+(global-set-key (kbd "s-n") 'windmove-down)
+(global-set-key (kbd "s-p") 'windmove-up)
 
-(windmove-swap-states-default-keybindings '(super meta))
+(global-set-key (kbd "s-F") 'windmove-swap-states-right)
+(global-set-key (kbd "s-B") 'windmove-swap-states-left)
+(global-set-key (kbd "s-N") 'windmove-swap-states-down)
+(global-set-key (kbd "s-P") 'windmove-swap-states-up)
 
 (winner-mode 1)
 
@@ -186,6 +192,9 @@
 
 (setq ispell-dictionary "english")
 
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
 (use-package sudo-edit)
 
 (use-package doom-themes
@@ -270,6 +279,10 @@
 
 (use-package tree-sitter-langs
   :after tree-sitter)
+
+(use-package vterm
+  :config
+  (setq vterm-max-scrollback 10000))
 
 (use-package lsp-mode
   :init
@@ -414,6 +427,8 @@
   (c-mode-common . google-set-c-style)
   (c-mode-common . google-make-newline-indent))
 
+(use-package cmake-mode)
+
 (use-package typescript-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode)))
@@ -502,7 +517,7 @@
 
 (setq org-agenda-custom-commands
       '((" " "Block Agenda"
-         ((agenda "" ((org-agenda-span 3)))
+         ((agenda "" ((org-agenda-span 1)))
           (todo "NEXT"
                 ((org-agenda-overriding-header "Next Actions")
                  (org-agenda-skip-function

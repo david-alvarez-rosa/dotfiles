@@ -392,21 +392,23 @@ New bind for killing buffer *and* window at the same time. To do this press
 
 *** Wind Move
 Is built into Emacs (since version 21). It lets you move point from window to
-window using =Shift= and the arrow keys. This is easier to type than =C-x o=
-and, for some users, may be more intuitive.
+window using a direction. This is easier to type than =C-x o= and, for some
+users, may be more intuitive. I have configured the movement between windos
+with Super and standard Emacs keys.
 #+begin_src emacs-lisp
-  (windmove-default-keybindings)
+  (global-set-key (kbd "s-f") 'windmove-right)
+  (global-set-key (kbd "s-b") 'windmove-left)
+  (global-set-key (kbd "s-n") 'windmove-down)
+  (global-set-key (kbd "s-p") 'windmove-up)
 #+end_src
 
-Also set up keybinding for directional window swap states. Keys are bound to
-commands that swap the states of the selected window with the window in the
-specified direction.
+Using shift modifier on top will swap windows instead.
 #+begin_src emacs-lisp
-  (windmove-swap-states-default-keybindings '(super meta))
+  (global-set-key (kbd "s-F") 'windmove-swap-states-right)
+  (global-set-key (kbd "s-B") 'windmove-swap-states-left)
+  (global-set-key (kbd "s-N") 'windmove-swap-states-down)
+  (global-set-key (kbd "s-P") 'windmove-swap-states-up)
 #+end_src
-
-I am setting the modifier keys for swaping to =super-meta= because the default
-=shift-super= are already bound by my i3 (window manager) configuration.
 
 *** Winner Mode
 Global minor mode that allows to “undo” and “redo” changes in window
@@ -699,7 +701,11 @@ asks you what to do, here are some valid responses (see them all with =?=):
 It is also useful the use spelling *on the fly* with =flyspell-mode=, that
 highlights all misspelled words (the variant =flyspell-prog-mode= is for
 programming language, where spelling should occur only for comments and
-strings).
+strings). I have enabled it by default.
+#+begin_src elisp
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+#+end_src
 
 ** Sudo Edit
 Utility for opening files with =sudo= (call the =sudo-edit= function).
@@ -888,6 +894,17 @@ information.
 
   (use-package tree-sitter-langs
     :after tree-sitter)
+#+end_src
+
+*** Terminal Emulator
+Emacs-libvterm (vterm) is fully-fledged terminal emulator inside GNU Emacs
+based on libvterm, a C library. As a result of using compiled code (instead of
+elisp), emacs-libvterm is fully capable, fast, and it can seamlessly handle
+large outputs.
+#+begin_src elisp
+  (use-package vterm
+    :config
+    (setq vterm-max-scrollback 10000))
 #+end_src
 
 *** Language Server Protocol
@@ -1193,6 +1210,12 @@ Follow Google C/C++ [[https://google.github.io/styleguide/cppguide.html][coding 
     (c-mode-common . google-make-newline-indent))
 #+end_src
 
+*** CMake Mode
+Use CMake mode for editing CMakeLists.txt files.
+#+begin_src elisp
+  (use-package cmake-mode)
+#+end_src
+
 ** TypeScript
 Add typescript mode.
 #+begin_src emacs-lisp
@@ -1433,7 +1456,7 @@ Set files to show in agenda.
 #+end_src
 
 Custom agenda views. I use a custom view that contains the following blocks:
-  - Agenda for the following 3 days (including habits).
+  - Agenda for the current day (including habits).
   - NEXT tasks (that are not scheduled or with deadline).
   - Tasks in the refile tree (waiting to be refiled).
   - Work related tasks.
@@ -1445,7 +1468,7 @@ Custom agenda views. I use a custom view that contains the following blocks:
 #+begin_src emacs-lisp
   (setq org-agenda-custom-commands
         '((" " "Block Agenda"
-           ((agenda "" ((org-agenda-span 3)))
+           ((agenda "" ((org-agenda-span 1)))
             (todo "NEXT"
                   ((org-agenda-overriding-header "Next Actions")
                    (org-agenda-skip-function
