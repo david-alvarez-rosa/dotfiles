@@ -126,13 +126,9 @@ c.tabs.wrap = False
 c.content.headers.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
 
 c.completion.height = '45%'
-c.window.hide_decoration = True
 
 c.completion.scrollbar.padding = 0
 c.completion.scrollbar.width = 0
-
-c.tabs.show = 'switching'
-c.tabs.show_switching_delay = 3000
 
 c.tabs.title.format = '{perc} {index} {current_title}'
 

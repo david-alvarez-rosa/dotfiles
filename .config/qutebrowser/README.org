@@ -279,19 +279,12 @@ fingerprinting.
 Height of completion menu.
 #+begin_src python
   c.completion.height = '45%'
-c.window.hide_decoration = True
 #+end_src
 
 Remove scrollbar from comppletion menu..
 #+begin_src python
   c.completion.scrollbar.padding = 0
   c.completion.scrollbar.width = 0
-#+end_src
-
-Only show tabs when switching.
-#+begin_src python
-  c.tabs.show = 'switching'
-  c.tabs.show_switching_delay = 3000
 #+end_src
 
 Configure title format for tabs.
