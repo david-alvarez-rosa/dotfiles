@@ -34,8 +34,7 @@
     (exec-path-from-shell-initialize)))
 
 (when (eq system-type 'darwin)
-  (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e")
-  (setq mac-command-modifier 'meta))
+  (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e"))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -800,16 +799,6 @@
   :bind (:map message-mode-map
               (("C-c o" . 'org-mime-edit-mail-in-org-mode)
                ("C-c M-o" . 'org-mime-htmlize))))
-
-(use-package org-msg
-  :after (mu4e)
-  :config
-  (setq
-   org-msg-options "html-postamble:nil num:nil ^:{} toc:nil author:nil email:nil tex:dvipng"
-   org-msg-default-alternatives '((new . (text))
-                                  (reply-to-html . (text html))
-                                  (reply-to-text . (text))))
-  (org-msg-mode))
 
 (setq mu4e-attachment-dir "~/Downloads")
 

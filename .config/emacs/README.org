@@ -256,8 +256,7 @@ Ensure environment variable inside Emacs look the same as shell.
 Append to path for using mu4e.
 #+begin_src emacs-lisp
   (when (eq system-type 'darwin)
-    (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e")
-    (setq mac-command-modifier 'meta))
+    (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e"))
 #+end_src
 
 ** Change yes/no Questions to y/n
@@ -1990,6 +1989,9 @@ Kill message buffer after sending a message.
 #+end_src
 
 *** Org Mode HTML
+:LOGBOOK:
+- State "TODO"       from              [2022-08-29 Mon 11:21]
+:END:
 This program sends HTML email using Org-mode HTML export. This approximates a
 WYSiWYG HTML mail editor from within Emacs, and can be useful for sending
 tables, fontified source code, and inline images in email. LaTeX formulas can
@@ -2042,7 +2044,11 @@ subtree:
   some text here ...
 #+end_example
 
-*** Org Msg
+*** TODO COMMENT Org Msg
+:LOGBOOK:
+- State "TODO"       from              [2022-08-29 Mon 11:27] \\
+  This is not working for HTML.
+:END:
 Configure Org Msg that automatically writes HTML emails when needed.
 #+begin_src emacs-lisp
   (use-package org-msg
