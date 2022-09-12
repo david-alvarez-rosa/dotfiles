@@ -787,7 +787,10 @@ Set default font. I'm currently using Hack (in the past I used Inconsolata).
 Add ability to scale font for frame, instead that for an specifically buffer.
 #+begin_src emacs-lisp
   (use-package default-text-scale
-    :init (default-text-scale-mode))
+    :init (default-text-scale-mode)
+    :bind (("s-0" . 'default-text-scale-reset)
+    ("s--" . 'default-text-scale-decrease)
+    ("s-=" . 'default-text-scale-increase)))
 #+end_src
 
 ** Basic Interface Settings
@@ -1456,13 +1459,12 @@ Set files to show in agenda.
 
 Custom agenda views. I use a custom view that contains the following blocks:
   - Agenda for the current day (including habits).
-  - NEXT tasks (that are not scheduled or with deadline).
+  - NEXT tasks (that are not scheduled).
   - Tasks in the refile tree (waiting to be refiled).
   - Work related tasks.
   - Project tasks (i.e., tasks with :PROJECT: tag). Only those that are not
-    schedule or with deadline.
-  - Rest of standalone tasks. Also only those that are not schedule or with
-    deadline.
+    schedule.
+  - Rest of standalone tasks. Also only those that are not schedule.
   - WAIT tasks.
 #+begin_src emacs-lisp
   (setq org-agenda-custom-commands
@@ -1471,20 +1473,20 @@ Custom agenda views. I use a custom view that contains the following blocks:
             (todo "NEXT"
                   ((org-agenda-overriding-header "Next Actions")
                    (org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+                    '(org-agenda-skip-entry-if 'scheduled))))
             (tags-todo "+REFILE" ((org-agenda-overriding-header "Refile")))
             (tags-todo "TODO=\"TODO\"+AMZN"
                        ((org-agenda-overriding-header "Amazon")
                         (org-agenda-skip-function
-                         '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+                         '(org-agenda-skip-entry-if 'scheduled))))
             (tags-todo "TODO=\"TODO\"+PROJECT"
                        ((org-agenda-overriding-header "Personal Projects")
                         (org-agenda-skip-function
-                         '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+                         '(org-agenda-skip-entry-if'scheduled))))
             (tags-todo "TODO=\"TODO\"+SINGLE"
                        ((org-agenda-overriding-header "Standalone Tasks")
                         (org-agenda-skip-function
-                         '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+                         '(org-agenda-skip-entry-if 'scheduled))))
             (todo "WAIT" ((org-agenda-overriding-header "Waiting"))))
            ((org-agenda-start-with-log-mode t)))))
 #+end_src

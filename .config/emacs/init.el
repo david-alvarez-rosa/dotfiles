@@ -233,7 +233,10 @@
 (set-face-attribute 'default nil :font "Hack" :height 102)
 
 (use-package default-text-scale
-  :init (default-text-scale-mode))
+  :init (default-text-scale-mode)
+  :bind (("s-0" . 'default-text-scale-reset)
+  ("s--" . 'default-text-scale-decrease)
+  ("s-=" . 'default-text-scale-increase)))
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -520,20 +523,20 @@
           (todo "NEXT"
                 ((org-agenda-overriding-header "Next Actions")
                  (org-agenda-skip-function
-                  '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+                  '(org-agenda-skip-entry-if 'scheduled))))
           (tags-todo "+REFILE" ((org-agenda-overriding-header "Refile")))
           (tags-todo "TODO=\"TODO\"+AMZN"
                      ((org-agenda-overriding-header "Amazon")
                       (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+                       '(org-agenda-skip-entry-if 'scheduled))))
           (tags-todo "TODO=\"TODO\"+PROJECT"
                      ((org-agenda-overriding-header "Personal Projects")
                       (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+                       '(org-agenda-skip-entry-if'scheduled))))
           (tags-todo "TODO=\"TODO\"+SINGLE"
                      ((org-agenda-overriding-header "Standalone Tasks")
                       (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+                       '(org-agenda-skip-entry-if 'scheduled))))
           (todo "WAIT" ((org-agenda-overriding-header "Waiting"))))
          ((org-agenda-start-with-log-mode t)))))
 
