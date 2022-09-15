@@ -247,9 +247,10 @@ OS X.
 
 Ensure environment variable inside Emacs look the same as shell.
 #+begin_src emacs-lisp
-  (use-package exec-path-from-shell
-    :config
-    (when (eq system-type 'darwin)
+  (when (eq system-type 'darwin)
+    (use-package exec-path-from-shell
+      :demand
+      :config
       (exec-path-from-shell-initialize)))
 #+end_src
 
