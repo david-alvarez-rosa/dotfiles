@@ -28,9 +28,10 @@
 
 (setq auth-sources '("~/.local/share/authinfo.gpg"))
 
-(use-package exec-path-from-shell
-  :config
-  (when (eq system-type 'darwin)
+(when (eq system-type 'darwin)
+  (use-package exec-path-from-shell
+    :demand
+    :config
     (exec-path-from-shell-initialize)))
 
 (when (eq system-type 'darwin)
