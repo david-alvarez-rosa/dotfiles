@@ -15,6 +15,7 @@
   (require 'use-package))
 
 (setq use-package-always-ensure t)
+(setq use-package-always-defer t)
 
 (setq user-full-name "David Álvarez Rosa")
 (setq user-mail-address "david@alvarezrosa.com")
@@ -44,6 +45,7 @@
 (put 'dired-find-alternate-file 'disabled nil)
 
 (use-package dired-narrow
+  :after dired
   :bind (:map dired-mode-map
               ("/" . 'dired-narrow-fuzzy)))
 
@@ -198,6 +200,7 @@
 (use-package sudo-edit)
 
 (use-package doom-themes
+  :demand
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
@@ -225,6 +228,7 @@
 (setq custom-safe-themes t)
 
 (use-package doom-modeline
+  :demand
   :init (doom-modeline-mode 1)
   :config (setq column-number-mode t)
   (setq doom-modeline-percent-position nil))
@@ -305,6 +309,7 @@
   (lsp-treemacs-sync-mode 1))
 
 (use-package clang-format
+  :demand
   :config (global-set-key [C-M-tab] 'clang-format-region))
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -330,6 +335,7 @@
   :bind ("C-c g" . 'magit-status))
 
 (use-package git-link
+  :demand
   :config
   (global-set-key (kbd "C-c w l") 'git-link)
   (global-set-key (kbd "C-c w c") 'git-link-commit)
@@ -358,6 +364,7 @@
         ("C-x t M-t" . treemacs-find-tag)))
 
 (use-package treemacs-all-the-icons
+  :demand
   :config
   (setq treemacs-indentation 1)
   (treemacs-load-theme "all-the-icons"))
@@ -630,6 +637,7 @@
 (use-package ledger-mode)
 
 (use-package pdf-tools
+  :demand
   :config
   (pdf-tools-install)
   :bind (:map pdf-view-mode-map
@@ -821,7 +829,9 @@
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
 (use-package elfeed
-  :bind ("C-c f" . 'elfeed)
+  :bind (("C-c f" . 'elfeed)
+         :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)
+                                   ("i" . 'dalvrosa/elfeed-ignore)))
   :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
                 elfeed-search-filter "@1-week-ago -no "
                 elfeed-search-title-max-width 100))
@@ -842,7 +852,6 @@
   (setq url (elfeed-entry-link (elfeed-search-selected :single)))
   (start-process "elfeed-mpv" nil "mpv" "--ytdl-format=[height<=720]" url)
   (elfeed-search-untag-all-unread))
-(define-key elfeed-search-mode-map (kbd "v") 'dalvrosa/elfeed-play-with-mpv)
 
 (defun dalvrosa/elfeed-ignore ()
   (interactive)
@@ -851,7 +860,6 @@
   (elfeed-tag entry tag)
   (elfeed-search-update-entry entry)
   (forward-line))
-(define-key elfeed-search-mode-map (kbd "i") 'dalvrosa/elfeed-ignore)
 
 (global-set-key (kbd "C-c i") 'erc-tls)
 
