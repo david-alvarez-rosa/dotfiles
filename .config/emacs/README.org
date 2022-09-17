@@ -159,7 +159,7 @@ own licenses--refer to the submodules or packages for more information.
 Make startup faster by reducing the frequency of garbage collection and then
 use a hook to lower threshold back after Emacs startup. The loading time can be
 check with the function =emacs-init-time=.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq gc-cons-threshold most-positive-fixnum)
 
   ;; Lower threshold back to 8 MiB (default is 800kB)
@@ -168,14 +168,14 @@ check with the function =emacs-init-time=.
 #+end_src
 
 Add MELPA package repositories.
-#+begin_src emacs-lisp
+#+begin_src elisp
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 #+end_src
 
 =use-package= will be used for general package management. Ensure it is
 installed and load the package.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
@@ -186,7 +186,7 @@ installed and load the package.
 
 Always ensure that all package are installed when starting Emacs. If a
 particular package does not exist, it will be installed automagically.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq use-package-always-ensure t)
   (setq use-package-always-defer t)
 #+end_src
@@ -198,13 +198,13 @@ Emacs features.
 ** Personal Information
 Basic personal information (name and mail address). Email variable will be
 changed accordingly when using =mu4e= contexts (see configuration below).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq user-full-name "David Álvarez Rosa")
   (setq user-mail-address "david@alvarezrosa.com")
 #+end_src
 
 Load file containing =dalvrosa/at-work= bool.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (load-file "~/.config/emacs/at-work.el")
 #+end_src
 
@@ -212,7 +212,7 @@ Load file containing =dalvrosa/at-work= bool.
 Start the Emacs server mode from this instance, so that all =emacsclient= calls
 are routed here. This way, files can be sent to the current Emacs instance,
 instead of opening a new one (much faster).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (server-start)
 #+end_src
 
@@ -220,7 +220,7 @@ instead of opening a new one (much faster).
 Place all custom-defined variables in their own file and store the custom
 variable file in the local machine’s home directory outside of version
 control. This enables us to keep specific config local to each machine.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq custom-file "~/.config/emacs/custom.el")
   (load custom-file t)
 #+end_src
@@ -237,7 +237,7 @@ looks as follows.
 
 Customize location of authentication file (following XDB Base Directory
 specification).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq auth-sources '("~/.local/share/authinfo.gpg"))
 #+end_src
 
@@ -246,7 +246,7 @@ I currently use Mac on my work laptop, and there are some specific things to
 OS X.
 
 Ensure environment variable inside Emacs look the same as shell.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (when (eq system-type 'darwin)
     (use-package exec-path-from-shell
       :demand
@@ -255,14 +255,14 @@ Ensure environment variable inside Emacs look the same as shell.
 #+end_src
 
 Append to path for using mu4e.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (when (eq system-type 'darwin)
     (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e"))
 #+end_src
 
 ** Change yes/no Questions to y/n
 Shorter and faster.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
 
@@ -279,14 +279,14 @@ privileges, just thinking about the file listing as an (Emacs) editable text
 file.
 
 Show file sizes in a human readable style.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq-default dired-listing-switches "-alh")
 #+end_src
 
 Ability to use =a= to visit a new directory or file in Dired instead of using
 =RET=. =RET= works just fine, but it will create a new buffer for every
 interaction whereas =a= reuses the current buffer.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (put 'dired-find-alternate-file 'disabled nil)
 #+end_src
 
@@ -295,7 +295,7 @@ This package provides live filtering of files in dired buffers. In general,
 after calling the respective narrowing function you type a filter string into
 the minibuffer. With =/= start fuzzy matching, then use the dired buffer as
 usual, and =g= for going back to the complete file listing.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package dired-narrow
     :after dired
     :bind (:map dired-mode-map
@@ -307,7 +307,7 @@ Keep backups, autosaves and interlocks in the "temp" directory. Take into
 account that this is a dangerous option with respect the disappearance of
 files, but I always use version control for important projects, so that is not
 a problem for me.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
   (setq auto-save-file-name-transforms
@@ -325,24 +325,24 @@ Ibuffer is an advanced replacement for BufferMenu, which lets you operate on
 buffers much in the same manner as Dired. The most important Ibuffer features
 are highlighting and various alternate layouts. Ibuffer is part of Emacs since
 version 22.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
 Start in expert mode (without asking for confirmation).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq ibuffer-expert t)
 #+end_src
 
 Kill current buffer without asking for which buffer to kill.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (global-set-key (kbd "C-x k") 'kill-current-buffer)
 #+end_src
 
 *** Kill All Function
 Custom function for killing all buffers except current and *scratch*. Useful
 for "restarting" Emacs without closing it.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun dalvrosa/kill-all-other-buffers ()
     "Kill all buffers except current and *scratch*."
     (interactive)
@@ -356,7 +356,7 @@ for "restarting" Emacs without closing it.
 Narrowing buffers is very useful, however this commands are disabled by default
 because new users often find them confusing. However, this configuration is
 *not* for newbies, so enable them.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (put 'narrow-to-region 'disabled nil)
   (put 'narrow-to-page 'disabled nil)
   (put 'LaTeX-narrow-to-environment 'disabled nil)
@@ -369,7 +369,7 @@ functions).
 
 ** Window Management
 Split and follow for creating new windows.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun dalvrosa/split-and-follow-horizontally ()
     (interactive)
     (split-window-below)
@@ -387,7 +387,7 @@ Split and follow for creating new windows.
 
 New bind for killing buffer *and* window at the same time. To do this press
 =C-x C-k=, by default is bind to =C-x 4 0=, that is far more complex.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
 #+end_src
 
@@ -396,7 +396,7 @@ Is built into Emacs (since version 21). It lets you move point from window to
 window using a direction. This is easier to type than =C-x o= and, for some
 users, may be more intuitive. I have configured the movement between windos
 with Super and standard Emacs keys.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (global-set-key (kbd "s-f") 'windmove-right)
   (global-set-key (kbd "s-b") 'windmove-left)
   (global-set-key (kbd "s-n") 'windmove-down)
@@ -404,7 +404,7 @@ with Super and standard Emacs keys.
 #+end_src
 
 Using shift modifier on top will swap windows instead.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (global-set-key (kbd "s-F") 'windmove-swap-states-right)
   (global-set-key (kbd "s-B") 'windmove-swap-states-left)
   (global-set-key (kbd "s-N") 'windmove-swap-states-down)
@@ -414,7 +414,7 @@ Using shift modifier on top will swap windows instead.
 *** Winner Mode
 Global minor mode that allows to “undo” and “redo” changes in window
 configuration. It is included in GNU Emacs.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (winner-mode 1)
 #+end_src
 
@@ -424,7 +424,7 @@ two windows, Ace Window will call =other-window=. If there are more, each
 window will have the first character of its window label highlighted at the
 upper left of the window. Pressing that character will either switch to that
 window or filter to the next character needed to select a specific window.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package ace-window
     :bind ("M-o" . 'ace-window)
     :config (setq aw-scope 'frame))
@@ -444,19 +444,19 @@ to =delete= or =swap= etc. There are a bunch of command here (check them with
 Long lines are a bad practice. Please, don't use them, I find them quite
 annoying. Stick to at most 80 characters. Use =M-q= for filling paragraphs when
 editing (i.e., always ensure the =fill-column= limit).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
   (setq-default fill-column 79)
 #+end_src
 
 I don't type double-space sentences, I end sentences just with a single space.
 This is relevant for filling.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq-default sentence-end-double-space nil)
 #+end_src
 
 Custom unfill function with =M-Q=.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun dalvrosa/unfill-paragraph (&optional region)
     "Takes a multi-line paragraph and makes it into a single line of text."
     (interactive (progn (barf-if-buffer-read-only) '(t)))
@@ -468,7 +468,7 @@ Custom unfill function with =M-Q=.
 #+end_src
 
 Custom function for killing region after unfill with =M-W=.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun dalvrosa/unfill-paragraph-and-kill (beg end)
     "Save the current region to the kill ring after unfilling it."
     (setq dalvrosa/previous-major-mode major-mode)
@@ -486,7 +486,7 @@ Custom function for killing region after unfill with =M-W=.
 ** Subword Mode
 Emacs treats camelCase strings as a single word by default, change this
 behaviour.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (global-subword-mode 1)
 #+end_src
 
@@ -494,14 +494,14 @@ behaviour.
 In Emacs terminology the region is the selected portion of the text.
 
 Real Emacs knights don't use shift to mark things, so disable it.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq shift-select-mode nil)
 #+end_src
 
 Set delete selection mode, so typed text replaces the selection if the
 selection is active. Otherwise, typed text is just inserted at point regardless
 of any selection.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (delete-selection-mode 1)
 #+end_src
 
@@ -510,7 +510,7 @@ Expand region increases the selected region by semantic units. Just keep
 pressing the key until it selects what you want. Expand region is done by
 pressing ~C-=~ and contracting by prefixing the shortcut with a negative
 argument argument, i.e., ~C-- C-=~.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package expand-region
     :bind ("C-=" . 'er/expand-region))
 #+end_src
@@ -518,7 +518,7 @@ argument argument, i.e., ~C-- C-=~.
 *** Upcase/Downcase Region
 Command for upcasing =C-x C-u= or downcasing =C-x C-l= current region are also
 disabled by default, enable them.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (put 'upcase-region 'disabled nil)
   (put 'downcase-region 'disabled nil)
 #+end_src
@@ -527,19 +527,19 @@ disabled by default, enable them.
 I personally don't like automatic scrolling (centering point vertically in the
 window when point moves out of the visible portion of the text) so I have it
 disabled (just set the following number to a large number, greater than 100).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq scroll-conservatively 101)
 #+end_src
 
 Set keys for forward/backward between paragraphs (this is similar to =C-f= vs
 =M-f=) .
-#+begin_src emacs-lisp
+#+begin_src elisp
   (define-key global-map (kbd "M-n") 'forward-paragraph)
   (define-key global-map (kbd "M-p") 'backward-paragraph)
 #+end_src
 
 Scroll window pane with keyboard, but without changing cursor line.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (global-set-key (kbd "C-M-n") 'scroll-up-line)
   (global-set-key (kbd "C-M-p") 'scroll-down-line)
 #+end_src
@@ -547,7 +547,7 @@ Scroll window pane with keyboard, but without changing cursor line.
 Controls if scroll commands move point to keep its screen position unchanged. A
 value of t means point keeps its screen position if the scroll command moved it
 vertically out of the window, e.g. when scrolling by full screens.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq scroll-preserve-screen-position t)
 #+end_src
 
@@ -557,13 +557,13 @@ in effect, those commands always try to move to this column, or as close as
 possible to it, after moving vertically. The goal column remains in effect
 until canceled (with =C-u C-x C-n=). This command is disabled by default, I
 enable it.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (put 'set-goal-column 'disabled nil)
 #+end_src
 
 Right and left scrolling commands are trigered with =C-c >= and =C-c <=
 respectively. Scroll left is disabled by default, I enable it.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (put 'scroll-left 'disabled nil)
 #+end_src
 
@@ -577,7 +577,7 @@ Package for jumping to visible text using a char-based decision tree. I use
 both =C-:= for jumping to the currently visible CHAR1 followed by CHAR2 (i.e.,
 jump to a sequence of 2 chars in any window/frame) and =M-g w= for jumping to
 the currently visible CHAR at a word start.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package avy
     :bind (("C-:" . 'avy-goto-char-2)
            ("M-g w" . 'avy-goto-word-1)))
@@ -586,19 +586,19 @@ the currently visible CHAR at a word start.
 ** Character Pairs
 It can be useful to insert parentheses, braces, quotes and the like in matching
 pairs, e.g., pressing “(” inserts "()", with the cursor in between.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (electric-pair-mode t)
 #+end_src
 
 Highlight matching braces.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (show-paren-mode 1)
 #+end_src
 
 ** HTML Renderer
 Configure shr HTML render engine for converting HTML to text. I like the HTML
 to be converted to text, without fancy fonts, and filled to 72 characters.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq shr-use-fonts nil)
   (setq shr-width 72)
 #+end_src
@@ -610,7 +610,7 @@ completion framework.
 Ivy is the generic completion mechanism for Emacs and aims to be more
 efficient, smaller, simpler, and smoother to use compared to other completion
 schemes yet highly customizable.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package ivy
     :init (ivy-mode)
     :config
@@ -630,7 +630,7 @@ Ivy/Counsel/Swiper instance.
 
 This package comes with rich transformers for commands from ivy and counsel,
 makes the completion interface more friendly (showing more information).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package ivy-rich
     :init (ivy-rich-mode 1))
 #+end_src
@@ -638,7 +638,7 @@ makes the completion interface more friendly (showing more information).
 Counsel is a collection of Ivy-enhanced versions of common Emacs commands, i.e,
 takes Ivy completion framework even further providing versions of common Emacs
 commands that are customised to make the best use of Ivy.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package counsel
     :init (counsel-mode)
     :bind ("C-c r" . 'counsel-register))
@@ -650,7 +650,7 @@ position =C-x r SPC= and saving text =C-x r s=.
 
 Swiper is an alternative to isearch that uses Ivy to show an overview of all
 matches.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package swiper
     :bind ("C-s" . 'swiper-isearch))
 #+end_src
@@ -667,7 +667,7 @@ a separate buffer, press =C-c C-o= for occur.
 Nice utility (=which-key=) for displaying available keybindings in a popup
 panel. You get an overview of what keybindings are available based on the
 prefix keys you entered.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package which-key
     :init (which-key-mode))
 #+end_src
@@ -683,7 +683,7 @@ systems. I have installed Aspell with =pacman -S aspell aspell-es aspell-en=
 I set the default dictionary to english, since I write more in english than in
 spanish these days. This can be changed with =ispell-change-dictionary=
 function.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq ispell-dictionary "english")
 #+end_src
 
@@ -710,7 +710,7 @@ strings). I have enabled it by default.
 
 ** Sudo Edit
 Utility for opening files with =sudo= (call the =sudo-edit= function).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package sudo-edit)
 #+end_src
 
@@ -723,7 +723,7 @@ I am using Doom Themes. I find creating own theme is too much work and it's now
 worth your time. In the past I used Spacemacs theme and I was nice, but I
 became bored of it. Doom Themes provides nice themes such as =doom-one= (dark),
 =doom-one-ligth= (light), and the classic =zenburn= of course.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package doom-themes
     :demand
     :config
@@ -739,7 +739,7 @@ Some themes I also like are =doom-one= (dark), =doom-peacock= (dark) and
 
 Custom keybindings for cycling between themes in Emacs with =C-c d=. Binding
 cames from toggling dark theme (d for "dark").
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq dalvrosa/themes '(doom-solarized-light doom-zenburn))
   (setq dalvrosa/themes-index 0)
 
@@ -760,7 +760,7 @@ cames from toggling dark theme (d for "dark").
 
 Consider all custom themes as safe (don't ask for confirmation when loading
 it).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq custom-safe-themes t)
 #+end_src
 
@@ -769,7 +769,7 @@ For the modeline I am using also Doom Modeline. This package requires the fonts
 included with =all-the-icons= to be installed with =M-x
 all-the-icons-install-fonts=. I have configured it to show column number
 instead of percentage buffer position.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package doom-modeline
     :demand
     :init (doom-modeline-mode 1)
@@ -778,18 +778,18 @@ instead of percentage buffer position.
 #+end_src
 
 Disable load average.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq display-time-default-load-average nil)
 #+end_src
 
 ** Font
 Set default font. I'm currently using Hack (in the past I used Inconsolata).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (set-face-attribute 'default nil :font "Hack" :height 102)
 #+end_src
 
 Add ability to scale font for frame, instead that for an specifically buffer.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package default-text-scale
     :init (default-text-scale-mode)
     :bind (("s-0" . 'default-text-scale-reset)
@@ -805,7 +805,7 @@ external package.
 Disable tool bar, menu bar and scroll bar. All three are very ugly and
 unnecesary. Might be handy for normies, but not for chad Emacs users. Basically
 this turns off al the mouse interface.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (tool-bar-mode 0)
   (menu-bar-mode 0)
   (scroll-bar-mode 0)
@@ -814,7 +814,7 @@ this turns off al the mouse interface.
 
 *** Remove Startup Screen
 Inhibit lame startup screen.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq inhibit-splash-screen t)
   (setq inhibit-startup-message t)
 #+end_src
@@ -822,13 +822,13 @@ Inhibit lame startup screen.
 *** Highlight Cuurrent Line
 Pretty nice UI enhancement for finding current line. It does not look good in
 the terminal version of Emacs, though, so it's not set there.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (when window-system (global-hl-line-mode t))
 #+end_src
 
 ** Transparency Alpha
 Functions for toggling transparency alpha.
-#+begin_src emacs-lisp
+#+begin_src elisp
   ;; (add-to-list 'default-frame-alist '(alpha . (93 . 84)))
   (defun dalvrosa/toggle-transparency ()
     "Toggle transparency on and off."
@@ -849,7 +849,7 @@ Olivetti is a simple Emacs minor mode for a nice writing environment, that sets
 a desired text body width to automatically resize window margins to keep the
 text comfortably in the middle of the window. I use the default text body
 width, that is =fill-colum= +2.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package olivetti
     :config
     (setq-default olivetti-body-width (+ fill-column 8))
@@ -871,7 +871,7 @@ Programming configuration that is not specific to one programming language.
 Company is a text/code completion framework for Emacs. The name stands for
 "complete anything". It uses pluggable back-ends and front-ends to retrieve and
 display completion candidates.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package company
     :config
     (setq company-show-quick-access  t)
@@ -892,7 +892,7 @@ Tree-sitter is a parser generator tool and an incremental parsing library. It
 can build a concrete syntax tree for a source file and efficiently update the
 syntax tree as the source file is edited. Watch this [[https://www.thestrangeloop.com/2018/tree-sitter---a-new-parsing-system-for-programming-tools.html][video]] for more
 information.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package tree-sitter
     :config
     (global-tree-sitter-mode)
@@ -916,7 +916,7 @@ large outputs.
 *** Language Server Protocol
 The goal of the language server protocol is to allow programming language
 support to be implemented and distributed independently of any given editor.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package lsp-mode
     :init
     (setq lsp-keymap-prefix "C-c l")
@@ -931,7 +931,7 @@ support to be implemented and distributed independently of any given editor.
 #+end_src
 
 Add integration with =treemacs= package.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package lsp-treemacs
     :commands lsp-treemacs-errors-list
     :config
@@ -944,14 +944,14 @@ Add integration with =treemacs= package.
 Emacs client/library for Debug Adapter Protocol is a wire protocol for
 communication between client and Debug Server. It's similar to the LSP but
 provides integration with debug server.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package dap-mode
     :after lsp-mode)
 #+end_src
 
 *** Code Formatting
 Use Clang for code formatting.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package clang-format
     :demand
     :config (global-set-key [C-M-tab] 'clang-format-region))
@@ -959,7 +959,7 @@ Use Clang for code formatting.
 
 *** Line Numbers
 Display line numbers.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+end_src
 
@@ -969,19 +969,19 @@ This doesn't mean you need to insert the spaces manually. Emacs will take care
 of this for you.
 
 Configure default tab width to 2 spaces.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq-default tab-width 2)
 #+end_src
 
 Ensure spaces are entered when pressing the =TAB= key.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq-default indent-tabs-mode nil)
 #+end_src
 
 *** Trailing Whitespace
 Delete (nasty) trailing whitespace when saving a file (this includes emtpy
 lines at the end of the file and empty spaces at the end of lines).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
 
@@ -992,7 +992,7 @@ Emacs. It uses various syntax checking and linting tools to automatically check
 the contents of buffers while you type, and reports warnings and errors
 directly in the buffer, or in an optional error list.
 
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package flycheck
     :init
     (add-hook 'prog-mode-hook 'flycheck-mode))
@@ -1003,7 +1003,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a
 nice set of features operating on a project level without introducing external
 dependencies (when feasible). It is very nice, because it integrates seamlessly
 with version control (like Git) and takes into account =.gitignore= files.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package projectile
     :config (projectile-mode +1)
     (setq projectile-completion-system 'ivy)
@@ -1035,7 +1035,7 @@ Some of the projectile features:
 
 I like to use The Silver Searcher for searching instead of standard grep
 mainly because is way faster.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package ag)
 #+end_src
 
@@ -1050,7 +1050,7 @@ goes far beyond what any Git GUI provides and it takes care of automatically
 refreshing this output when it becomes outdated. In the background Magit just
 runs Git commands and if you wish you can see what exactly is being run, making
 it possible for you to learn the git command-line by using Magit.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package magit
     :bind ("C-c g" . 'magit-status))
 #+end_src
@@ -1072,7 +1072,7 @@ GitHub/Bitbucket/GitLab/... repositories.
 - =git-link-homepage= returns the URL for the repository's homepage.
 
 URLs are added to the kill ring.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package git-link
     :demand
     :config
@@ -1084,7 +1084,7 @@ URLs are added to the kill ring.
 *** Snippets
 YASnippets is a template system for Emacs. It allows you to type an
 abbreviation and automatically expand it into function templates.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package yasnippet
     :config
     (use-package yasnippet-snippets)
@@ -1104,7 +1104,7 @@ another (and recover old differences if you change your mind). Another powerful
 feature is the ability to merge a pair of files into a third buffer.
 
 Don't open new frame for setup window and prefer splitting horizontally.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
@@ -1114,7 +1114,7 @@ Treemacs is a file and project explorer that shows the file system outlines of
 your projects in a simple tree laout allowing quick navigation and exploration.
 I like to use it with the icons from all-the-icons package, so make sure to
 have that installed.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package treemacs
     :config
     (add-hook 'treemacs-mode-hook  (lambda () (setq-local truncate-lines t)))
@@ -1150,7 +1150,7 @@ package-install-file= and enter the TAR file when prompted. This will install
 EmacsAmazonLibs as an Emacs package in your =~/.emacs.d/elpa= directory. You
 should then require the =amz-common= package to pick up the customisation.
 
-#+begin_src emacs-lisp
+#+begin_src elisp
   (if dalvrosa/at-work
       (require 'amz-common))
 #+end_src
@@ -1174,7 +1174,7 @@ Use CMake mode for editing CMakeLists.txt files.
 
 ** TypeScript
 Add typescript mode.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package typescript-mode
     :config
     (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode)))
@@ -1183,7 +1183,7 @@ Add typescript mode.
 ** Python
 Elpy is the Emacs Python Development Environment. It aims to provide an easy to
 install, fully-featured environment for Python development.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package elpy
     ;; :init
     ;; (elpy-enable)
@@ -1211,14 +1211,14 @@ n- =M-*= go back from definition where I was.
 
 ** Java
 Awesome package for LSP integration with Java.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package lsp-java)
 #+end_src
 
 ** Web Development
 Web mode is an autonomous emacs major-mode for editing web templates. HTML
 documents can embed parts (CSS/JavaScript) and blocks (client/server side).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package web-mode
     :config
     (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
@@ -1240,14 +1240,14 @@ Some useful commands:
 
 ** Octave/Matlab
 Open Matlab files (.m) in Octave mode by default.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq auto-mode-alist
         (cons '("\\.m$" . octave-mode) auto-mode-alist))
 #+end_src
 
 ** R
 Use ESS package ("Emacs Speaks Statistics") for editing R code.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package ess)
 #+end_src
 
@@ -1267,7 +1267,7 @@ emails.
 
 ** Speed Commands
 Activate single letter commands at beginning of a headline.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-use-speed-commands t)
 #+end_src
 
@@ -1276,7 +1276,7 @@ This is very useful for navigating/modifying org mode files. I usually use
 
 ** Refile
 Configuration for refiling command =C-c C-w=.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-refile-targets '((nil :maxlevel . 2)
                                   (org-agenda-files :maxlevel . 2)))
   (setq org-outline-path-complete-in-steps nil)
@@ -1285,7 +1285,7 @@ Configuration for refiling command =C-c C-w=.
 
 ** Capture Templates
 Take notes quickly within Emacs with =C-c c=.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-default-notes-file "~/Documents/Tasks.org")
   (define-key global-map (kbd "C-c c") 'org-capture)
 #+end_src
@@ -1296,7 +1296,7 @@ Set my custom capture templates. Brief description of them:
   projects or into a "Standalone Tasks" heading.
 - Text Note: template for taking quick notes. This is inside my =Notes.org=
   file.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-capture-templates
         '(("t" "Task" entry
            (file+olp "~/Documents/Tasks.org" "Refile")
@@ -1308,13 +1308,13 @@ Set my custom capture templates. Brief description of them:
 
 For the above email (or link) capture templates to work with =mu4e= (email
 client used in this configuration), it is needed the following.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (require 'org-mu4e)
 #+end_src
 
 Add some global key binding for storing link =C-c l= and jumping (goto) to
 current clocked task.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c j") 'org-clock-goto)
 #+end_src
@@ -1327,7 +1327,7 @@ Custom todo keywords. I use them as follows:
   - NEXT: todo task, that is on-going or is next task to be done.
   - DONE: task is done.
   - CANCELLED: task is cancelled.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-todo-keywords
         '((sequence "TODO(t!)" "WAIT(w!)" "NEXT(n!)" "|"
                     "DONE(d!)" "CANCELLED(c!)")))
@@ -1339,13 +1339,13 @@ for note with timestamp. I'm not using automatic notes anymore, those can be
 recovered by prefixing state change with =C-u=.
 
 Log state changes into drawer.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-log-into-drawer t)
 #+end_src
 
 ** Code Evaluation
 Allow code blocks in these languages to be evaluated with =C-c C-c=.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (eval-after-load "org"
         (org-babel-do-load-languages
          'org-babel-load-languages
@@ -1362,47 +1362,45 @@ Allow code blocks in these languages to be evaluated with =C-c C-c=.
 #+end_src
 
 Don't ask for confirmation for evaluating code.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-confirm-babel-evaluate nil)
 #+end_src
 
 ** Interface
 Restore windows after quitting org agenda.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-agenda-restore-windows-after-quit t)
 #+end_src
 
 *** List Configuration
 Allow alphabetical list, i.e., list like "a)", "A" or "A)" as element lists.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-list-allow-alphabetical t)
 #+end_src
 
 *** Indent Mode
 Launch org mode in indent mode.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-startup-indented t)
 #+end_src
 
 *** Initial Visibility
 When Emacs first visits an Org file, set the global state to =content=, to show
 only headers.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-startup-folded 'content)
 #+end_src
 
 ** Agenda
 Set =C-c a= for opening org agenda. This is one of the features that I like the
 most of Emacs. It's great.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (global-set-key (kbd "C-c a") 'org-agenda)
 #+end_src
 
 Set files to show in agenda.
-#+begin_src emacs-lisp
-  (setq org-agenda-files (quote
-                          ("~/Documents/Contacts/Birthdays.org"
-                          "~/Documents/Tasks.org")))
+#+begin_src elisp
+  (setq org-agenda-files '("~/Documents/Tasks.org"))
 #+end_src
 
 Custom agenda views. I use a custom view that contains the following blocks:
@@ -1410,11 +1408,11 @@ Custom agenda views. I use a custom view that contains the following blocks:
   - NEXT tasks (that are not scheduled).
   - Tasks in the refile tree (waiting to be refiled).
   - Work related tasks.
-  - Project tasks (i.e., tasks with :PROJECT: tag). Only those that are not
+  - Project tasks (i.e., tasks with :PROJ: tag). Only those that are not
     schedule.
   - Rest of standalone tasks. Also only those that are not schedule.
   - WAIT tasks.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-agenda-custom-commands
         '((" " "Block Agenda"
            ((agenda "" ((org-agenda-span 1)))
@@ -1444,23 +1442,23 @@ or =d= for just showing curren day. Also, it is posible to toggle log mode with
 =l=.
 
 Show all posible items that should in agenda log mode.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-agenda-log-mode-items '(closed clock state))
 #+end_src
 
 Set deadline warning days to 7 (instead of the default 14 days).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-deadline-warning-days 7)
 #+end_src
 
 With =q= bury agenda instead of killing it (faster of course).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-agenda-sticky t)
 #+end_src
 
 I don't like empty blocks to show in customized agenda, so I hide them (this
 code is from [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266.html][emacs mail list]]).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun dalvrosa/org-agenda-delete-empty-blocks ()
     "Remove empty agenda blocks.
     A block is identified as empty if there are fewer than 2
@@ -1500,19 +1498,19 @@ code is from [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266
 *** Habits
 Show a nice graph for recurring habits. See [[https://orgmode.org/manual/Tracking-your-habits.html][Tracking your Habits]] in the
 Org-mode manual for more information.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (require 'org-habit)
 #+end_src
 
 Configure the column the absolute column at which to insert habit consistency
 graphs (consistency graph overwrites anything else in the buffer).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-habit-graph-column 55)
 #+end_src
 
 ** Archive
 Set default org archive location.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-archive-location "::* Archived Items")
 #+end_src
 
@@ -1520,7 +1518,7 @@ Set default org archive location.
 It’s nice to have a table of contents section (without exporting) for long
 literate configuration files (like this one!) so I use org-toc-org to
 automatically update the ToC in any header with a property named TOC.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package toc-org
     :hook (org-mode . toc-org-mode))
 #+end_src
@@ -1534,7 +1532,7 @@ Section for markup languages.
 
 ** Markdown Mode
 Major mode for editting Markdown-formatted text.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package markdown-mode)
 #+end_src
 
@@ -1542,7 +1540,7 @@ Major mode for editting Markdown-formatted text.
 AUCTeX is an extensible package for writing and formatting TeX files in GNU
 Emacs. It supports many different TEX macro packages, including AMS-TeX, LaTeX,
 Texinfo, ConTeXt, and docTeX (dtx files).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package latex
     :ensure auctex
     :config
@@ -1589,7 +1587,7 @@ structure quickly.
 - =C-c )= reference label.
 - =C-c [= create cite.
 - =C-c /= for creating an index.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq reftex-plug-into-AUCTeX t)
   (setq reftex-toc-split-windows-fraction 0.2)
 #+end_src
@@ -1597,12 +1595,12 @@ structure quickly.
 *** Compilation
 Compile always with =-shell-escape= flag. I usually need this for PGF/TikZ or
 Minted.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq TeX-command-extra-options "-shell-escape -synctex=1")
 #+end_src
 
 Don't ask for confirmation when saving and update output PDF after compilation.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq TeX-save-query nil)
   (add-hook 'TeX-after-compilation-finished-functions
             #'TeX-revert-document-buffer)
@@ -1611,7 +1609,7 @@ Don't ask for confirmation when saving and update output PDF after compilation.
 *** BibTeX
 For managing .bib files. Use =C-c C-c=. Insert entries templates with different
 key bindings. Also, =C-c C-f= for inserting new field.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq bibtex-align-at-equal-sign t)
   (setq bibtex-entry-format `(opts-or-alts required-fields
                               numerical-fields whitespace realign
@@ -1623,7 +1621,7 @@ key bindings. Also, =C-c C-f= for inserting new field.
 ** Ledger
 Ledger is a powerful, double-entry accounting system that is accesed from the
 UNIX command line.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package ledger-mode)
 #+end_src
 
@@ -1634,7 +1632,7 @@ stored in the file-system, but rather created on-demand and stored in memory.
 
 Disable here Swiper for searching, and fallback to Isearch, since Swiper
 searchs in the source code rather than in the PDF itself.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package pdf-tools
     :demand
     :config
@@ -1666,7 +1664,7 @@ of the isync executable). This program will sync email computer <-> server,
 check out my [[file:~/.config/isync/mbsyncrc.org][isync configuration]].
 
 Open last 7 days email header view with =C-c e= keybinding.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (require 'mu4e)
   (setq mail-user-agent 'mu4e-user-agent)
   (global-set-key (kbd "C-c e") 'mu4e)
@@ -1674,7 +1672,7 @@ Open last 7 days email header view with =C-c e= keybinding.
 
 Customization of header view. I don't use mailing lists that often, so I have
 remove them from headers view.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq mu4e-headers-fields '((:human-date . 12)
                               (:flags . 6)
                               (:maildir . 18)
@@ -1683,7 +1681,7 @@ remove them from headers view.
 #+end_src
 
 Set custom mailboxes depending of =dalvrosa/at-work= variable.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (if dalvrosa/at-work
       (setq dalvrosa/mailboxes "personal spam amazon")
     (setq dalvrosa/mailboxes "personal spam"))
@@ -1694,7 +1692,7 @@ Set custom mailboxes depending of =dalvrosa/at-work= variable.
 Prevent mu4e from permanently deleting trashed items. This snippet was taken
 from [[http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/][this article]]. Namespaced and added functionality to mark deleted item as
 read.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun dalvrosa/remove-nth-element (nth list)
     (if (zerop nth) (cdr list)
       (let ((last (nthcdr (1- nth) list)))
@@ -1715,14 +1713,14 @@ read.
 I am using contexts for handling two different accounts at the same time. When
 launching mu4e for the first time don't ask and just pick the first context
 (the default).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq mu4e-context-policy 'pick-first)
 #+end_src
 
 First, lets define basic configuration for all accounts (contexts in mu4e
 terminology). This is, set maildir, my personal email addresses (used for not
 replying to myself) and the behavior for sent messages.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq mu4e-sent-messages-behavior 'sent)
   (setq message-signature-file "~/Documents/Signature.txt")
   (setq smtpmail-stream-type 'starttls)
@@ -1732,7 +1730,7 @@ replying to myself) and the behavior for sent messages.
 
 Define some variables depending if I'm at work. I'm using an SSH tunnel to
 bypass block in 587 port.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (if dalvrosa/at-work
       (progn
         (setq dalvrosa/smtp-server "localhost")
@@ -1748,7 +1746,7 @@ The SSH tunnel should be started.
 #+end_src
 
 The actual context accounts.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq mu4e-contexts
         `( ,(make-mu4e-context
              :name "Personal"
@@ -1796,7 +1794,7 @@ The actual context accounts.
 
 ** Bookmarks
 Add custom bookmark for all inboxes.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (add-to-list 'mu4e-bookmarks
                '(:name "All Inboxes"
                 :query "maildir:/Personal/Inbox OR maildir:/Amazon/Inbox OR maildir:/Spam/Inbox"
@@ -1805,7 +1803,7 @@ Add custom bookmark for all inboxes.
 
 ** Update and Notification
 Redefine update function to always run update command in the background.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun dalvrosa/mu4e-update-mail-and-index ()
     (interactive)
     (mu4e-update-mail-and-index t))
@@ -1816,14 +1814,14 @@ Redefine update function to always run update command in the background.
 
 Let's init mu4e on the background when launching Emacs and set up automatic
 email updates every 4 hours.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (mu4e t)
   (setq mu4e-update-interval (* 4 60 60))
 #+end_src
 
 Use mu4e alert package for displaying unread email in modeline and enable
 notifications.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq doom-modeline-mu4e t)
 
   (use-package mu4e-alert
@@ -1935,7 +1933,7 @@ dealing with LaTeX formulas to use =C-c C-x C-l= for producing a preview image
 of the LaTeX fragment at point and overlay it over the source code (f there is
 no fragment at point, process all fragments in the current entry-—between two
 headlines).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package org-mime
     :config
     (setq org-mime-export-options '(:with-latex dvipng
@@ -1979,7 +1977,7 @@ subtree:
 
 *** COMMENT Org Msg
 Configure Org Msg that automatically writes HTML emails when needed.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package org-msg
     :after (mu4e)
     :config
@@ -1993,7 +1991,7 @@ Configure Org Msg that automatically writes HTML emails when needed.
 
 ** Attachment Management
 Configure attachment directory for downloading.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq mu4e-attachment-dir "~/Downloads")
 #+end_src
 
@@ -2001,7 +1999,7 @@ For attaching files while composing new email. To attach file, just mark in
 dired and =C-c RET C-a=. This is useful for attaching multiple files, but the
 default =C-c C-a= command for attaching (in composition buffer) works just
 well.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (require 'gnus-dired)
   (defun gnus-dired-mail-buffers ()
     "Return a list of active message buffers."
@@ -2020,7 +2018,7 @@ well.
 * Web Feed Reader
 Elfeed is an extensible web feed reader for Emacs, supporting both Atom and
 RSS. It requires Emacs 24.3.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package elfeed
     :bind (("C-c f" . 'elfeed)
            :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)
@@ -2033,7 +2031,7 @@ RSS. It requires Emacs 24.3.
 ** Elfeed Org
 Use Elfeed Org for managing subscriptions to RSS/Atom feeds using an org mode
 file.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package elfeed-org
     :config
     (elfeed-org)
@@ -2042,7 +2040,7 @@ file.
 
 ** Elfeed Goodies
 This package allows to configure the Elfeed interface.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package elfeed-goodies
     :config
     (elfeed-goodies/setup)
@@ -2053,7 +2051,7 @@ This package allows to configure the Elfeed interface.
 ** Custom Functions
 For interacting with video (e.g., Youtube subscriptions). This allows to open
 the media with mpv. Just press =v= and the video will be openend with mpv.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun dalvrosa/elfeed-play-with-mpv ()
     (interactive)
     (setq url (elfeed-entry-link (elfeed-search-selected :single)))
@@ -2062,7 +2060,7 @@ the media with mpv. Just press =v= and the video will be openend with mpv.
 #+end_src
 
 Ignore current entry (i.e., tag it with =no= TAG).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun dalvrosa/elfeed-ignore ()
     (interactive)
     (setq entry (elfeed-search-selected :single))
@@ -2079,7 +2077,7 @@ only two partners--for example, in question-and-answer dialogues. This protocol
 is actually older than the World Wide Web. There are several built-in Emacs IRC
 clients, but I use the default ERC, that I think is the best one. I have bind
 the ERC client, with TLS support, to =C-c i= ("i" for IRC).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (global-set-key (kbd "C-c i") 'erc-tls)
 
   (if dalvrosa/at-work
@@ -2112,14 +2110,14 @@ following command.
 
 After quiting server, query or parting a channel I want the buffer to be killed
 automatically.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq erc-kill-buffer-on-part t)
   (setq erc-kill-queries-on-quit t)
   (setq erc-kill-server-buffer-on-quit t)
 #+end_src
 
 Some minor tweaks for displaying (and buffer) configuration.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq erc-fill-function 'erc-fill-static)
   (setq erc-fill-static-center 22)
   (setq erc-rename-buffers t)
@@ -2128,7 +2126,7 @@ Some minor tweaks for displaying (and buffer) configuration.
 I use ERC channel tracking (it is enabled by default). Basically, show in the
 modeline unread chat messages from current openend channels and use =C-c C-SPC=
 repeatedly for switching between them (in *any* mode).
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
   (setq erc-track-exclude-server-buffer t)
 #+end_src
@@ -2137,7 +2135,7 @@ repeatedly for switching between them (in *any* mode).
 This package will auto colorize (highglight) nicknames, ignoring certain
 characters that IRC clients add to nicknames to avoid duplicates (nickname,
 nickname’, nickname”, etc.)
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package erc-hl-nicks)
 #+end_src
 
