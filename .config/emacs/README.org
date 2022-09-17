@@ -91,7 +91,6 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#bookmarks][Bookmarks]]
   - [[#update-and-notification][Update and Notification]]
   - [[#queued-email][Queued Email]]
-  - [[#signing-and-encryption][Signing and Encryption]]
   - [[#completion][Completion]]
   - [[#compositionsending][Composition/Sending]]
   - [[#attachment-management][Attachment Management]]
@@ -939,16 +938,13 @@ Add integration with =treemacs= package.
     (lsp-treemacs-sync-mode 1))
 #+end_src
 
-*** TODO Debug Adapter Protocol
-:LOGBOOK:
-- State "TODO"       from              [2022-05-07 Sat 23:05]
-:END:
+*** COMMENT Debug Adapter Protocol
 *Disclaimer* I'm not tangling the block to follow.
 
 Emacs client/library for Debug Adapter Protocol is a wire protocol for
 communication between client and Debug Server. It's similar to the LSP but
 provides integration with debug server.
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package dap-mode
     :after lsp-mode)
 #+end_src
@@ -1155,7 +1151,8 @@ EmacsAmazonLibs as an Emacs package in your =~/.emacs.d/elpa= directory. You
 should then require the =amz-common= package to pick up the customisation.
 
 #+begin_src emacs-lisp
-  (require 'amz-common)
+  (if dalvrosa/at-work
+      (require 'amz-common))
 #+end_src
 
 ** C/C++
@@ -1211,12 +1208,6 @@ Some more things that are pretty sweet.
 - =M-.= go to definition.
 n- =M-*= go back from definition where I was.
 - =C-c C-o= occur definition. All places where a function/class is used.
-
-*** TODO Eglot
-:LOGBOOK:
-- State "TODO"       from              [2022-05-07 Sat 22:49]
-:END:
-Take a look to eglot and lsp integration with Python.
 
 ** Java
 Awesome package for LSP integration with Java.
@@ -1849,43 +1840,6 @@ in mu4e main view with =m=.
   (setq smtpmail-queue-dir "~/.local/share/mail/Queue/cur")
 #+end_src
 
-** TODO Signing and Encryption
-:LOGBOOK:
-- State "TODO"       from              [2021-08-15 Sun 17:50]
-:END:
-Encriptar todos los correos salientes /automágicamente/ si la llave existe.
-#+begin_src emacs-lisp :tangle no
-  (defun dalv/can-encrypt-message-p ()
-    "Return non-nil if current message can be encrypted.
-  I.e., the keyring has a public key for each recipient."
-    (let ((recipients
-           (seq-map #'cadr ; only take email address, not recipient name
-                    (seq-mapcat (lambda (header)
-                                  (let ((header-value
-                                         (message-fetch-field header)))
-                                    (and header-value
-                                         (mail-extract-address-components header-value
-                                                                          t))))
-                                '("To" "CC" "BCC"))))
-          (context (epg-make-context epa-protocol)))
-      (seq-every-p (lambda (recipient)
-                     (not (seq-empty-p (epg-list-keys context recipient))))
-                   recipients)))
-
-  (defun dalvrosa/add-encryption-mark-if-possible ()
-    "Add MML tag to encrypt message when there is a key for each
-  recipient."
-    (when (dalvrosa/can-encrypt-message-p)
-      (mml-secure-message-sign-encrypt)))
-
-  (add-hook 'message-send-hook #'dalvrosa/add-encryption-mark-if-possible)
-#+end_src
-
-For signing emails (when the key is available).
-#+begin_src emacs-lisp
-  (setq mml-secure-openpgp-sign-with-sender t)
-#+end_src
-
 ** Completion
 Use Ivy as default completion engine (instead of Ido).
 #+begin_src emacs-lisp
@@ -1949,9 +1903,6 @@ Kill message buffer after sending a message.
 #+end_src
 
 *** Org Mode HTML
-:LOGBOOK:
-- State "TODO"       from              [2022-08-29 Mon 11:21]
-:END:
 This program sends HTML email using Org-mode HTML export. This approximates a
 WYSiWYG HTML mail editor from within Emacs, and can be useful for sending
 tables, fontified source code, and inline images in email. LaTeX formulas can
@@ -2004,11 +1955,7 @@ subtree:
   some text here ...
 #+end_example
 
-*** TODO COMMENT Org Msg
-:LOGBOOK:
-- State "TODO"       from              [2022-08-29 Mon 11:27] \\
-  This is not working for HTML.
-:END:
+*** COMMENT Org Msg
 Configure Org Msg that automatically writes HTML emails when needed.
 #+begin_src emacs-lisp
   (use-package org-msg

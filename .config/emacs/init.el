@@ -698,8 +698,6 @@
 
 (setq smtpmail-queue-dir "~/.local/share/mail/Queue/cur")
 
-(setq mml-secure-openpgp-sign-with-sender t)
-
 (setq mu4e-completing-read-function 'ivy-completing-read)
 
 (setq dalvrosa/contact-file "~/Documents/Contacts/Emails.txt")
