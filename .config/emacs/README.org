@@ -94,6 +94,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#emacs-unified-directory-client][Emacs Unified Directory Client]]
   - [[#compositionsending][Composition/Sending]]
   - [[#attachment-management][Attachment Management]]
+  - [[#meetings][Meetings]]
 - [[#web-feed-reader][Web Feed Reader]]
   - [[#elfeed-org][Elfeed Org]]
   - [[#elfeed-goodies][Elfeed Goodies]]
@@ -1508,42 +1509,35 @@ graphs (consistency graph overwrites anything else in the buffer).
   (setq org-habit-graph-column 55)
 #+end_src
 
-*** Calendar
-Use org caldav with davmail for syncing.
+*** Notifications
+Enable notifications for scheduled tasks.
 #+begin_src elisp
-  (use-package org-caldav
-    :config
-    (setq org-caldav-url "http://localhost:1080/users")
-    (setq org-caldav-inbox "~/Documents/Calendar.org")
-    (setq org-caldav-calendar-id "dalvrosa@amazon.com/calendar")
+  (require 'appt)
+  (setq appt-time-msg-list nil)
+  (setq appt-message-warning-time '15
+        appt-display-interval '1)
 
-    (setq org-caldav-show-sync-results nil)
+  (setq appt-display-mode-line nil
+        appt-display-format 'window)
+  (appt-activate 1)
 
-    (setq org-caldav-uuid-extension ".EML")
+  (org-agenda-to-appt)
+  (run-at-time "24:01" 1800 'org-agenda-to-appt)
+  (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
 
-    (setq org-icalendar-timezone "Europe/Madrid")
+  (defun dalvrosa/appt-send-notification (title msg)
+    (if dalvrosa/at-work
+        (shell-command (concat "terminal-notifier"
+                               " -message " msg
+                               " -title " title
+                               " -sender " "org.gnu.Emacs"))
+      (shell-command (concat "notify-send " msg " " title))))
 
-    ;; We don't actually need to sync from our org file to the calendar;
-    ;; I expect to use meetings.a.c and other mechanisms to schedule
-    ;; meetings
-    (setq org-caldav-sync-direction 'cal->org)
-
-
-    ;; Eagerly load org-agenda, since our gnus-icalendar bits break without this
-    ;; (require 'org-agenda)
-
-
-    ;; Configure org-caldav-sync to sync in the background after 1
-    ;; minute of idle time
-    ;; (defun jmi/caldav-sync-idle-timer-wrapper ()
-      ;; (org-caldav-sync))
-
-    ;; (run-with-idle-timer 60 t 'jmi/caldav-sync-idle-timer-wrapper)
-
-    ;; :bind ((:map jmi/my-jump-keys-map
-    ;;              ("f c"  . org-caldav-sync)))
-
-    :after (org))
+  (defun dalvrosa/appt-display (min-to-app new-time msg)
+    (dalvrosa/appt-send-notification
+     (format "'Meeting in %s minutes'" min-to-app)
+     (format "'%s'" msg)))
+  (setq appt-disp-window-function (function dalvrosa/appt-display))
 #+end_src
 
 ** Archive
