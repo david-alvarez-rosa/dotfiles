@@ -461,9 +461,7 @@
 
 (global-set-key (kbd "C-c a") 'org-agenda)
 
-(setq org-agenda-files (quote
-                        ("~/Documents/Contacts/Birthdays.org"
-                        "~/Documents/Tasks.org")))
+(setq org-agenda-files '("~/Documents/Tasks.org"))
 
 (setq org-agenda-custom-commands
       '((" " "Block Agenda"
@@ -698,39 +696,34 @@
 
 (setq smtpmail-queue-dir "~/.local/share/mail/Queue/cur")
 
-(setq mu4e-completing-read-function 'ivy-completing-read)
+(use-package eudc
+  :ensure nil
+  :after (ldap bbdb)
+  :init (require 'eudc)
+  :bind (:map message-mode-map
+              (("<M-tab>" . 'eudc-expand-inline)))
+  :config
+  (eudc-set-server "ldap.amazon.com" 'ldap t)
+  (eudc-bbdb-set-server "localhost")
+  (setq eudc-server-hotlist
+        '(("localhost" . bbdb)
+          ("ldap.amazon.com" . ldap)))
+  (setq eudc-inline-expansion-servers 'hotlist))
 
-(setq dalvrosa/contact-file "~/Documents/Contacts/Emails.txt")
-(defun dalvrosa/read-contact-list ()
-  (with-temp-buffer
-    (insert-file-contents dalvrosa/contact-file)
-    (split-string (buffer-string) "\n" t)))
-(defun dalvrosa/complete-emails (&optional start)
-  (interactive)
+(use-package ldap
+  :ensure nil
+  :demand t
+  :config
+  (setq ldap-default-host "ldap.amazon.com")
+  (setq ldap-host-parameters-alist '(("ldap.amazon.com"
+                                      base "o=amazon.com"
+                                      auth simple))))
 
-  (let ((eoh ;; end-of-headers
-         (save-excursion
-           (goto-char (point-min))
-           (search-forward-regexp mail-header-separator nil t))))
+(use-package bbdb
+  :demand t)
 
-  ;; Only run if we are in the headers section
-  (when (and eoh (> eoh (point)) (mail-abbrev-in-expansion-header-p))
-    (let* ((end (point))
-           (start
-            (or start
-                (save-excursion
-                  (re-search-backward "\\(\\`\\|[\n:,]\\)[ \t]*")
-                  (goto-char (match-end 0))
-                  (point))))
-           (initial-input (buffer-substring-no-properties start end)))
-
-      (delete-region start end)
-
-      (ivy-read "Contact: "
-                (dalvrosa/read-contact-list)
-                :action (lambda(contact) (with-ivy-window (insert contact)))
-                :initial-input initial-input)))))
-(define-key mu4e-compose-mode-map (kbd "<M-tab>") 'dalvrosa/complete-emails)
+(use-package bbdb-vcard
+  :after bbdb)
 
 (require 'smtpmail)
 (setq message-send-mail-function 'smtpmail-send-it)

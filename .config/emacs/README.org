@@ -91,7 +91,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#bookmarks][Bookmarks]]
   - [[#update-and-notification][Update and Notification]]
   - [[#queued-email][Queued Email]]
-  - [[#completion][Completion]]
+  - [[#emacs-unified-directory-client][Emacs Unified Directory Client]]
   - [[#compositionsending][Composition/Sending]]
   - [[#attachment-management][Attachment Management]]
 - [[#web-feed-reader][Web Feed Reader]]
@@ -1836,69 +1836,91 @@ notifications.
 It allows to save the outgoing mail (output tray) to send them later. Useful
 when working without an Internet connection, for example. This can be toggled
 in mu4e main view with =m=.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq smtpmail-queue-dir "~/.local/share/mail/Queue/cur")
 #+end_src
 
-** Completion
-Use Ivy as default completion engine (instead of Ido).
-#+begin_src emacs-lisp
-  (setq mu4e-completing-read-function 'ivy-completing-read)
+** Emacs Unified Directory Client
+EUDC is the Emacs Unified Directory Client, a common interface to directory
+servers and contact information.
+
+Currently supported back-ends are:
+- LDAP, Lightweight Directory Access Protocol
+- BBDB, Big Brother’s Insidious Database
+- macOS Contacts
+
+The main features of the EUDC interface are:
+- Queries using a customizable form
+- Inline query expansion (for instance you can expand a name to an email
+  address in a mail message buffer using a server as an address book)
+- Multiple servers can be tried in turn until a match is found for an inline
+  query
+- Fast minibuffer queries for email addresses and phone numbers
+- Interface to BBDB to let you insert server records into your own BBDB
+  database (see BBDB in BBDB Manual)
+#+begin_src elisp
+  (use-package eudc
+    :ensure nil
+    :after (ldap bbdb)
+    :init (require 'eudc)
+    :bind (:map message-mode-map
+                (("<M-tab>" . 'eudc-expand-inline)))
+    :config
+    (eudc-set-server "ldap.amazon.com" 'ldap t)
+    (eudc-bbdb-set-server "localhost")
+    (setq eudc-server-hotlist
+          '(("localhost" . bbdb)
+            ("ldap.amazon.com" . ldap)))
+    (setq eudc-inline-expansion-servers 'hotlist))
 #+end_src
 
-I have personalized the email completion with a file with contact information
-stored in =dalvrosa/contact-file=. This text file has contacts in the form "Name
-<address>", one per line. This function is inspired on [[http://pragmaticemacs.com/emacs/even-better-email-contact-completion-in-mu4e/][Even better email
-contact completion in mu4e]].
-#+begin_src emacs-lisp
-  (setq dalvrosa/contact-file "~/Documents/Contacts/Emails.txt")
-  (defun dalvrosa/read-contact-list ()
-    (with-temp-buffer
-      (insert-file-contents dalvrosa/contact-file)
-      (split-string (buffer-string) "\n" t)))
-  (defun dalvrosa/complete-emails (&optional start)
-    (interactive)
+*** Lightweight Directory Access Protocol
+LDAP, the Lightweight Directory Access Protocol, is a communication protocol
+for directory applications defined in RFC 1777.
+#+begin_src elisp
+  (use-package ldap
+    :ensure nil
+    :demand t
+    :config
+    (setq ldap-default-host "ldap.amazon.com")
+    (setq ldap-host-parameters-alist '(("ldap.amazon.com"
+                                        base "o=amazon.com"
+                                        auth simple))))
+#+end_src
 
-    (let ((eoh ;; end-of-headers
-           (save-excursion
-             (goto-char (point-min))
-             (search-forward-regexp mail-header-separator nil t))))
+*** Big Brother’s Insidious Database
+BBDB is the Big Brother’s Insidious Database, a package for Emacs originally
+written by Jamie Zawinski which provides rolodex-like database functionality
+featuring tight integration with the Emacs mail and news readers. It is often
+used as an enhanced email address book.
+#+begin_src elisp
+  (use-package bbdb
+    :demand t)
+#+end_src
 
-    ;; Only run if we are in the headers section
-    (when (and eoh (> eoh (point)) (mail-abbrev-in-expansion-header-p))
-      (let* ((end (point))
-             (start
-              (or start
-                  (save-excursion
-                    (re-search-backward "\\(\\`\\|[\n:,]\\)[ \t]*")
-                    (goto-char (match-end 0))
-                    (point))))
-             (initial-input (buffer-substring-no-properties start end)))
-
-        (delete-region start end)
-
-        (ivy-read "Contact: "
-                  (dalvrosa/read-contact-list)
-                  :action (lambda(contact) (with-ivy-window (insert contact)))
-                  :initial-input initial-input)))))
-  (define-key mu4e-compose-mode-map (kbd "<M-tab>") 'dalvrosa/complete-emails)
+=bbdb-vcard= imports and exports vCards (version 3.0) as defined in RFC 2425
+and RFC 2426 to/from The Insidious Big Brother Database (BBDB). Version 2.1
+vCards are converted into version 3.0 on import.
+#+begin_src elisp
+    (use-package bbdb-vcard
+      :after bbdb)
 #+end_src
 
 ** Composition/Sending
 Set default send mail function.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (require 'smtpmail)
   (setq message-send-mail-function 'smtpmail-send-it)
 #+end_src
 
 Configure citation line (the one that says "On 20 April David wrote...") .
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq message-citation-line-function 'message-insert-formatted-citation-line)
   (setq message-citation-line-format "On %a %d %b %Y at %R, %N wrote:")
 #+end_src
 
 Kill message buffer after sending a message.
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq message-kill-buffer-on-exit t)
 #+end_src
 
