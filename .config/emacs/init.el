@@ -204,11 +204,11 @@
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
-  (load-theme 'doom-one-light t)
+  (load-theme 'doom-solarized-light t)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(setq dalvrosa/themes '(doom-one-light doom-zenburn))
+(setq dalvrosa/themes '(doom-solarized-light doom-zenburn))
 (setq dalvrosa/themes-index 0)
 
 (defun dalvrosa/cycle-theme ()

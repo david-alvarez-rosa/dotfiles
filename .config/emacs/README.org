@@ -730,7 +730,7 @@ became bored of it. Doom Themes provides nice themes such as =doom-one= (dark),
     :config
     (setq doom-themes-enable-bold t
           doom-themes-enable-italic t)
-    (load-theme 'doom-one-light t)
+    (load-theme 'doom-solarized-light t)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 #+end_src
@@ -741,7 +741,7 @@ Some themes I also like are =doom-one= (dark), =doom-peacock= (dark) and
 Custom keybindings for cycling between themes in Emacs with =C-c d=. Binding
 cames from toggling dark theme (d for "dark").
 #+begin_src emacs-lisp
-  (setq dalvrosa/themes '(doom-one-light doom-zenburn))
+  (setq dalvrosa/themes '(doom-solarized-light doom-zenburn))
   (setq dalvrosa/themes-index 0)
 
   (defun dalvrosa/cycle-theme ()
