@@ -31,7 +31,7 @@
 
 (when (eq system-type 'darwin)
   (use-package exec-path-from-shell
-    :demand
+    :demand t
     :config
     (exec-path-from-shell-initialize)))
 
@@ -108,8 +108,6 @@
 
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (setq-default fill-column 79)
-
-(setq-default sentence-end-double-space nil)
 
 (defun dalvrosa/unfill-paragraph (&optional region)
   "Takes a multi-line paragraph and makes it into a single line of text."
@@ -200,7 +198,7 @@
 (use-package sudo-edit)
 
 (use-package doom-themes
-  :demand
+  :demand t
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
@@ -228,20 +226,29 @@
 (setq custom-safe-themes t)
 
 (use-package doom-modeline
-  :demand
+  :demand t
   :init (doom-modeline-mode 1)
   :config (setq column-number-mode t)
+  (setq doom-modeline-buffer-file-name-style 'relative-from-project)
   (setq doom-modeline-percent-position nil))
 
 (setq display-time-default-load-average nil)
+
+(use-package nyan-mode
+  :after doom-modeline
+  :init (nyan-mode)
+  :config
+  (nyan-start-animation)
+  (nyan-toggle-wavy-trail))
 
 (set-face-attribute 'default nil :font "Hack" :height 102)
 
 (use-package default-text-scale
   :init (default-text-scale-mode)
+  :config (setq default-text-scale-amount 20)
   :bind (("s-0" . 'default-text-scale-reset)
-  ("s--" . 'default-text-scale-decrease)
-  ("s-=" . 'default-text-scale-increase)))
+         ("s--" . 'default-text-scale-decrease)
+         ("s-=" . 'default-text-scale-increase)))
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -309,7 +316,7 @@
   (lsp-treemacs-sync-mode 1))
 
 (use-package clang-format
-  :demand
+  :demand t
   :config (global-set-key [C-M-tab] 'clang-format-region))
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -325,6 +332,7 @@
   (add-hook 'prog-mode-hook 'flycheck-mode))
 
 (use-package projectile
+  :demand t
   :config (projectile-mode +1)
   (setq projectile-completion-system 'ivy)
   :bind (:map projectile-mode-map ("C-c p" . 'projectile-command-map)))
@@ -335,7 +343,7 @@
   :bind ("C-c g" . 'magit-status))
 
 (use-package git-link
-  :demand
+  :demand t
   :config
   (global-set-key (kbd "C-c w l") 'git-link)
   (global-set-key (kbd "C-c w c") 'git-link-commit)
@@ -364,7 +372,7 @@
         ("C-x t M-t" . treemacs-find-tag)))
 
 (use-package treemacs-all-the-icons
-  :demand
+  :demand t
   :config
   (setq treemacs-indentation 1)
   (treemacs-load-theme "all-the-icons"))
@@ -602,7 +610,7 @@
 (use-package ledger-mode)
 
 (use-package pdf-tools
-  :demand
+  :demand t
   :config
   (pdf-tools-install)
   :bind (:map pdf-view-mode-map
