@@ -475,8 +475,8 @@
                      ((org-agenda-overriding-header "Amazon")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if 'scheduled))))
-          (tags-todo "TODO=\"TODO\"+PROJECT"
-                     ((org-agenda-overriding-header "Personal Projects")
+          (tags-todo "TODO=\"TODO\"+PROJ"
+                     ((org-agenda-overriding-header "Projects")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if'scheduled))))
           (tags-todo "TODO=\"TODO\"+SINGLE"
