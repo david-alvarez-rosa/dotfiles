@@ -250,7 +250,7 @@ Ensure environment variable inside Emacs look the same as shell.
 #+begin_src elisp
   (when (eq system-type 'darwin)
     (use-package exec-path-from-shell
-      :demand
+      :demand t
       :config
       (exec-path-from-shell-initialize)))
 #+end_src
@@ -720,7 +720,7 @@ became bored of it. Doom Themes provides nice themes such as =doom-one= (dark),
 =doom-one-ligth= (light), and the classic =zenburn= of course.
 #+begin_src elisp
   (use-package doom-themes
-    :demand
+    :demand t
     :config
     (setq doom-themes-enable-bold t
           doom-themes-enable-italic t)
@@ -766,7 +766,7 @@ all-the-icons-install-fonts=. I have configured it to show column number
 instead of percentage buffer position.
 #+begin_src elisp
   (use-package doom-modeline
-    :demand
+    :demand t
     :init (doom-modeline-mode 1)
     :config (setq column-number-mode t)
     (setq doom-modeline-percent-position nil))
@@ -959,7 +959,7 @@ provides integration with debug server.
 Use Clang for code formatting.
 #+begin_src elisp
   (use-package clang-format
-    :demand
+    :demand t
     :config (global-set-key [C-M-tab] 'clang-format-region))
 #+end_src
 
@@ -1011,6 +1011,7 @@ dependencies (when feasible). It is very nice, because it integrates seamlessly
 with version control (like Git) and takes into account =.gitignore= files.
 #+begin_src elisp
   (use-package projectile
+    :demand t
     :config (projectile-mode +1)
     (setq projectile-completion-system 'ivy)
     :bind (:map projectile-mode-map ("C-c p" . 'projectile-command-map)))
@@ -1080,7 +1081,7 @@ GitHub/Bitbucket/GitLab/... repositories.
 URLs are added to the kill ring.
 #+begin_src elisp
   (use-package git-link
-    :demand
+    :demand t
     :config
     (global-set-key (kbd "C-c w l") 'git-link)
     (global-set-key (kbd "C-c w c") 'git-link-commit)
@@ -1135,7 +1136,7 @@ have that installed.
           ("C-x t M-t" . treemacs-find-tag)))
 
   (use-package treemacs-all-the-icons
-    :demand
+    :demand t
     :config
     (setq treemacs-indentation 1)
     (treemacs-load-theme "all-the-icons"))
@@ -1671,7 +1672,7 @@ Disable here Swiper for searching, and fallback to Isearch, since Swiper
 searchs in the source code rather than in the PDF itself.
 #+begin_src elisp
   (use-package pdf-tools
-    :demand
+    :demand t
     :config
     (pdf-tools-install)
     :bind (:map pdf-view-mode-map
