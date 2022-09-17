@@ -2053,6 +2053,22 @@ well.
   (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 #+end_src
 
+** Meetings
+Allow reply to iCalendar emails (i.e. accept, decline or tentatively accept
+meetings).
+#+begin_src elisp
+  (require 'mu4e-icalendar)
+  (mu4e-icalendar-setup)
+  (setq mu4e-icalendar-trash-after-reply t)
+  #+end_src
+
+Capture meetings and display them in org-agenda.
+#+begin_src elisp
+  (setq gnus-icalendar-org-capture-file "~/Documents/Agenda.org")
+  (setq gnus-icalendar-org-capture-headline '("Calendar"))
+  (gnus-icalendar-org-setup)
+#+end_src
+
 * Web Feed Reader
 Elfeed is an extensible web feed reader for Emacs, supporting both Atom and
 RSS. It requires Emacs 24.3.
