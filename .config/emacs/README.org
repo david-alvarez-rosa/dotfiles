@@ -1698,9 +1698,9 @@ installed, this program is designed to enable super-efficient handling of
 e-mail; searching, reading, replying, moving, deleting. Also Isync should be
 installed and configured (this program is the same as mbsync, which is the name
 of the isync executable). This program will sync email computer <-> server,
-check out my [[file:~/.config/isync/mbsyncrc.org][isync configuration]].
+check out my [[file:~/.config/isync/README.org][isync configuration]].
 
-Open last 7 days email header view with =C-c e= keybinding.
+Set =C-c e= as default keybinding for email =mu4e=.
 #+begin_src elisp
   (require 'mu4e)
   (setq mail-user-agent 'mu4e-user-agent)
