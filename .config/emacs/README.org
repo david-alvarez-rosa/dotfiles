@@ -797,9 +797,10 @@ Add ability to scale font for frame, instead that for an specifically buffer.
 #+begin_src elisp
   (use-package default-text-scale
     :init (default-text-scale-mode)
+    :config (setq default-text-scale-amount 20)
     :bind (("s-0" . 'default-text-scale-reset)
-    ("s--" . 'default-text-scale-decrease)
-    ("s-=" . 'default-text-scale-increase)))
+           ("s--" . 'default-text-scale-decrease)
+           ("s-=" . 'default-text-scale-increase)))
 #+end_src
 
 ** Basic Interface Settings
