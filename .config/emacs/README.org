@@ -1508,6 +1508,44 @@ graphs (consistency graph overwrites anything else in the buffer).
   (setq org-habit-graph-column 55)
 #+end_src
 
+*** Calendar
+Use org caldav with davmail for syncing.
+#+begin_src elisp
+  (use-package org-caldav
+    :config
+    (setq org-caldav-url "http://localhost:1080/users")
+    (setq org-caldav-inbox "~/Documents/Calendar.org")
+    (setq org-caldav-calendar-id "dalvrosa@amazon.com/calendar")
+
+    (setq org-caldav-show-sync-results nil)
+
+    (setq org-caldav-uuid-extension ".EML")
+
+    (setq org-icalendar-timezone "Europe/Madrid")
+
+    ;; We don't actually need to sync from our org file to the calendar;
+    ;; I expect to use meetings.a.c and other mechanisms to schedule
+    ;; meetings
+    (setq org-caldav-sync-direction 'cal->org)
+
+
+    ;; Eagerly load org-agenda, since our gnus-icalendar bits break without this
+    ;; (require 'org-agenda)
+
+
+    ;; Configure org-caldav-sync to sync in the background after 1
+    ;; minute of idle time
+    ;; (defun jmi/caldav-sync-idle-timer-wrapper ()
+      ;; (org-caldav-sync))
+
+    ;; (run-with-idle-timer 60 t 'jmi/caldav-sync-idle-timer-wrapper)
+
+    ;; :bind ((:map jmi/my-jump-keys-map
+    ;;              ("f c"  . org-caldav-sync)))
+
+    :after (org))
+#+end_src
+
 ** Archive
 Set default org archive location.
 #+begin_src elisp
