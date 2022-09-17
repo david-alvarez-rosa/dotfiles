@@ -1286,12 +1286,12 @@ Configuration for refiling command =C-c C-w=.
 ** Capture Templates
 Take notes quickly within Emacs with =C-c c=.
 #+begin_src elisp
-  (setq org-default-notes-file "~/Documents/Tasks.org")
+  (setq org-default-notes-file "~/Documents/Agenda.org")
   (define-key global-map (kbd "C-c c") 'org-capture)
 #+end_src
 
 Set my custom capture templates. Brief description of them:
-- Task: basic template for TODO tasks. This is inside my =Tasks.org= file under
+- Task: basic template for TODO tasks. This is inside my =Agenda.org= file under
   "Refile" heading. Then I manually refile this tasks under a particular
   projects or into a "Standalone Tasks" heading.
 - Text Note: template for taking quick notes. This is inside my =Notes.org=
@@ -1299,7 +1299,7 @@ Set my custom capture templates. Brief description of them:
 #+begin_src elisp
   (setq org-capture-templates
         '(("t" "Task" entry
-           (file+olp "~/Documents/Tasks.org" "Refile")
+           (file+olp "~/Documents/Agenda.org" "Refile")
            "* TODO [#C] %?\n%a\n%i" :empty-lines 1)
           ("n" "Text Note" entry
            (file+olp "~/Documents/Notes.org" "Refile")
@@ -1400,7 +1400,7 @@ most of Emacs. It's great.
 
 Set files to show in agenda.
 #+begin_src elisp
-  (setq org-agenda-files '("~/Documents/Tasks.org"))
+  (setq org-agenda-files '("~/Documents/Agenda.org"))
 #+end_src
 
 Custom agenda views. I use a custom view that contains the following blocks:
