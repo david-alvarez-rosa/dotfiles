@@ -777,6 +777,16 @@ Disable load average.
   (setq display-time-default-load-average nil)
 #+end_src
 
+Enable nyan cat.
+#+begin_src elisp
+  (use-package nyan-mode
+    :after doom-modeline
+    :init (nyan-mode)
+    :config
+    (nyan-start-animation)
+    (nyan-toggle-wavy-trail))
+#+end_src
+
 ** Font
 Set default font. I'm currently using Hack (in the past I used Inconsolata).
 #+begin_src elisp
