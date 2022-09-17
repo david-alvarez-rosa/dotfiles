@@ -413,12 +413,12 @@
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-use-outline-path 'file)
 
-(setq org-default-notes-file "~/Documents/Tasks.org")
+(setq org-default-notes-file "~/Documents/Agenda.org")
 (define-key global-map (kbd "C-c c") 'org-capture)
 
 (setq org-capture-templates
       '(("t" "Task" entry
-         (file+olp "~/Documents/Tasks.org" "Refile")
+         (file+olp "~/Documents/Agenda.org" "Refile")
          "* TODO [#C] %?\n%a\n%i" :empty-lines 1)
         ("n" "Text Note" entry
          (file+olp "~/Documents/Notes.org" "Refile")
@@ -461,7 +461,7 @@
 
 (global-set-key (kbd "C-c a") 'org-agenda)
 
-(setq org-agenda-files '("~/Documents/Tasks.org"))
+(setq org-agenda-files '("~/Documents/Agenda.org"))
 
 (setq org-agenda-custom-commands
       '((" " "Block Agenda"
@@ -530,6 +530,33 @@
 (require 'org-habit)
 
 (setq org-habit-graph-column 55)
+
+(require 'appt)
+(setq appt-time-msg-list nil)
+(setq appt-message-warning-time '15
+      appt-display-interval '1)
+
+(setq appt-display-mode-line nil
+      appt-display-format 'window)
+(appt-activate 1)
+
+(org-agenda-to-appt)
+(run-at-time "24:01" 1800 'org-agenda-to-appt)
+(add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
+
+(defun dalvrosa/appt-send-notification (title msg)
+  (if dalvrosa/at-work
+      (shell-command (concat "terminal-notifier"
+                             " -message " msg
+                             " -title " title
+                             " -sender " "org.gnu.Emacs"))
+    (shell-command (concat "notify-send " msg " " title))))
+
+(defun dalvrosa/appt-display (min-to-app new-time msg)
+  (dalvrosa/appt-send-notification
+   (format "'Meeting in %s minutes'" min-to-app)
+   (format "'%s'" msg)))
+(setq appt-disp-window-function (function dalvrosa/appt-display))
 
 (setq org-archive-location "::* Archived Items")
 
@@ -758,6 +785,14 @@
     (nreverse buffers)))
 (setq gnus-dired-mail-mode 'mu4e-user-agent)
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+
+(require 'mu4e-icalendar)
+(mu4e-icalendar-setup)
+(setq mu4e-icalendar-trash-after-reply t)
+
+(setq gnus-icalendar-org-capture-file "~/Documents/Agenda.org")
+(setq gnus-icalendar-org-capture-headline '("Calendar"))
+(gnus-icalendar-org-setup)
 
 (use-package elfeed
   :bind (("C-c f" . 'elfeed)
