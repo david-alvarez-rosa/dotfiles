@@ -1140,73 +1140,22 @@ have that installed.
 #+end_src
 
 ** Amazon Specific
-Work related configuration: specific to Amazon.
+Work related configuration: specific to Amazon. There is the EmacsAmazonLibs
+package in GitFarm
 
-*** Open Code
-Set =C-c o= for opening code in code.amazon.com website.
+Amazon developers have created a couple of libraries to make life easier for
+developers.
+
+To take advantage of these libraries, create a desktop workspace with the
+EmacsAmazonLibs Brazil package. Build the package with =brazil-build release=.
+This will create a TAR file in the build directory, such as
+=emacs-amazon-libs-20180828094910.tar=. Run the command =M-x
+package-install-file= and enter the TAR file when prompted. This will install
+EmacsAmazonLibs as an Emacs package in your =~/.emacs.d/elpa= directory. You
+should then require the =amz-common= package to pick up the customisation.
+
 #+begin_src emacs-lisp
-  (defcustom dalvrosa/amz-workspace-base-dirname "workplace"
-    "The name of your base workspace directory"
-    :type 'string)
-
-  (defun dalvrosa/amz-package (fname)
-    "break up the current class' filename into (package path, package, class path, classfile)"
-    (let (packagepath package classpath classfile count ptr1 ptr2)
-      (setq packagepath (split-string fname "/"))
-      (setq ptr1 packagepath)
-      (while (and
-              (not (string= (car ptr1) dalvrosa/amz-workspace-base-dirname))
-              (not (null ptr1)))
-        (setq ptr1 (cdr ptr1)))
-      (if (null ptr1)
-          (error "not in a workspace"))
-      (setq count 0)
-      (while (and (< count 3)
-                  (not (null ptr1)))
-        (setq ptr2 ptr1)
-        (setq ptr1 (cdr ptr1))
-        (setq count (1+ count)))
-      (if (null ptr1)
-          (error "not in a package dir"))
-      (setcdr ptr2 nil)
-      (setq package (car ptr1))
-      (setq ptr2 ptr1)
-      (setq ptr1 (cdr ptr1))
-      (if (null ptr1)
-          (error "not in a package dir"))
-      (setcdr ptr2 nil)
-      (setq classpath ptr1)
-      (while (not (null (cdr ptr1)))
-        (setq ptr2 ptr1)
-        (setq ptr1 (cdr ptr1)))
-      (setcdr ptr2 nil)
-      (setq classfile (car ptr1))
-      (if (or (null package)
-              (null classpath)
-              (null packagepath)
-              (null classfile))
-          (error "not in a classfile")
-        (list (mapconcat 'identity packagepath "/")
-              package
-              (mapconcat 'identity classpath "/")
-              classfile))))
-
-  (defun dalvrosa/open-code-amazon ()
-    "Open the current line of code, or highlighted lines of code, on code.amazon.
-     This assumes that the current file is under
-     `dalvrosa/amz-workspace-base-dirname'."
-    (interactive)
-    (let ((fname (buffer-file-name))
-          service path lines)
-      (setq pathparts (dalvrosa/amz-package fname))
-      (if (not (use-region-p))
-          (setq lines (format "L%d" (line-number-at-pos)))
-        (setq lines (format "L%d-L%d" (line-number-at-pos (mark)) (- (line-number-at-pos) 1))))
-      (setq service (nth 1 pathparts))
-      (setq path (concat (nth 2 pathparts) "/" (nth 3 pathparts)))
-      (browse-url (format "https://code.amazon.com/packages/%s/blobs/mainline/--/%s#%s" service path lines))))
-
-  (define-key prog-mode-map (kbd "C-c o") 'dalvrosa/open-code-amazon)
+  (require 'amz-common)
 #+end_src
 
 ** C/C++

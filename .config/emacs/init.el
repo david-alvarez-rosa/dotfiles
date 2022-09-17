@@ -369,68 +369,7 @@
   (setq treemacs-indentation 1)
   (treemacs-load-theme "all-the-icons"))
 
-(defcustom dalvrosa/amz-workspace-base-dirname "workplace"
-  "The name of your base workspace directory"
-  :type 'string)
-
-(defun dalvrosa/amz-package (fname)
-  "break up the current class' filename into (package path, package, class path, classfile)"
-  (let (packagepath package classpath classfile count ptr1 ptr2)
-    (setq packagepath (split-string fname "/"))
-    (setq ptr1 packagepath)
-    (while (and
-            (not (string= (car ptr1) dalvrosa/amz-workspace-base-dirname))
-            (not (null ptr1)))
-      (setq ptr1 (cdr ptr1)))
-    (if (null ptr1)
-        (error "not in a workspace"))
-    (setq count 0)
-    (while (and (< count 3)
-                (not (null ptr1)))
-      (setq ptr2 ptr1)
-      (setq ptr1 (cdr ptr1))
-      (setq count (1+ count)))
-    (if (null ptr1)
-        (error "not in a package dir"))
-    (setcdr ptr2 nil)
-    (setq package (car ptr1))
-    (setq ptr2 ptr1)
-    (setq ptr1 (cdr ptr1))
-    (if (null ptr1)
-        (error "not in a package dir"))
-    (setcdr ptr2 nil)
-    (setq classpath ptr1)
-    (while (not (null (cdr ptr1)))
-      (setq ptr2 ptr1)
-      (setq ptr1 (cdr ptr1)))
-    (setcdr ptr2 nil)
-    (setq classfile (car ptr1))
-    (if (or (null package)
-            (null classpath)
-            (null packagepath)
-            (null classfile))
-        (error "not in a classfile")
-      (list (mapconcat 'identity packagepath "/")
-            package
-            (mapconcat 'identity classpath "/")
-            classfile))))
-
-(defun dalvrosa/open-code-amazon ()
-  "Open the current line of code, or highlighted lines of code, on code.amazon.
-   This assumes that the current file is under
-   `dalvrosa/amz-workspace-base-dirname'."
-  (interactive)
-  (let ((fname (buffer-file-name))
-        service path lines)
-    (setq pathparts (dalvrosa/amz-package fname))
-    (if (not (use-region-p))
-        (setq lines (format "L%d" (line-number-at-pos)))
-      (setq lines (format "L%d-L%d" (line-number-at-pos (mark)) (- (line-number-at-pos) 1))))
-    (setq service (nth 1 pathparts))
-    (setq path (concat (nth 2 pathparts) "/" (nth 3 pathparts)))
-    (browse-url (format "https://code.amazon.com/packages/%s/blobs/mainline/--/%s#%s" service path lines))))
-
-(define-key prog-mode-map (kbd "C-c o") 'dalvrosa/open-code-amazon)
+(require 'amz-common)
 
 (use-package google-c-style
   :hook
