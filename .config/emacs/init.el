@@ -369,7 +369,8 @@
   (setq treemacs-indentation 1)
   (treemacs-load-theme "all-the-icons"))
 
-(require 'amz-common)
+(if dalvrosa/at-work
+    (require 'amz-common))
 
 (use-package google-c-style
   :hook
