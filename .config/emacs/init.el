@@ -492,7 +492,7 @@
                      ((org-agenda-overriding-header "Projects")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if'scheduled))))
-          (tags-todo "TODO=\"TODO\"+SINGLE"
+          (tags-todo "TODO=\"TODO\"+SING"
                      ((org-agenda-overriding-header "Standalone Tasks")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if 'scheduled))))
