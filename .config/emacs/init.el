@@ -622,6 +622,8 @@
 (setq mail-user-agent 'mu4e-user-agent)
 (global-set-key (kbd "C-c e") 'mu4e)
 
+(setq mu4e-completing-read-function 'ivy-completing-read)
+
 (setq mu4e-headers-fields '((:human-date . 12)
                             (:flags . 6)
                             (:maildir . 18)

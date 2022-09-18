@@ -1711,6 +1711,11 @@ Set =C-c e= as default keybinding for email =mu4e=.
   (global-set-key (kbd "C-c e") 'mu4e)
   #+end_src
 
+Configure the completion function.
+#+begin_src elisp
+  (setq mu4e-completing-read-function 'ivy-completing-read)
+#+end_src
+
 Customization of header view. I don't use mailing lists that often, so I have
 remove them from headers view.
 #+begin_src elisp
