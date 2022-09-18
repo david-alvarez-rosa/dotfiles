@@ -338,7 +338,9 @@
   :config (projectile-mode +1)
   (setq projectile-ignored-projects '("~/"))
   (setq projectile-completion-system 'ivy)
-  :bind (:map projectile-mode-map ("C-c p" . 'projectile-command-map)))
+  :bind (:map projectile-mode-map
+              ("C-c p" . 'projectile-command-map)
+              ("s-r" . 'projectile-command-map)))
 
 (use-package ag)
 
