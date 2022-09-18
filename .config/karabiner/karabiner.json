@@ -16,10 +16,61 @@
                 },
                 "rules": [
                     {
-                        "description": "Change enter to control if pressed with other keys",
+                        "description": "Change tab to command if pressed with other keys",
                         "manipulators": [
                             {
                                 "from": {
+                                    "key_code": "tab"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_command"
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "tab"
+                                    }
+                                ],
+                                "to_if_held_down": [
+                                    {
+                                        "key_code": "tab"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Change delete to command if pressed with other keys",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "delete_or_backspace"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_command"
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "delete_or_backspace"
+                                    }
+                                ],
+                                "to_if_held_down": [
+                                    {
+                                        "key_code": "delete_or_backspace"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Change enter to control if pressed with other keys",
+                        "manipulators": [
+                            {
                                     "key_code": "return_or_enter",
                                     "modifiers": {
                                         "optional": [
@@ -33,6 +84,11 @@
                                     }
                                 ],
                                 "to_if_alone": [
+                                    {
+                                        "key_code": "return_or_enter"
+                                    }
+                                ],
+                                "to_if_held_down": [
                                     {
                                         "key_code": "return_or_enter"
                                     }
