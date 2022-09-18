@@ -71,6 +71,7 @@
                         "description": "Change enter to control if pressed with other keys",
                         "manipulators": [
                             {
+				"from": {
                                     "key_code": "return_or_enter",
                                     "modifiers": {
                                         "optional": [
