@@ -71,18 +71,6 @@ ZSH_THEME=""
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
-plugins=(
-  git
-  brew
-  common-aliases
-  npm
-  sudo
-  colored-man-pages
-  colorize
-  cp
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -121,13 +109,10 @@ PATH="$PATH:/Users/dalvrosa/.toolbox/bin"
 
 
 
-
-
 bindkey "\e[A" history-beginning-search-backward
 bindkey "\e[B" history-beginning-search-forward
 bindkey "\C-p" history-beginning-search-backward
 bindkey "\C-n" history-beginning-search-forward
-
 
 
 
@@ -137,7 +122,7 @@ export GPG_TTY=$(tty)
 
 alias ibrew='arch -x86_64 /usr/local/bin/brew'
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
+# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
 
 
 vterm_printf(){
@@ -151,7 +136,9 @@ vterm_printf(){
         printf "\e]%s\e\\" "$1"
     fi
 }
-
+if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+    alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
+fi
 
 
 export XDG_CONFIG_HOME="$HOME/.config"

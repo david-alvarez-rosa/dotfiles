@@ -243,7 +243,7 @@
   (nyan-start-animation)
   (nyan-toggle-wavy-trail))
 
-(set-face-attribute 'default nil :font "Hack" :height 102)
+(set-face-attribute 'default nil :font "Hack" :height 120)
 
 (use-package default-text-scale
   :init (default-text-scale-mode)
@@ -336,6 +336,7 @@
 (use-package projectile
   :demand t
   :config (projectile-mode +1)
+  (setq projectile-ignored-projects '("~/"))
   (setq projectile-completion-system 'ivy)
   :bind (:map projectile-mode-map ("C-c p" . 'projectile-command-map)))
 
@@ -860,5 +861,3 @@
 (setq erc-track-exclude-server-buffer t)
 
 (use-package erc-hl-nicks)
-
-(setq projectile-ignored-projects '("~/"))
