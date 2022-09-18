@@ -40,7 +40,9 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(setq-default dired-listing-switches "-alh")
+(setq-default dired-listing-switches "-alh --group-directories-first --color")
+(when (eq system-type 'darwin)
+  (setq insert-directory-program "/opt/homebrew/bin/gls"))
 
 (put 'dired-find-alternate-file 'disabled nil)
 

@@ -281,7 +281,9 @@ file.
 
 Show file sizes in a human readable style.
 #+begin_src elisp
-  (setq-default dired-listing-switches "-alh")
+  (setq-default dired-listing-switches "-alh --group-directories-first --color")
+  (when (eq system-type 'darwin)
+    (setq insert-directory-program "/opt/homebrew/bin/gls"))
 #+end_src
 
 Ability to use =a= to visit a new directory or file in Dired instead of using
