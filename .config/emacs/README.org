@@ -2221,3 +2221,8 @@ nickname’, nickname”, etc.)
 - [[https://github.com/rememberYou/.emacs.d/blob/master/config.org/][Terencio Agozzino]] is a computer engineer with a very nice (literate) Emacs
   configuration. He has written in Reddit (as =u/rmberYou/=) several Emacs
   tips that are worth checking out.
+
+* Testing
+#+begin_src elisp
+  (setq projectile-ignored-projects '("~/"))
+#+end_src

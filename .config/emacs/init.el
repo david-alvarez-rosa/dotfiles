@@ -860,3 +860,5 @@
 (setq erc-track-exclude-server-buffer t)
 
 (use-package erc-hl-nicks)
+
+(setq projectile-ignored-projects '("~/"))
