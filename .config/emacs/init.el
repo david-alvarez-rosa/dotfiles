@@ -301,8 +301,6 @@
   (setq vterm-max-scrollback 10000))
 
 (use-package lsp-mode
-  :init
-  (setq lsp-keymap-prefix "C-c l")
   :config
   (setq lsp-idle-delay 0.1)
   :hook ((c-mode-common . lsp)

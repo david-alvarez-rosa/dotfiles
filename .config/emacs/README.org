@@ -927,8 +927,6 @@ The goal of the language server protocol is to allow programming language
 support to be implemented and distributed independently of any given editor.
 #+begin_src elisp
   (use-package lsp-mode
-    :init
-    (setq lsp-keymap-prefix "C-c l")
     :config
     (setq lsp-idle-delay 0.1)
     :hook ((c-mode-common . lsp)
