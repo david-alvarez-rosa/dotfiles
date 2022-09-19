@@ -546,7 +546,7 @@
 (require 'appt)
 (setq appt-time-msg-list nil)
 (setq appt-message-warning-time '15
-      appt-display-interval '1)
+      appt-display-interval '5)
 
 (setq appt-display-mode-line nil
       appt-display-format 'window)
