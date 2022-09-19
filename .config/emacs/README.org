@@ -796,14 +796,34 @@ Set default font. I'm currently using Hack (in the past I used Inconsolata).
   (set-face-attribute 'default nil :font "Hack" :height 120)
 #+end_src
 
-Add ability to scale font for frame, instead that for an specifically buffer.
+Add ability to scale font for frame, instead that for an specifically
+buffer. I've needed to wrap all the functions to reset `doom-modeline` cache
+afterwards.
 #+begin_src elisp
   (use-package default-text-scale
     :init (default-text-scale-mode)
     :config (setq default-text-scale-amount 20)
-    :bind (("s-0" . 'default-text-scale-reset)
-           ("s--" . 'default-text-scale-decrease)
-           ("s-=" . 'default-text-scale-increase)))
+    :bind (("s-0" . 'dalvrosa/default-text-scale-reset)
+           ("s--" . 'dalvrosa/default-text-scale-decrease)
+           ("s-=" . 'dalvrosa/default-text-scale-increase)))
+
+  (defun dalvrosa/default-text-scale-reset ()
+    "Reset text scale and refresh doom-modeline cache."
+    (interactive)
+    (default-text-scale-reset)
+    (doom-modeline-refresh-font-width-cache))
+
+  (defun dalvrosa/default-text-scale-decrease ()
+    "Decrease text scale and refresh doom-modeline cache."
+    (interactive)
+    (default-text-scale-decrease)
+    (doom-modeline-refresh-font-width-cache))
+
+  (defun dalvrosa/default-text-scale-increase ()
+    "Increase text scale and refresh doom-modeline cache."
+    (interactive)
+    (default-text-scale-increase)
+    (doom-modeline-refresh-font-width-cache))
 #+end_src
 
 ** Basic Interface Settings
