@@ -391,6 +391,7 @@
 (use-package cmake-mode)
 
 (use-package typescript-mode
+  :demand t
   :config
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode)))
 
