@@ -398,6 +398,8 @@
   (setq treemacs-indentation 1)
   (treemacs-load-theme "all-the-icons"))
 
+(ansi-color-for-comint-mode-on)
+
 (if dalvrosa/at-work
     (require 'amz-common))
 

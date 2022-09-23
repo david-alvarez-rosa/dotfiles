@@ -797,7 +797,7 @@ Set default font. I'm currently using Hack (in the past I used Inconsolata).
 #+end_src
 
 Add ability to scale font for frame, instead that for an specifically
-buffer. I've needed to wrap all the functions to reset `doom-modeline` cache
+buffer. I've needed to wrap all the functions to reset =doom-modeline= cache
 afterwards.
 #+begin_src elisp
   (use-package default-text-scale
@@ -1164,6 +1164,12 @@ have that installed.
     :config
     (setq treemacs-indentation 1)
     (treemacs-load-theme "all-the-icons"))
+#+end_src
+
+*** Ansi Color
+Enable colors.
+#+begin_src elisp
+  (ansi-color-for-comint-mode-on)
 #+end_src
 
 ** Amazon Specific
