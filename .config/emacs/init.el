@@ -199,6 +199,8 @@
 
 (use-package sudo-edit)
 
+(use-package chronometer)
+
 (use-package doom-themes
   :demand t
   :config

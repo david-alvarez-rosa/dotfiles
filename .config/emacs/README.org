@@ -54,6 +54,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#completion-inteface][Completion Inteface]]
   - [[#spell-checking-and-correcting][Spell Checking and Correcting]]
   - [[#sudo-edit][Sudo Edit]]
+  - [[#chronometer][Chronometer]]
 - [[#user-interface][User Interface]]
   - [[#theme][Theme]]
   - [[#modeline][Modeline]]
@@ -709,6 +710,11 @@ strings). I have enabled it by default.
 Utility for opening files with =sudo= (call the =sudo-edit= function).
 #+begin_src elisp
   (use-package sudo-edit)
+#+end_src
+
+** Chronometer
+#+begin_src elisp
+  (use-package chronometer)
 #+end_src
 
 * User Interface
