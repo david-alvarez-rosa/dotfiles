@@ -809,27 +809,12 @@ afterwards.
   (use-package default-text-scale
     :init (default-text-scale-mode)
     :config (setq default-text-scale-amount 20)
-    :bind (("s-0" . 'dalvrosa/default-text-scale-reset)
-           ("s--" . 'dalvrosa/default-text-scale-decrease)
-           ("s-=" . 'dalvrosa/default-text-scale-increase)))
-
-  (defun dalvrosa/default-text-scale-reset ()
-    "Reset text scale and refresh doom-modeline cache."
-    (interactive)
-    (default-text-scale-reset)
-    (doom-modeline-refresh-font-width-cache))
-
-  (defun dalvrosa/default-text-scale-decrease ()
-    "Decrease text scale and refresh doom-modeline cache."
-    (interactive)
-    (default-text-scale-decrease)
-    (doom-modeline-refresh-font-width-cache))
-
-  (defun dalvrosa/default-text-scale-increase ()
-    "Increase text scale and refresh doom-modeline cache."
-    (interactive)
-    (default-text-scale-increase)
-    (doom-modeline-refresh-font-width-cache))
+    (advice-add 'default-text-scale-reset :after 'doom-modeline-refresh-font-width-cache)
+    (advice-add 'default-text-scale-decrease :after 'doom-modeline-refresh-font-width-cache)
+    (advice-add 'default-text-scale-increase :after 'doom-modeline-refresh-font-width-cache)
+    :bind (("s-0" . 'default-text-scale-reset)
+           ("s--" . 'default-text-scale-decrease)
+           ("s-=" . 'default-text-scale-increase)))
 #+end_src
 
 ** Basic Interface Settings
