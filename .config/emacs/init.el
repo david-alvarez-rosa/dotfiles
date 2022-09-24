@@ -400,7 +400,17 @@
   (setq treemacs-indentation 1)
   (treemacs-load-theme "all-the-icons"))
 
-(ansi-color-for-comint-mode-on)
+;; (add-hook 'compilation-mode-hook 'ansi-color-for-comint-mode-on)
+
+(defun dalvrosa/colorize-compilation ()
+  "Colorize from `compilation-filter-start' to `point'."
+  ;; (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region
+     compilation-filter-start (point)))
+  ;; )
+
+(add-hook 'compilation-filter-hook
+          #'dalvrosa/colorize-compilation)
 
 (if dalvrosa/at-work
     (require 'amz-common))
