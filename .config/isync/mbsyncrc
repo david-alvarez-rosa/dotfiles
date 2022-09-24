@@ -42,28 +42,6 @@ Create Both
 Expunge Both
 SyncState *
 
-IMAPAccount Yandex
-Host imap.yandex.com
-User david.alvarez.rosa@yandex.com
-PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep yandex.com | awk '{print $8}'"
-SSLType IMAPS
-
-IMAPStore yandex-remote
-Account Yandex
-
-MaildirStore yandex-local
-Path ~/.local/share/mail/Yandex/
-Inbox ~/.local/share/mail/Yandex/Inbox
-SubFolders Verbatim
-
-Channel yandex
-Far :yandex-remote:
-Near :yandex-local:
-Patterns *
-Create Both
-Expunge Both
-SyncState *
-
 IMAPAccount Amazon
 Host ballard.amazon.com
 Port 1993
@@ -83,6 +61,28 @@ Channel amazon
 Far :amazon-remote:
 Near :amazon-local:
 Patterns * !Contacts !Journal !Notes !Tasks !Calendar
+Create Both
+Expunge Both
+SyncState *
+
+IMAPAccount Yandex
+Host imap.yandex.com
+User david.alvarez.rosa@yandex.com
+PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep yandex.com | awk '{print $8}'"
+SSLType IMAPS
+
+IMAPStore yandex-remote
+Account Yandex
+
+MaildirStore yandex-local
+Path ~/.local/share/mail/Yandex/
+Inbox ~/.local/share/mail/Yandex/Inbox
+SubFolders Verbatim
+
+Channel yandex
+Far :yandex-remote:
+Near :yandex-local:
+Patterns *
 Create Both
 Expunge Both
 SyncState *
