@@ -967,14 +967,6 @@ provides integration with debug server.
     :after lsp-mode)
 #+end_src
 
-*** Code Formatting
-Use Clang for code formatting.
-#+begin_src elisp
-  (use-package clang-format
-    :demand t
-    :config (global-set-key [C-M-tab] 'clang-format-region))
-#+end_src
-
 *** Line Numbers
 Display line numbers.
 #+begin_src elisp
@@ -1014,6 +1006,37 @@ directly in the buffer, or in an optional error list.
   (use-package flycheck
     :init
     (add-hook 'prog-mode-hook 'flycheck-mode))
+#+end_src
+
+Add buffer local Flycheck checkers after LSP for different major modes, from
+[[https://github.com/flycheck/flycheck/issues/1762#issuecomment-749789589][this issue]].
+#+begin_src elisp
+  (defvar-local my-flycheck-local-cache nil)
+  (defun my-flycheck-local-checker-get (fn checker property)
+    ;; Only check the buffer local cache for the LSP checker, otherwise we get
+    ;; infinite loops.
+    (if (eq checker 'lsp)
+        (or (alist-get property my-flycheck-local-cache)
+            (funcall fn checker property))
+      (funcall fn checker property)))
+  (advice-add 'flycheck-checker-get
+              :around 'my-flycheck-local-checker-get)
+  (add-hook 'lsp-managed-mode-hook
+            (lambda ()
+              (when (derived-mode-p 'haskell-mode)
+                (setq my-flycheck-local-cache '((next-checkers . (haskell-hlint)))))))
+  (add-hook 'lsp-managed-mode-hook
+            (lambda ()
+              (when (derived-mode-p 'c++-mode)
+                (setq my-flycheck-local-cache '((next-checkers . (c/c++-clang-tidy)))))))
+  (add-hook 'lsp-managed-mode-hook
+            (lambda ()
+              (when (derived-mode-p 'sh-mode)
+                (setq my-flycheck-local-cache '((next-checkers . (sh-shellcheck)))))))
+  (add-hook 'lsp-managed-mode-hook
+            (lambda ()
+              (when (derived-mode-p 'tex-mode)
+                (setq my-flycheck-local-cache '((next-checkers . (tex-chktex)))))))
 #+end_src
 
 *** Projectile
@@ -1160,17 +1183,11 @@ have that installed.
 *** Ansi Color
 Enable colors.
 #+begin_src elisp
-  ;; (add-hook 'compilation-mode-hook 'ansi-color-for-comint-mode-on)
-
   (defun dalvrosa/colorize-compilation ()
     "Colorize from `compilation-filter-start' to `point'."
-    ;; (let ((inhibit-read-only t))
       (ansi-color-apply-on-region
        compilation-filter-start (point)))
-    ;; )
-
-  (add-hook 'compilation-filter-hook
-            #'dalvrosa/colorize-compilation)
+  (add-hook 'compilation-filter-hook #'dalvrosa/colorize-compilation)
 #+end_src
 
 ** Amazon Specific
@@ -1202,6 +1219,19 @@ Follow Google C/C++ [[https://google.github.io/styleguide/cppguide.html][coding 
     :hook
     (c-mode-common . google-set-c-style)
     (c-mode-common . google-make-newline-indent))
+#+end_src
+
+*** Clang Tidy
+clang-tidy is a clang-based C++ “linter” tool. Its purpose is to provide an
+extensible framework for diagnosing and fixing typical programming errors, like
+style violations, interface misuse, or bugs that can be deduced via static
+analysis. clang-tidy is modular and provides a convenient interface for writing
+new checks.
+#+begin_src elisp
+  (use-package flycheck-clang-tidy
+    :after flycheck
+    :hook
+    (flycheck-mode . flycheck-clang-tidy-setup))
 #+end_src
 
 *** CMake Mode

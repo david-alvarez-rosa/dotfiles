@@ -320,10 +320,6 @@
   :config
   (lsp-treemacs-sync-mode 1))
 
-(use-package clang-format
-  :demand t
-  :config (global-set-key [C-M-tab] 'clang-format-region))
-
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 (setq-default tab-width 2)
@@ -335,6 +331,33 @@
 (use-package flycheck
   :init
   (add-hook 'prog-mode-hook 'flycheck-mode))
+
+(defvar-local my-flycheck-local-cache nil)
+(defun my-flycheck-local-checker-get (fn checker property)
+  ;; Only check the buffer local cache for the LSP checker, otherwise we get
+  ;; infinite loops.
+  (if (eq checker 'lsp)
+      (or (alist-get property my-flycheck-local-cache)
+          (funcall fn checker property))
+    (funcall fn checker property)))
+(advice-add 'flycheck-checker-get
+            :around 'my-flycheck-local-checker-get)
+(add-hook 'lsp-managed-mode-hook
+          (lambda ()
+            (when (derived-mode-p 'haskell-mode)
+              (setq my-flycheck-local-cache '((next-checkers . (haskell-hlint)))))))
+(add-hook 'lsp-managed-mode-hook
+          (lambda ()
+            (when (derived-mode-p 'c++-mode)
+              (setq my-flycheck-local-cache '((next-checkers . (c/c++-clang-tidy)))))))
+(add-hook 'lsp-managed-mode-hook
+          (lambda ()
+            (when (derived-mode-p 'sh-mode)
+              (setq my-flycheck-local-cache '((next-checkers . (sh-shellcheck)))))))
+(add-hook 'lsp-managed-mode-hook
+          (lambda ()
+            (when (derived-mode-p 'tex-mode)
+              (setq my-flycheck-local-cache '((next-checkers . (tex-chktex)))))))
 
 (use-package projectile
   :demand t
@@ -385,17 +408,11 @@
   (setq treemacs-indentation 1)
   (treemacs-load-theme "all-the-icons"))
 
-;; (add-hook 'compilation-mode-hook 'ansi-color-for-comint-mode-on)
-
 (defun dalvrosa/colorize-compilation ()
   "Colorize from `compilation-filter-start' to `point'."
-  ;; (let ((inhibit-read-only t))
     (ansi-color-apply-on-region
      compilation-filter-start (point)))
-  ;; )
-
-(add-hook 'compilation-filter-hook
-          #'dalvrosa/colorize-compilation)
+(add-hook 'compilation-filter-hook #'dalvrosa/colorize-compilation)
 
 (if dalvrosa/at-work
     (require 'amz-common))
@@ -404,6 +421,11 @@
   :hook
   (c-mode-common . google-set-c-style)
   (c-mode-common . google-make-newline-indent))
+
+(use-package flycheck-clang-tidy
+  :after flycheck
+  :hook
+  (flycheck-mode . flycheck-clang-tidy-setup))
 
 (use-package cmake-mode)
 
