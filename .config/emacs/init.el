@@ -110,6 +110,9 @@
 
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (setq-default fill-column 79)
+(add-hook 'text-mode-hook
+          (lambda ()
+            (set-fill-column 72)))
 
 (defun dalvrosa/unfill-paragraph (&optional region)
   "Takes a multi-line paragraph and makes it into a single line of text."

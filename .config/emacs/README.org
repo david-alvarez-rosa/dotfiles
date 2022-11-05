@@ -451,6 +451,9 @@ editing (i.e., always ensure the =fill-column= limit).
 #+begin_src elisp
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
   (setq-default fill-column 79)
+  (add-hook 'text-mode-hook
+            (lambda ()
+              (set-fill-column 72)))
 #+end_src
 
 Custom unfill function with =M-Q=.
