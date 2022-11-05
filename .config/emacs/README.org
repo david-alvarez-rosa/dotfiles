@@ -158,15 +158,15 @@ Any external/third party works included in this work are licensed under their
 own licenses--refer to the submodules or packages for more information.
 
 * Loading and Package Management
-Make startup faster by reducing the frequency of garbage collection and then
-use a hook to lower threshold back after Emacs startup. The loading time can be
-check with the function =emacs-init-time=.
+Make startup faster by reducing the frequency of garbage collection and
+then use a hook to lower threshold back after Emacs startup.  The
+loading time can be check with the function =emacs-init-time=.  Now I'm
+using the Garbage Collector Magic Hack (=gcmh=) package.
 #+begin_src elisp
-  (setq gc-cons-threshold most-positive-fixnum)
-
-  ;; Lower threshold back to 8 MiB (default is 800kB)
-  (add-hook 'emacs-startup-hook
-            (lambda () (setq gc-cons-threshold (expt 2 23))))
+  (use-package gcmh
+    :demand t
+    :init
+    (gcmh-mode 1))
 #+end_src
 
 Add MELPA package repositories.
