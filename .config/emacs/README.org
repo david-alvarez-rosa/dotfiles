@@ -942,6 +942,7 @@ support to be implemented and distributed independently of any given editor.
     (setq lsp-idle-delay 0.1)
     :hook ((c-mode-common . lsp)
            (java-mode . lsp)
+           (ruby-mode . lsp)
            (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
 

@@ -310,6 +310,7 @@
   (setq lsp-idle-delay 0.1)
   :hook ((c-mode-common . lsp)
          (java-mode . lsp)
+         (ruby-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
