@@ -367,6 +367,7 @@
   :demand t
   :config (projectile-mode +1)
   (setq projectile-ignored-projects '("~/"))
+  (setq projectile-project-search-path '(("~/workplace/" . 3)))
   (setq projectile-completion-system 'ivy)
   :bind (:map projectile-mode-map
               ("C-c p" . 'projectile-command-map)
