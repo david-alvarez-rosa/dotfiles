@@ -136,6 +136,13 @@
     (kill-region (point-min) (point-max))))
 (define-key global-map (kbd "M-W") 'dalvrosa/unfill-paragraph-and-kill)
 
+(define-key indent-rigidly-map "<" 'indent-rigidly-left)
+(define-key indent-rigidly-map "b" 'indent-rigidly-left)
+(define-key indent-rigidly-map ">" 'indent-rigidly-right)
+(define-key indent-rigidly-map "f" 'indent-rigidly-right)
+(define-key indent-rigidly-map "B" 'indent-rigidly-left-to-tab-stop)
+(define-key indent-rigidly-map "F" 'indent-rigidly-right-to-tab-stop)
+
 (global-subword-mode 1)
 
 (setq shift-select-mode nil)
