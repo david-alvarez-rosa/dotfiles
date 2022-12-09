@@ -2173,6 +2173,7 @@ Use Elfeed Org for managing subscriptions to RSS/Atom feeds using an org mode
 file.
 #+begin_src elisp
   (use-package elfeed-org
+    :after elfeed
     :config
     (elfeed-org)
     (setq rmh-elfeed-org-files (list "~/Documents/Subscriptions.org")))
@@ -2182,6 +2183,7 @@ file.
 This package allows to configure the Elfeed interface.
 #+begin_src elisp
   (use-package elfeed-goodies
+    :after elfeed
     :config
     (elfeed-goodies/setup)
     (setq elfeed-goodies/powerline-default-separator 'utf-8)

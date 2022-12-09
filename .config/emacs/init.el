@@ -869,11 +869,13 @@
                 elfeed-search-title-max-width 100))
 
 (use-package elfeed-org
+  :after elfeed
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/Documents/Subscriptions.org")))
 
 (use-package elfeed-goodies
+  :after elfeed
   :config
   (elfeed-goodies/setup)
   (setq elfeed-goodies/powerline-default-separator 'utf-8)
