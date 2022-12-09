@@ -870,14 +870,13 @@
 
 (use-package elfeed-org
   :after elfeed
-  :config
-  (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/Documents/Subscriptions.org")))
+  :init (elfeed-org)
+  :config (setq rmh-elfeed-org-files (list "~/Documents/Subscriptions.org")))
 
 (use-package elfeed-goodies
   :after elfeed
+  :init (elfeed-goodies/setup)
   :config
-  (elfeed-goodies/setup)
   (setq elfeed-goodies/powerline-default-separator 'utf-8)
   (setq elfeed-goodies/entry-pane-size 0.40))
 
