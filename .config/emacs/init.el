@@ -534,16 +534,16 @@
                 ((org-agenda-overriding-header "Next Actions")
                  (org-agenda-skip-function
                   '(org-agenda-skip-entry-if 'scheduled))))
-          (tags-todo "+REFILE" ((org-agenda-overriding-header "Refile")))
-          (tags-todo "TODO=\"TODO\"+AMZN"
+          (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
+          (tags-todo "TODO=\"TODO\"+amzn"
                      ((org-agenda-overriding-header "Amazon")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if 'scheduled))))
-          (tags-todo "TODO=\"TODO\"+PROJ"
+          (tags-todo "TODO=\"TODO\"+proj"
                      ((org-agenda-overriding-header "Projects")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if'scheduled))))
-          (tags-todo "TODO=\"TODO\"+SING"
+          (tags-todo "TODO=\"TODO\"+sing"
                      ((org-agenda-overriding-header "Standalone Tasks")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if 'scheduled))))
