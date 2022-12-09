@@ -624,6 +624,8 @@
 
 (setq org-archive-location "::* Archived Items")
 
+(setq org-archive-tag "archive")
+
 (use-package toc-org
   :hook (org-mode . toc-org-mode))
 

@@ -1633,6 +1633,11 @@ Set default org archive location.
   (setq org-archive-location "::* Archived Items")
 #+end_src
 
+Use lowercase tag names.
+#+begin_src elisp
+  (setq org-archive-tag "archive")
+#+end_src
+
 ** Table of Contents
 It’s nice to have a table of contents section (without exporting) for long
 literate configuration files (like this one!) so I use org-toc-org to
