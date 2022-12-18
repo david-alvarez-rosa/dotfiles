@@ -862,6 +862,24 @@
 (setq gnus-icalendar-org-capture-headline '("Calendar"))
 (gnus-icalendar-org-setup)
 
+(defun dalvrosa/mu4e-show-cr-patch (msg)
+  (let* ((path (mu4e-message-field msg :path))
+         (patches)
+         (buf))
+    (message "Loading patches...")
+    (setq patches (split-string
+                   (shell-command-to-string
+                    (format "~/.local/bin/cr-get-patch %s" path)) "\n" t))
+    (dolist (p patches)
+      (find-file p)
+      (delete-other-windows)
+      (setq buf (get-buffer-create (file-name-nondirectory p)))
+      (with-current-buffer buf
+        (read-only-mode 1)))))
+
+(add-to-list 'mu4e-view-actions
+             '("CR patch view" . dalvrosa/mu4e-show-cr-patch) t)
+
 (use-package elfeed
   :bind (("C-c f" . 'elfeed)
          :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)

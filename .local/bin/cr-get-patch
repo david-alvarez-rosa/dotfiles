@@ -1,0 +1,273 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use IPC::Open2;
+use IO::Handle;
+use File::Temp 'tempfile';
+
+main();
+
+sub main
+{
+    my $email;
+    {
+        local $/ = undef;
+        $email = <>;
+    }
+    if ($email =~ /^Sender: <CR-Critic\@amazon.com>$/m) {
+        process_cr_critic_email($email);
+    } elsif ($email =~ /^From: <commit-notifications\@amazon.com>$/m) {
+        process_commit_notifications_email($email);
+    }
+}
+
+sub process_cr_critic_email
+{
+    my $email = shift;
+    my $cr_id    = ($email =~ /^X-Critic-Thread: (CR-\d+)$/m)[0];
+    my @packages = ($email =~ /^X-Critic-Package: (\w+)$/mg);
+    my $revision = ($email =~ m<^https://code.amazon.com/reviews/$cr_id/revisions/(\d+)$>m)[0] || 1;
+
+    my $cr_status = get_cr_status($cr_id, $revision);
+    my %analysis_result = get_analysis_result_for_cr($cr_id, $revision);
+    my %reviewer_status = get_reviewer_status_for_cr($cr_id, $revision);
+
+    foreach my $package (@packages) {
+        my $header = get_cr_patch_header($cr_id, $revision, $package);
+        my $body = get_cr_patch_body($cr_id, $revision, $package);
+        my $tail = get_cr_patch_tail($cr_id, $revision, $package);
+        my $diff = get_diff_for_package($cr_id, $revision, $package);
+        my $patch = <<"EOF"
+$header
+$body
+$tail
+---
+$diff
+EOF
+            ;
+        my ($fh, $filename) = tempfile(TEMPLATE => "$cr_id"."_rev_$revision"."_$package"."_XXXXX",
+                                       SUFFIX => '.patch',
+                                       TMPDIR => 1);
+        print $fh $patch;
+        print STDOUT $filename, "\n";
+    }
+}
+
+sub process_commit_notifications_email
+{
+    my $email = shift;
+    my @matches = ($email =~ m<^https://code.amazon.com/packages/(\w+)/commits/(\w+)$>m);
+    my $package = $matches[0];
+    my $commit_id = $matches[1];
+    my $diff_url =  "https://code.amazon.com/api/packages/$package/diff/$commit_id";
+    my $diff = qx(kcurl --silent $diff_url);
+    my ($fh, $filename) = tempfile(TEMPLATE => "$package"."_$commit_id"."_XXXXX",
+                                   SUFFIX => '.diff',
+                                   TMPDIR => 1);
+    print $fh $diff;
+    print STDOUT $filename, "\n";
+}
+
+sub get_cr_patch_header
+{
+    my ($cr_id, $revision, $package) = @_;
+    my $revision_res = call_revision_api($cr_id, $revision);
+    my ($date) = pipe_to_array($revision_res, "jq --raw-output '.revision.cr_revision.created_at'");
+    my ($title) = pipe_to_array($revision_res, "jq --raw-output '.revision.cr_revision.summary'");
+    my ($author) = pipe_to_array($revision_res, "jq --raw-output '.revision.cr_revision.author.entity_id.id'");
+    my $header = <<"EOF"
+Date: $date
+From: $author
+CR_ID: $cr_id
+Revision: $revision
+Package: $package
+Subject: $title
+EOF
+        ;
+    return $header;
+}
+
+sub get_cr_patch_body
+{
+    my ($cr_id, $revision, $package) = @_;
+    my $revision_res = call_revision_api($cr_id, $revision);
+    my $body = pipe_to_string($revision_res, "jq --raw-output '.revision.cr_revision.description'");
+    return $body;
+}
+
+sub get_cr_patch_tail
+{
+    my ($cr_id, $revision, $package) = @_;
+    my $revision_res = call_revision_api($cr_id, $revision);
+    my $cr_status = get_cr_status($cr_id, $revision);
+    my %analysis_result = get_analysis_result_for_cr($cr_id, $revision);
+    my %reviewer_status = get_reviewer_status_for_cr($cr_id, $revision);
+    my $tail = "Status: $cr_status\n";
+    while( my ($key, $value) = each (%analysis_result))
+    {
+        my @analysis = @{ $value };
+        foreach my $v (@analysis) {
+            $tail .= "$key: $v\n"
+        }
+    }
+    while( my ($key, $value) = each (%reviewer_status))
+    {
+        my @status = @{ $value };
+        foreach my $v (@status) {
+            $tail .= "$key: $v\n"
+        }
+    }
+    my $has_new_revision = cr_has_newer_revision($cr_id, $revision);
+    if ($has_new_revision) {
+        $tail .= "Stale: true";
+    } else {
+        $tail .= "Stale: false";
+    }
+
+    return $tail;
+}
+
+sub get_cr_status
+{
+    my ($cr_id, $revision, $package) = @_;
+    my $revision_res = call_revision_api($cr_id, $revision);
+    my ($status) = pipe_to_array($revision_res, "jq --raw-output '.revision.cr_revision.status'");
+    return $status;
+}
+
+sub get_analysis_result_for_cr
+{
+    my ($cr_id, $revision) = @_;
+    my %analysis;
+    my $revision_res = call_revision_api($cr_id, $revision);
+    my @analysis_output = pipe_to_array($revision_res, "jq --raw-output --compact-output '.analyzers[] | {partner_id: .partner_id, status: .status, required: .required}'");
+    foreach my $line (@analysis_output) {
+        my ($partner_id) = $line =~ /"partner_id":"((?:[^"\\]|\\.)*)"/; # get anything inside quotes
+        my ($status) = $line =~ /"status":"(\w+)"/;
+        my ($is_required) = $line =~ /"required":(\w+)/;
+
+        $analysis{$status} = [()] unless exists $analysis{$status};
+        my @as = @{ $analysis{$status} };
+        push(@as, $partner_id);
+        $analysis{$status} = [@as];
+    }
+    return %analysis;
+}
+sub get_reviewer_status_for_cr
+{
+    my ($cr_id, $revision) = @_;
+    my %reviewers;
+    my $revision_res = call_revision_api($cr_id, $revision);
+    my @reviewer_output = pipe_to_array($revision_res, "jq --raw-output --compact-output '.approval_map[] | {type: .type, id: .id, required: .required, requirements_met: .requirements_met, granted: .granted}'");
+    foreach my $line (@reviewer_output) {
+        my ($type) = $line =~ /"type":"(\w+)"/;
+        my ($id) = $line =~ /"id":"((?:[^"\\]|\\.)*)"/;
+        my ($required) = $line =~ /"required":(\d+)/;
+        my ($requirements_met) = $line =~ /"requirements_met":(\w+)/;
+        my ($granted) = $line =~ /"granted":(\d+)/;
+        my $key = ($type eq "USER") ? $id : "team($id)";
+        my $approved = ($granted ne "0" and $requirements_met eq "true")? "Approved" : "Pending";
+        $reviewers{$approved} = [()] unless exists $reviewers{$approved};
+        my @ra = @{ $reviewers{$approved} };
+        push(@ra, $id);
+        $reviewers{$approved} = [@ra];
+    }
+    return %reviewers
+}
+
+sub get_diff_for_package
+{
+    my ($cr_id, $revision, $package) = @_;
+    my $revision_res = call_revision_api($cr_id, $revision);
+    my ($snapshot_id) = pipe_to_array($revision_res, 'jq --raw-output .revision.cr_revision.diff_source.diff_source.id');
+    my $snapshot_res = call_snapshot_api($snapshot_id);
+    my ($base_commit, $tip_commit) = get_base_tip_commit($package, $snapshot_res);
+    my $diff_url = "https://code.amazon.com/api/packages/$package/diff/$base_commit..$tip_commit";
+    my $diff = qx/kcurl --silent $diff_url/;
+    return $diff;
+}
+
+sub get_base_tip_commit
+{
+    my $package = shift;
+    my $snapshot_res = shift;
+    my ($base_commit) = pipe_to_array($snapshot_res, "jq --raw-output '.snapshot.content[].content | select (.package_name==\"$package\").branches[0].branch.base_commit'");
+    my ($tip_commit) = pipe_to_array($snapshot_res, "jq --raw-output '.snapshot.content[].content | select (.package_name==\"$package\").branches[0].branch.tip_commit'");
+    return ($base_commit, $tip_commit);
+}
+
+sub pipe_to_array
+{
+    my $in = shift;
+    my $cmd = shift;
+    my ($fh_out, $fh_in) = (IO::Handle->new, IO::Handle->new);
+    my $pid = open2($fh_out, $fh_in, $cmd);
+    $fh_in->print($in);
+    $fh_in->close();
+    my @out = ();
+    {
+        local $/ = "\n";
+        until ($fh_out->eof) {
+            my $trimmed = $fh_out->getline;
+            chomp $trimmed;
+            push(@out, $trimmed);
+        }
+    }
+    return @out;
+}
+
+sub pipe_to_string
+{
+    my $in = shift;
+    my $cmd = shift;
+    my ($fh_out, $fh_in) = (IO::Handle->new, IO::Handle->new);
+    my $pid = open2($fh_out, $fh_in, $cmd);
+    $fh_in->print($in);
+    $fh_in->close();
+    my $out;
+    {
+        local $/ = undef;
+        $out = $fh_out->getline;
+    }
+    return $out;
+}
+
+my %cr_has_newer_revision_cache = ();
+sub cr_has_newer_revision
+{
+    my ($cr_id, $rev_str) = @_;
+    my $revision = int($rev_str);
+    if (exists($cr_has_newer_revision_cache{"$cr_id.$revision"})) {
+        return $cr_has_newer_revision_cache{"$cr_id.$revision"};
+    }
+    my $revision_to_request = $revision + 1;
+    my $curl_output = qx(kcurl -s -o /dev/null  -w "%{http_code}" --silent https://code.amazon.com/reviews/$cr_id/revisions/$revision_to_request.json);
+    my $result = $curl_output !~ /400/;
+    $cr_has_newer_revision_cache{"$cr_id.$revision"} = $result;
+    return $result;
+}
+
+my %call_revision_api_cache = ();
+sub call_revision_api
+{
+    my ($cr_id, $revision) = @_;
+    if (exists($call_revision_api_cache{"$cr_id.$revision"})) {
+        return $call_revision_api_cache{"$cr_id.$revision"};
+    }
+    my $result = qx(kcurl --silent https://code.amazon.com/reviews/$cr_id/revisions/$revision.json);
+    $call_revision_api_cache{"$cr_id.$revision"} = $result;
+    return $result;
+}
+
+my %call_snapshot_api_cache = ();
+sub call_snapshot_api
+{
+    my $snapshot = shift;
+    if (exists($call_snapshot_api_cache{$snapshot})) {
+        return $call_snapshot_api_cache{$snapshot};
+    }
+    my $result = qx(kcurl --silent https://code.amazon.com/snapshots/$snapshot.json);
+    $call_snapshot_api_cache{$snapshot} = $result;
+    return $result;
+}

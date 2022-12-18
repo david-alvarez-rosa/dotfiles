@@ -97,6 +97,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#compositionsending][Composition/Sending]]
   - [[#attachment-management][Attachment Management]]
   - [[#meetings][Meetings]]
+  - [[#custom-actions][Custom Actions]]
 - [[#web-feed-reader][Web Feed Reader]]
   - [[#elfeed-org][Elfeed Org]]
   - [[#elfeed-goodies][Elfeed Goodies]]
@@ -2158,6 +2159,29 @@ Capture meetings and display them in org-agenda.
   (setq gnus-icalendar-org-capture-file "~/Documents/Agenda.org")
   (setq gnus-icalendar-org-capture-headline '("Calendar"))
   (gnus-icalendar-org-setup)
+#+end_src
+
+** Custom Actions
+Add email action for showing CR patch within Emacs, from this [[https://unity.email.amazon.dev/list-archive/list/emacs/thread/10259443][email
+thread]].
+#+begin_src elisp
+  (defun dalvrosa/mu4e-show-cr-patch (msg)
+    (let* ((path (mu4e-message-field msg :path))
+           (patches)
+           (buf))
+      (message "Loading patches...")
+      (setq patches (split-string
+                     (shell-command-to-string
+                      (format "~/.local/bin/cr-get-patch %s" path)) "\n" t))
+      (dolist (p patches)
+        (find-file p)
+        (delete-other-windows)
+        (setq buf (get-buffer-create (file-name-nondirectory p)))
+        (with-current-buffer buf
+          (read-only-mode 1)))))
+
+  (add-to-list 'mu4e-view-actions
+               '("CR patch view" . dalvrosa/mu4e-show-cr-patch) t)
 #+end_src
 
 * Web Feed Reader
