@@ -149,3 +149,8 @@ export XDG_DATA_HOME="$HOME/.local/share/"
 ulimit -S -n 2048
 # export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 # export PATH=/opt/homebrew/bin:$PATH
+
+
+# Setting for the new UTF-8 terminal support
+export LC_CTYPE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
