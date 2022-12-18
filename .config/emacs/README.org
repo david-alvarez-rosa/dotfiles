@@ -957,10 +957,18 @@ support to be implemented and distributed independently of any given editor.
   (use-package lsp-mode
     :config
     (setq lsp-idle-delay 0.1)
-    :hook ((c-mode-common . lsp)
-           (java-mode . lsp)
-           (ruby-mode . lsp)
-           (python-mode . lsp)
+    (add-to-list 'lsp-language-id-configuration '(brazil-config-mode . "brazil-config"))
+    (lsp-register-client
+     (make-lsp-client
+      :priority -1
+      :new-connection (lsp-stdio-connection "barium")
+      :activation-fn (lsp-activate-on "brazil-config")
+      :server-id 'barium))
+    :hook ((c-mode-common . lsp-deferred)
+           (java-mode . lsp-deferred)
+           (ruby-mode . lsp-deferred)
+           (python-mode . lsp-deferred)
+           (brazil-config-mode . lsp-deferred)
            (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
 
