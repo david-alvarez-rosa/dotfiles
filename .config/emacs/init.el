@@ -478,6 +478,15 @@
 
 (use-package ess)
 
+(use-package restclient
+  :demand t
+  :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
+  :hook (restclient-mode . company-mode))
+
+(use-package company-restclient
+  :after company
+  :init (add-to-list 'company-backends 'company-restclient))
+
 (setq org-use-speed-commands t)
 
 (setq org-refile-targets '((nil :maxlevel . 2)
