@@ -40,7 +40,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#server-mode][Server Mode]]
   - [[#custom-file][Custom File]]
   - [[#authentication-file][Authentication File]]
-  - [[#mac-os][Mac OS]]
+  - [[#initialization][Initialization]]
   - [[#change-yesno-questions-to-yn][Change yes/no Questions to y/n]]
   - [[#file-management][File Management]]
   - [[#buffer-management][Buffer Management]]
@@ -248,7 +248,14 @@ specification).
   (setq auth-sources '("~/.local/share/authinfo.gpg"))
 #+end_src
 
-** Mac OS
+** Initialization
+When I'm at work I want Emacs to be launched in full screen.
+#+begin_src elisp
+  (if dalvrosa/at-work
+      (toggle-frame-fullscreen))
+#+end_src
+
+*** Mac OS
 I currently use Mac on my work laptop, and there are some specific things to
 OS X.
 

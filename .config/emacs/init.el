@@ -29,6 +29,9 @@
 
 (setq auth-sources '("~/.local/share/authinfo.gpg"))
 
+(if dalvrosa/at-work
+    (toggle-frame-fullscreen))
+
 (when (eq system-type 'darwin)
   (use-package exec-path-from-shell
     :demand t
