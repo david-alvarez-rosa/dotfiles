@@ -216,11 +216,11 @@
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
-  (load-theme 'doom-solarized-light t)
+  (load-theme 'doom-one-light t)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(setq dalvrosa/themes '(doom-solarized-light doom-zenburn))
+(setq dalvrosa/themes '(doom-one-light doom-zenburn))
 (setq dalvrosa/themes-index 0)
 
 (defun dalvrosa/cycle-theme ()
@@ -289,7 +289,7 @@
          100)
         (set-frame-parameter nil 'alpha '(93 . 84))
       (set-frame-parameter nil 'alpha '(100 . 100)))))
-(define-key global-map (kbd "C-c t") 'dalvrosa/toggle-transparency)
+(define-key global-map (kbd "C-c b") 'dalvrosa/toggle-transparency)
 
 (use-package olivetti
   :config
@@ -313,7 +313,8 @@
 
 (use-package vterm
   :config
-  (setq vterm-max-scrollback 10000))
+  (setq vterm-max-scrollback 10000)
+  :bind ("C-c t" . 'vterm))
 
 (use-package lsp-mode
   :config
@@ -512,9 +513,12 @@
 
 (setq org-todo-keywords
       '((sequence "TODO(t!)" "WAIT(w!)" "NEXT(n!)" "|"
-                  "DONE(d!)" "CANCELLED(c!)")))
+                  "DONE(d!)" "CANCELLED(c!)")
+        (sequence "BACKLOG(b!)" "|")))
 
 (setq org-log-into-drawer t)
+
+(setq org-lowest-priority ?D)
 
 (eval-after-load "org"
       (org-babel-do-load-languages
@@ -548,24 +552,19 @@
       '((" " "Block Agenda"
          ((agenda "" ((org-agenda-span 1)))
           (todo "NEXT"
-                ((org-agenda-overriding-header "Next Actions")
-                 (org-agenda-skip-function
-                  '(org-agenda-skip-entry-if 'scheduled))))
+                ((org-agenda-overriding-header "Next Actions")))
           (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
           (tags-todo "TODO=\"TODO\"+amzn"
-                     ((org-agenda-overriding-header "Amazon")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled))))
+                     ((org-agenda-overriding-header "Amazon")))
           (tags-todo "TODO=\"TODO\"+proj"
-                     ((org-agenda-overriding-header "Projects")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if'scheduled))))
+                     ((org-agenda-overriding-header "Projects")))
           (tags-todo "TODO=\"TODO\"+sing"
-                     ((org-agenda-overriding-header "Standalone Tasks")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled))))
-          (todo "WAIT" ((org-agenda-overriding-header "Waiting"))))
-         ((org-agenda-start-with-log-mode t)))))
+                     ((org-agenda-overriding-header "Standalone Tasks")))
+          (todo "WAIT" ((org-agenda-overriding-header "Waiting")))
+          (todo "BACKLOG"
+                     ((org-agenda-overriding-header "Backlog"))))
+         ((org-agenda-start-with-log-mode t)
+         (org-agenda-skip-function-global '(org-agenda-skip-entry-if 'scheduled))))))
 
 (setq org-agenda-log-mode-items '(closed clock state))
 
