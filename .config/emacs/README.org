@@ -1450,7 +1450,8 @@ Custom todo keywords. I use them as follows:
 #+begin_src elisp
   (setq org-todo-keywords
         '((sequence "TODO(t!)" "WAIT(w!)" "NEXT(n!)" "|"
-                    "DONE(d!)" "CANCELLED(c!)")))
+                    "DONE(d!)" "CANCELLED(c!)")
+          (sequence "BACKLOG(b!)" "|")))
 #+end_src
 
 For tracking TODO state changes, the meaning of the characters is as follows
@@ -1543,24 +1544,19 @@ Custom agenda views. I use a custom view that contains the following blocks:
         '((" " "Block Agenda"
            ((agenda "" ((org-agenda-span 1)))
             (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Actions")
-                   (org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'scheduled))))
+                  ((org-agenda-overriding-header "Next Actions")))
             (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
             (tags-todo "TODO=\"TODO\"+amzn"
-                       ((org-agenda-overriding-header "Amazon")
-                        (org-agenda-skip-function
-                         '(org-agenda-skip-entry-if 'scheduled))))
+                       ((org-agenda-overriding-header "Amazon")))
             (tags-todo "TODO=\"TODO\"+proj"
-                       ((org-agenda-overriding-header "Projects")
-                        (org-agenda-skip-function
-                         '(org-agenda-skip-entry-if'scheduled))))
+                       ((org-agenda-overriding-header "Projects")))
             (tags-todo "TODO=\"TODO\"+sing"
-                       ((org-agenda-overriding-header "Standalone Tasks")
-                        (org-agenda-skip-function
-                         '(org-agenda-skip-entry-if 'scheduled))))
-            (todo "WAIT" ((org-agenda-overriding-header "Waiting"))))
-           ((org-agenda-start-with-log-mode t)))))
+                       ((org-agenda-overriding-header "Standalone Tasks")))
+            (todo "WAIT" ((org-agenda-overriding-header "Waiting")))
+            (todo "BACKLOG"
+                       ((org-agenda-overriding-header "Backlog"))))
+           ((org-agenda-start-with-log-mode t)
+           (org-agenda-skip-function-global '(org-agenda-skip-entry-if 'scheduled))))))
 #+end_src
 
 While in this agenda view press =w= for changing the agenda span to full week
