@@ -79,6 +79,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#refile][Refile]]
   - [[#capture-templates][Capture Templates]]
   - [[#state-keywords][State Keywords]]
+  - [[#priorities][Priorities]]
   - [[#code-evaluation][Code Evaluation]]
   - [[#interface][Interface]]
   - [[#agenda][Agenda]]
@@ -1456,6 +1457,12 @@ recovered by prefixing state change with =C-u=.
 Log state changes into drawer.
 #+begin_src elisp
   (setq org-log-into-drawer t)
+#+end_src
+
+** Priorities
+Allow priorities from A to D.
+#+begin_src elisp
+  (setq org-lowest-priority ?D)
 #+end_src
 
 ** Code Evaluation
