@@ -389,6 +389,7 @@
   (setq projectile-ignored-projects '("~/"))
   (setq projectile-project-search-path '(("~/workplace/" . 3)))
   (setq projectile-completion-system 'ivy)
+  (setq projectile-switch-project-action 'projectile-commander)
   :bind (:map projectile-mode-map
               ("C-c p" . 'projectile-command-map)
               ("s-r" . 'projectile-command-map)))
