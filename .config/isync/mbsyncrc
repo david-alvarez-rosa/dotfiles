@@ -48,6 +48,7 @@ Port 1993
 User dalvrosa
 PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep ballard.amazon.com | awk '{print $8}'"
 SSLType IMAPS
+CertificateFile /usr/local/amazon/var/acme/ca/amazon-root-ca.pem
 
 IMAPStore amazon-remote
 Account   Amazon
