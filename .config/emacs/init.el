@@ -394,7 +394,8 @@
               ("C-c p" . 'projectile-command-map)
               ("s-r" . 'projectile-command-map)))
 
-(use-package ag)
+(use-package rg
+  :config (rg-enable-default-bindings))
 
 (use-package magit
   :bind ("C-c g" . 'magit-status))

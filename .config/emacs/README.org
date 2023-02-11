@@ -1121,10 +1121,23 @@ Some of the projectile features:
 - Check for dirty repositories
 - Toggle read-only mode for the entire project
 
-I like to use The Silver Searcher for searching instead of standard grep
-mainly because is way faster.
+Ripgrep is a replacement for both grep like (search one file) and ag
+like (search many files) tools. It's fast and versatile and written in
+Rust. From the help:
+
+- =d= Repeat this search in another directory (‘rg-rerun-change-dir’).
+- =f= Repeat this search with another file pattern (‘rg-rerun-change-files’).
+- =r= Change the search regexp for the current search (‘rg-rerun-change-regexp’).
+- =t= Change the search literal for the current search (‘rg-rerun-change-literal’).
+- =i= Repeat search with toggled ’--no-ignore’ flag (‘rg-rerun-toggle-ignore’).
+- =c= Repeat search with toggled case insensitive setting (‘rg-rerun-toggle-case’).
+- =S= Save search result, prompt for new name (‘rg-save-search-as-name’).
+- =s= Save search result to some unique name (‘rg-save-search’).
+- =e= Change mode to ‘wgrep’.
+
 #+begin_src elisp
-  (use-package ag)
+  (use-package rg
+    :config (rg-enable-default-bindings))
 #+end_src
 
 *** Magit
