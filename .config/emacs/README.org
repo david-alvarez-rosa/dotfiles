@@ -1906,6 +1906,15 @@ read.
                                            (mu4e--mark-check-target target) "-N+S-u"))))
 #+end_src
 
+Discourage enriched text alternatives and prefer plain text by default
+for email.
+#+begin_src elisp
+  (with-eval-after-load "mm-decode"
+    (add-to-list 'mm-discouraged-alternatives "text/html")
+    (add-to-list 'mm-discouraged-alternatives "text/richtext")
+    (add-to-list 'mm-discouraged-alternatives "multipart/related"))
+#+end_src
+
 ** Contexts for Multiple Accounts
 I am using contexts for handling two different accounts at the same time. When
 launching mu4e for the first time don't ask and just pick the first context
@@ -2172,18 +2181,19 @@ subtree:
   some text here ...
 #+end_example
 
-*** COMMENT Org Msg
+*** Org Msg
 Configure Org Msg that automatically writes HTML emails when needed.
 #+begin_src elisp
   (use-package org-msg
     :after (mu4e)
+    :init (org-msg-mode)
     :config
     (setq
      org-msg-options "html-postamble:nil num:nil ^:{} toc:nil author:nil email:nil tex:dvipng"
      org-msg-default-alternatives '((new . (text))
                                     (reply-to-html . (text html))
-                                    (reply-to-text . (text))))
-    (org-msg-mode))
+                                    (reply-to-text . (text)))
+    org-msg-convert-citation t))
 #+end_src
 
 ** Attachment Management

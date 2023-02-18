@@ -741,6 +741,11 @@
                          (mu4e--server-move docid
                                          (mu4e--mark-check-target target) "-N+S-u"))))
 
+(with-eval-after-load "mm-decode"
+  (add-to-list 'mm-discouraged-alternatives "text/html")
+  (add-to-list 'mm-discouraged-alternatives "text/richtext")
+  (add-to-list 'mm-discouraged-alternatives "multipart/related"))
+
 (setq mu4e-context-policy 'pick-first)
 
 (setq mu4e-sent-messages-behavior 'sent)
@@ -871,6 +876,17 @@
   :bind (:map message-mode-map
               (("C-c o" . 'org-mime-edit-mail-in-org-mode)
                ("C-c M-o" . 'org-mime-htmlize))))
+
+(use-package org-msg
+  :after (mu4e)
+  :init (org-msg-mode)
+  :config
+  (setq
+   org-msg-options "html-postamble:nil num:nil ^:{} toc:nil author:nil email:nil tex:dvipng"
+   org-msg-default-alternatives '((new . (text))
+                                  (reply-to-html . (text html))
+                                  (reply-to-text . (text)))
+  org-msg-convert-citation t))
 
 (setq mu4e-attachment-dir "~/Downloads")
 
