@@ -816,7 +816,7 @@
                          (when msg
                            (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
            :vars '(
-                   (message-signature-file . nil)
+                   (message-signature-file . "~/Documents/SignatureWork.txt")
                    (mu4e-inbox-folder . "/Amazon/Inbox")
                    (mu4e-sent-folder . "/Amazon/Sent Items")
                    (mu4e-drafts-folder . "/Amazon/Drafts")
