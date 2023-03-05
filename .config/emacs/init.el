@@ -438,7 +438,7 @@
 (defun dalvrosa/colorize-compilation ()
   "Colorize from `compilation-filter-start' to `point'."
     (ansi-color-apply-on-region
-     compilation-filter-start (point)))
+     (point-min) (point-max)))
 (add-hook 'compilation-filter-hook #'dalvrosa/colorize-compilation)
 
 (if dalvrosa/at-work
