@@ -752,7 +752,6 @@
 (setq mu4e-context-policy 'pick-first)
 
 (setq mu4e-sent-messages-behavior 'sent)
-(setq message-signature-file "~/Documents/Signature.txt")
 (setq smtpmail-stream-type 'starttls)
 (setq smtpmail-smtp-service 587)
 (setq mu4e-change-filenames-when-moving t)
@@ -772,6 +771,7 @@
                          (when msg
                            (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
            :vars `(
+                   (message-signature-file . "~/Documents/Signature.txt")
                    (mu4e-inbox-folder . "/Personal/Inbox")
                    (mu4e-sent-folder . "/Personal/Sent")
                    (mu4e-drafts-folder . "/Personal/Drafts")
@@ -786,6 +786,7 @@
                          (when msg
                            (string-match-p "^/Spam" (mu4e-message-field msg :maildir))))
            :vars `(
+                   (message-signature-file . nil)
                    (mu4e-inbox-folder . "/Spam/Inbox")
                    (mu4e-sent-folder . "/Spam/Sent")
                    (mu4e-drafts-folder . "/Spam/Drafts")
@@ -800,6 +801,7 @@
                          (when msg
                            (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
            :vars '(
+                   (message-signature-file . nil)
                    (mu4e-inbox-folder . "/Amazon/Inbox")
                    (mu4e-sent-folder . "/Amazon/Sent Items")
                    (mu4e-drafts-folder . "/Amazon/Drafts")
