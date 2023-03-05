@@ -81,6 +81,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#state-keywords][State Keywords]]
   - [[#priorities][Priorities]]
   - [[#code-evaluation][Code Evaluation]]
+  - [[#export][Export]]
   - [[#interface][Interface]]
   - [[#agenda][Agenda]]
   - [[#archive][Archive]]
@@ -1512,6 +1513,13 @@ Allow code blocks in these languages to be evaluated with =C-c C-c=.
 Don't ask for confirmation for evaluating code.
 #+begin_src elisp
   (setq org-confirm-babel-evaluate nil)
+#+end_src
+
+** Export
+Add export backends to Jira and Slack.
+#+begin_src elisp
+  (use-package ox-jira)
+  (use-package ox-slack)
 #+end_src
 
 ** Interface

@@ -541,6 +541,9 @@
 
 (setq org-confirm-babel-evaluate nil)
 
+(use-package ox-jira)
+(use-package ox-slack)
+
 (setq org-agenda-restore-windows-after-quit t)
 
 (setq org-list-allow-alphabetical t)
