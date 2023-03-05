@@ -457,7 +457,12 @@
 (add-hook 'compilation-filter-hook #'dalvrosa/colorize-compilation)
 
 (if dalvrosa/at-work
-    (require 'amz-common))
+    (progn
+      (require 'amz-common)
+      (require 'amz-misc)
+      (require 'amz-kerberos)
+      (require 'amz-mw)
+      (require 'amz-search)))
 
 (use-package google-c-style
   :hook

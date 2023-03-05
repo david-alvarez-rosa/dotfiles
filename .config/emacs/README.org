@@ -1278,7 +1278,12 @@ should then require the =amz-common= package to pick up the customisation.
 
 #+begin_src elisp
   (if dalvrosa/at-work
-      (require 'amz-common))
+      (progn
+        (require 'amz-common)
+        (require 'amz-misc)
+        (require 'amz-kerberos)
+        (require 'amz-mw)
+        (require 'amz-search)))
 #+end_src
 
 ** C/C++
