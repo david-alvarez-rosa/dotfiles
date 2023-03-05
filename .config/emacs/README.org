@@ -630,64 +630,70 @@ to be converted to text, without fancy fonts, and filled to 72 characters.
 #+end_src
 
 ** Completion Inteface
-After years using Helm I have decided to switch to Ivy, Counsel and Swiper as
-completion framework.
++After years using Helm I have decided to switch to Ivy, Counsel and
+Swiper as completion framework.+
 
-Ivy is the generic completion mechanism for Emacs and aims to be more
-efficient, smaller, simpler, and smoother to use compared to other completion
-schemes yet highly customizable.
+After years using Ivy, Counsel and Swiper, I decided to switch to
+Vertico and Consult completion framework.
+
+Vertico is
 #+begin_src elisp
-  (use-package ivy
-    :init (ivy-mode)
+  (use-package vertico
+    :custom
+    (vertico-cycle t)
+    :init
+    (vertico-mode))
+
+  (use-package consult
+    :demand t
+    :bind (("C-s" . consult-line))
     :config
-    (setq ivy-use-virtual-buffers t)
-    (setq enable-recursive-minibuffers t)
-    (setq ivy-count-format "%d/%d ")
-    (setq ivy-initial-inputs-alist nil)
-    :bind ("C-c C-r" . 'ivy-resume))
+    (consult-preview-at-point-mode))
 #+end_src
 
-I have enable Ivy virtual buffers so that Ivy will add additional virtual
-buffers to the buffers list, such as recent files and bookmarks (those are
-highlighted with ivy-virtual face).
-
-Another nice feature is using =C-c C-r= for resuming previous
-Ivy/Counsel/Swiper instance.
-
-This package comes with rich transformers for commands from ivy and counsel,
-makes the completion interface more friendly (showing more information).
+Save mini-buffer history.
 #+begin_src elisp
-  (use-package ivy-rich
-    :init (ivy-rich-mode 1))
+  (setq savehist-mode 1)
 #+end_src
 
-Counsel is a collection of Ivy-enhanced versions of common Emacs commands, i.e,
-takes Ivy completion framework even further providing versions of common Emacs
-commands that are customised to make the best use of Ivy.
+Corfu enhances completion at point with a small completion popup.  The
+current candidates are shown in a popup below or above the point.  Corfu
+is the minimalistic ~completion-in-region~ counterpart of the Vertico
+minibuffer UI.
 #+begin_src elisp
-  (use-package counsel
-    :init (counsel-mode)
-    :bind ("C-c r" . 'counsel-register))
+  (use-package corfu
+    :config
+    (global-corfu-mode))
 #+end_src
 
-I have added =C-c r= for interactively choosing a register. Register are very
-useful for saving window/frame configuration =C-x r w=/=C-x r f=, current point
-position =C-x r SPC= and saving text =C-x r s=.
-
-Swiper is an alternative to isearch that uses Ivy to show an overview of all
-matches.
+This package provides an ~orderless~ completion style that divides the
+pattern into space-separated components, and matches candidates that
+match all of the components in any order.  Each component can match in
+any one of several ways: literally, as a regexp, as an initialism, in
+the flex style, or as multiple word prefixes.  By default, regexp and
+literal matches are enabled.
 #+begin_src elisp
-  (use-package swiper
-    :bind ("C-s" . 'swiper-isearch))
+  (use-package orderless
+    :init
+    (setq completion-styles '(orderless)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles . (partial-completion))))))
 #+end_src
 
-Some useful commands for the Ivy/Counsel/Swiper framework that I use are =M-i=
-for inserting current candidate to minibuffer and =C-r= for recursive
-completion session through the command's history (works like in a Bash
-session). Also =M-o= for showing all the possible options/actions and =S-SPC=
-for deleting the current input, and reseting the candidates list to the
-currently restricted matches (narrowing search). To open the search results in
-a separate buffer, press =C-c C-o= for occur.
+This package provides ~marginalia-mode~ which adds marginalia to the
+minibuffer completions.  Marginalia are marks or annotations placed at
+the margin of the page of a book or in this case helpful colorful
+annotations placed at the margin of the minibuffer for your completion
+candidates.  Marginalia can only add annotations to the completion
+candidates.  It cannot modify the appearance of the candidates
+themselves, which are shown unaltered as supplied by the original
+command.
+#+begin_src elisp
+  (use-package marginalia
+    :after vertico
+    :init
+    (marginalia-mode))
+#+end_src
 
 *** Keybinding Panel
 Nice utility (=which-key=) for displaying available keybindings in a popup

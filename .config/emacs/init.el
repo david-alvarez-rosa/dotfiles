@@ -183,24 +183,34 @@
 (setq shr-use-fonts nil)
 (setq shr-width 72)
 
-(use-package ivy
-  :init (ivy-mode)
+(use-package vertico
+  :custom
+  (vertico-cycle t)
+  :init
+  (vertico-mode))
+
+(use-package consult
+  :demand t
+  :bind (("C-s" . consult-line))
   :config
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
-  (setq ivy-count-format "%d/%d ")
-  (setq ivy-initial-inputs-alist nil)
-  :bind ("C-c C-r" . 'ivy-resume))
+  (consult-preview-at-point-mode))
 
-(use-package ivy-rich
-  :init (ivy-rich-mode 1))
+(setq savehist-mode 1)
 
-(use-package counsel
-  :init (counsel-mode)
-  :bind ("C-c r" . 'counsel-register))
+(use-package corfu
+  :config
+  (global-corfu-mode))
 
-(use-package swiper
-  :bind ("C-s" . 'swiper-isearch))
+(use-package orderless
+  :init
+  (setq completion-styles '(orderless)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles . (partial-completion))))))
+
+(use-package marginalia
+  :after vertico
+  :init
+  (marginalia-mode))
 
 (use-package which-key
   :init (which-key-mode))
