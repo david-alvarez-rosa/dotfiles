@@ -1,3 +1,5 @@
+
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -72,7 +74,11 @@ ZSH_THEME=""
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
 
+
+
 source $ZSH/oh-my-zsh.sh
+
+
 
 # User configuration
 
@@ -155,3 +161,12 @@ ulimit -S -n 2048
 export LC_CTYPE="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LANG="en_US.UTF-8"
+
+
+if type brew &>/dev/null
+then
+fpath=($(brew --prefix)/share/zsh/site-functions ${fpath})
+
+autoload -Uz compinit
+compinit
+fi
