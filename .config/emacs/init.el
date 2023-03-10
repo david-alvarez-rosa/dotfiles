@@ -522,6 +522,8 @@
 
 (use-package ess)
 
+(use-package groovy-mode)
+
 (use-package restclient
   :demand t
   :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))

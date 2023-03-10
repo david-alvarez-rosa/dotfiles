@@ -74,6 +74,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#web-development][Web Development]]
   - [[#octavematlab][Octave/Matlab]]
   - [[#r][R]]
+  - [[#apache-groovy][Apache Groovy]]
   - [[#rest-http-api][REST HTTP API]]
 - [[#org-mode][Org Mode]]
   - [[#speed-commands][Speed Commands]]
@@ -1429,6 +1430,14 @@ Some useful commands:
 - =C-c C-j= to eval line.
 - =C-c C-r= to eval region.
 - =C-c C-f= to eval function.
+
+** Apache Groovy
+Apache Groovy is a Java-syntax-compatible object-oriented programming
+language for the Java platform.  I'm using it mainly for editing
+~guild.gradle~ files.
+#+begin_src elisp
+  (use-package groovy-mode)
+#+end_src
 
 ** REST HTTP API
 This is a tool to manually explore and test HTTP REST webservices.  Runs
