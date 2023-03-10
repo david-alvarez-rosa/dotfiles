@@ -431,6 +431,8 @@
 (use-package magit
   :bind ("C-c g" . 'magit-status))
 
+(use-package orgit)
+
 (use-package git-link
   :demand t
   :config

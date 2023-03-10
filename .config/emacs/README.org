@@ -1201,6 +1201,11 @@ mapped to a non-command-line interface. Magit is both faster and more intuitive
 than either the command line or any GUI and these holds for both Git beginners
 and experts alike.
 
+Link to Magit buffers from Org documents.
+#+begin_src elisp
+  (use-package orgit)
+#+end_src
+
 *** Git Link
 Interactive Emacs functions that create URLs for files and commits in
 GitHub/Bitbucket/GitLab/... repositories.
