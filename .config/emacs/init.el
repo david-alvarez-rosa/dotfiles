@@ -224,6 +224,22 @@
 
 (use-package chronometer)
 
+(use-package engine-mode
+  :config
+  (defengine code
+    "https://code.amazon.com/search?term=%s"
+    :keybinding "c")
+  (defengine internal
+    "https://is.amazon.com/search/?autocompleted=false&q=%s"
+    :keybinding "i")
+  (defengine phonetool
+    "https://phonetool.amazon.com/search?filter_type=All%%20fields&query=%s"
+    :keybinding "p")
+  (defengine ddg
+    "https://duckduckgo.com/?q=%s&t=h_"
+    :keybinding "d")
+  (engine-mode t))
+
 (use-package doom-themes
   :demand t
   :config

@@ -56,6 +56,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#spell-checking-and-correcting][Spell Checking and Correcting]]
   - [[#sudo-edit][Sudo Edit]]
   - [[#chronometer][Chronometer]]
+  - [[#engine-mode][Engine Mode]]
 - [[#user-interface][User Interface]]
   - [[#theme][Theme]]
   - [[#modeline][Modeline]]
@@ -749,6 +750,28 @@ Utility for opening files with =sudo= (call the =sudo-edit= function).
 ** Chronometer
 #+begin_src elisp
   (use-package chronometer)
+#+end_src
+
+** Engine Mode
+~engine-mode~ is a global minor mode for Emacs.  It enables you to
+easily define search engines, bind them to keybindings, and query them
+from the comfort of your editor.
+#+begin_src elisp
+  (use-package engine-mode
+    :config
+    (defengine code
+      "https://code.amazon.com/search?term=%s"
+      :keybinding "c")
+    (defengine internal
+      "https://is.amazon.com/search/?autocompleted=false&q=%s"
+      :keybinding "i")
+    (defengine phonetool
+      "https://phonetool.amazon.com/search?filter_type=All%%20fields&query=%s"
+      :keybinding "p")
+    (defengine ddg
+      "https://duckduckgo.com/?q=%s&t=h_"
+      :keybinding "d")
+    (engine-mode t))
 #+end_src
 
 * User Interface
