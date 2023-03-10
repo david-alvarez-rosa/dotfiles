@@ -993,7 +993,7 @@
   :init (elfeed-goodies/setup)
   :config
   (setq elfeed-goodies/powerline-default-separator 'utf-8)
-  (setq elfeed-goodies/entry-pane-size 0.40))
+  (setq elfeed-goodies/entry-pane-position 'bottom))
 
 (defun dalvrosa/elfeed-play-with-mpv ()
   (interactive)
