@@ -245,16 +245,13 @@
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
-  ;; (load-theme 'doom-one-light t)
+  (load-theme 'doom-one-light t)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(use-package modus-themes
-  :demand t
-  :config
-  (load-theme 'modus-operandi-tinted :no-confirm))
+(use-package modus-themes)
 
-(setq dalvrosa/themes '(modus-operandi-tinted doom-zenburn))
+(setq dalvrosa/themes '(doom-opera-light doom-zenburn))
 (setq dalvrosa/themes-index 0)
 
 (defun dalvrosa/cycle-theme ()
