@@ -110,7 +110,6 @@ conflict here. Lastly, Emacs is a gift from God.
 - [[#internet-relay-chat-irc][Internet Relay Chat (IRC)]]
   - [[#nickname-highlighter][Nickname Highlighter]]
 - [[#useful-resources][Useful Resources]]
-- [[#asdf][asdf]]
 
 * Preamble
 ** Installation
@@ -1718,19 +1717,6 @@ code is from [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266
   (add-hook 'org-agenda-finalize-hook #'dalvrosa/org-agenda-delete-empty-blocks)
 #+end_src
 
-*** Meetings sync CalDAV
-asdf
-#+begin_src elisp
-  (use-package org-caldav
-    :after (org)
-    :config
-    (setq org-caldav-url "http://localhost:1080/users")
-    (setq org-caldav-inbox '(file+headline "~/Documents/Agenda.org" "Calendar"))
-    (setq org-caldav-calendar-id "dalvrosa@amazon.com/calendar")
-    (setq org-caldav-uuid-extension ".EML")
-    (setq org-caldav-sync-direction 'cal->org))
-#+end_src
-
 *** Habits
 Show a nice graph for recurring habits. See [[https://orgmode.org/manual/Tracking-your-habits.html][Tracking your Habits]] in the
 Org-mode manual for more information.
@@ -2488,13 +2474,3 @@ nickname’, nickname”, etc.)
 - [[https://github.com/rememberYou/.emacs.d/blob/master/config.org/][Terencio Agozzino]] is a computer engineer with a very nice (literate) Emacs
   configuration. He has written in Reddit (as =u/rmberYou/=) several Emacs
   tips that are worth checking out.
-
-* asdf
-#+begin_src elisp
-  (use-package calfw
-    :config
-    (setq calendar-week-start-day 1) ; 0:Sunday, 1:Monday
-    )
-  (use-package calfw-org)
-
-#+end_src

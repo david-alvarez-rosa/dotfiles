@@ -666,15 +666,6 @@
 
 (add-hook 'org-agenda-finalize-hook #'dalvrosa/org-agenda-delete-empty-blocks)
 
-(use-package org-caldav
-  :after (org)
-  :config
-  (setq org-caldav-url "http://localhost:1080/users")
-  (setq org-caldav-inbox '(file+headline "~/Documents/Agenda.org" "Calendar"))
-  (setq org-caldav-calendar-id "dalvrosa@amazon.com/calendar")
-  (setq org-caldav-uuid-extension ".EML")
-  (setq org-caldav-sync-direction 'cal->org))
-
 (require 'org-habit)
 
 (setq org-habit-graph-column 55)
@@ -1037,9 +1028,3 @@
 (setq erc-track-exclude-server-buffer t)
 
 (use-package erc-hl-nicks)
-
-(use-package calfw
-  :config
-  (setq calendar-week-start-day 1) ; 0:Sunday, 1:Monday
-  )
-(use-package calfw-org)
