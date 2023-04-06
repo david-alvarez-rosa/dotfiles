@@ -557,8 +557,7 @@
 
 (setq org-todo-keywords
       '((sequence "TODO(t!)" "WAIT(w!)" "NEXT(n!)" "|"
-                  "DONE(d!)" "CANCELLED(c!)")
-        (sequence "BACKLOG(b!)" "|")))
+                  "DONE(d!)" "CANCELLED(c!)")))
 
 (setq org-log-into-drawer t)
 
@@ -605,22 +604,22 @@
           (tags-todo "+refile" ((org-agenda-overriding-header "Refile")
                                 (org-agenda-skip-function
                                  '(org-agenda-skip-entry-if 'scheduled))))
-          (tags-todo "TODO=\"TODO\"+amzn"
+          (tags-todo "TODO=\"TODO\"+amzn-backlog"
                      ((org-agenda-overriding-header "Amazon")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if 'scheduled))))
-          (tags-todo "TODO=\"TODO\"+proj"
+          (tags-todo "TODO=\"TODO\"+proj-backlog"
                      ((org-agenda-overriding-header "Projects")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if 'scheduled))))
-          (tags-todo "TODO=\"TODO\"+sing"
+          (tags-todo "TODO=\"TODO\"+sing-backlog"
                      ((org-agenda-overriding-header "Standalone Tasks")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if 'scheduled))))
-          (todo "WAIT" ((org-agenda-overriding-header "Waiting")
+          (tags-todo "TODO=\"WAIT\"-backlog" ((org-agenda-overriding-header "Waiting")
                         (org-agenda-skip-function
                          '(org-agenda-skip-entry-if 'scheduled))))
-          (todo "BACKLOG"
+          (tags-todo "+backlog"
                 ((org-agenda-overriding-header "Backlog")
                  (org-agenda-skip-function
                   '(org-agenda-skip-entry-if 'scheduled)))))
