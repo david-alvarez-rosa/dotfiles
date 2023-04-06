@@ -88,6 +88,7 @@ Configuration for my work email account.
   IMAPAccount Amazon
   Host ballard.amazon.com
   Port 1993
+  Tunnel "ssh devdsk -W ballard.amazon.com:1993"
   User dalvrosa
   PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep ballard.amazon.com | awk '{print $8}'"
   SSLType IMAPS
