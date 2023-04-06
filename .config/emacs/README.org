@@ -277,6 +277,12 @@ Append to path for using mu4e.
     (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e"))
 #+end_src
 
+When opening from command line with ~open~ or Finder, don't open in new
+frame.
+#+begin_src elisp
+  (setq ns-pop-up-frames nil)
+#+end_src
+
 ** Change yes/no Questions to y/n
 Shorter and faster.
 #+begin_src elisp

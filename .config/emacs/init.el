@@ -41,6 +41,8 @@
 (when (eq system-type 'darwin)
   (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e"))
 
+(setq ns-pop-up-frames nil)
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (setq-default dired-listing-switches "-alh --group-directories-first --color")
