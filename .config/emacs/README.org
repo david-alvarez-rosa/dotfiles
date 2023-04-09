@@ -75,6 +75,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#octavematlab][Octave/Matlab]]
   - [[#r][R]]
   - [[#apache-groovy][Apache Groovy]]
+  - [[#djinni][Djinni]]
   - [[#rest-http-api][REST HTTP API]]
 - [[#org-mode][Org Mode]]
   - [[#speed-commands][Speed Commands]]
@@ -1440,6 +1441,13 @@ language for the Java platform.  I'm using it mainly for editing
 ~guild.gradle~ files.
 #+begin_src elisp
   (use-package groovy-mode)
+#+end_src
+
+** Djinni
+Emacs major mode for Djinni files.  Djinni is an IDL used to generate
+cross-platform interfaces in C++, Objective-C and Java.
+#+begin_src elisp
+  (use-package djinni-mode)
 #+end_src
 
 ** REST HTTP API

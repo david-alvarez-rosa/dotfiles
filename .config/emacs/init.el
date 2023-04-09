@@ -523,6 +523,8 @@
 
 (use-package groovy-mode)
 
+(use-package djinni-mode)
+
 (use-package restclient
   :demand t
   :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
