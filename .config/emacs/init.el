@@ -253,7 +253,7 @@
 
 (use-package modus-themes)
 
-(setq dalvrosa/themes '(doom-opera-light doom-zenburn))
+(setq dalvrosa/themes '(doom-one-light doom-zenburn))
 (setq dalvrosa/themes-index 0)
 
 (defun dalvrosa/cycle-theme ()
