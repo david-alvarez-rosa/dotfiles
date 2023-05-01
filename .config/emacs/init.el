@@ -631,6 +631,8 @@
 
 (setq org-agenda-sticky t)
 
+(setq org-agenda-window-setup 'current-window)
+
 (defun dalvrosa/org-agenda-delete-empty-blocks ()
   "Remove empty agenda blocks.
   A block is identified as empty if there are fewer than 2

@@ -1684,6 +1684,12 @@ With =q= bury agenda instead of killing it (faster of course).
   (setq org-agenda-sticky t)
 #+end_src
 
+How the agenda buffer should be displayed.  Show agenda in the current
+window, keeping all other windows.
+#+begin_src elisp
+  (setq org-agenda-window-setup 'current-window)
+#+end_src
+
 I don't like empty blocks to show in customized agenda, so I hide them (this
 code is from [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266.html][emacs mail list]]).
 #+begin_src elisp
