@@ -603,9 +603,7 @@
                 ((org-agenda-overriding-header "Next Actions")
                  (org-agenda-skip-function
                   '(org-agenda-skip-entry-if 'scheduled))))
-          (tags-todo "+refile" ((org-agenda-overriding-header "Refile")
-                                (org-agenda-skip-function
-                                 '(org-agenda-skip-entry-if 'scheduled))))
+          (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
           (tags-todo "TODO=\"TODO\"+amzn-backlog"
                      ((org-agenda-overriding-header "Amazon")
                       (org-agenda-skip-function
