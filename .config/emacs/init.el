@@ -326,7 +326,7 @@
 
 (use-package olivetti
   :config
-  (setq-default olivetti-body-width (+ fill-column 8))
+  (setq-default olivetti-body-width (+ fill-column 10))
   :bind ("C-c o" . 'olivetti-mode))
 
 (use-package company
