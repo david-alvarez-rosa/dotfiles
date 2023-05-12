@@ -1,6 +1,3 @@
-(when (eq system-type 'darwin)
-  (add-to-list 'image-types 'svg))
-
 (setq gc-cons-threshold most-positive-fixnum)
 
 ;; Lower threshold back to 8 MiB (default is 800kB)
@@ -45,6 +42,9 @@
   (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e"))
 
 (setq ns-pop-up-frames nil)
+
+(when (eq system-type 'darwin)
+  (add-to-list 'image-types 'svg))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -423,6 +423,7 @@
   (setq projectile-project-search-path '(("~/workplace/" . 3)))
   (setq projectile-completion-system 'ivy)
   (setq projectile-switch-project-action 'projectile-commander)
+  (setq projectile-create-missing-test-files t)
   :bind (:map projectile-mode-map
               ("C-c p" . 'projectile-command-map)
               ("s-r" . 'projectile-command-map)))
