@@ -284,6 +284,12 @@ frame.
   (setq ns-pop-up-frames nil)
 #+end_src
 
+Fix a bug with SVG that is already fixed in Emacs 29.
+#+begin_src elisp
+  (when (eq system-type 'darwin)
+    (add-to-list 'image-types 'svg))
+#+end_src
+
 ** Change yes/no Questions to y/n
 Shorter and faster.
 #+begin_src elisp

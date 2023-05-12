@@ -1,3 +1,6 @@
+(when (eq system-type 'darwin)
+  (add-to-list 'image-types 'svg))
+
 (setq gc-cons-threshold most-positive-fixnum)
 
 ;; Lower threshold back to 8 MiB (default is 800kB)
