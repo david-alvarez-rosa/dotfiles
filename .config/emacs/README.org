@@ -1962,6 +1962,14 @@ remove them from headers view.
                               (:subject)))
 #+end_src
 
+Configure ~mu4e~ to display the buffer in the same window (do not force
+full-screen window as the default).
+#+begin_src elisp
+  (add-to-list 'display-buffer-alist
+               `(,(regexp-quote mu4e-main-buffer-name)
+                 display-buffer-same-window))
+#+end_src
+
 Set custom mailboxes depending of =dalvrosa/at-work= variable.
 #+begin_src elisp
   (if dalvrosa/at-work

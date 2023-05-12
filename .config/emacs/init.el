@@ -767,6 +767,10 @@
                             (:from-or-to . 22)
                             (:subject)))
 
+(add-to-list 'display-buffer-alist
+             `(,(regexp-quote mu4e-main-buffer-name)
+               display-buffer-same-window))
+
 (if dalvrosa/at-work
     (setq dalvrosa/mailboxes "personal spam amazon")
   (setq dalvrosa/mailboxes "personal spam"))
