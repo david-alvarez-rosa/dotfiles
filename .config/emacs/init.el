@@ -238,8 +238,11 @@
     "https://is.amazon.com/search/?autocompleted=false&q=%s"
     :keybinding "i")
   (defengine phonetool
-    "https://phonetool.amazon.com/search?filter_type=All%%20fields&query=%s"
+    "https://phonetool.amazon.com/users/%s"
     :keybinding "p")
+  (defengine jira
+    "https://issues.labcollab.net/browse/%s"
+    :keybinding "j")
   (defengine ddg
     "https://duckduckgo.com/?q=%s&t=h_"
     :keybinding "d")
