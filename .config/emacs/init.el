@@ -588,8 +588,20 @@
 
 (setq org-confirm-babel-evaluate nil)
 
-(use-package ox-jira)
-(use-package ox-slack)
+(eval-after-load "org"
+  '(require 'ox-md nil t))
+
+(use-package ox-jira
+  :after org
+  :init (require 'ox-jira nil t))
+
+(use-package ox-slack
+  :after org
+  :init (require 'ox-slack nil t))
+
+(use-package ox-gfm
+  :after org
+  :init (require 'ox-gfm nil t))
 
 (setq org-agenda-restore-windows-after-quit t)
 

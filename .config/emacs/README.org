@@ -1592,10 +1592,22 @@ Don't ask for confirmation for evaluating code.
 #+end_src
 
 ** Export
-Add export backends to Jira and Slack.
+Add export backends to (GitHub) MarkDown, Jira and Slack.
 #+begin_src elisp
-  (use-package ox-jira)
-  (use-package ox-slack)
+  (eval-after-load "org"
+    '(require 'ox-md nil t))
+
+  (use-package ox-jira
+    :after org
+    :init (require 'ox-jira nil t))
+
+  (use-package ox-slack
+    :after org
+    :init (require 'ox-slack nil t))
+
+  (use-package ox-gfm
+    :after org
+    :init (require 'ox-gfm nil t))
 #+end_src
 
 ** Interface
