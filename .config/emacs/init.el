@@ -903,6 +903,8 @@
   :after (ldap bbdb)
   :init (require 'eudc)
   :bind (:map message-mode-map
+              (("<M-tab>" . 'eudc-expand-inline))
+              :map org-msg-edit-mode-map
               (("<M-tab>" . 'eudc-expand-inline)))
   :config
   (eudc-set-server "ldap.amazon.com" 'ldap t)
