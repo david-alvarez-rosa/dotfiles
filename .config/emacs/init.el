@@ -900,18 +900,19 @@
 
 (use-package eudc
   :ensure nil
-  :after (ldap bbdb)
+  :after (ldap bbdb org-msg)
   :init (require 'eudc)
   :bind (:map message-mode-map
-              (("<M-tab>" . 'eudc-expand-inline))
-              :map org-msg-edit-mode-map
-              (("<M-tab>" . 'eudc-expand-inline)))
+         ("<M-tab>" . eudc-expand-inline)
+         :map org-msg-edit-mode-map
+         ("<M-tab>" . eudc-expand-inline))
   :config
   (eudc-set-server "ldap.amazon.com" 'ldap t)
   (eudc-bbdb-set-server "localhost")
   (setq eudc-server-hotlist
         '(("localhost" . bbdb)
           ("ldap.amazon.com" . ldap)))
+  (bind-key "<M-tab>" 'eudc-expand-inline org-msg-edit-mode-map)
   (setq eudc-inline-expansion-servers 'hotlist))
 
 (use-package ldap
