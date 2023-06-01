@@ -559,8 +559,6 @@
          (file+olp "~/Documents/Notes.org" "Refile")
          "* %?" :empty-lines 1)))
 
-(require 'org-mu4e)
-
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c j") 'org-clock-goto)
 
