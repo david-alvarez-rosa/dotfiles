@@ -979,9 +979,10 @@
    org-msg-convert-citation t)
   ;; https://github.com/jeremy-compostella/org-msg/pull/152
   (setq mu4e-compose-signature-auto-include nil)
-  (defun dalvrosa/set-org-msg-signature (type alternatives)
-    (setq org-msg-signature (f-read-text message-signature-file)))
   (advice-add 'org-msg-composition-parameters :before 'dalvrosa/set-org-msg-signature))
+
+(defun dalvrosa/set-org-msg-signature (type alternatives)
+  (setq org-msg-signature (f-read-text message-signature-file)))
 
 (setq mu4e-attachment-dir "~/Downloads")
 
