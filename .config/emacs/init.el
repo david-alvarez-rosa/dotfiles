@@ -982,7 +982,9 @@
   (advice-add 'org-msg-composition-parameters :before 'dalvrosa/set-org-msg-signature))
 
 (defun dalvrosa/set-org-msg-signature (type alternatives)
-  (setq org-msg-signature (f-read-text message-signature-file)))
+  (if message-signature-file
+      (setq org-msg-signature (f-read-text message-signature-file))
+    (setq org-msg-signature nil)))
 
 (setq mu4e-attachment-dir "~/Downloads")
 
