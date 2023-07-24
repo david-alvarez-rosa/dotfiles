@@ -501,6 +501,8 @@
 
 (use-package cmake-mode)
 
+(use-package cpp-auto-include)
+
 (use-package typescript-mode
   :demand t
   :config

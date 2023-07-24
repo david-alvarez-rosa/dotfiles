@@ -1360,6 +1360,13 @@ Use CMake mode for editing CMakeLists.txt files.
   (use-package cmake-mode)
 #+end_src
 
+*** Auto Include
+Insert and delete C++ header files automatically.
+
+#+begin_src elisp
+  (use-package cpp-auto-include)
+#+end_src
+
 ** TypeScript
 Add typescript mode.
 #+begin_src elisp
