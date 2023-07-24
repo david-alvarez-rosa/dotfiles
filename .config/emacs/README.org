@@ -2483,6 +2483,7 @@ the ERC client, with TLS support, to =C-c i= ("i" for IRC).
   (setq erc-nick "dalvrosa")
   (setq erc-user-full-name "David Álvarez Rosa")
   (setq erc-prompt-for-password nil)
+  (setq erc-hide-list '("JOIN" "PART" "QUIT"))
 #+end_src
 
 If you are an IRC user, you may find me out there. I usually hang out in

@@ -1073,6 +1073,7 @@
 (setq erc-nick "dalvrosa")
 (setq erc-user-full-name "David Álvarez Rosa")
 (setq erc-prompt-for-password nil)
+(setq erc-hide-list '("JOIN" "PART" "QUIT"))
 
 (setq erc-kill-buffer-on-part t)
 (setq erc-kill-queries-on-quit t)
