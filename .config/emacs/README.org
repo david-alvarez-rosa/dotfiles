@@ -2212,10 +2212,11 @@ The main features of the EUDC interface are:
     :ensure nil
     :after (ldap bbdb org-msg)
     :init (require 'eudc)
+    (require 'eudcb-bbdb)
     :bind (:map message-mode-map
-           ("<M-tab>" . eudc-expand-inline)
-           :map org-msg-edit-mode-map
-           ("<M-tab>" . eudc-expand-inline))
+                ("<M-tab>" . eudc-expand-inline)
+                :map org-msg-edit-mode-map
+                ("<M-tab>" . eudc-expand-inline))
     :config
     (eudc-set-server "ldap.amazon.com" 'ldap t)
     (eudc-bbdb-set-server "localhost")
