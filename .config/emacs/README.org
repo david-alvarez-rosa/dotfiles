@@ -892,9 +892,6 @@ afterwards.
   (use-package default-text-scale
     :init (default-text-scale-mode)
     :config (setq default-text-scale-amount 20)
-    (advice-add 'default-text-scale-reset :after 'doom-modeline-refresh-font-width-cache)
-    (advice-add 'default-text-scale-decrease :after 'doom-modeline-refresh-font-width-cache)
-    (advice-add 'default-text-scale-increase :after 'doom-modeline-refresh-font-width-cache)
     :bind (("s-0" . 'default-text-scale-reset)
            ("s--" . 'default-text-scale-decrease)
            ("s-=" . 'default-text-scale-increase)))
