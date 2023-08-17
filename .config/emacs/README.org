@@ -1539,7 +1539,7 @@ Set my custom capture templates. Brief description of them:
 For the above email (or link) capture templates to work with =mu4e= (email
 client used in this configuration), it is needed the following.
 #+begin_src elisp
-  (require 'org-mu4e)
+  (require 'mu4e-org)
 #+end_src
 
 Add some global key binding for storing link =C-c l= and jumping (goto) to
