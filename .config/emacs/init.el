@@ -224,7 +224,7 @@
 (setq ispell-dictionary "english")
 
 (add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 (use-package sudo-edit)
 
@@ -286,6 +286,9 @@
   (setq doom-modeline-buffer-file-name-style 'relative-from-project)
   (setq doom-modeline-percent-position nil))
 
+(use-package nerd-icons
+  :demand t)
+
 (setq display-time-default-load-average nil)
 
 (use-package nyan-mode
@@ -300,9 +303,6 @@
 (use-package default-text-scale
   :init (default-text-scale-mode)
   :config (setq default-text-scale-amount 20)
-  (advice-add 'default-text-scale-reset :after 'doom-modeline-refresh-font-width-cache)
-  (advice-add 'default-text-scale-decrease :after 'doom-modeline-refresh-font-width-cache)
-  (advice-add 'default-text-scale-increase :after 'doom-modeline-refresh-font-width-cache)
   :bind (("s-0" . 'default-text-scale-reset)
          ("s--" . 'default-text-scale-decrease)
          ("s-=" . 'default-text-scale-increase)))
@@ -392,6 +392,10 @@
 (use-package flycheck
   :init
   (add-hook 'prog-mode-hook 'flycheck-mode))
+
+;; ivy is required by flycheck
+(use-package ivy
+  :after flycheck)
 
 (defvar-local my-flycheck-local-cache nil)
 (defun my-flycheck-local-checker-get (fn checker property)
@@ -561,6 +565,8 @@
         ("n" "Text Note" entry
          (file+olp "~/Documents/Notes.org" "Refile")
          "* %?" :empty-lines 1)))
+
+(require 'mu4e-org)
 
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c j") 'org-clock-goto)
@@ -924,10 +930,11 @@
   :ensure nil
   :after (ldap bbdb org-msg)
   :init (require 'eudc)
+  (require 'eudcb-bbdb)
   :bind (:map message-mode-map
-         ("<M-tab>" . eudc-expand-inline)
-         :map org-msg-edit-mode-map
-         ("<M-tab>" . eudc-expand-inline))
+              ("<M-tab>" . eudc-expand-inline)
+              :map org-msg-edit-mode-map
+              ("<M-tab>" . eudc-expand-inline))
   :config
   (eudc-set-server "ldap.amazon.com" 'ldap t)
   (eudc-bbdb-set-server "localhost")
@@ -1087,3 +1094,16 @@
 (setq erc-track-exclude-server-buffer t)
 
 (use-package erc-hl-nicks)
+
+(use-package tide
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         ;; (before-save . tide-format-before-save)
+))
+
+(use-package flycheck-google-cpplint
+  :after flycheck
+  :config
+  (require 'flycheck-google-cpplint)
+  (flycheck-add-next-checker 'c/c++-cppcheck
+                             '(warning . c/c++-googlelint)))
