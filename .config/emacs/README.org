@@ -1095,11 +1095,14 @@ intended as replacement for the older Flymake extension which is part of GNU
 Emacs. It uses various syntax checking and linting tools to automatically check
 the contents of buffers while you type, and reports warnings and errors
 directly in the buffer, or in an optional error list.
-
 #+begin_src elisp
   (use-package flycheck
     :init
     (add-hook 'prog-mode-hook 'flycheck-mode))
+
+  ;; ivy is required by flycheck
+  (use-package ivy
+    :after flycheck)
 #+end_src
 
 Add buffer local Flycheck checkers after LSP for different major modes, from
