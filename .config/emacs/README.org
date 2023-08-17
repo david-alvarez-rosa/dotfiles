@@ -849,8 +849,8 @@ it).
 
 ** Modeline
 For the modeline I am using also Doom Modeline. This package requires the fonts
-included with =all-the-icons= to be installed with =M-x
-all-the-icons-install-fonts=. I have configured it to show column number
+included with =nerd-icons= to be installed with =M-x
+nerd-icons-install-fonts=. I have configured it to show column number
 instead of percentage buffer position.
 #+begin_src elisp
   (use-package doom-modeline
@@ -859,6 +859,9 @@ instead of percentage buffer position.
     :config (setq column-number-mode t)
     (setq doom-modeline-buffer-file-name-style 'relative-from-project)
     (setq doom-modeline-percent-position nil))
+
+  (use-package nerd-icons
+    :demand t)
 #+end_src
 
 Disable load average.
