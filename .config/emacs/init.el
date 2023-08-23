@@ -282,7 +282,9 @@
 (use-package doom-modeline
   :demand t
   :init (doom-modeline-mode 1)
-  :config (setq column-number-mode t)
+  :config
+  (setq column-number-mode t)
+  (setq doom-modeline-height 21)
   (setq doom-modeline-buffer-file-name-style 'relative-from-project)
   (setq doom-modeline-percent-position nil))
 
