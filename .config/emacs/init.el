@@ -566,7 +566,10 @@
          "* TODO [#C] %?\n%a\n%i" :empty-lines 1)
         ("n" "Text Note" entry
          (file+olp "~/Documents/Notes.org" "Refile")
-         "* %?" :empty-lines 1)))
+         "* %?" :empty-lines 1)
+        ("s" "Standup Status" entry
+         (file+olp "~/Documents/Notes.org" "Amazon" "Standup Status")
+         "* %t\n/Report work status/ submission from @dalvrosa\n\n/What you worked on yesterday?/\n- %?\n\n/What you plan on working on today?/\n- \n\n/Any blockers?/\nNo.\n\n/Any parking lot topics? (tag any required attendee)/\nNo." :empty-lines 1)))
 
 (require 'mu4e-org)
 
