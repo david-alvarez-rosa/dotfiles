@@ -300,7 +300,7 @@
   (nyan-start-animation)
   (nyan-toggle-wavy-trail))
 
-(set-face-attribute 'default nil :font "Hack" :height 120)
+(set-face-attribute 'default nil :font "Inconsolata" :height 120)
 
 (use-package default-text-scale
   :init (default-text-scale-mode)
