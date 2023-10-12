@@ -691,8 +691,7 @@
                                             "control"
                                         ],
                                         "optional": [
-                                            "caps_lock",
-                                            "shift"
+                                            "caps_lock"
                                         ]
                                     }
                                 },
@@ -754,11 +753,11 @@
                                     "key_code": "v",
                                     "modifiers": {
                                         "mandatory": [
-                                            "command"
+                                            "control",
+                                            "shift"
                                         ],
                                         "optional": [
-                                            "caps_lock",
-                                            "shift"
+                                            "caps_lock"
                                         ]
                                     }
                                 },
