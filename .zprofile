@@ -5,7 +5,7 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 export MANPATH="/opt/local/share/man:$MANPATH"
 
 # Added by Toolbox App
-export PATH="$PATH:/usr/local/bin"
+export PATH="$PATH:/usr/local/bin:/Users/dalvrosa/.toolbox/bin"
 
 # C/C++ compiler
 export CC=clang
