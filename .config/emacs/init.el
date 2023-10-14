@@ -507,6 +507,9 @@
 
 (use-package cmake-mode)
 
+(use-package eldoc-cmake
+  :hook (cmake-mode . eldoc-cmake-enable))
+
 (use-package cpp-auto-include)
 
 (use-package typescript-mode

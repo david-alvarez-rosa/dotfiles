@@ -1365,6 +1365,12 @@ Use CMake mode for editing CMakeLists.txt files.
   (use-package cmake-mode)
 #+end_src
 
+~eldoc-cmake~ shows documentation (using ~eldoc-mode~) when editing CMake files.
+#+begin_src elisp
+  (use-package eldoc-cmake
+    :hook (cmake-mode . eldoc-cmake-enable))
+#+end_src
+
 *** Auto Include
 Insert and delete C++ header files automatically.
 
