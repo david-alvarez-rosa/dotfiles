@@ -663,8 +663,7 @@ Vertico is
     :demand t
     :bind (("C-s" . consult-line))
     :config
-    (consult-preview-at-point-mode)
-    (setq consult-line-start-from-top t))
+    (consult-preview-at-point-mode))
 #+end_src
 
 Save mini-buffer history.

@@ -198,8 +198,7 @@
   :demand t
   :bind (("C-s" . consult-line))
   :config
-  (consult-preview-at-point-mode)
-  (setq consult-line-start-from-top t))
+  (consult-preview-at-point-mode))
 
 (setq savehist-mode 1)
 
