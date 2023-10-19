@@ -1494,6 +1494,27 @@ pretty-printed XML, JSON and even images.  Nice examples in package
     :init (add-to-list 'company-backends 'company-restclient))
 #+end_src
 
+** Log Files
+Emacs minor mode that allows viewing, editing, searching and comparing
+large files in batches, trading memory for processor time. Batch size
+can be adjusted on the fly and bounds the memory that is to be used for
+operations on the file. This way multiple large files (like terabytes or
+whatever) can be instantly and simultaneously accessed without swapping
+and degraded performance.
+#+begin_src elisp
+  (use-package vlf
+    :defer t
+    :init (require 'vlf-setup))
+#+end_src
+
+Highlight things at point, selections, enclosing parentheses with
+different colors.
+#+begin_src elisp
+  (use-package hl-anything
+    :bind
+    ("C-c m" . 'hl-highlight-thingatpt-local))
+#+end_src
+
 * Org Mode
 Configuration for Org mode, one of the best major modes (org mode is definately
 an Emacs killer feature). Org mode is for keeping notes, maintaining to-do

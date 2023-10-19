@@ -552,6 +552,14 @@
   :after company
   :init (add-to-list 'company-backends 'company-restclient))
 
+(use-package vlf
+  :defer t
+  :init (require 'vlf-setup))
+
+(use-package hl-anything
+  :bind
+  ("C-c m" . 'hl-highlight-thingatpt-local))
+
 (setq org-use-speed-commands t)
 
 (setq org-refile-targets '((nil :maxlevel . 2)
