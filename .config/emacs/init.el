@@ -198,6 +198,8 @@
   :demand t
   :bind (("C-s" . consult-line))
   :config
+  ;; below line allows to escape spaces while searching
+  (setq orderless-component-separator 'orderless-escapable-split-on-space)
   (consult-preview-at-point-mode))
 
 (setq savehist-mode 1)
