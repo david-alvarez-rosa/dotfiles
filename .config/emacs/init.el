@@ -806,6 +806,8 @@
 
 (use-package ledger-mode)
 
+(use-package yaml-mode)
+
 (use-package pdf-tools
   :demand t
   :config
