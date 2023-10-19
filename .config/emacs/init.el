@@ -428,7 +428,6 @@
 (use-package projectile
   :demand t
   :config (projectile-mode +1)
-  (setq projectile-ignored-projects '("~/"))
   (setq projectile-project-search-path '(("~/workplace/" . 3)))
   (setq projectile-completion-system 'ivy)
   (setq projectile-switch-project-action 'projectile-commander)

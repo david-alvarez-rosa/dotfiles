@@ -77,6 +77,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#apache-groovy][Apache Groovy]]
   - [[#djinni][Djinni]]
   - [[#rest-http-api][REST HTTP API]]
+  - [[#log-files][Log Files]]
 - [[#org-mode][Org Mode]]
   - [[#speed-commands][Speed Commands]]
   - [[#refile][Refile]]
@@ -93,6 +94,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#markdown-mode][Markdown Mode]]
   - [[#texlatex][TeX/LaTeX]]
   - [[#ledger][Ledger]]
+  - [[#yaml][YAML]]
 - [[#pdf-viewer][PDF Viewer]]
 - [[#email-management][Email Management]]
   - [[#contexts-for-multiple-accounts][Contexts for Multiple Accounts]]
@@ -1146,7 +1148,6 @@ with version control (like Git) and takes into account =.gitignore= files.
   (use-package projectile
     :demand t
     :config (projectile-mode +1)
-    (setq projectile-ignored-projects '("~/"))
     (setq projectile-project-search-path '(("~/workplace/" . 3)))
     (setq projectile-completion-system 'ivy)
     (setq projectile-switch-project-action 'projectile-commander)
