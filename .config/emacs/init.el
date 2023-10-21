@@ -343,6 +343,7 @@
   :config
   (setq company-show-quick-access  t)
   (setq company-idle-delay 0.0)
+  (add-to-list 'company-backends '(company-capf company-yasnippet))
   (setq company-minimum-prefix-length 1)
   :hook (prog-mode . company-mode))
 
