@@ -655,6 +655,10 @@
                      ((org-agenda-overriding-header "Amazon")
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-if 'scheduled))))
+          (tags-todo "TODO=\"TODO\"+uni-backlog"
+                     ((org-agenda-overriding-header "University")
+                      (org-agenda-skip-function
+                       '(org-agenda-skip-entry-if 'scheduled))))
           (tags-todo "TODO=\"TODO\"+proj-backlog"
                      ((org-agenda-overriding-header "Projects")
                       (org-agenda-skip-function
@@ -669,29 +673,20 @@
         ("b" "Backlog"
          ((agenda "" ((org-agenda-span 1)))
           (todo "NEXT"
-                ((org-agenda-overriding-header "Next Actions")
-                 (org-agenda-skip-function
-                  '(org-agenda-skip-entry-if 'scheduled))))
+                ((org-agenda-overriding-header "Next Actions")))
           (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
           (tags-todo "TODO=\"TODO\"+amzn-backlog"
-                     ((org-agenda-overriding-header "Amazon")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled))))
+                     ((org-agenda-overriding-header "Amazon")))
+          (tags-todo "TODO=\"TODO\"+uni-backlog"
+                     ((org-agenda-overriding-header "University")))
           (tags-todo "TODO=\"TODO\"+proj-backlog"
-                     ((org-agenda-overriding-header "Projects")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled))))
+                     ((org-agenda-overriding-header "Projects")))
           (tags-todo "TODO=\"TODO\"+sing-backlog"
-                     ((org-agenda-overriding-header "Standalone Tasks")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled))))
-          (tags-todo "TODO=\"WAIT\"-backlog" ((org-agenda-overriding-header "Waiting")
-                                              (org-agenda-skip-function
-                                               '(org-agenda-skip-entry-if 'scheduled))))
+                     ((org-agenda-overriding-header "Standalone Tasks")))
+          (tags-todo "TODO=\"WAIT\"-backlog"
+                     ((org-agenda-overriding-header "Waiting")))
           (tags-todo "+backlog"
-                     ((org-agenda-overriding-header "Backlog")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled))))))))
+                     ((org-agenda-overriding-header "Backlog")))))))
 
 (setq org-agenda-log-mode-items '(closed clock state))
 
