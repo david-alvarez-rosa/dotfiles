@@ -364,6 +364,7 @@
   :config
   (setq lsp-idle-delay 0.1)
   (add-to-list 'lsp-language-id-configuration '(brazil-config-mode . "brazil-config"))
+  (setq lsp-clients-python-library-directories '("/usr" "/opt/homebrew/lib/python3.11/site-packages"))
   (lsp-register-client
    (make-lsp-client
     :priority -1
