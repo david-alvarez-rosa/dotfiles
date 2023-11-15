@@ -800,6 +800,12 @@ Settings related to the user interface, such as the theme, the modeline, the
 font, other basic interface settings, and the transparency alpha.
 
 ** Theme
+Consider all custom themes as safe (don't ask for confirmation when loading
+it).
+#+begin_src elisp
+  (setq custom-safe-themes t)
+#+end_src
+
 I am using Doom Themes. I find creating own theme is too much work and it's now
 worth your time. In the past I used Spacemacs theme and I was nice, but I
 became bored of it. Doom Themes provides nice themes such as =doom-one= (dark),
@@ -842,12 +848,6 @@ cames from toggling dark theme (d for "dark").
     (when (fboundp 'powerline-reset)
       (powerline-reset)))
   (global-set-key (kbd "C-c d") 'dalvrosa/cycle-theme)
-#+end_src
-
-Consider all custom themes as safe (don't ask for confirmation when loading
-it).
-#+begin_src elisp
-  (setq custom-safe-themes t)
 #+end_src
 
 ** Modeline

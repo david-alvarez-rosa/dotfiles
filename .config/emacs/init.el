@@ -251,6 +251,7 @@
   (engine-mode t))
 
 (use-package doom-themes
+(setq custom-safe-themes t)
   :demand t
   :config
   (setq doom-themes-enable-bold t
@@ -277,8 +278,6 @@
   (when (fboundp 'powerline-reset)
     (powerline-reset)))
 (global-set-key (kbd "C-c d") 'dalvrosa/cycle-theme)
-
-(setq custom-safe-themes t)
 
 (use-package doom-modeline
   :demand t
