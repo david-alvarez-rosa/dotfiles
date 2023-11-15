@@ -233,19 +233,19 @@
 
 (use-package engine-mode
   :config
-  (defengine code
+  (defengine Amazon_Code
     "https://code.amazon.com/search?term=%s"
     :keybinding "c")
-  (defengine internal
+  (defengine Amazon_Internal_Search
     "https://is.amazon.com/search/?autocompleted=false&q=%s"
     :keybinding "i")
-  (defengine phonetool
+  (defengine Amazon_Phonetool
     "https://phonetool.amazon.com/users/%s"
     :keybinding "p")
-  (defengine jira
+  (defengine Amazon_Jira
     "https://issues.labcollab.net/browse/%s"
     :keybinding "j")
-  (defengine ddg
+  (defengine DuckDuckGo
     "https://duckduckgo.com/?q=%s&t=h_"
     :keybinding "d")
   (engine-mode t))
