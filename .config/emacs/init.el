@@ -461,8 +461,10 @@
 
 (use-package treemacs
   :config
-  (add-hook 'treemacs-mode-hook  (lambda () (setq-local truncate-lines t)))
   (setq treemacs-persist-file "~/Documents/Treemacs.txt")
+  (setq treemacs-width 45)
+  (setq treemacs-wide-toggle-width 60)
+  :hook (treemacs-mode . (lambda () (setq-local truncate-lines t)))
   :bind
   (:map global-map
         ("M-0"       . treemacs-select-window)
