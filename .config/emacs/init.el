@@ -420,6 +420,10 @@
               (setq my-flycheck-local-cache '((next-checkers . (sh-shellcheck)))))))
 (add-hook 'lsp-managed-mode-hook
           (lambda ()
+            (when (derived-mode-p 'swift-mode)
+              (setq my-flycheck-local-cache '((next-checkers . (swiftlint)))))))
+(add-hook 'lsp-managed-mode-hook
+          (lambda ()
             (when (derived-mode-p 'tex-mode)
               (setq my-flycheck-local-cache '((next-checkers . (tex-chktex)))))))
 
@@ -538,6 +542,11 @@
   :after lsp-mode
   :config
   (setq lsp-sourcekit-executable (string-trim (shell-command-to-string "xcrun --find sourcekit-lsp"))))
+
+(use-package flycheck-swiftlint
+  :config
+  (with-eval-after-load 'flycheck
+    (flycheck-swiftlint-setup)))
 
 (use-package web-mode
   :config

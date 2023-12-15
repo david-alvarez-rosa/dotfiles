@@ -1143,6 +1143,10 @@ Add buffer local Flycheck checkers after LSP for different major modes, from
                 (setq my-flycheck-local-cache '((next-checkers . (sh-shellcheck)))))))
   (add-hook 'lsp-managed-mode-hook
             (lambda ()
+              (when (derived-mode-p 'swift-mode)
+                (setq my-flycheck-local-cache '((next-checkers . (swiftlint)))))))
+  (add-hook 'lsp-managed-mode-hook
+            (lambda ()
               (when (derived-mode-p 'tex-mode)
                 (setq my-flycheck-local-cache '((next-checkers . (tex-chktex)))))))
 #+end_src
@@ -1457,6 +1461,14 @@ Install the necessary LSP tools, as recommended by [[https://emacs-lsp.github.io
     :after lsp-mode
     :config
     (setq lsp-sourcekit-executable (string-trim (shell-command-to-string "xcrun --find sourcekit-lsp"))))
+#+end_src
+
+Add linter for swift (needs to be installed first with ~brew~).
+#+begin_src elisp
+  (use-package flycheck-swiftlint
+    :config
+    :hook
+    (flycheck-mode . flycheck-swiftlint-setup))
 #+end_src
 
 ** Web Development
