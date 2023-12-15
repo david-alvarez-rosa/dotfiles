@@ -430,7 +430,8 @@
   (setq projectile-completion-system 'ivy)
   (setq projectile-switch-project-action 'projectile-commander)
   (setq projectile-create-missing-test-files t)
-  :bind (:map projectile-mode-map
+  (setq projectile-per-project-compilation-buffer t)
+ :bind (:map projectile-mode-map
               ("C-c p" . 'projectile-command-map)
               ("s-r" . 'projectile-command-map)))
 
