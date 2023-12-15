@@ -526,6 +526,14 @@
 
 (use-package lsp-java)
 
+(use-package swift-mode
+  :hook (swift-mode . (lambda () (lsp))))
+
+(use-package lsp-sourcekit
+  :after lsp-mode
+  :config
+  (setq lsp-sourcekit-executable (string-trim (shell-command-to-string "xcrun --find sourcekit-lsp"))))
+
 (use-package web-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))

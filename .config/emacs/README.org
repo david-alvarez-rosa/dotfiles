@@ -71,6 +71,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#typescript][TypeScript]]
   - [[#python][Python]]
   - [[#java][Java]]
+  - [[#swift][Swift]]
   - [[#web-development][Web Development]]
   - [[#octavematlab][Octave/Matlab]]
   - [[#r][R]]
@@ -1425,6 +1426,21 @@ n- =M-*= go back from definition where I was.
 Awesome package for LSP integration with Java.
 #+begin_src elisp
   (use-package lsp-java)
+#+end_src
+
+** Swift
+Use ~swift-mode~ for editing Swift files, integrated with LSP
+#+begin_src elisp
+  (use-package swift-mode
+    :hook (swift-mode . (lambda () (lsp))))
+#+end_src
+
+Install the necessary LSP tools, as recommended by [[https://emacs-lsp.github.io/lsp-sourcekit/][official manual]]
+#+begin_src elisp
+  (use-package lsp-sourcekit
+    :after lsp-mode
+    :config
+    (setq lsp-sourcekit-executable (string-trim (shell-command-to-string "xcrun --find sourcekit-lsp"))))
 #+end_src
 
 ** Web Development
