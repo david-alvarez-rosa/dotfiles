@@ -811,7 +811,7 @@ I am using Doom Themes. I find creating own theme is too much work and it's now
 worth your time. In the past I used Spacemacs theme and I was nice, but I
 became bored of it. Doom Themes provides nice themes such as =doom-one= (dark),
 =doom-one-ligth= (light), and the classic =zenburn= of course.
-#+begin_src elisp
+#+begin_src elisp :tangle no
   (use-package doom-themes
     :demand t
     :config
@@ -827,13 +827,16 @@ Some themes I also like are =doom-one= (dark), =doom-peacock= (dark) and
 
 I have recently started using Protesilaos Stavrou nerdy themes.
 #+begin_src elisp
-  (use-package modus-themes)
+  (use-package modus-themes
+    :demand t
+    :config
+    (load-theme 'modus-operandi))
 #+end_src
 
 Custom keybindings for cycling between themes in Emacs with =C-c d=. Binding
 cames from toggling dark theme (d for "dark").
 #+begin_src elisp
-  (setq dalvrosa/themes '(doom-one-light doom-zenburn))
+  (setq dalvrosa/themes '(modus-operandi modus-vivendi))
   (setq dalvrosa/themes-index 0)
 
   (defun dalvrosa/cycle-theme ()
