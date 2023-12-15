@@ -830,11 +830,9 @@
 
 (setq mu4e-completing-read-function 'ivy-completing-read)
 
-(setq mu4e-headers-fields '((:human-date . 12)
-                            (:flags . 6)
-                            (:maildir . 18)
-                            (:from-or-to . 22)
-                            (:subject)))
+(setq mu4e-headers-fields '( (:from-or-to . 16)
+                             (:maildir . 18)
+                             (:subject)))
 
 (add-to-list 'display-buffer-alist
              `(,(regexp-quote mu4e-main-buffer-name)
