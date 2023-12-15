@@ -1384,6 +1384,16 @@ Insert and delete C++ header files automatically.
   (use-package cpp-auto-include)
 #+end_src
 
+*** Google CPPLint
+#+begin_src elisp
+  (use-package flycheck-google-cpplint
+    :after flycheck
+    :config
+    (require 'flycheck-google-cpplint)
+    (flycheck-add-next-checker 'c/c++-cppcheck
+                               '(warning . c/c++-googlelint)))
+#+end_src
+
 ** TypeScript
 Add typescript mode.
 #+begin_src elisp

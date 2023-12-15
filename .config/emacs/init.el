@@ -514,6 +514,13 @@
 
 (use-package cpp-auto-include)
 
+(use-package flycheck-google-cpplint
+  :after flycheck
+  :config
+  (require 'flycheck-google-cpplint)
+  (flycheck-add-next-checker 'c/c++-cppcheck
+                             '(warning . c/c++-googlelint)))
+
 (use-package typescript-mode
   :demand t
   :config
