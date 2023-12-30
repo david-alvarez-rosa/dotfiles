@@ -255,9 +255,9 @@
 (use-package modus-themes
   :demand t
   :config
-  (load-theme 'modus-operandi))
+  (load-theme 'modus-operandi-tinted))
 
-(setq dalvrosa/themes '(modus-operandi modus-vivendi))
+(setq dalvrosa/themes '(modus-operandi-tinted modus-vivendi-tinted))
 (setq dalvrosa/themes-index 0)
 
 (defun dalvrosa/cycle-theme ()
@@ -545,8 +545,8 @@
 
 (use-package flycheck-swiftlint
   :config
-  (with-eval-after-load 'flycheck
-    (flycheck-swiftlint-setup)))
+  :hook
+  (flycheck-mode . flycheck-swiftlint-setup))
 
 (use-package web-mode
   :config
