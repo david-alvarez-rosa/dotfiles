@@ -370,6 +370,7 @@
          (ruby-mode . lsp-deferred)
          (python-mode . lsp-deferred)
          (brazil-config-mode . lsp-deferred)
+         (LaTeX-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
@@ -458,7 +459,8 @@
   :config
   (use-package yasnippet-snippets)
   (yas-reload-all)
-  :hook (prog-mode . yas-minor-mode))
+  :hook ((prog-mode . yas-minor-mode)
+         (LaTeX-mode . yas-minor-mode)))
 
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
@@ -810,6 +812,9 @@
          :map LaTeX-mode-map
          ;; Command for cleaning auxiliary files
          ("C-x M-k" . 'TeX-clean)))
+
+(use-package cdlatex
+  :hook (LaTeX-mode . turn-on-cdlatex))
 
 (setq reftex-plug-into-AUCTeX t)
 (setq reftex-toc-split-windows-fraction 0.2)

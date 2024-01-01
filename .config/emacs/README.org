@@ -1047,6 +1047,7 @@ support to be implemented and distributed independently of any given editor.
            (ruby-mode . lsp-deferred)
            (python-mode . lsp-deferred)
            (brazil-config-mode . lsp-deferred)
+           (LaTeX-mode . lsp-deferred)
            (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
 
@@ -1267,7 +1268,8 @@ abbreviation and automatically expand it into function templates.
     :config
     (use-package yasnippet-snippets)
     (yas-reload-all)
-    :hook (prog-mode . yas-minor-mode))
+    :hook ((prog-mode . yas-minor-mode)
+           (LaTeX-mode . yas-minor-mode)))
 #+end_src
 
 Custom snippets are located in =.config/emacs/snippets= directory (best way to
@@ -1976,6 +1978,13 @@ the commands I use the most:
 - =` *= for entering mathematical symbols (e.g., =` a= for inserting =\alpha=).
 - =C-c .= for marking current environment and =C-c *= for marking current
   section.
+
+CDLaTeX provides a collection of convenience functions that speed up
+editing LaTeX documents.
+#+begin_src elisp
+  (use-package cdlatex
+    :hook (LaTeX-mode . turn-on-cdlatex))
+#+end_src
 
 *** RefTeX
 RefTeX is a specialized package for support of labels, references, citations,
