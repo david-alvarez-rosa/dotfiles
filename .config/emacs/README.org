@@ -831,13 +831,13 @@ I have recently started using Protesilaos Stavrou nerdy themes.
   (use-package modus-themes
     :demand t
     :config
-    (load-theme 'modus-operandi-tinted))
+    (load-theme 'modus-operandi))
 #+end_src
 
 Custom keybindings for cycling between themes in Emacs with =C-c d=. Binding
 cames from toggling dark theme (d for "dark").
 #+begin_src elisp
-  (setq dalvrosa/themes '(modus-operandi-tinted modus-vivendi-tinted))
+  (setq dalvrosa/themes '(modus-operandi modus-vivendi))
   (setq dalvrosa/themes-index 0)
 
   (defun dalvrosa/cycle-theme ()
