@@ -866,9 +866,10 @@ instead of percentage buffer position.
     :init (doom-modeline-mode 1)
     :config
     (setq column-number-mode t)
-    (setq doom-modeline-height 21)
+    ;; (setq doom-modeline-height 21)
     (setq doom-modeline-buffer-file-name-style 'relative-from-project)
-    (setq doom-modeline-percent-position nil))
+    (setq doom-modeline-percent-position nil)
+    (setq doom-modeline-buffer-encoding nil))
 
   (use-package nerd-icons
     :demand t)
@@ -879,8 +880,8 @@ Disable load average.
   (setq display-time-default-load-average nil)
 #+end_src
 
-Enable nyan cat.
-#+begin_src elisp
+Enable nyan cat. Disabled now.
+#+begin_src elisp :tangle no
   (use-package nyan-mode
     :after doom-modeline
     :init (nyan-mode)
