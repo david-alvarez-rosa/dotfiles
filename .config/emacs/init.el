@@ -255,9 +255,9 @@
 (use-package modus-themes
   :demand t
   :config
-  (load-theme 'modus-operandi-tinted))
+  (load-theme 'modus-operandi))
 
-(setq dalvrosa/themes '(modus-operandi-tinted modus-vivendi-tinted))
+(setq dalvrosa/themes '(modus-operandi modus-vivendi))
 (setq dalvrosa/themes-index 0)
 
 (defun dalvrosa/cycle-theme ()
@@ -279,23 +279,17 @@
   :init (doom-modeline-mode 1)
   :config
   (setq column-number-mode t)
-  (setq doom-modeline-height 21)
+  ;; (setq doom-modeline-height 21)
   (setq doom-modeline-buffer-file-name-style 'relative-from-project)
-  (setq doom-modeline-percent-position nil))
+  (setq doom-modeline-percent-position nil)
+  (setq doom-modeline-buffer-encoding nil))
 
 (use-package nerd-icons
   :demand t)
 
 (setq display-time-default-load-average nil)
 
-(use-package nyan-mode
-  :after doom-modeline
-  :init (nyan-mode)
-  :config
-  (nyan-start-animation)
-  (nyan-toggle-wavy-trail))
-
-(set-face-attribute 'default nil :font "Inconsolata" :height 120)
+(set-face-attribute 'default nil :font "Inconsolata" :height 140)
 
 (use-package default-text-scale
   :init (default-text-scale-mode)
@@ -353,6 +347,8 @@
   :config
   (setq vterm-max-scrollback 10000)
   :bind ("C-c t" . 'vterm))
+
+(setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 
 (use-package lsp-mode
   :config
@@ -487,11 +483,10 @@
   (setq treemacs-indentation 1)
   (treemacs-load-theme "all-the-icons"))
 
-(defun dalvrosa/colorize-compilation ()
-  "Colorize from `compilation-filter-start' to `point'."
-    (ansi-color-apply-on-region
-     (point-min) (point-max)))
-(add-hook 'compilation-filter-hook #'dalvrosa/colorize-compilation)
+(require 'ansi-color)
+(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+
+(setq compilation-scroll-output t)
 
 (if dalvrosa/at-work
     (progn
@@ -960,14 +955,11 @@
 (define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index)
 
 (mu4e t)
-(setq mu4e-update-interval (* 4 60 60))
+(setq mu4e-update-interval (* 60 10))
+(setq mu4e-hide-index-messages t)
 
-(setq doom-modeline-mu4e t)
-
-(use-package mu4e-alert
-  :config
-  (mu4e-alert-enable-mode-line-display)
-  (mu4e-alert-enable-notifications))
+(mu4e-modeline-mode 0)
+(setq mu4e-modeline-support nil)
 
 (setq smtpmail-queue-dir "~/.local/share/mail/Queue/cur")
 
