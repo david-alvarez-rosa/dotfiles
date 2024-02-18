@@ -1319,14 +1319,16 @@ have that installed.
     (treemacs-load-theme "all-the-icons"))
 #+end_src
 
-*** Ansi Color
-Enable colors.
+*** Compilation
+Enable Ansi Color colors in compilation window.
 #+begin_src elisp
-  (defun dalvrosa/colorize-compilation ()
-    "Colorize from `compilation-filter-start' to `point'."
-      (ansi-color-apply-on-region
-       (point-min) (point-max)))
-  (add-hook 'compilation-filter-hook #'dalvrosa/colorize-compilation)
+  (require 'ansi-color)
+  (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+#+end_src
+
+Automatically scroll the compilation output.
+#+begin_src elisp
+  (setq compilation-scroll-output t)
 #+end_src
 
 ** Amazon Specific
