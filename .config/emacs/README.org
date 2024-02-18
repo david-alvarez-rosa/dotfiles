@@ -71,6 +71,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#typescript][TypeScript]]
   - [[#python][Python]]
   - [[#java][Java]]
+  - [[#kotlin][Kotlin]]
   - [[#swift][Swift]]
   - [[#web-development][Web Development]]
   - [[#octavematlab][Octave/Matlab]]
@@ -1448,6 +1449,12 @@ n- =M-*= go back from definition where I was.
 Awesome package for LSP integration with Java.
 #+begin_src elisp
   (use-package lsp-java)
+#+end_src
+
+** Kotlin
+Enable Kotlin mode.
+#+begin_src elisp
+  (use-package kotlin-mode)
 #+end_src
 
 ** Swift

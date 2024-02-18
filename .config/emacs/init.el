@@ -537,6 +537,8 @@
 
 (use-package lsp-java)
 
+(use-package kotlin-mode)
+
 (use-package swift-mode
   :hook (swift-mode . (lambda () (lsp))))
 
