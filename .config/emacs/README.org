@@ -758,7 +758,7 @@ programming language, where spelling should occur only for comments and
 strings). I have enabled it by default.
 #+begin_src elisp
   (add-hook 'text-mode-hook 'flyspell-mode)
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 #+end_src
 
 ** Sudo Edit
