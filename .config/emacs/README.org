@@ -1029,6 +1029,11 @@ Projectile project.
     :bind ("C-c t" . 'vterm))
 #+end_src
 
+Don't ask for confirmation when killing vterm buffer.
+#+begin_src elisp
+  (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+#+end_src
+
 *** Language Server Protocol
 The goal of the language server protocol is to allow programming language
 support to be implemented and distributed independently of any given editor.
