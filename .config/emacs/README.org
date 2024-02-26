@@ -2565,7 +2565,6 @@ This package allows to configure the Elfeed interface.
     :after elfeed
     :init (elfeed-goodies/setup)
     :config
-    (setq elfeed-goodies/powerline-default-separator 'utf-8)
     (setq elfeed-goodies/entry-pane-position 'bottom))
 #+end_src
 
