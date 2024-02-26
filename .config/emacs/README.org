@@ -2124,6 +2124,11 @@ full-screen window as the default).
                  display-buffer-same-window))
 #+end_src
 
+Sort emails in ascending direction.  That means, oldest at top.
+#+begin_src elisp
+  (setq mu4e-search-sort-direction 'ascending)
+#+end_src
+
 Set custom mailboxes depending of =dalvrosa/at-work= variable.
 #+begin_src elisp
   (if dalvrosa/at-work
@@ -2536,9 +2541,10 @@ RSS. It requires Emacs 24.3.
   (use-package elfeed
     :bind (("C-c f" . 'elfeed)
            :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)
-                                     ("i" . 'dalvrosa/elfeed-ignore)))
+                                        ("i" . 'dalvrosa/elfeed-ignore)))
     :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
                   elfeed-search-filter "@1-week-ago -no "
+                  elfeed-sort-order 'ascending
                   elfeed-search-title-max-width 100))
 #+end_src
 

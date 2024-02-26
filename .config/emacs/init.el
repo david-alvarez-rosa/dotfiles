@@ -854,6 +854,8 @@
              `(,(regexp-quote mu4e-main-buffer-name)
                display-buffer-same-window))
 
+(setq mu4e-search-sort-direction 'ascending)
+
 (if dalvrosa/at-work
     (setq dalvrosa/mailboxes "personal spam amazon")
   (setq dalvrosa/mailboxes "personal spam"))
@@ -1078,9 +1080,10 @@
 (use-package elfeed
   :bind (("C-c f" . 'elfeed)
          :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)
-                                   ("i" . 'dalvrosa/elfeed-ignore)))
+                                      ("i" . 'dalvrosa/elfeed-ignore)))
   :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
                 elfeed-search-filter "@1-week-ago -no "
+                elfeed-sort-order 'ascending
                 elfeed-search-title-max-width 100))
 
 (use-package elfeed-org
