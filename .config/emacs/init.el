@@ -367,6 +367,7 @@
          (python-mode . lsp-deferred)
          (brazil-config-mode . lsp-deferred)
          (LaTeX-mode . lsp-deferred)
+         (cmake-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
