@@ -71,3 +71,4 @@ export TERMINAL="alacritty"
 export BROWSER="qutebrowser"
 
 export TERM=xterm-256color
+. "$HOME/.cargo/env"

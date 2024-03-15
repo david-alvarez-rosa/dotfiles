@@ -7,3 +7,4 @@
 if [ "$(tty)" = "/dev/tty1" ]; then
     pgrep -x i3 || exec startx "$XINITRC"
 fi
+. "$HOME/.cargo/env"
