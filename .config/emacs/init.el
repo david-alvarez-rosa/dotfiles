@@ -252,27 +252,8 @@
 
 (setq custom-safe-themes t)
 
-(use-package modus-themes
-  :demand t
-  :config
-  (load-theme 'modus-operandi))
-
-(setq dalvrosa/themes '(modus-operandi modus-vivendi))
-(setq dalvrosa/themes-index 0)
-
-(defun dalvrosa/cycle-theme ()
-  "Cycle through themes defined in dalvrosa/themes variable."
-  (interactive)
-  ;; Disable current themes.
-  (mapc #'disable-theme custom-enabled-themes)
-  ;; Load new theme.
-  (setq dalvrosa/themes-index (% (1+ dalvrosa/themes-index) (length dalvrosa/themes)))
-  (setq dalvrosa/theme (nth dalvrosa/themes-index dalvrosa/themes))
-  (load-theme dalvrosa/theme t)
-  ;; Resets powerline.
-  (when (fboundp 'powerline-reset)
-    (powerline-reset)))
-(global-set-key (kbd "C-c d") 'dalvrosa/cycle-theme)
+(load-theme 'modus-operandi)
+(global-set-key (kbd "C-c d") 'modus-themes-toggle)
 
 (use-package doom-modeline
   :demand t

@@ -808,51 +808,10 @@ it).
   (setq custom-safe-themes t)
 #+end_src
 
-I am using Doom Themes. I find creating own theme is too much work and it's now
-worth your time. In the past I used Spacemacs theme and I was nice, but I
-became bored of it. Doom Themes provides nice themes such as =doom-one= (dark),
-=doom-one-ligth= (light), and the classic =zenburn= of course.
-#+begin_src elisp :tangle no
-  (use-package doom-themes
-    :demand t
-    :config
-    (setq doom-themes-enable-bold t
-          doom-themes-enable-italic t)
-    (load-theme 'doom-one-light t)
-    ;; Corrects (and improves) org-mode's native fontification.
-    (doom-themes-org-config))
-#+end_src
-
-Some themes I also like are =doom-one= (dark), =doom-peacock= (dark) and
-=doom-tomorrow-day= (light).
-
-I have recently started using Protesilaos Stavrou nerdy themes.
+I have recently started using Protesilaos Stavrou nerdy high-contrast themes.
 #+begin_src elisp
-  (use-package modus-themes
-    :demand t
-    :config
-    (load-theme 'modus-operandi))
-#+end_src
-
-Custom keybindings for cycling between themes in Emacs with =C-c d=. Binding
-cames from toggling dark theme (d for "dark").
-#+begin_src elisp
-  (setq dalvrosa/themes '(modus-operandi modus-vivendi))
-  (setq dalvrosa/themes-index 0)
-
-  (defun dalvrosa/cycle-theme ()
-    "Cycle through themes defined in dalvrosa/themes variable."
-    (interactive)
-    ;; Disable current themes.
-    (mapc #'disable-theme custom-enabled-themes)
-    ;; Load new theme.
-    (setq dalvrosa/themes-index (% (1+ dalvrosa/themes-index) (length dalvrosa/themes)))
-    (setq dalvrosa/theme (nth dalvrosa/themes-index dalvrosa/themes))
-    (load-theme dalvrosa/theme t)
-    ;; Resets powerline.
-    (when (fboundp 'powerline-reset)
-      (powerline-reset)))
-  (global-set-key (kbd "C-c d") 'dalvrosa/cycle-theme)
+  (load-theme 'modus-operandi)
+  (global-set-key (kbd "C-c d") 'modus-themes-toggle)
 #+end_src
 
 ** Modeline
