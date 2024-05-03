@@ -955,8 +955,11 @@
                    (mu4e-trash-folder . "/Amazon/Deleted Items")
                    (mu4e-refile-folder . "/Amazon/Archive")
                    (user-mail-address . "dalvrosa@amazon.com")
-                   (smtpmail-smtp-server . "ballard.amazon.com")
-                   (smtpmail-smtp-service . 1587)))))
+                   (smtpmail-default-smtp-server . "ballard.amazon.com")
+                   (smtpmail-smtp-server . "localhost")
+                   (smtpmail-local-domain . "amazon.com")
+                   (smtpmail-smtp-user . "dalvrosa")
+                   (smtpmail-smtp-service . 9595)))))
 
 (add-to-list 'mu4e-bookmarks
              '(:name "All Inboxes"
@@ -1091,12 +1094,19 @@
 (add-to-list 'mu4e-view-actions
              '("CR patch view" . dalvrosa/mu4e-show-cr-patch) t)
 
+(defadvice message-send-and-exit (around check_smtp_connection activate)
+  "Check SMTP server connectivity before sending the message."
+  (message "Checking connectivity to the SMTP server...")
+  (call-process-shell-command "nc -z -w1 localhost 9595 || autossh -M 0 -Nf -L 9595:ballard.amazon.com:1587 devdsk")
+  (call-process-shell-command "nc -z -w1 localhost 1587 || autossh -M 0 -Nf -L 1587:localhost:587 -L 6697:localhost:6697 root@alvarezrosa.com ")
+  ad-do-it)
+
 (use-package elfeed
   :bind (("C-c f" . 'elfeed)
          :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)
                                       ("i" . 'dalvrosa/elfeed-ignore)))
   :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
-                elfeed-search-filter "@1-week-ago -no "
+                elfeed-search-filter "@1.5-week-ago -no "
                 elfeed-sort-order 'ascending
                 elfeed-search-title-max-width 100))
 

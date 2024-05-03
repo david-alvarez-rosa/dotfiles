@@ -2243,8 +2243,11 @@ The actual context accounts.
                      (mu4e-trash-folder . "/Amazon/Deleted Items")
                      (mu4e-refile-folder . "/Amazon/Archive")
                      (user-mail-address . "dalvrosa@amazon.com")
-                     (smtpmail-smtp-server . "ballard.amazon.com")
-                     (smtpmail-smtp-service . 1587)))))
+                     (smtpmail-default-smtp-server . "ballard.amazon.com")
+                     (smtpmail-smtp-server . "localhost")
+                     (smtpmail-local-domain . "amazon.com")
+                     (smtpmail-smtp-user . "dalvrosa")
+                     (smtpmail-smtp-service . 9595)))))
 #+end_src
 
 ** Bookmarks
