@@ -827,6 +827,11 @@
 (use-package cdlatex
   :hook (LaTeX-mode . turn-on-cdlatex))
 
+(use-package lsp-latex
+  :config
+  (progn
+    (add-hook 'bibtex-mode-hook 'lsp)))
+
 (setq reftex-plug-into-AUCTeX t)
 (setq reftex-toc-split-windows-fraction 0.2)
 

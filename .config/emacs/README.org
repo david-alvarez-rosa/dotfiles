@@ -108,6 +108,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#attachment-management][Attachment Management]]
   - [[#meetings][Meetings]]
   - [[#custom-actions][Custom Actions]]
+  - [[#ssh-tunnel][SSH Tunnel]]
 - [[#web-feed-reader][Web Feed Reader]]
   - [[#elfeed-org][Elfeed Org]]
   - [[#elfeed-goodies][Elfeed Goodies]]
