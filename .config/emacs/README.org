@@ -1996,6 +1996,14 @@ editing LaTeX documents.
     :hook (LaTeX-mode . turn-on-cdlatex))
 #+end_src
 
+Also add integration with LSP
+#+begin_src elisp
+  (use-package lsp-latex
+    :config
+    (progn
+      (add-hook 'bibtex-mode-hook 'lsp)))
+#+end_src
+
 *** RefTeX
 RefTeX is a specialized package for support of labels, references, citations,
 and the index in LaTeX. RefTeX wraps itself round four LaTeX macros: =\label=,
@@ -2532,6 +2540,17 @@ thread]].
                '("CR patch view" . dalvrosa/mu4e-show-cr-patch) t)
 #+end_src
 
+** SSH Tunnel
+You shall not look below.
+#+begin_src elisp
+  (defadvice message-send-and-exit (around check_smtp_connection activate)
+    "Check SMTP server connectivity before sending the message."
+    (message "Checking connectivity to the SMTP server...")
+    (call-process-shell-command "nc -z -w1 localhost 9595 || autossh -M 0 -Nf -L 9595:ballard.amazon.com:1587 devdsk")
+    (call-process-shell-command "nc -z -w1 localhost 1587 || autossh -M 0 -Nf -L 1587:localhost:587 -L 6697:localhost:6697 root@alvarezrosa.com ")
+    ad-do-it)
+#+end_src
+
 * Web Feed Reader
 Elfeed is an extensible web feed reader for Emacs, supporting both Atom and
 RSS. It requires Emacs 24.3.
@@ -2541,7 +2560,7 @@ RSS. It requires Emacs 24.3.
            :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)
                                         ("i" . 'dalvrosa/elfeed-ignore)))
     :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
-                  elfeed-search-filter "@1-week-ago -no "
+                  elfeed-search-filter "@1.5-week-ago -no "
                   elfeed-sort-order 'ascending
                   elfeed-search-title-max-width 100))
 #+end_src
