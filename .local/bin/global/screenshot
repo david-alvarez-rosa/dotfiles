@@ -4,7 +4,7 @@
 # Gestiona las capturas de pantalla.
 
 
-saveDir="/home/david/Pictures/Screenshots/"
+saveDir="/home/david/media/pics/screenshots/"
 fileName=$(date -I | dmenu -p "Screenshot name: ")
 fullPath=$saveDir$fileName".png"
 
