@@ -40,7 +40,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#server-mode][Server Mode]]
   - [[#custom-file][Custom File]]
   - [[#authentication-file][Authentication File]]
-  - [[#initialization][Initialization]]
+  - [[#initialization-macos][Initialization MacOS]]
   - [[#change-yesno-questions-to-yn][Change yes/no Questions to y/n]]
   - [[#file-management][File Management]]
   - [[#buffer-management][Buffer Management]]
@@ -66,7 +66,6 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#distraction-free-mode][Distraction Free Mode]]
 - [[#programming-configuration][Programming Configuration]]
   - [[#general-configuration-1][General Configuration]]
-  - [[#amazon-specific][Amazon Specific]]
   - [[#cc][C/C++]]
   - [[#typescript][TypeScript]]
   - [[#python][Python]]
@@ -107,8 +106,6 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#compositionsending][Composition/Sending]]
   - [[#attachment-management][Attachment Management]]
   - [[#meetings][Meetings]]
-  - [[#custom-actions][Custom Actions]]
-  - [[#ssh-tunnel][SSH Tunnel]]
 - [[#web-feed-reader][Web Feed Reader]]
   - [[#elfeed-org][Elfeed Org]]
   - [[#elfeed-goodies][Elfeed Goodies]]
@@ -219,11 +216,6 @@ changed accordingly when using =mu4e= contexts (see configuration below).
   (setq user-mail-address "david@alvarezrosa.com")
 #+end_src
 
-Load file containing =dalvrosa/at-work= bool.
-#+begin_src elisp
-  (load-file "~/.config/emacs/at-work.el")
-#+end_src
-
 ** Server Mode
 Start the Emacs server mode from this instance, so that all =emacsclient= calls
 are routed here. This way, files can be sent to the current Emacs instance,
@@ -257,14 +249,7 @@ specification).
   (setq auth-sources '("~/.local/share/authinfo.gpg"))
 #+end_src
 
-** Initialization
-When I'm at work I want Emacs to be launched in full screen.
-#+begin_src elisp
-  (if dalvrosa/at-work
-      (toggle-frame-fullscreen))
-#+end_src
-
-*** Mac OS
+** Initialization MacOS
 I currently use Mac on my work laptop, and there are some specific things to
 OS X.
 
@@ -780,18 +765,6 @@ from the comfort of your editor.
 #+begin_src elisp
   (use-package engine-mode
     :config
-    (defengine Amazon_Code
-      "https://code.amazon.com/search?term=%s"
-      :keybinding "c")
-    (defengine Amazon_Internal_Search
-      "https://is.amazon.com/search/?autocompleted=false&q=%s"
-      :keybinding "i")
-    (defengine Amazon_Phonetool
-      "https://phonetool.amazon.com/users/%s"
-      :keybinding "p")
-    (defengine Amazon_Jira
-      "https://issues.labcollab.net/browse/%s"
-      :keybinding "j")
     (defengine DuckDuckGo
       "https://duckduckgo.com/?q=%s&t=h_"
       :keybinding "d")
@@ -1038,7 +1011,9 @@ communication between client and Debug Server. It's similar to the LSP but
 provides integration with debug server.
 #+begin_src elisp
   (use-package dap-mode
-    :after lsp-mode)
+    :after lsp-mode
+    :config
+    (require 'dap-php))
 #+end_src
 
 *** Line Numbers
@@ -1296,31 +1271,6 @@ Enable Ansi Color colors in compilation window.
 Automatically scroll the compilation output.
 #+begin_src elisp
   (setq compilation-scroll-output t)
-#+end_src
-
-** Amazon Specific
-Work related configuration: specific to Amazon. There is the EmacsAmazonLibs
-package in GitFarm
-
-Amazon developers have created a couple of libraries to make life easier for
-developers.
-
-To take advantage of these libraries, create a desktop workspace with the
-EmacsAmazonLibs Brazil package. Build the package with =brazil-build release=.
-This will create a TAR file in the build directory, such as
-=emacs-amazon-libs-20180828094910.tar=. Run the command =M-x
-package-install-file= and enter the TAR file when prompted. This will install
-EmacsAmazonLibs as an Emacs package in your =~/.emacs.d/elpa= directory. You
-should then require the =amz-common= package to pick up the customisation.
-
-#+begin_src elisp
-  (if dalvrosa/at-work
-      (progn
-        (require 'amz-common)
-        (require 'amz-misc)
-        (require 'amz-kerberos)
-        (require 'amz-mw)
-        (require 'amz-search)))
 #+end_src
 
 ** C/C++
@@ -1592,10 +1542,7 @@ Set my custom capture templates. Brief description of them:
            "* %?" :empty-lines 1)
           ("j" "Jorunal Entry" entry
            (file+olp+datetree "~/Documents/Journal.org")
-           "* %?")
-          ("s" "Standup Status" entry
-           (file+olp "~/Documents/Notes.org" "Amazon" "Standup Status")
-           "* %t\n/Report work status/ submission from @dalvrosa\n\n/What you worked on yesterday?/\n- %?\n\n/What you plan on working on today?/\n- \n\n/Any blockers?/\nNo.\n\n/Any parking lot topics? (tag any required attendee)/\nNo." :empty-lines 1)))
+           "* %?")))
 #+end_src
 
 For the above email (or link) capture templates to work with =mu4e= (email
@@ -1738,10 +1685,6 @@ Custom agenda views. I use a custom view that contains the following blocks:
                    (org-agenda-skip-function
                     '(org-agenda-skip-entry-if 'scheduled))))
             (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
-            (tags-todo "TODO=\"TODO\"+amzn-backlog"
-                       ((org-agenda-overriding-header "Amazon")
-                        (org-agenda-skip-function
-                         '(org-agenda-skip-entry-if 'scheduled))))
             (tags-todo "TODO=\"TODO\"+uni-backlog"
                        ((org-agenda-overriding-header "University")
                         (org-agenda-skip-function
@@ -1762,8 +1705,6 @@ Custom agenda views. I use a custom view that contains the following blocks:
             (todo "NEXT"
                   ((org-agenda-overriding-header "Next Actions")))
             (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
-            (tags-todo "TODO=\"TODO\"+amzn-backlog"
-                       ((org-agenda-overriding-header "Amazon")))
             (tags-todo "TODO=\"TODO\"+uni-backlog"
                        ((org-agenda-overriding-header "University")))
             (tags-todo "TODO=\"TODO\"+proj-backlog"
@@ -1870,12 +1811,7 @@ Enable notifications for scheduled tasks.
   (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
 
   (defun dalvrosa/appt-send-notification (title msg)
-    (if dalvrosa/at-work
-        (shell-command (concat "terminal-notifier"
-                               " -message " msg
-                               " -title " title
-                               " -sender " "org.gnu.Emacs"))
-      (shell-command (concat "notify-send " msg " " title))))
+      (shell-command (concat "notify-send " msg " " title)))
 
   (defun dalvrosa/appt-display (min-to-app new-time msg)
     (dalvrosa/appt-send-notification
@@ -2133,11 +2069,9 @@ Sort emails in ascending direction.  That means, oldest at top.
   (setq mu4e-search-sort-direction 'ascending)
 #+end_src
 
-Set custom mailboxes depending of =dalvrosa/at-work= variable.
+Set custom mailboxes.
 #+begin_src elisp
-  (if dalvrosa/at-work
-      (setq dalvrosa/mailboxes "personal spam amazon")
-    (setq dalvrosa/mailboxes "personal spam"))
+  (setq dalvrosa/mailboxes "personal spam")
   (setq mu4e-get-mail-command
         (concat "mbsync -c ~/.config/isync/mbsyncrc -V " dalvrosa/mailboxes))
 #+end_src
@@ -2192,13 +2126,8 @@ replying to myself) and the behavior for sent messages.
 Define some variables depending if I'm at work. I'm using an SSH tunnel to
 bypass block in 587 port.
 #+begin_src elisp
-  (if dalvrosa/at-work
-      (progn
-        (setq dalvrosa/smtp-server "localhost")
-        (setq dalvrosa/smtp-port 1587))
-    (progn
-      (setq dalvrosa/smtp-server "mail.alvarezrosa.com")
-      (setq dalvrosa/smtp-port 587)))
+  (setq dalvrosa/smtp-server "mail.alvarezrosa.com")
+  (setq dalvrosa/smtp-port 587)
 #+end_src
 
 The SSH tunnel should be started.
@@ -2238,25 +2167,7 @@ The actual context accounts.
                      (mu4e-refile-folder . "/Spam/Archive")
                      (user-mail-address . "davids@alvarezrosa.com")
                      (smtpmail-smtp-service . ,dalvrosa/smtp-port)
-                     (smtpmail-smtp-server . ,dalvrosa/smtp-server)))
-           ,(make-mu4e-context
-             :name "Amazon"
-             :match-func (lambda (msg)
-                           (when msg
-                             (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
-             :vars '(
-                     (message-signature-file . "~/Documents/SignatureWork.txt")
-                     (mu4e-inbox-folder . "/Amazon/Inbox")
-                     (mu4e-sent-folder . "/Amazon/Sent Items")
-                     (mu4e-drafts-folder . "/Amazon/Drafts")
-                     (mu4e-trash-folder . "/Amazon/Deleted Items")
-                     (mu4e-refile-folder . "/Amazon/Archive")
-                     (user-mail-address . "dalvrosa@amazon.com")
-                     (smtpmail-default-smtp-server . "ballard.amazon.com")
-                     (smtpmail-smtp-server . "localhost")
-                     (smtpmail-local-domain . "amazon.com")
-                     (smtpmail-smtp-user . "dalvrosa")
-                     (smtpmail-smtp-service . 9595)))))
+                     (smtpmail-smtp-server . ,dalvrosa/smtp-server)))))
 #+end_src
 
 ** Bookmarks
@@ -2264,7 +2175,7 @@ Add custom bookmark for all inboxes.
 #+begin_src elisp
   (add-to-list 'mu4e-bookmarks
                '(:name "All Inboxes"
-                :query "maildir:/Personal/Inbox OR maildir:/Amazon/Inbox OR maildir:/Spam/Inbox"
+                :query "maildir:/Personal/Inbox OR maildir:/Spam/Inbox"
                 :key ?i))
 #+end_src
 
@@ -2341,29 +2252,12 @@ The main features of the EUDC interface are:
                 :map org-msg-edit-mode-map
                 ("<M-tab>" . eudc-expand-inline))
     :config
-    (eudc-set-server "ldap.amazon.com" 'ldap t)
     (eudc-bbdb-set-server "localhost")
     (setq eudc-server-hotlist
-          '(("localhost" . bbdb)
-            ("ldap.amazon.com" . ldap)))
+          '(("localhost" . bbdb)))
     (bind-key "<M-tab>" 'eudc-expand-inline org-msg-edit-mode-map)
     (setq eudc-inline-expansion-servers 'hotlist))
 #+end_src
-
-*** Lightweight Directory Access Protocol
-LDAP, the Lightweight Directory Access Protocol, is a communication protocol
-for directory applications defined in RFC 1777.
-#+begin_src elisp
-  (use-package ldap
-    :ensure nil
-    :demand t
-    :config
-    (setq ldap-default-host "ldap.amazon.com")
-    (setq ldap-host-parameters-alist '(("ldap.amazon.com"
-                                        base "o=amazon.com"
-                                        auth simple))))
-#+end_src
-
 *** Big Brother’s Insidious Database
 BBDB is the Big Brother’s Insidious Database, a package for Emacs originally
 written by Jamie Zawinski which provides rolodex-like database functionality
@@ -2518,40 +2412,6 @@ Capture meetings and display them in org-agenda.
   (gnus-icalendar-org-setup)
 #+end_src
 
-** Custom Actions
-Add email action for showing CR patch within Emacs, from this [[https://unity.email.amazon.dev/list-archive/list/emacs/thread/10259443][email
-thread]].
-#+begin_src elisp
-  (defun dalvrosa/mu4e-show-cr-patch (msg)
-    (let* ((path (mu4e-message-field msg :path))
-           (patches)
-           (buf))
-      (message "Loading patches...")
-      (setq patches (split-string
-                     (shell-command-to-string
-                      (format "~/.local/bin/cr-get-patch %s" path)) "\n" t))
-      (dolist (p patches)
-        (find-file p)
-        (delete-other-windows)
-        (setq buf (get-buffer-create (file-name-nondirectory p)))
-        (with-current-buffer buf
-          (read-only-mode 1)))))
-
-  (add-to-list 'mu4e-view-actions
-               '("CR patch view" . dalvrosa/mu4e-show-cr-patch) t)
-#+end_src
-
-** SSH Tunnel
-You shall not look below.
-#+begin_src elisp
-  (defadvice message-send-and-exit (around check_smtp_connection activate)
-    "Check SMTP server connectivity before sending the message."
-    (message "Checking connectivity to the SMTP server...")
-    (call-process-shell-command "nc -z -w1 localhost 9595 || autossh -M 0 -Nf -L 9595:ballard.amazon.com:1587 devdsk")
-    (call-process-shell-command "nc -z -w1 localhost 1587 || autossh -M 0 -Nf -L 1587:localhost:587 -L 6697:localhost:6697 root@alvarezrosa.com ")
-    ad-do-it)
-#+end_src
-
 * Web Feed Reader
 Elfeed is an extensible web feed reader for Emacs, supporting both Atom and
 RSS. It requires Emacs 24.3.
@@ -2618,9 +2478,7 @@ the ERC client, with TLS support, to =C-c i= ("i" for IRC).
 #+begin_src elisp
   (global-set-key (kbd "C-c i") 'erc-tls)
 
-  (if dalvrosa/at-work
-      (setq erc-server "localhost")
-    (setq erc-server "irc.alvarezrosa.com"))
+  (setq erc-server "irc.alvarezrosa.com")
   (setq erc-nick "dalvrosa")
   (setq erc-user-full-name "David Álvarez Rosa")
   (setq erc-prompt-for-password nil)
