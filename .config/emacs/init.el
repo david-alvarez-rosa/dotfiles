@@ -20,17 +20,12 @@
 (setq user-full-name "David Álvarez Rosa")
 (setq user-mail-address "david@alvarezrosa.com")
 
-(load-file "~/.config/emacs/at-work.el")
-
 (server-start)
 
 (setq custom-file "~/.config/emacs/custom.el")
 (load custom-file t)
 
 (setq auth-sources '("~/.local/share/authinfo.gpg"))
-
-(if dalvrosa/at-work
-    (toggle-frame-fullscreen))
 
 (when (eq system-type 'darwin)
   (use-package exec-path-from-shell
@@ -233,18 +228,6 @@
 
 (use-package engine-mode
   :config
-  (defengine Amazon_Code
-    "https://code.amazon.com/search?term=%s"
-    :keybinding "c")
-  (defengine Amazon_Internal_Search
-    "https://is.amazon.com/search/?autocompleted=false&q=%s"
-    :keybinding "i")
-  (defengine Amazon_Phonetool
-    "https://phonetool.amazon.com/users/%s"
-    :keybinding "p")
-  (defengine Amazon_Jira
-    "https://issues.labcollab.net/browse/%s"
-    :keybinding "j")
   (defengine DuckDuckGo
     "https://duckduckgo.com/?q=%s&t=h_"
     :keybinding "d")
@@ -270,7 +253,7 @@
 
 (setq display-time-default-load-average nil)
 
-(set-face-attribute 'default nil :font "Inconsolata" :height 140)
+(set-face-attribute 'default nil :font "Hack" :height 92)
 
 (use-package default-text-scale
   :init (default-text-scale-mode)
@@ -445,7 +428,7 @@
 
 (use-package treemacs
   :config
-  (setq treemacs-persist-file "~/Documents/Treemacs.txt")
+  (setq treemacs-persist-file "~/docs/Treemacs.txt")
   (setq treemacs-width 45)
   (setq treemacs-wide-toggle-width 60)
   :hook (treemacs-mode . (lambda () (setq-local truncate-lines t)))
@@ -469,14 +452,6 @@
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 (setq compilation-scroll-output t)
-
-(if dalvrosa/at-work
-    (progn
-      (require 'amz-common)
-      (require 'amz-misc)
-      (require 'amz-kerberos)
-      (require 'amz-mw)
-      (require 'amz-search)))
 
 (use-package google-c-style
   :hook
@@ -573,22 +548,19 @@
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-use-outline-path 'file)
 
-(setq org-default-notes-file "~/Documents/Agenda.org")
+(setq org-default-notes-file "~/docs/Agenda.org")
 (define-key global-map (kbd "C-c c") 'org-capture)
 
 (setq org-capture-templates
       '(("t" "Task" entry
-         (file+olp "~/Documents/Agenda.org" "Refile")
+         (file+olp "~/docs/Agenda.org" "Refile")
          "* TODO [#C] %?\n%a\n%i" :empty-lines 1)
         ("n" "Text Note" entry
-         (file+olp "~/Documents/Notes.org" "Refile")
+         (file+olp "~/docs/Notes.org" "Refile")
          "* %?" :empty-lines 1)
         ("j" "Jorunal Entry" entry
-         (file+olp+datetree "~/Documents/Journal.org")
-         "* %?")
-        ("s" "Standup Status" entry
-         (file+olp "~/Documents/Notes.org" "Amazon" "Standup Status")
-         "* %t\n/Report work status/ submission from @dalvrosa\n\n/What you worked on yesterday?/\n- %?\n\n/What you plan on working on today?/\n- \n\n/Any blockers?/\nNo.\n\n/Any parking lot topics? (tag any required attendee)/\nNo." :empty-lines 1)))
+         (file+olp+datetree "~/docs/Journal.org")
+         "* %?")))
 
 (require 'mu4e-org)
 
@@ -644,7 +616,7 @@
 
 (global-set-key (kbd "C-c a") 'org-agenda)
 
-(setq org-agenda-files '("~/Documents/Agenda.org"))
+(setq org-agenda-files '("~/docs/Agenda.org"))
 
 (setq org-agenda-custom-commands
       '((" " "Block Agenda"
@@ -654,10 +626,6 @@
                  (org-agenda-skip-function
                   '(org-agenda-skip-entry-if 'scheduled))))
           (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
-          (tags-todo "TODO=\"TODO\"+amzn-backlog"
-                     ((org-agenda-overriding-header "Amazon")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled))))
           (tags-todo "TODO=\"TODO\"+uni-backlog"
                      ((org-agenda-overriding-header "University")
                       (org-agenda-skip-function
@@ -678,8 +646,6 @@
           (todo "NEXT"
                 ((org-agenda-overriding-header "Next Actions")))
           (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
-          (tags-todo "TODO=\"TODO\"+amzn-backlog"
-                     ((org-agenda-overriding-header "Amazon")))
           (tags-todo "TODO=\"TODO\"+uni-backlog"
                      ((org-agenda-overriding-header "University")))
           (tags-todo "TODO=\"TODO\"+proj-backlog"
@@ -752,12 +718,7 @@
 (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
 
 (defun dalvrosa/appt-send-notification (title msg)
-  (if dalvrosa/at-work
-      (shell-command (concat "terminal-notifier"
-                             " -message " msg
-                             " -title " title
-                             " -sender " "org.gnu.Emacs"))
-    (shell-command (concat "notify-send " msg " " title))))
+    (shell-command (concat "notify-send " msg " " title)))
 
 (defun dalvrosa/appt-display (min-to-app new-time msg)
   (dalvrosa/appt-send-notification
@@ -875,9 +836,7 @@
 
 (setq mu4e-search-sort-direction 'ascending)
 
-(if dalvrosa/at-work
-    (setq dalvrosa/mailboxes "personal spam amazon")
-  (setq dalvrosa/mailboxes "personal spam"))
+(setq dalvrosa/mailboxes "personal spam")
 (setq mu4e-get-mail-command
       (concat "mbsync -c ~/.config/isync/mbsyncrc -V " dalvrosa/mailboxes))
 
@@ -908,13 +867,8 @@
 (setq smtpmail-smtp-service 587)
 (setq mu4e-change-filenames-when-moving t)
 
-(if dalvrosa/at-work
-    (progn
-      (setq dalvrosa/smtp-server "localhost")
-      (setq dalvrosa/smtp-port 1587))
-  (progn
-    (setq dalvrosa/smtp-server "mail.alvarezrosa.com")
-    (setq dalvrosa/smtp-port 587)))
+(setq dalvrosa/smtp-server "mail.alvarezrosa.com")
+(setq dalvrosa/smtp-port 587)
 
 (setq mu4e-contexts
       `( ,(make-mu4e-context
@@ -923,7 +877,7 @@
                          (when msg
                            (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
            :vars `(
-                   (message-signature-file . "~/Documents/Signature.txt")
+                   (message-signature-file . "~/docs/Signature.txt")
                    (mu4e-inbox-folder . "/Personal/Inbox")
                    (mu4e-sent-folder . "/Personal/Sent")
                    (mu4e-drafts-folder . "/Personal/Drafts")
@@ -946,29 +900,11 @@
                    (mu4e-refile-folder . "/Spam/Archive")
                    (user-mail-address . "davids@alvarezrosa.com")
                    (smtpmail-smtp-service . ,dalvrosa/smtp-port)
-                   (smtpmail-smtp-server . ,dalvrosa/smtp-server)))
-         ,(make-mu4e-context
-           :name "Amazon"
-           :match-func (lambda (msg)
-                         (when msg
-                           (string-match-p "^/Amazon" (mu4e-message-field msg :maildir))))
-           :vars '(
-                   (message-signature-file . "~/Documents/SignatureWork.txt")
-                   (mu4e-inbox-folder . "/Amazon/Inbox")
-                   (mu4e-sent-folder . "/Amazon/Sent Items")
-                   (mu4e-drafts-folder . "/Amazon/Drafts")
-                   (mu4e-trash-folder . "/Amazon/Deleted Items")
-                   (mu4e-refile-folder . "/Amazon/Archive")
-                   (user-mail-address . "dalvrosa@amazon.com")
-                   (smtpmail-default-smtp-server . "ballard.amazon.com")
-                   (smtpmail-smtp-server . "localhost")
-                   (smtpmail-local-domain . "amazon.com")
-                   (smtpmail-smtp-user . "dalvrosa")
-                   (smtpmail-smtp-service . 9595)))))
+                   (smtpmail-smtp-server . ,dalvrosa/smtp-server)))))
 
 (add-to-list 'mu4e-bookmarks
              '(:name "All Inboxes"
-              :query "maildir:/Personal/Inbox OR maildir:/Amazon/Inbox OR maildir:/Spam/Inbox"
+              :query "maildir:/Personal/Inbox OR maildir:/Spam/Inbox"
               :key ?i))
 
 (defun dalvrosa/mu4e-update-mail-and-index ()
@@ -997,22 +933,11 @@
               :map org-msg-edit-mode-map
               ("<M-tab>" . eudc-expand-inline))
   :config
-  (eudc-set-server "ldap.amazon.com" 'ldap t)
   (eudc-bbdb-set-server "localhost")
   (setq eudc-server-hotlist
-        '(("localhost" . bbdb)
-          ("ldap.amazon.com" . ldap)))
+        '(("localhost" . bbdb)))
   (bind-key "<M-tab>" 'eudc-expand-inline org-msg-edit-mode-map)
   (setq eudc-inline-expansion-servers 'hotlist))
-
-(use-package ldap
-  :ensure nil
-  :demand t
-  :config
-  (setq ldap-default-host "ldap.amazon.com")
-  (setq ldap-host-parameters-alist '(("ldap.amazon.com"
-                                      base "o=amazon.com"
-                                      auth simple))))
 
 (use-package bbdb
   :demand t)
@@ -1077,34 +1002,9 @@
 (mu4e-icalendar-setup)
 (setq mu4e-icalendar-trash-after-reply t)
 
-(setq gnus-icalendar-org-capture-file "~/Documents/Agenda.org")
+(setq gnus-icalendar-org-capture-file "~/docs/Agenda.org")
 (setq gnus-icalendar-org-capture-headline '("Calendar"))
 (gnus-icalendar-org-setup)
-
-(defun dalvrosa/mu4e-show-cr-patch (msg)
-  (let* ((path (mu4e-message-field msg :path))
-         (patches)
-         (buf))
-    (message "Loading patches...")
-    (setq patches (split-string
-                   (shell-command-to-string
-                    (format "~/.local/bin/cr-get-patch %s" path)) "\n" t))
-    (dolist (p patches)
-      (find-file p)
-      (delete-other-windows)
-      (setq buf (get-buffer-create (file-name-nondirectory p)))
-      (with-current-buffer buf
-        (read-only-mode 1)))))
-
-(add-to-list 'mu4e-view-actions
-             '("CR patch view" . dalvrosa/mu4e-show-cr-patch) t)
-
-(defadvice message-send-and-exit (around check_smtp_connection activate)
-  "Check SMTP server connectivity before sending the message."
-  (message "Checking connectivity to the SMTP server...")
-  (call-process-shell-command "nc -z -w1 localhost 9595 || autossh -M 0 -Nf -L 9595:ballard.amazon.com:1587 devdsk")
-  (call-process-shell-command "nc -z -w1 localhost 1587 || autossh -M 0 -Nf -L 1587:localhost:587 -L 6697:localhost:6697 root@alvarezrosa.com ")
-  ad-do-it)
 
 (use-package elfeed
   :bind (("C-c f" . 'elfeed)
@@ -1118,7 +1018,7 @@
 (use-package elfeed-org
   :after elfeed
   :init (elfeed-org)
-  :config (setq rmh-elfeed-org-files (list "~/Documents/Subscriptions.org")))
+  :config (setq rmh-elfeed-org-files (list "~/docs/Subscriptions.org")))
 
 (use-package elfeed-goodies
   :after elfeed
@@ -1142,9 +1042,7 @@
 
 (global-set-key (kbd "C-c i") 'erc-tls)
 
-(if dalvrosa/at-work
-    (setq erc-server "localhost")
-  (setq erc-server "irc.alvarezrosa.com"))
+(setq erc-server "irc.alvarezrosa.com")
 (setq erc-nick "dalvrosa")
 (setq erc-user-full-name "David Álvarez Rosa")
 (setq erc-prompt-for-password nil)
@@ -1162,9 +1060,3 @@
 (setq erc-track-exclude-server-buffer t)
 
 (use-package erc-hl-nicks)
-
-(use-package tide
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         ;; (before-save . tide-format-before-save)
-))
