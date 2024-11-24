@@ -826,7 +826,7 @@ Enable nyan cat. Disabled now.
 ** Font
 Set default font. I'm currently using Hack (in the past I used Inconsolata).
 #+begin_src elisp
-  (set-face-attribute 'default nil :font "Inconsolata" :height 140)
+  (set-face-attribute 'default nil :font "Hack" :height 92)
 #+end_src
 
 Add ability to scale font for frame, instead that for an specifically
