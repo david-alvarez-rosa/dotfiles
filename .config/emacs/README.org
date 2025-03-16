@@ -654,23 +654,85 @@ Vertico and Consult completion framework.
 Vertico is
 #+begin_src elisp
   (use-package vertico
-    :custom
-    (vertico-cycle t)
     :init
     (vertico-mode))
 
   (use-package consult
-    :demand t
-    :bind (("C-s" . consult-line))
+    :bind (
+           ;; ("C-c m" . consult-man)
+           ;; ("C-c i" . consult-info)
+           ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+           ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+           ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+           ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
+           ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+           ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+           ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+           ("M-g e" . consult-compile-error)
+           ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+           ("M-g g" . consult-goto-line)             ;; orig. goto-line
+           ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+           ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+           ("M-g m" . consult-mark)
+           ("M-g k" . consult-global-mark)
+           ("M-g i" . consult-imenu)
+           ("M-g I" . consult-imenu-multi)
+           ;; M-s bindings in `search-map'
+           ("M-s d" . consult-fd)                  ;; Alternative: consult-find
+           ("M-s c" . consult-locate)
+           ("M-s g" . consult-grep)
+           ("M-s G" . consult-git-grep)
+           ("M-s r" . consult-ripgrep)
+           ("M-s l" . consult-line)
+           ("M-s L" . consult-line-multi)
+           ("M-s k" . consult-keep-lines)
+           ("M-s u" . consult-focus-lines)
+           ;; Isearch integration
+           ("M-s e" . consult-isearch-history)
+           :map isearch-mode-map
+           ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+           ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+           ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+           ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+           ;; Minibuffer history
+           :map minibuffer-local-map
+           ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+           ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+
+    :hook (completion-list-mode . consult-preview-at-point-mode)
+
+    :init
+    ;; Use Consult to select xref locations with preview
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)
+
+    ;; Configure other variables and modes in the :config section,
+    ;; after lazily loading the package.
     :config
+    ;; For some commands and buffer sources it is useful to configure the
+    ;; :preview-key on a per-command basis using the `consult-customize' macro.
+    (consult-customize
+     consult-theme :preview-key '(:debounce 0.2 any)
+     consult-ripgrep consult-git-grep consult-grep consult-man
+     consult-bookmark consult-recent-file consult-xref
+     consult--source-bookmark consult--source-file-register
+     consult--source-recent-file consult--source-project-recent-file
+     ;; :preview-key "M-."
+     :preview-key '(:debounce 0.4 any))
+
+    ;; Optionally configure the narrowing key.
+    ;; Both < and C-+ work reasonably well.
+    (setq consult-narrow-key "<") ;; "C-+"
+
     ;; below line allows to escape spaces while searching
     (setq orderless-component-separator 'orderless-escapable-split-on-space)
-    (consult-preview-at-point-mode))
+  )
+
 #+end_src
 
 Save mini-buffer history.
 #+begin_src elisp
-  (setq savehist-mode 1)
+  (savehist-mode)
 #+end_src
 
 Corfu enhances completion at point with a small completion popup.  The
@@ -680,7 +742,20 @@ minibuffer UI.
 #+begin_src elisp
   (use-package corfu
     :config
-    (global-corfu-mode))
+    (setq corfu-auto t)
+    (setq corfu-auto-prefix 2)
+    (setq corfu-auto-delay 0.1)
+    (setq corfu-popupinfo-mode t)
+    (setq corfu-popupinfo-delay 0.5)
+    (add-to-list 'savehist-additional-variables 'corfu-history)
+    :init
+    (global-corfu-mode)
+    (corfu-history-mode 1))
+
+  (use-package nerd-icons-corfu
+    :after corfu
+    :config
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 #+end_src
 
 This package provides an ~orderless~ completion style that divides the
@@ -692,7 +767,7 @@ literal matches are enabled.
 #+begin_src elisp
   (use-package orderless
     :init
-    (setq completion-styles '(orderless)
+    (setq completion-styles '(orderless basic)
           completion-category-defaults nil
           completion-category-overrides '((file (styles . (partial-completion))))))
 #+end_src
@@ -710,6 +785,16 @@ command.
     :after vertico
     :init
     (marginalia-mode))
+#+end_src
+
+Cape provides Completion At Point Extensions which can be used in
+combination with Corfu, Company or the default completion UI.
+#+begin_src elisp
+  (use-package cape
+    :init
+    (add-hook 'completion-at-point-functions #'cape-dabbrev)
+    (add-hook 'completion-at-point-functions #'cape-file)
+    (add-hook 'completion-at-point-functions #'cape-tex))
 #+end_src
 
 *** Keybinding Panel
@@ -922,13 +1007,6 @@ Company is a text/code completion framework for Emacs. The name stands for
 "complete anything". It uses pluggable back-ends and front-ends to retrieve and
 display completion candidates.
 #+begin_src elisp
-  (use-package company
-    :config
-    (setq company-show-quick-access  t)
-    (setq company-idle-delay 0.0)
-    (add-to-list 'company-backends '(company-capf company-yasnippet))
-    (setq company-minimum-prefix-length 1)
-    :hook (prog-mode . company-mode))
 #+end_src
 
 Completion will start automatically after you type a few letters. Use =C-n= and
