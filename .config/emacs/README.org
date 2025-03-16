@@ -63,7 +63,6 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#modeline][Modeline]]
   - [[#font][Font]]
   - [[#basic-interface-settings][Basic Interface Settings]]
-  - [[#transparency-alpha][Transparency Alpha]]
   - [[#distraction-free-mode][Distraction Free Mode]]
 - [[#programming-configuration][Programming Configuration]]
   - [[#general-configuration-1][General Configuration]]
@@ -94,6 +93,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#table-of-contents][Table of Contents]]
 - [[#markup-languages][Markup Languages]]
   - [[#markdown-mode][Markdown Mode]]
+  - [[#quarto][Quarto]]
   - [[#texlatex][TeX/LaTeX]]
   - [[#ledger][Ledger]]
   - [[#yaml][YAML]]
@@ -1883,6 +1883,12 @@ Markdown preview mode, just call ~markdown-preview-mode~ function.
      });
     </script>
   ")))
+#+end_src
+
+** Quarto
+#+begin_src elisp
+  (use-package quarto-mode
+    :mode (("\\.Rmd" . poly-quarto-mode)))
 #+end_src
 
 ** TeX/LaTeX
