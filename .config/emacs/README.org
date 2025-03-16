@@ -41,7 +41,6 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#custom-file][Custom File]]
   - [[#authentication-file][Authentication File]]
   - [[#initialization-macos][Initialization MacOS]]
-  - [[#change-yesno-questions-to-yn][Change yes/no Questions to y/n]]
   - [[#file-management][File Management]]
   - [[#buffer-management][Buffer Management]]
   - [[#window-management][Window Management]]
@@ -68,12 +67,10 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#distraction-free-mode][Distraction Free Mode]]
 - [[#programming-configuration][Programming Configuration]]
   - [[#general-configuration-1][General Configuration]]
-  - [[#cc][C/C++]]
-  - [[#typescript][TypeScript]]
-  - [[#python][Python]]
+  - [[#cmake][CMake]]
+  - [[#php][PHP]]
   - [[#kotlin][Kotlin]]
   - [[#swift][Swift]]
-  - [[#web-development][Web Development]]
   - [[#octavematlab][Octave/Matlab]]
   - [[#r][R]]
   - [[#apache-groovy][Apache Groovy]]
@@ -162,7 +159,7 @@ Conventions:
   i.e., =dalvrosa/= to namespace them and avoid conflicts.
 
 ** License and Copyright
-Copyright 2017-2022 David Álvarez Rosa.
+Copyright 2017-2025 David Álvarez Rosa.
 
 Files are licensed under the same license as Emacs (GPL) unless otherwise
 specified. See the LICENSE file for more information.
@@ -271,12 +268,6 @@ Fix a bug with SVG that is already fixed in Emacs 29.
     (add-to-list 'image-types 'svg))
 #+end_src
 
-** Change yes/no Questions to y/n
-Shorter and faster.
-#+begin_src elisp
-  (defalias 'yes-or-no-p 'y-or-n-p)
-#+end_src
-
 ** File Management
 Configuration related to file management.
 
@@ -294,13 +285,6 @@ Show file sizes in a human readable style.
   (setq-default dired-listing-switches "-alh --group-directories-first")
   (when (eq system-type 'darwin)
     (setq insert-directory-program "/opt/homebrew/bin/gls"))
-#+end_src
-
-Ability to use =a= to visit a new directory or file in Dired instead of using
-=RET=. =RET= works just fine, but it will create a new buffer for every
-interaction whereas =a= reuses the current buffer.
-#+begin_src elisp
-  (put 'dired-find-alternate-file 'disabled nil)
 #+end_src
 
 **** Dired Narrow
@@ -363,19 +347,6 @@ Start in expert mode (without asking for confirmation).
 Kill current buffer without asking for which buffer to kill.
 #+begin_src elisp
   (global-set-key (kbd "C-x k") 'kill-current-buffer)
-#+end_src
-
-*** Kill All Function
-Custom function for killing all buffers except current and *scratch*. Useful
-for "restarting" Emacs without closing it.
-#+begin_src elisp
-  (defun dalvrosa/kill-all-other-buffers ()
-    "Kill all buffers except current and *scratch*."
-    (interactive)
-    (delete-other-windows)
-    (setq scratch (get-buffer "*scratch*"))
-    (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
-  (global-set-key (kbd "C-c k") 'dalvrosa/kill-all-other-buffers)
 #+end_src
 
 *** Narrowing
@@ -616,17 +587,6 @@ former is a well-known Emacs command, and the latter is for =reposition-window=
 function, that makes the current definition and/or comment visible (i.e., it
 attempts to scroll the window so the maximum content is visible).
 
-*** Avy
-Package for jumping to visible text using a char-based decision tree. I use
-both =C-:= for jumping to the currently visible CHAR1 followed by CHAR2 (i.e.,
-jump to a sequence of 2 chars in any window/frame) and =M-g w= for jumping to
-the currently visible CHAR at a word start.
-#+begin_src elisp
-  (use-package avy
-    :bind (("C-:" . 'avy-goto-char-2)
-           ("M-g w" . 'avy-goto-word-1)))
-#+end_src
-
 ** Character Pairs
 It can be useful to insert parentheses, braces, quotes and the like in matching
 pairs, e.g., pressing “(” inserts "()", with the cursor in between.
@@ -652,14 +612,19 @@ to be converted to text, without fancy fonts, and filled to 72 characters.
 Swiper as completion framework.+
 
 After years using Ivy, Counsel and Swiper, I decided to switch to
-Vertico and Consult completion framework.
+Vertico, Consult and Corfu as completion framework.
 
-Vertico is
+Vertico provides a performant and minimalistic vertical completion UI
+based on the default completion system.
 #+begin_src elisp
   (use-package vertico
     :init
     (vertico-mode))
+#+end_src
 
+Consult provides search and navigation commands based on the Emacs
+completion function completing-read.
+#+begin_src elisp
   (use-package consult
     :bind (
            ;; ("C-c m" . consult-man)
@@ -686,7 +651,7 @@ Vertico is
            ("M-s g" . consult-grep)
            ("M-s G" . consult-git-grep)
            ("M-s r" . consult-ripgrep)
-           ("M-s l" . consult-line)
+           ("C-s" . consult-line)
            ("M-s L" . consult-line-multi)
            ("M-s k" . consult-keep-lines)
            ("M-s u" . consult-focus-lines)
@@ -712,7 +677,16 @@ Vertico is
     ;; below line allows to escape spaces while searching
     (setq orderless-component-separator 'orderless-escapable-split-on-space)
     :config
-    (setq consult-preview-key nil))
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)
+
+    (consult-customize
+     consult-theme :preview-key '(:debounce 0.2 any)
+     consult-buffer consult-ripgrep consult-git-grep consult-grep consult-man
+     consult-bookmark consult-recent-file consult-xref
+     consult--source-bookmark consult--source-file-register
+     consult--source-recent-file consult--source-project-recent-file
+     :preview-key "M-."))
 #+end_src
 
 Save mini-buffer history.
@@ -905,6 +879,7 @@ Add some nerd-icons here and there.
     :hook
     (dired-mode . nerd-icons-dired-mode))
 #+end_src
+
 ** Modeline
 For the modeline I am using also Doom Modeline. This package requires the fonts
 included with =nerd-icons= to be installed with =M-x
@@ -915,26 +890,16 @@ instead of percentage buffer position.
     :demand t
     :init (doom-modeline-mode 1)
     :config
+    (setq display-time-default-load-average nil)
     (setq column-number-mode t)
-    ;; (setq doom-modeline-height 21)
-    (setq doom-modeline-buffer-file-name-style 'relative-from-project)
-    (setq doom-modeline-percent-position nil)
-    (setq doom-modeline-buffer-encoding nil))
+    (setq doom-modeline-buffer-file-name-style 'relative-from-project))
 #+end_src
 
-Disable load average.
+Enable nyan cat.
 #+begin_src elisp
-  (setq display-time-default-load-average nil)
-#+end_src
-
-Enable nyan cat. Disabled now.
-#+begin_src elisp :tangle no
   (use-package nyan-mode
     :after doom-modeline
-    :init (nyan-mode)
-    :config
-    (nyan-start-animation)
-    (nyan-toggle-wavy-trail))
+    :init (nyan-mode))
 #+end_src
 
 ** Font
@@ -1005,20 +970,6 @@ Configuration settings related to programming languages.
 
 ** General Configuration
 Programming configuration that is not specific to one programming language.
-*** Code Completion
-Company is a text/code completion framework for Emacs. The name stands for
-"complete anything". It uses pluggable back-ends and front-ends to retrieve and
-display completion candidates.
-#+begin_src elisp
-#+end_src
-
-Completion will start automatically after you type a few letters. Use =C-n= and
-=C-p= to select, =RET= to complete or =TAB= to complete the common part. Search
-through the completions with =C-s=, =C-r= and =C-o=. Press =M-(digit)= to
-quickly complete with one of the first 10 candidates.
-
-When the completion candidates are shown, press =<f1>= to display the
-documentation for the selected candidate, or =C-w= to see its source.
 
 *** Tree Sitter
 Tree-sitter is a parser generator tool and an incremental parsing library. It
@@ -1026,13 +977,18 @@ can build a concrete syntax tree for a source file and efficiently update the
 syntax tree as the source file is edited. Watch this [[https://www.thestrangeloop.com/2018/tree-sitter---a-new-parsing-system-for-programming-tools.html][video]] for more
 information.
 #+begin_src elisp
-  (use-package tree-sitter
+  (use-package treesit-auto
+    :demand t
+    :custom
+    (treesit-auto-install 'prompt)
     :config
-    (global-tree-sitter-mode)
-    (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+    (treesit-auto-add-to-auto-mode-alist 'all)
+    (global-treesit-auto-mode))
+#+end_src
 
-  (use-package tree-sitter-langs
-    :after tree-sitter)
+*** Documentation
+#+begin_src elisp
+   (global-eldoc-mode)
 #+end_src
 
 *** Terminal Emulator
@@ -1040,7 +996,7 @@ Emacs-libvterm (vterm) is fully-fledged terminal emulator inside GNU
 Emacs based on libvterm, a C library. As a result of using compiled code
 (instead of elisp), emacs-libvterm is fully capable, fast, and it can
 seamlessly handle large outputs.  I launch it with =C-c t= (with =C-u=
-prefix will create a new session), and also with =S-r x v= when inside a
+prefix will create a new session), and also with =C-x p s= when inside a
 Projectile project.
 #+begin_src elisp
   (use-package vterm
@@ -1054,6 +1010,29 @@ Don't ask for confirmation when killing vterm buffer.
   (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 #+end_src
 
+Configure vterm with ~projectile.el~ from
+https://mocompute.codeberg.page/item/2024/2024-09-03-emacs-project-vterm.html
+#+begin_src elisp
+  (defun dalvrosa/project-shell ()
+    "Start an inferior shell in the current project's root directory.
+  If a buffer already exists for running a shell in the project's root,
+  switch to it.  Otherwise, create a new shell buffer.
+  With \\[universal-argument] prefix arg, create a new inferior shell buffer even
+  if one already exists."
+    (interactive)
+    (require 'comint)
+    (let* ((default-directory (project-root (project-current t)))
+           (default-project-shell-name (project-prefixed-buffer-name "shell"))
+           (shell-buffer (get-buffer default-project-shell-name)))
+      (if (and shell-buffer (not current-prefix-arg))
+          (if (comint-check-proc shell-buffer)
+              (pop-to-buffer shell-buffer (bound-and-true-p display-comint-buffer-action))
+            (vterm shell-buffer))
+        (vterm (generate-new-buffer-name default-project-shell-name)))))
+
+  (advice-add 'project-shell :override #'dalvrosa/project-shell)
+#+end_src
+
 *** Language Server Protocol
 The goal of the language server protocol is to allow programming language
 support to be implemented and distributed independently of any given editor.
@@ -1062,22 +1041,21 @@ support to be implemented and distributed independently of any given editor.
     :config
     (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
     (setq eglot-autoshutdown t)
-    :hook ((c-mode-common . eglot-ensure)
-           (java-mode . eglot-ensure)
-           (ruby-mode . eglot-ensure)
-           (python-mode . eglot-ensure)
-           (brazil-config-mode . eglot-ensure)
-           (latex-mode . eglot-ensure)
-           (cmake-mode . eglot-ensure)
-           (php-mode . eglot-ensure )
-           (typescript-mode . eglot-ensure)
-           (js-mode . eglot-ensure))
+    :hook ((c++-ts-mode . eglot-ensure)
+           (java-ts-mode . eglot-ensure)
+           (ruby-ts-mode . eglot-ensure)
+           (python-ts-mode . eglot-ensure)
+           (latex-ts-mode . eglot-ensure)
+           (cmake-ts-mode . eglot-ensure)
+           (php-ts-mode . eglot-ensure )
+           (typescript-ts-mode . eglot-ensure)
+           (js-ts-mode . eglot-ensure))
     :bind (:map eglot-mode-map
-  	      ("s-l a" . eglot-code-actions)
-  	      ("s-l r" . eglot-rename)
-  	      ("s-l h" . eldoc)
-  	      ("s-l f" . eglot-format)
-  	      ("s-l d" . xref-find-definitions-at-mouse))
+  	            ("s-l a" . eglot-code-actions)
+  	            ("s-l r" . eglot-rename)
+  	            ("s-l h" . eldoc)
+  	            ("s-l f" . eglot-format)
+  	            ("s-l d" . xref-find-definitions-at-mouse))
     :commands eglot)
 #+end_src
 
@@ -1117,83 +1095,6 @@ Delete (nasty) trailing whitespace when saving a file (this includes emtpy
 lines at the end of the file and empty spaces at the end of lines).
 #+begin_src elisp
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
-#+end_src
-
-*** Syntax Checking
-Flycheck is a modern on-the-fly syntax checking extension for GNU Emacs,
-intended as replacement for the older Flymake extension which is part of GNU
-Emacs. It uses various syntax checking and linting tools to automatically check
-the contents of buffers while you type, and reports warnings and errors
-directly in the buffer, or in an optional error list.
-#+begin_src elisp
-  (use-package flycheck
-    :init
-    (add-hook 'prog-mode-hook 'flycheck-mode))
-
-  (use-package flycheck-eglot
-    :after (flycheck eglot)
-    :config
-    (global-flycheck-eglot-mode 1))
-#+end_src
-
-*** Projectile
-Projectile is a project interaction library for Emacs. Its goal is to provide a
-nice set of features operating on a project level without introducing external
-dependencies (when feasible). It is very nice, because it integrates seamlessly
-with version control (like Git) and takes into account =.gitignore= files.
-#+begin_src elisp
-  (use-package projectile
-    :demand t
-    :config (projectile-mode +1)
-    (setq projectile-project-search-path '(("~/dev/" . 1)))
-    (setq projectile-switch-project-action 'projectile-commander)
-    (setq projectile-create-missing-test-files t)
-    (setq projectile-per-project-compilation-buffer t)
-   :bind (:map projectile-mode-map
-                ("C-c p" . 'projectile-command-map)
-                ("s-r" . 'projectile-command-map)))
-#+end_src
-
-Some of the projectile features:
-- Jump to a file in project
-- Jump to files at point in project
-- Jump to a directory in project
-- Jump to a file in a directory
-- Jump to a project buffer
-- Jump to a test in project
-- Toggle between files with same names but different extensions (e.g. .h <->
-  .c/.cpp, Gemfile <-> Gemfile.lock)
-- Toggle between code and its test (e.g. main.service.js <->
-  main.service.spec.js)
-- Jump to recently visited files in the project
-- Switch between projects you have worked on
-- Kill all project buffers
-- Replace in project
-- Multi-occur in project buffers
-- Grep in project
-- Regenerate project etags or gtags (requires ggtags).
-- Visit project in dired
-- Run make in a project with a single key chord
-- Check for dirty repositories
-- Toggle read-only mode for the entire project
-
-Ripgrep is a replacement for both grep like (search one file) and ag
-like (search many files) tools. It's fast and versatile and written in
-Rust. From the help:
-
-- =d= Repeat this search in another directory (‘rg-rerun-change-dir’).
-- =f= Repeat this search with another file pattern (‘rg-rerun-change-files’).
-- =r= Change the search regexp for the current search (‘rg-rerun-change-regexp’).
-- =t= Change the search literal for the current search (‘rg-rerun-change-literal’).
-- =i= Repeat search with toggled ’--no-ignore’ flag (‘rg-rerun-toggle-ignore’).
-- =c= Repeat search with toggled case insensitive setting (‘rg-rerun-toggle-case’).
-- =S= Save search result, prompt for new name (‘rg-save-search-as-name’).
-- =s= Save search result to some unique name (‘rg-save-search’).
-- =e= Change mode to ‘wgrep’.
-
-#+begin_src elisp
-  (use-package rg
-    :config (rg-enable-default-bindings))
 #+end_src
 
 *** Magit
@@ -1272,34 +1173,6 @@ Don't open new frame for setup window and prefer splitting horizontally.
   (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
-*** File Tree
-Treemacs is a file and project explorer that shows the file system outlines of
-your projects in a simple tree laout allowing quick navigation and exploration.
-I like to use it with the icons from all-the-icons package, so make sure to
-have that installed.
-#+begin_src elisp
-  (use-package treemacs
-    :config
-    (setq treemacs-persist-file "~/docs/Treemacs.txt")
-    (setq treemacs-width 45)
-    (setq treemacs-wide-toggle-width 60)
-    :hook (treemacs-mode . (lambda () (setq-local truncate-lines t)))
-    :bind
-    (:map global-map
-          ("M-0"       . treemacs-select-window)
-          ("C-x t 1"   . treemacs-delete-other-windows)
-          ("C-x t t"   . treemacs)
-          ("C-x t d"   . treemacs-select-directory)
-          ("C-x t B"   . treemacs-bookmark)
-          ("C-x t C-t" . treemacs-find-file)
-          ("C-x t M-t" . treemacs-find-tag)))
-
-  (use-package treemacs-all-the-icons
-    :config
-    (setq treemacs-indentation 1)
-    (treemacs-load-theme "all-the-icons"))
-#+end_src
-
 *** Compilation
 Enable Ansi Color colors in compilation window.
 #+begin_src elisp
@@ -1312,33 +1185,7 @@ Automatically scroll the compilation output.
   (setq compilation-scroll-output t)
 #+end_src
 
-** C/C++
-Configuration for C/C++ programming language. It's mainly done with LSP.
-
-*** Clang Tidy
-clang-tidy is a clang-based C++ “linter” tool. Its purpose is to provide an
-extensible framework for diagnosing and fixing typical programming errors, like
-style violations, interface misuse, or bugs that can be deduced via static
-analysis. clang-tidy is modular and provides a convenient interface for writing
-new checks.
-#+begin_src elisp
-  (use-package flycheck-clang-tidy
-    :after flycheck
-    :hook
-    (flycheck-mode . flycheck-clang-tidy-setup))
-#+end_src
-
-*** Google CPPLint
-#+begin_src elisp
-  (use-package flycheck-google-cpplint
-    :after flycheck
-    :config
-    (require 'flycheck-google-cpplint)
-    (flycheck-add-next-checker 'c/c++-cppcheck
-                               '(warning . c/c++-googlelint)))
-#+end_src
-
-*** CMake
+** CMake
 Use CMake mode for editing CMakeLists.txt files.
 #+begin_src elisp
   (use-package cmake-mode)
@@ -1350,43 +1197,11 @@ Use CMake mode for editing CMakeLists.txt files.
     :hook (cmake-mode . eldoc-cmake-enable))
 #+end_src
 
-** TypeScript
-Add typescript mode.
+** PHP
+Just use the default mode.
 #+begin_src elisp
-  (use-package typescript-mode
-    :demand t
-    :config
-    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode)))
+  (add-to-list 'auto-mode-alist '("\\.php\\'" . php-ts-mode))
 #+end_src
-
-** Python
-Elpy is the Emacs Python Development Environment. It aims to provide an easy to
-install, fully-featured environment for Python development.
-#+begin_src elisp
-  (use-package elpy
-    ;; :init
-    ;; (elpy-enable)
-    )
-#+end_src
-
-Once installed, Elpy will automatically provide code completion, syntax error
-highlighting and code hinting (in the modeline) for python files. Elpy offers a
-lot of features, but the following keybindings should be enough to get started:
-- =C-c C-c= evaluates the current python script (or region if something is
-selected) in an interactive python shell. The python shell is automatically
-displayed aside of your script.
-- =C-RET= evaluates the current statement (current line plus the following
-  nested lines).
-- =C-c C-z= switches between your script and the interactive shell.
-- =C-c C-d= displays documentation for the thing under cursor. The documentation
-  will pop in a different buffer, that can be closed with q.
-
-Moving around and indenting is similar to Org mode.
-
-Some more things that are pretty sweet.
-- =M-.= go to definition.
-n- =M-*= go back from definition where I was.
-- =C-c C-o= occur definition. All places where a function/class is used.
 
 ** Kotlin
 Enable Kotlin mode.
@@ -1399,37 +1214,6 @@ Use ~swift-mode~ for editing Swift files.
 #+begin_src elisp
   (use-package swift-mode)
 #+end_src
-
-Add linter for swift (needs to be installed first with ~brew~).
-#+begin_src elisp
-  (use-package flycheck-swiftlint
-    :config
-    :hook
-    (flycheck-mode . flycheck-swiftlint-setup))
-#+end_src
-
-** Web Development
-Web mode is an autonomous emacs major-mode for editing web templates. HTML
-documents can embed parts (CSS/JavaScript) and blocks (client/server side).
-#+begin_src elisp
-  (use-package web-mode
-    :config
-    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-    (setq web-mode-markup-indent-offset 2))
-#+end_src
-
-Some useful commands:
-- Jumping with =C-c C-n= between opening/closing HTML tags or control blocks.
-- Code folding with =C-c C-f= for HTML elements and control blocks.
-- Snippet insertion with =C-c C-s= (auto indented, aware of text selection, engine
-  specific).
-- Clever selection and expansion with =C-c C-m=.
 
 ** Octave/Matlab
 Open Matlab files (.m) in Octave mode by default.
@@ -1473,12 +1257,7 @@ pretty-printed XML, JSON and even images.  Nice examples in package
 #+begin_src elisp
   (use-package restclient
     :demand t
-    :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
-    :hook (restclient-mode . company-mode))
-
-  (use-package company-restclient
-    :after company
-    :init (add-to-list 'company-backends 'company-restclient))
+    :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode)))
 #+end_src
 
 ** Log Files
@@ -1492,14 +1271,6 @@ and degraded performance.
   (use-package vlf
     :defer t
     :init (require 'vlf-setup))
-#+end_src
-
-Highlight things at point, selections, enclosing parentheses with
-different colors.
-#+begin_src elisp
-  (use-package hl-anything
-    :bind
-    ("C-c m" . 'hl-highlight-thingatpt-local))
 #+end_src
 
 * Org Mode

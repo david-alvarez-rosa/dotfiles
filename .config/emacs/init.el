@@ -34,13 +34,9 @@
 (when (eq system-type 'darwin)
   (add-to-list 'image-types 'svg))
 
-(defalias 'yes-or-no-p 'y-or-n-p)
-
 (setq-default dired-listing-switches "-alh --group-directories-first")
 (when (eq system-type 'darwin)
   (setq insert-directory-program "/opt/homebrew/bin/gls"))
-
-(put 'dired-find-alternate-file 'disabled nil)
 
 (use-package dired-narrow
   :after dired
@@ -68,14 +64,6 @@
 (setq ibuffer-expert t)
 
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
-
-(defun dalvrosa/kill-all-other-buffers ()
-  "Kill all buffers except current and *scratch*."
-  (interactive)
-  (delete-other-windows)
-  (setq scratch (get-buffer "*scratch*"))
-  (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
-(global-set-key (kbd "C-c k") 'dalvrosa/kill-all-other-buffers)
 
 (put 'narrow-to-region 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
@@ -207,10 +195,6 @@
 
 (put 'scroll-left 'disabled nil)
 
-(use-package avy
-  :bind (("C-:" . 'avy-goto-char-2)
-         ("M-g w" . 'avy-goto-word-1)))
-
 (electric-pair-mode t)
 
 (show-paren-mode 1)
@@ -248,7 +232,7 @@
          ("M-s g" . consult-grep)
          ("M-s G" . consult-git-grep)
          ("M-s r" . consult-ripgrep)
-         ("M-s l" . consult-line)
+         ("C-s" . consult-line)
          ("M-s L" . consult-line-multi)
          ("M-s k" . consult-keep-lines)
          ("M-s u" . consult-focus-lines)
@@ -274,7 +258,16 @@
   ;; below line allows to escape spaces while searching
   (setq orderless-component-separator 'orderless-escapable-split-on-space)
   :config
-  (setq consult-preview-key nil))
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+
+  (consult-customize
+   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-buffer consult-ripgrep consult-git-grep consult-grep consult-man
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-file-register
+   consult--source-recent-file consult--source-project-recent-file
+   :preview-key "M-."))
 
 (savehist-mode)
 
@@ -363,13 +356,13 @@
   :demand t
   :init (doom-modeline-mode 1)
   :config
+  (setq display-time-default-load-average nil)
   (setq column-number-mode t)
-  ;; (setq doom-modeline-height 21)
-  (setq doom-modeline-buffer-file-name-style 'relative-from-project)
-  (setq doom-modeline-percent-position nil)
-  (setq doom-modeline-buffer-encoding nil))
+  (setq doom-modeline-buffer-file-name-style 'relative-from-project))
 
-(setq display-time-default-load-average nil)
+(use-package nyan-mode
+  :after doom-modeline
+  :init (nyan-mode))
 
 (set-face-attribute 'default nil :font "Hack Nerd Font" :height 90)
 
@@ -393,15 +386,15 @@
   (setq-default olivetti-body-width (+ fill-column 10))
   :bind ("C-c o" . 'olivetti-mode))
 
-
-
-(use-package tree-sitter
+(use-package treesit-auto
+  :demand t
+  :custom
+  (treesit-auto-install 'prompt)
   :config
-  (global-tree-sitter-mode)
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
-(use-package tree-sitter-langs
-  :after tree-sitter)
+(global-eldoc-mode)
 
 (use-package vterm
   :config
@@ -410,26 +403,44 @@
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 
+(defun dalvrosa/project-shell ()
+  "Start an inferior shell in the current project's root directory.
+If a buffer already exists for running a shell in the project's root,
+switch to it.  Otherwise, create a new shell buffer.
+With \\[universal-argument] prefix arg, create a new inferior shell buffer even
+if one already exists."
+  (interactive)
+  (require 'comint)
+  (let* ((default-directory (project-root (project-current t)))
+         (default-project-shell-name (project-prefixed-buffer-name "shell"))
+         (shell-buffer (get-buffer default-project-shell-name)))
+    (if (and shell-buffer (not current-prefix-arg))
+        (if (comint-check-proc shell-buffer)
+            (pop-to-buffer shell-buffer (bound-and-true-p display-comint-buffer-action))
+          (vterm shell-buffer))
+      (vterm (generate-new-buffer-name default-project-shell-name)))))
+
+(advice-add 'project-shell :override #'dalvrosa/project-shell)
+
 (use-package eglot
   :config
   (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
   (setq eglot-autoshutdown t)
-  :hook ((c-mode-common . eglot-ensure)
-         (java-mode . eglot-ensure)
-         (ruby-mode . eglot-ensure)
-         (python-mode . eglot-ensure)
-         (brazil-config-mode . eglot-ensure)
-         (latex-mode . eglot-ensure)
-         (cmake-mode . eglot-ensure)
-         (php-mode . eglot-ensure )
-         (typescript-mode . eglot-ensure)
-         (js-mode . eglot-ensure))
+  :hook ((c++-ts-mode . eglot-ensure)
+         (java-ts-mode . eglot-ensure)
+         (ruby-ts-mode . eglot-ensure)
+         (python-ts-mode . eglot-ensure)
+         (latex-ts-mode . eglot-ensure)
+         (cmake-ts-mode . eglot-ensure)
+         (php-ts-mode . eglot-ensure )
+         (typescript-ts-mode . eglot-ensure)
+         (js-ts-mode . eglot-ensure))
   :bind (:map eglot-mode-map
-	      ("s-l a" . eglot-code-actions)
-	      ("s-l r" . eglot-rename)
-	      ("s-l h" . eldoc)
-	      ("s-l f" . eglot-format)
-	      ("s-l d" . xref-find-definitions-at-mouse))
+	            ("s-l a" . eglot-code-actions)
+	            ("s-l r" . eglot-rename)
+	            ("s-l h" . eldoc)
+	            ("s-l f" . eglot-format)
+	            ("s-l d" . xref-find-definitions-at-mouse))
   :commands eglot)
 
 (use-package dap-mode
@@ -443,29 +454,6 @@
 (setq-default indent-tabs-mode nil)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(use-package flycheck
-  :init
-  (add-hook 'prog-mode-hook 'flycheck-mode))
-
-(use-package flycheck-eglot
-  :after (flycheck eglot)
-  :config
-  (global-flycheck-eglot-mode 1))
-
-(use-package projectile
-  :demand t
-  :config (projectile-mode +1)
-  (setq projectile-project-search-path '(("~/dev/" . 1)))
-  (setq projectile-switch-project-action 'projectile-commander)
-  (setq projectile-create-missing-test-files t)
-  (setq projectile-per-project-compilation-buffer t)
- :bind (:map projectile-mode-map
-              ("C-c p" . 'projectile-command-map)
-              ("s-r" . 'projectile-command-map)))
-
-(use-package rg
-  :config (rg-enable-default-bindings))
 
 (use-package magit
   :bind ("C-c g" . 'magit-status))
@@ -489,78 +477,21 @@
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
 
-(use-package treemacs
-  :config
-  (setq treemacs-persist-file "~/docs/Treemacs.txt")
-  (setq treemacs-width 45)
-  (setq treemacs-wide-toggle-width 60)
-  :hook (treemacs-mode . (lambda () (setq-local truncate-lines t)))
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t d"   . treemacs-select-directory)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
-
-(use-package treemacs-all-the-icons
-  :config
-  (setq treemacs-indentation 1)
-  (treemacs-load-theme "all-the-icons"))
-
 (require 'ansi-color)
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 (setq compilation-scroll-output t)
-
-(use-package flycheck-clang-tidy
-  :after flycheck
-  :hook
-  (flycheck-mode . flycheck-clang-tidy-setup))
-
-(use-package flycheck-google-cpplint
-  :after flycheck
-  :config
-  (require 'flycheck-google-cpplint)
-  (flycheck-add-next-checker 'c/c++-cppcheck
-                             '(warning . c/c++-googlelint)))
 
 (use-package cmake-mode)
 
 (use-package eldoc-cmake
   :hook (cmake-mode . eldoc-cmake-enable))
 
-(use-package typescript-mode
-  :demand t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode)))
-
-(use-package elpy
-  ;; :init
-  ;; (elpy-enable)
-  )
+(add-to-list 'auto-mode-alist '("\\.php\\'" . php-ts-mode))
 
 (use-package kotlin-mode)
 
 (use-package swift-mode)
-
-(use-package flycheck-swiftlint
-  :config
-  :hook
-  (flycheck-mode . flycheck-swiftlint-setup))
-
-(use-package web-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-  (setq web-mode-markup-indent-offset 2))
 
 (setq auto-mode-alist
       (cons '("\\.m$" . octave-mode) auto-mode-alist))
@@ -573,20 +504,11 @@
 
 (use-package restclient
   :demand t
-  :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
-  :hook (restclient-mode . company-mode))
-
-(use-package company-restclient
-  :after company
-  :init (add-to-list 'company-backends 'company-restclient))
+  :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode)))
 
 (use-package vlf
   :defer t
   :init (require 'vlf-setup))
-
-(use-package hl-anything
-  :bind
-  ("C-c m" . 'hl-highlight-thingatpt-local))
 
 (setq org-use-speed-commands t)
 
