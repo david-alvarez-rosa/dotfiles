@@ -1009,9 +1009,7 @@ Add integration with =treemacs= package.
     (lsp-treemacs-sync-mode 1))
 #+end_src
 
-*** COMMENT Debug Adapter Protocol
-*Disclaimer* I'm not tangling the block to follow.
-
+*** Debug Adapter Protocol
 Emacs client/library for Debug Adapter Protocol is a wire protocol for
 communication between client and Debug Server. It's similar to the LSP but
 provides integration with debug server.
@@ -1261,7 +1259,6 @@ have that installed.
           ("C-x t M-t" . treemacs-find-tag)))
 
   (use-package treemacs-all-the-icons
-    :demand t
     :config
     (setq treemacs-indentation 1)
     (treemacs-load-theme "all-the-icons"))
