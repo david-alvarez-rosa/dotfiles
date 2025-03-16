@@ -1,7 +1,7 @@
 [user]
   name = David Álvarez Rosa
   email = david@alvarezrosa.com
-  signingkey = F49D8D41E53136F3
+  signingkey = 294E9602C197251F
 [credential]
   helper = store
 [core]
@@ -18,3 +18,7 @@
   st = status
 [commit]
   gpgsign = true
+[push]
+	autoSetupRemote = true
+[init]
+	defaultBranch = main
