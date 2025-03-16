@@ -1,22 +1,6 @@
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
-# MacPorts Installer addition
-export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
-export MANPATH="/opt/local/share/man:$MANPATH"
-
-# Added by Toolbox App
-export PATH="$PATH:/usr/local/bin:/Users/dalvrosa/.toolbox/bin"
-
 # C/C++ compiler
 export CC=clang
 export CXX=clang++
-
-# Android
-export ANDROID_HOME="$HOME/Library/Android/sdk"
-export PATH="$PATH:$ANDROID_HOME/platform-tools"
-export PATH="$PATH:$ANDROID_HOME/tools"
-export PATH="$PATH:$ANDROID_HOME/tools/bin"
-export PATH="$PATH:$ANDROID_HOME/emulator"
 
 # Language
 export LC_CTYPE="en_US.UTF-8"
@@ -30,3 +14,25 @@ export GPG_TTY=$(tty)
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share/"
+export LESSHISTFILE=-
+export HISTFILE="$XDG_DATA_HOME"/history
+export INPUTRC="$XDG_CONFIG_HOME"/shell/inputrc
+export UNISON="$XDG_CONFIG_HOME"/unison
+export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
+export XINITRC="$XDG_CONFIG_HOME"/X11/xinitrc
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+
+# Basic
+export EDITOR="nvim"
+export TERMINAL="st"
+export BROWSER="firefox"
+export TERM=xterm-256color
+
+# Path
+export PATH="$PATH:$HOME/.local/bin/global"
+export MANPATH="/usr/local/man:$MANPATH"
+
+# Start i3 in tty1
+if [ "$(tty)" = "/dev/tty1" ]; then
+    pgrep -x i3 || exec startx "$XINITRC"
+fi
