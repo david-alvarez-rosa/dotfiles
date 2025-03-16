@@ -1,4 +1,4 @@
-font pango:mono 11
+font pango:Hack Nerd Font 11
 
 gaps inner 4
 gaps outer 2
@@ -18,7 +18,8 @@ set $ws6 "6. Executing"
 set $ws7 "7. Media"
 set $ws8 "8. Firefox"
 set $ws9 "9. Auxiliar"
-set $ws10 "10. Workspace"
+
+exec --no-startup-id keepassxc
 
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
@@ -37,7 +38,6 @@ bindsym $mod+6 workspace $ws6
 bindsym $mod+7 workspace $ws7
 bindsym $mod+8 workspace $ws8
 bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
 
 bindsym $mod+Shift+1 move container to workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2
@@ -48,7 +48,6 @@ bindsym $mod+Shift+6 move container to workspace $ws6
 bindsym $mod+Shift+7 move container to workspace $ws7
 bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws10
 
 bindsym $mod+Tab workspace back_and_forth
 
@@ -57,27 +56,27 @@ for_window [class="mpv"]                 sticky enable
 
 bindsym $mod+q kill
 
-bindsym $mod+b focus left
-bindsym $mod+n focus down
-bindsym $mod+p focus up
-bindsym $mod+f focus right
+bindsym $mod+b exec emacs-i3-integration focus left
+bindsym $mod+n exec emacs-i3-integration focus down
+bindsym $mod+p exec emacs-i3-integration focus up
+bindsym $mod+f exec emacs-i3-integration focus right
 
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+bindsym $mod+Left exec emacs-i3-integration focus left
+bindsym $mod+Down exec emacs-i3-integration focus down
+bindsym $mod+Up exec emacs-i3-integration focus up
+bindsym $mod+Right exec emacs-i3-integration focus right
 
 bindsym $mod+space focus mode_toggle
 
-bindsym $mod+Shift+b move left 20px
-bindsym $mod+Shift+n move down 20px
-bindsym $mod+Shift+p move up 20px
-bindsym $mod+Shift+f move right 20px
+bindsym $mod+Shift+b exec emacs-i3-integration move left 20px
+bindsym $mod+Shift+n exec emacs-i3-integration move down 20px
+bindsym $mod+Shift+p exec emacs-i3-integration move up 20px
+bindsym $mod+Shift+f exec emacs-i3-integration move right 20px
 
-bindsym $mod+Shift+Left move left 20px
-bindsym $mod+Shift+Down move down 20px
-bindsym $mod+Shift+Up move up 20px
-bindsym $mod+Shift+Right move right 20px
+bindsym $mod+Shift+Left exec emacs-i3-integration move left 20px
+bindsym $mod+Shift+Down exec emacs-i3-integration move down 20px
+bindsym $mod+Shift+Up exec emacs-i3-integration move up 20px
+bindsym $mod+Shift+Right exec emacs-i3-integration move right 20px
 
 floating_modifier $mod
 

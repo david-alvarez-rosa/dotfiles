@@ -414,26 +414,6 @@ New bind for killing buffer *and* window at the same time. To do this press
   (global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
 #+end_src
 
-*** Wind Move
-Is built into Emacs (since version 21). It lets you move point from window to
-window using a direction. This is easier to type than =C-x o= and, for some
-users, may be more intuitive. I have configured the movement between windos
-with Super and standard Emacs keys.
-#+begin_src elisp
-  (global-set-key (kbd "s-f") 'windmove-right)
-  (global-set-key (kbd "s-b") 'windmove-left)
-  (global-set-key (kbd "s-n") 'windmove-down)
-  (global-set-key (kbd "s-p") 'windmove-up)
-#+end_src
-
-Using shift modifier on top will swap windows instead.
-#+begin_src elisp
-  (global-set-key (kbd "s-F") 'windmove-swap-states-right)
-  (global-set-key (kbd "s-B") 'windmove-swap-states-left)
-  (global-set-key (kbd "s-N") 'windmove-swap-states-down)
-  (global-set-key (kbd "s-P") 'windmove-swap-states-up)
-#+end_src
-
 *** Winner Mode
 Global minor mode that allows to “undo” and “redo” changes in window
 configuration. It is included in GNU Emacs.
@@ -441,27 +421,56 @@ configuration. It is included in GNU Emacs.
   (winner-mode 1)
 #+end_src
 
-*** Ace Window
-Package for selecting a window to switch to. What it does is: when there are
-two windows, Ace Window will call =other-window=. If there are more, each
-window will have the first character of its window label highlighted at the
-upper left of the window. Pressing that character will either switch to that
-window or filter to the next character needed to select a specific window.
+*** Window Move
+Integration with i3wm https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/
 #+begin_src elisp
-  (use-package ace-window
-    :bind ("M-o" . 'ace-window)
-    :config (setq aw-scope 'frame))
+  (global-set-key (kbd "M-o") 'other-window)
+
+  (require 'windmove)
+  (require 'cl-lib)
+
+  (defmacro dalvrosa/i3-msg (&rest args)
+    `(start-process "emacs-i3-windmove" nil "i3-msg" ,@args))
+
+  (defun dalvrosa/emacs-i3-windmove (dir)
+    (let ((other-window (windmove-find-other-window dir)))
+      (if (or (null other-window) (window-minibuffer-p other-window))
+          (i3-msg "focus" (symbol-name dir))
+        (windmove-do-window-select dir))))
+
+  (defun dalvrosa/emacs-i3-direction-exists-p (dir)
+    (cl-some (lambda (dir)
+               (let ((win (windmove-find-other-window dir)))
+                 (and win (not (window-minibuffer-p win)))))
+             (pcase dir
+               ('width '(left right))
+               ('height '(up down)))))
+
+  (defun dalvrosa/emacs-i3-move-window (dir)
+    (let ((other-window (windmove-find-other-window dir))
+          (other-direction (dalvrosa/emacs-i3-direction-exists-p
+                            (pcase dir
+                              ('up 'width)
+                              ('down 'width)
+                              ('left 'height)
+                              ('right 'height)))))
+      (cond
+       ((and other-window (not (window-minibuffer-p other-window)))
+        (window-swap-states (selected-window) other-window))
+       (other-direction
+        (evil-move-window dir))
+       (t (i3-msg "move" (symbol-name dir))))))
+
+  (defun dalvrosa/emacs-i3-integration (command)
+    (pcase command
+      ((rx bos "focus")
+       (dalvrosa/emacs-i3-windmove
+        (intern (elt (split-string command) 1))))
+      ((rx bos "move")
+       (dalvrosa/emacs-i3-move-window
+        (intern (elt (split-string command) 1))))
+      (- (i3-msg command))))
 #+end_src
-
-Some useful features, is the posibility to swap windows, by calling
-=ace-window= with a prefix argument, i.e., =C-u=. And is also posbile to delete
-the selected window by prefixing double, i.e., with =C-u C-u=.
-
-You can also start by calling ace-window and then decide to switch the action
-to =delete= or =swap= etc. There are a bunch of command here (check them with
-=?= when =ace-window= is activated), but the ones I use the most are:
-- Delete window with =x=.
-- Swap windows with =m= ("m" from move).
 
 ** Auto Fill Mode
 Long lines are a bad practice. Please, don't use them, I find them quite

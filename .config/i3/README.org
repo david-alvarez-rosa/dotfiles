@@ -16,7 +16,7 @@ key bindings are set following the holy Emacs philosophy.
 * Theme
 Set default font (for window title).
 #+begin_src conf
-  font pango:mono 11
+  font pango:Hack Nerd Font 11
 #+end_src
 
 Set initial inner and outer gaps.
@@ -52,7 +52,11 @@ Set workspace names.
   set $ws7 "7. Media"
   set $ws8 "8. Firefox"
   set $ws9 "9. Auxiliar"
-  set $ws10 "10. Workspace"
+#+end_src
+
+Init pasword manager.
+#+begin_src conf
+  exec --no-startup-id keepassxc
 #+end_src
 
 * Key bindings
@@ -89,7 +93,6 @@ Switching to a workspace.
   bindsym $mod+7 workspace $ws7
   bindsym $mod+8 workspace $ws8
   bindsym $mod+9 workspace $ws9
-  bindsym $mod+0 workspace $ws10
 #+end_src
 
 Moving a container/window to a workspace.
@@ -103,7 +106,6 @@ Moving a container/window to a workspace.
   bindsym $mod+Shift+7 move container to workspace $ws7
   bindsym $mod+Shift+8 move container to workspace $ws8
   bindsym $mod+Shift+9 move container to workspace $ws9
-  bindsym $mod+Shift+0 move container to workspace $ws10
 #+end_src
 
 Switching between the last two used workspaces.
@@ -130,18 +132,18 @@ Killing current window.
 Set key bindings for changing window focus (following the holy Emacs "bfnp"
 moving set).
 #+begin_src conf
-  bindsym $mod+b focus left
-  bindsym $mod+n focus down
-  bindsym $mod+p focus up
-  bindsym $mod+f focus right
+  bindsym $mod+b exec emacs-i3-integration focus left
+  bindsym $mod+n exec emacs-i3-integration focus down
+  bindsym $mod+p exec emacs-i3-integration focus up
+  bindsym $mod+f exec emacs-i3-integration focus right
 #+end_src
 
 Alternative with arrow keys.
 #+begin_src conf
-  bindsym $mod+Left focus left
-  bindsym $mod+Down focus down
-  bindsym $mod+Up focus up
-  bindsym $mod+Right focus right
+  bindsym $mod+Left exec emacs-i3-integration focus left
+  bindsym $mod+Down exec emacs-i3-integration focus down
+  bindsym $mod+Up exec emacs-i3-integration focus up
+  bindsym $mod+Right exec emacs-i3-integration focus right
   #+end_src
 
 Change focus between tiling/floating windows.
@@ -153,18 +155,18 @@ Change focus between tiling/floating windows.
 Set key bindings for moving windows around with same commands as window focus,
 but with =Shift= modifier.
 #+begin_src conf
-  bindsym $mod+Shift+b move left 20px
-  bindsym $mod+Shift+n move down 20px
-  bindsym $mod+Shift+p move up 20px
-  bindsym $mod+Shift+f move right 20px
+  bindsym $mod+Shift+b exec emacs-i3-integration move left 20px
+  bindsym $mod+Shift+n exec emacs-i3-integration move down 20px
+  bindsym $mod+Shift+p exec emacs-i3-integration move up 20px
+  bindsym $mod+Shift+f exec emacs-i3-integration move right 20px
 #+end_src
 
 Alternative with arrow keys.
 #+begin_src conf
-  bindsym $mod+Shift+Left move left 20px
-  bindsym $mod+Shift+Down move down 20px
-  bindsym $mod+Shift+Up move up 20px
-  bindsym $mod+Shift+Right move right 20px
+  bindsym $mod+Shift+Left exec emacs-i3-integration move left 20px
+  bindsym $mod+Shift+Down exec emacs-i3-integration move down 20px
+  bindsym $mod+Shift+Up exec emacs-i3-integration move up 20px
+  bindsym $mod+Shift+Right exec emacs-i3-integration move right 20px
 #+end_src
 
 Use $mod+Mouse for moving floating windows.

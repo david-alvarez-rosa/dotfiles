@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [[ $(xdotool getactivewindow getwindowname) =~ GNU\ Emacs ]]; then
+    command="(dalvrosa/emacs-i3-integration \"$@\")"
+    emacsclient -e "$command"
+else
+    i3-msg $@
+fi
