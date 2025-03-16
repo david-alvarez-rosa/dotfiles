@@ -43,7 +43,7 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(setq-default dired-listing-switches "-alh --group-directories-first --color")
+(setq-default dired-listing-switches "-alh --group-directories-first")
 (when (eq system-type 'darwin)
   (setq insert-directory-program "/opt/homebrew/bin/gls"))
 
@@ -95,21 +95,54 @@
 
 (global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
 
-(global-set-key (kbd "s-f") 'windmove-right)
-(global-set-key (kbd "s-b") 'windmove-left)
-(global-set-key (kbd "s-n") 'windmove-down)
-(global-set-key (kbd "s-p") 'windmove-up)
-
-(global-set-key (kbd "s-F") 'windmove-swap-states-right)
-(global-set-key (kbd "s-B") 'windmove-swap-states-left)
-(global-set-key (kbd "s-N") 'windmove-swap-states-down)
-(global-set-key (kbd "s-P") 'windmove-swap-states-up)
-
 (winner-mode 1)
 
-(use-package ace-window
-  :bind ("M-o" . 'ace-window)
-  :config (setq aw-scope 'frame))
+(global-set-key (kbd "M-o") 'other-window)
+
+(require 'windmove)
+(require 'cl-lib)
+
+(defmacro dalvrosa/i3-msg (&rest args)
+  `(start-process "emacs-i3-windmove" nil "i3-msg" ,@args))
+
+(defun dalvrosa/emacs-i3-windmove (dir)
+  (let ((other-window (windmove-find-other-window dir)))
+    (if (or (null other-window) (window-minibuffer-p other-window))
+        (i3-msg "focus" (symbol-name dir))
+      (windmove-do-window-select dir))))
+
+(defun dalvrosa/emacs-i3-direction-exists-p (dir)
+  (cl-some (lambda (dir)
+             (let ((win (windmove-find-other-window dir)))
+               (and win (not (window-minibuffer-p win)))))
+           (pcase dir
+             ('width '(left right))
+             ('height '(up down)))))
+
+(defun dalvrosa/emacs-i3-move-window (dir)
+  (let ((other-window (windmove-find-other-window dir))
+        (other-direction (dalvrosa/emacs-i3-direction-exists-p
+                          (pcase dir
+                            ('up 'width)
+                            ('down 'width)
+                            ('left 'height)
+                            ('right 'height)))))
+    (cond
+     ((and other-window (not (window-minibuffer-p other-window)))
+      (window-swap-states (selected-window) other-window))
+     (other-direction
+      (evil-move-window dir))
+     (t (i3-msg "move" (symbol-name dir))))))
+
+(defun dalvrosa/emacs-i3-integration (command)
+  (pcase command
+    ((rx bos "focus")
+     (dalvrosa/emacs-i3-windmove
+      (intern (elt (split-string command) 1))))
+    ((rx bos "move")
+     (dalvrosa/emacs-i3-move-window
+      (intern (elt (split-string command) 1))))
+    (- (i3-msg command))))
 
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (setq-default fill-column 79)
@@ -184,28 +217,102 @@
 (setq shr-width 72)
 
 (use-package vertico
-  :custom
-  (vertico-cycle t)
   :init
   (vertico-mode))
 
 (use-package consult
-  :demand t
-  :bind (("C-s" . consult-line))
+  :bind (
+         ;; ("C-c m" . consult-man)
+         ;; ("C-c i" . consult-info)
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
+         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings in `search-map'
+         ("M-s d" . consult-fd)                  ;; Alternative: consult-find
+         ("M-s c" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+
+  :init
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+
+  ;; Configure other variables and modes in the :config section,
+  ;; after lazily loading the package.
   :config
+  ;; For some commands and buffer sources it is useful to configure the
+  ;; :preview-key on a per-command basis using the `consult-customize' macro.
+  (consult-customize
+   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-ripgrep consult-git-grep consult-grep consult-man
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-file-register
+   consult--source-recent-file consult--source-project-recent-file
+   ;; :preview-key "M-."
+   :preview-key '(:debounce 0.4 any))
+
+  ;; Optionally configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key "<") ;; "C-+"
+
   ;; below line allows to escape spaces while searching
   (setq orderless-component-separator 'orderless-escapable-split-on-space)
-  (consult-preview-at-point-mode))
+)
 
-(setq savehist-mode 1)
+(savehist-mode)
 
 (use-package corfu
   :config
-  (global-corfu-mode))
+  (setq corfu-auto t)
+  (setq corfu-auto-prefix 2)
+  (setq corfu-auto-delay 0.1)
+  (setq corfu-popupinfo-mode t)
+  (setq corfu-popupinfo-delay 0.5)
+  (add-to-list 'savehist-additional-variables 'corfu-history)
+  :init
+  (global-corfu-mode)
+  (corfu-history-mode 1))
+
+(use-package nerd-icons-corfu
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package orderless
   :init
-  (setq completion-styles '(orderless)
+  (setq completion-styles '(orderless basic)
         completion-category-defaults nil
         completion-category-overrides '((file (styles . (partial-completion))))))
 
@@ -213,6 +320,12 @@
   :after vertico
   :init
   (marginalia-mode))
+
+(use-package cape
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-tex))
 
 (use-package which-key
   :init (which-key-mode))
@@ -232,6 +345,13 @@
     "https://duckduckgo.com/?q=%s&t=h_"
     :keybinding "d")
   (engine-mode t))
+
+(use-package gptel
+  :bind
+  ("C-c h" . gptel)
+  :config
+  (setq gptel-default-mode 'org-mode)
+  :hook (gptel-mode . visual-line-mode))
 
 (setq custom-safe-themes t)
 
@@ -253,14 +373,12 @@
 
 (setq display-time-default-load-average nil)
 
-(set-face-attribute 'default nil :font "Hack" :height 92)
+(set-face-attribute 'default nil :font "Hack Nerd Font" :height 90)
 
-(use-package default-text-scale
-  :init (default-text-scale-mode)
-  :config (setq default-text-scale-amount 20)
-  :bind (("s-0" . 'default-text-scale-reset)
-         ("s--" . 'default-text-scale-decrease)
-         ("s-=" . 'default-text-scale-increase)))
+(global-set-key (kbd "s-0") 'global-text-scale-adjust)
+(global-set-key (kbd "s-=") 'global-text-scale-adjust)
+(global-set-key (kbd "s--") 'global-text-scale-adjust)
+(setq global-text-scale-adjust--increment-factor 20)
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -272,32 +390,12 @@
 
 (when window-system (global-hl-line-mode t))
 
-;; (add-to-list 'default-frame-alist '(alpha . (93 . 84)))
-(defun dalvrosa/toggle-transparency ()
-  "Toggle transparency on and off."
-  (interactive)
-  (let ((alpha (frame-parameter nil 'alpha)))
-    (if (eq
-         (if (numberp alpha)
-             alpha
-           (cdr alpha)) ; may also be nil
-         100)
-        (set-frame-parameter nil 'alpha '(93 . 84))
-      (set-frame-parameter nil 'alpha '(100 . 100)))))
-(define-key global-map (kbd "C-c b") 'dalvrosa/toggle-transparency)
-
 (use-package olivetti
   :config
   (setq-default olivetti-body-width (+ fill-column 10))
   :bind ("C-c o" . 'olivetti-mode))
 
-(use-package company
-  :config
-  (setq company-show-quick-access  t)
-  (setq company-idle-delay 0.0)
-  (add-to-list 'company-backends '(company-capf company-yasnippet))
-  (setq company-minimum-prefix-length 1)
-  :hook (prog-mode . company-mode))
+
 
 (use-package tree-sitter
   :config
@@ -341,6 +439,11 @@
   :commands lsp-treemacs-errors-list
   :config
   (lsp-treemacs-sync-mode 1))
+
+(use-package dap-mode
+  :after lsp-mode
+  :config
+  (require 'dap-php))
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
@@ -443,7 +546,6 @@
         ("C-x t M-t" . treemacs-find-tag)))
 
 (use-package treemacs-all-the-icons
-  :demand t
   :config
   (setq treemacs-indentation 1)
   (treemacs-load-theme "all-the-icons"))
@@ -766,6 +868,9 @@
    });
   </script>
 ")))
+
+(use-package quarto-mode
+  :mode (("\\.Rmd" . poly-quarto-mode)))
 
 (use-package latex
   :ensure auctex
