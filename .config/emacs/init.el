@@ -7,13 +7,6 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(eval-when-compile
-  (require 'use-package))
-
 (setq use-package-always-ensure t)
 (setq use-package-always-defer t)
 
@@ -53,6 +46,15 @@
   :after dired
   :bind (:map dired-mode-map
               ("/" . 'dired-narrow-fuzzy)))
+
+(use-package dired-subtree
+  :ensure t
+  :after dired
+  :bind
+  ( :map dired-mode-map
+    ("<tab>" . dired-subtree-toggle))
+  :config
+  (setq dired-subtree-use-backgrounds nil))
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
@@ -265,50 +267,29 @@
   :hook (completion-list-mode . consult-preview-at-point-mode)
 
   :init
-  ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-
-  ;; Configure other variables and modes in the :config section,
-  ;; after lazily loading the package.
-  :config
-  ;; For some commands and buffer sources it is useful to configure the
-  ;; :preview-key on a per-command basis using the `consult-customize' macro.
-  (consult-customize
-   consult-theme :preview-key '(:debounce 0.2 any)
-   consult-ripgrep consult-git-grep consult-grep consult-man
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-file-register
-   consult--source-recent-file consult--source-project-recent-file
-   ;; :preview-key "M-."
-   :preview-key '(:debounce 0.4 any))
-
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
   (setq consult-narrow-key "<") ;; "C-+"
 
   ;; below line allows to escape spaces while searching
-  (setq orderless-component-separator 'orderless-escapable-split-on-space))
+  (setq orderless-component-separator 'orderless-escapable-split-on-space)
+  :config
+  (setq consult-preview-key nil))
 
 (savehist-mode)
 
 (use-package corfu
+  :init
+  (global-corfu-mode)
   :config
   (setq corfu-auto t)
   (setq corfu-auto-prefix 2)
   (setq corfu-auto-delay 0.1)
-  (setq corfu-popupinfo-mode t)
   (setq corfu-popupinfo-delay 0.5)
+  (corfu-popupinfo-mode 1)
+  (corfu-history-mode 1)
   (add-to-list 'savehist-additional-variables 'corfu-history)
-  (setq text-mode-ispell-word-completion nil)
-  :init
-  (global-corfu-mode)
-  (corfu-history-mode 1))
-
-(use-package nerd-icons-corfu
-  :after corfu
-  :config
-  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+  (setq text-mode-ispell-word-completion nil))
 
 (use-package orderless
   :init
@@ -340,6 +321,8 @@
 
 (use-package chronometer)
 
+(setq confirm-kill-processes nil)
+
 (use-package engine-mode
   :config
   (defengine DuckDuckGo
@@ -359,6 +342,23 @@
 (load-theme 'modus-operandi)
 (global-set-key (kbd "C-c d") 'modus-themes-toggle)
 
+(use-package nerd-icons
+  :demand t)
+
+(use-package nerd-icons-completion
+  :after marginalia
+  :config
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+(use-package nerd-icons-corfu
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package nerd-icons-dired
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
 (use-package doom-modeline
   :demand t
   :init (doom-modeline-mode 1)
@@ -368,9 +368,6 @@
   (setq doom-modeline-buffer-file-name-style 'relative-from-project)
   (setq doom-modeline-percent-position nil)
   (setq doom-modeline-buffer-encoding nil))
-
-(use-package nerd-icons
-  :demand t)
 
 (setq display-time-default-load-average nil)
 
@@ -413,36 +410,23 @@
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 
-(use-package lsp-mode
+(use-package eglot
   :config
-  (setq lsp-idle-delay 0.1)
-  (add-to-list 'lsp-language-id-configuration '(brazil-config-mode . "brazil-config"))
-  (setq lsp-clients-python-library-directories '("/usr" "/opt/homebrew/lib/python3.11/site-packages"))
-  (lsp-register-client
-   (make-lsp-client
-    :priority -1
-    :new-connection (lsp-stdio-connection "barium")
-    :activation-fn (lsp-activate-on "brazil-config")
-    :server-id 'barium))
-  :hook ((c-mode-common . lsp-deferred)
-         (java-mode . lsp-deferred)
-         (ruby-mode . lsp-deferred)
-         (python-mode . lsp-deferred)
-         (brazil-config-mode . lsp-deferred)
-         (LaTeX-mode . lsp-deferred)
-         (cmake-mode . lsp-deferred)
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
-
-(use-package lsp-ui :commands lsp-ui-mode)
-
-(use-package lsp-treemacs
-  :commands lsp-treemacs-errors-list
-  :config
-  (lsp-treemacs-sync-mode 1))
+  (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
+  (setq eglot-autoshutdown t)
+  :hook ((c-mode-common . eglot-ensure)
+         (java-mode . eglot-ensure)
+         (ruby-mode . eglot-ensure)
+         (python-mode . eglot-ensure)
+         (brazil-config-mode . eglot-ensure)
+         (latex-mode . eglot-ensure)
+         (cmake-mode . eglot-ensure)
+         (php-mode . eglot-ensure )
+         (typescript-mode . eglot-ensure)
+         (js-mode . eglot-ensure))
+  :commands eglot)
 
 (use-package dap-mode
-  :after lsp-mode
   :config
   (require 'dap-php))
 
@@ -461,37 +445,6 @@
 ;; ivy is required by flycheck
 (use-package ivy
   :after flycheck)
-
-(defvar-local my-flycheck-local-cache nil)
-(defun my-flycheck-local-checker-get (fn checker property)
-  ;; Only check the buffer local cache for the LSP checker, otherwise we get
-  ;; infinite loops.
-  (if (eq checker 'lsp)
-      (or (alist-get property my-flycheck-local-cache)
-          (funcall fn checker property))
-    (funcall fn checker property)))
-(advice-add 'flycheck-checker-get
-            :around 'my-flycheck-local-checker-get)
-(add-hook 'lsp-managed-mode-hook
-          (lambda ()
-            (when (derived-mode-p 'haskell-mode)
-              (setq my-flycheck-local-cache '((next-checkers . (haskell-hlint)))))))
-(add-hook 'lsp-managed-mode-hook
-          (lambda ()
-            (when (derived-mode-p 'c++-mode)
-              (setq my-flycheck-local-cache '((next-checkers . (c/c++-clang-tidy)))))))
-(add-hook 'lsp-managed-mode-hook
-          (lambda ()
-            (when (derived-mode-p 'sh-mode)
-              (setq my-flycheck-local-cache '((next-checkers . (sh-shellcheck)))))))
-(add-hook 'lsp-managed-mode-hook
-          (lambda ()
-            (when (derived-mode-p 'swift-mode)
-              (setq my-flycheck-local-cache '((next-checkers . (swiftlint)))))))
-(add-hook 'lsp-managed-mode-hook
-          (lambda ()
-            (when (derived-mode-p 'tex-mode)
-              (setq my-flycheck-local-cache '((next-checkers . (tex-chktex)))))))
 
 (use-package projectile
   :demand t
@@ -556,29 +509,10 @@
 
 (setq compilation-scroll-output t)
 
-(use-package google-c-style
-  :hook
-  (c-mode-common . google-set-c-style)
-  (c-mode-common . google-make-newline-indent))
-
-(use-package flycheck-clang-tidy
-  :after flycheck
-  :hook
-  (flycheck-mode . flycheck-clang-tidy-setup))
-
 (use-package cmake-mode)
 
 (use-package eldoc-cmake
   :hook (cmake-mode . eldoc-cmake-enable))
-
-(use-package cpp-auto-include)
-
-(use-package flycheck-google-cpplint
-  :after flycheck
-  :config
-  (require 'flycheck-google-cpplint)
-  (flycheck-add-next-checker 'c/c++-cppcheck
-                             '(warning . c/c++-googlelint)))
 
 (use-package typescript-mode
   :demand t
@@ -590,17 +524,9 @@
   ;; (elpy-enable)
   )
 
-(use-package lsp-java)
-
 (use-package kotlin-mode)
 
-(use-package swift-mode
-  :hook (swift-mode . (lambda () (lsp))))
-
-(use-package lsp-sourcekit
-  :after lsp-mode
-  :config
-  (setq lsp-sourcekit-executable (string-trim (shell-command-to-string "xcrun --find sourcekit-lsp"))))
+(use-package swift-mode)
 
 (use-package flycheck-swiftlint
   :config
@@ -893,11 +819,6 @@
 
 (use-package cdlatex
   :hook (LaTeX-mode . turn-on-cdlatex))
-
-(use-package lsp-latex
-  :config
-  (progn
-    (add-hook 'bibtex-mode-hook 'lsp)))
 
 (setq reftex-plug-into-AUCTeX t)
 (setq reftex-toc-split-windows-fraction 0.2)
