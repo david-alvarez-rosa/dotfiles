@@ -57,6 +57,7 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#sudo-edit][Sudo Edit]]
   - [[#chronometer][Chronometer]]
   - [[#engine-mode][Engine Mode]]
+  - [[#llm-integration][LLM Integration]]
 - [[#user-interface][User Interface]]
   - [[#theme][Theme]]
   - [[#modeline][Modeline]]
@@ -769,6 +770,20 @@ from the comfort of your editor.
       "https://duckduckgo.com/?q=%s&t=h_"
       :keybinding "d")
     (engine-mode t))
+#+end_src
+
+** LLM Integration
+Currently using [[https://github.com/karthink/gptel][gptel]], a simple Large Language Model chat client for
+Emacs, with support for multiple models and backends. It works in the
+spirit of Emacs, available at any time and uniformly in any buffer.
+
+#+begin_src elisp
+  (use-package gptel
+    :bind
+    ("C-c h" . gptel)
+    :config
+    (setq gptel-default-mode 'org-mode)
+    :hook (gptel-mode . visual-line-mode))
 #+end_src
 
 * User Interface
