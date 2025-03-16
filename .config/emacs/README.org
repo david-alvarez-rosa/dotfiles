@@ -301,7 +301,7 @@ file.
 
 Show file sizes in a human readable style.
 #+begin_src elisp
-  (setq-default dired-listing-switches "-alh --group-directories-first --color")
+  (setq-default dired-listing-switches "-alh --group-directories-first")
   (when (eq system-type 'darwin)
     (setq insert-directory-program "/opt/homebrew/bin/gls"))
 #+end_src
