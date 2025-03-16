@@ -991,6 +991,15 @@ information.
    (global-eldoc-mode)
 #+end_src
 
+*** Flyamake
+#+begin_src elisp
+  (use-package flymake
+    :hook (prog-mode . flymake-mode)
+    :bind (:map flymake-mode-map
+                ("C-c ! n" . flymake-goto-next-error)
+                ("C-c ! p" . flymake-goto-prev-error)
+                ("C-c ! l" . flymake-show-buffer-diagnostics)))
+#+end_src
 *** Terminal Emulator
 Emacs-libvterm (vterm) is fully-fledged terminal emulator inside GNU
 Emacs based on libvterm, a C library. As a result of using compiled code

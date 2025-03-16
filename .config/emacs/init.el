@@ -396,6 +396,13 @@
 
 (global-eldoc-mode)
 
+(use-package flymake
+  :hook (prog-mode . flymake-mode)
+  :bind (:map flymake-mode-map
+              ("C-c ! n" . flymake-goto-next-error)
+              ("C-c ! p" . flymake-goto-prev-error)
+              ("C-c ! l" . flymake-show-buffer-diagnostics)))
+
 (use-package vterm
   :config
   (setq vterm-max-scrollback 10000)
