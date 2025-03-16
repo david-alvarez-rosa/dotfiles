@@ -885,24 +885,6 @@ the terminal version of Emacs, though, so it's not set there.
   (when window-system (global-hl-line-mode t))
 #+end_src
 
-** Transparency Alpha
-Functions for toggling transparency alpha.
-#+begin_src elisp
-  ;; (add-to-list 'default-frame-alist '(alpha . (93 . 84)))
-  (defun dalvrosa/toggle-transparency ()
-    "Toggle transparency on and off."
-    (interactive)
-    (let ((alpha (frame-parameter nil 'alpha)))
-      (if (eq
-           (if (numberp alpha)
-               alpha
-             (cdr alpha)) ; may also be nil
-           100)
-          (set-frame-parameter nil 'alpha '(93 . 84))
-        (set-frame-parameter nil 'alpha '(100 . 100)))))
-  (define-key global-map (kbd "C-c b") 'dalvrosa/toggle-transparency)
-#+end_src
-
 ** Distraction Free Mode
 Olivetti is a simple Emacs minor mode for a nice writing environment, that sets
 a desired text body width to automatically resize window margins to keep the
