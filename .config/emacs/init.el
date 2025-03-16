@@ -298,7 +298,6 @@
         completion-category-overrides '((file (styles . (partial-completion))))))
 
 (use-package marginalia
-  :after vertico
   :init
   (marginalia-mode))
 
@@ -347,8 +346,9 @@
 
 (use-package nerd-icons-completion
   :after marginalia
-  :config
-  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+  :init
+  (nerd-icons-completion-mode)
+  (nerd-icons-completion-marginalia-setup))
 
 (use-package nerd-icons-corfu
   :after corfu
@@ -424,6 +424,12 @@
          (php-mode . eglot-ensure )
          (typescript-mode . eglot-ensure)
          (js-mode . eglot-ensure))
+  :bind (:map eglot-mode-map
+	      ("s-l a" . eglot-code-actions)
+	      ("s-l r" . eglot-rename)
+	      ("s-l h" . eldoc)
+	      ("s-l f" . eglot-format)
+	      ("s-l d" . xref-find-definitions-at-mouse))
   :commands eglot)
 
 (use-package dap-mode
@@ -442,15 +448,15 @@
   :init
   (add-hook 'prog-mode-hook 'flycheck-mode))
 
-;; ivy is required by flycheck
-(use-package ivy
-  :after flycheck)
+(use-package flycheck-eglot
+  :after (flycheck eglot)
+  :config
+  (global-flycheck-eglot-mode 1))
 
 (use-package projectile
   :demand t
   :config (projectile-mode +1)
-  (setq projectile-project-search-path '(("~/workplace/" . 3)))
-  (setq projectile-completion-system 'ivy)
+  (setq projectile-project-search-path '(("~/dev/" . 1)))
   (setq projectile-switch-project-action 'projectile-commander)
   (setq projectile-create-missing-test-files t)
   (setq projectile-per-project-compilation-buffer t)
@@ -508,6 +514,18 @@
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 (setq compilation-scroll-output t)
+
+(use-package flycheck-clang-tidy
+  :after flycheck
+  :hook
+  (flycheck-mode . flycheck-clang-tidy-setup))
+
+(use-package flycheck-google-cpplint
+  :after flycheck
+  :config
+  (require 'flycheck-google-cpplint)
+  (flycheck-add-next-checker 'c/c++-cppcheck
+                             '(warning . c/c++-googlelint)))
 
 (use-package cmake-mode)
 
@@ -850,8 +868,6 @@
 (require 'mu4e)
 (setq mail-user-agent 'mu4e-user-agent)
 (global-set-key (kbd "C-c e") 'mu4e)
-
-(setq mu4e-completing-read-function 'ivy-completing-read)
 
 (setq mu4e-headers-fields '( (:from-or-to . 16)
                              (:maildir . 18)
