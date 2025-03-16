@@ -2,7 +2,7 @@ IMAPAccount Personal
 Host mail.alvarezrosa.com
 User david@alvarezrosa.com
 PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep alvarezrosa.com | awk '{print $8}'"
-SSLType IMAPS
+TLSType IMAPS
 
 IMAPStore personal-remote
 Account   Personal
@@ -24,7 +24,7 @@ IMAPAccount Spam
 Host mail.alvarezrosa.com
 User davids@alvarezrosa.com
 PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep alvarezrosa.com | awk '{print $8}'"
-SSLType IMAPS
+TLSType IMAPS
 
 IMAPStore spam-remote
 Account   Spam
@@ -37,53 +37,6 @@ SubFolders Verbatim
 Channel spam
 Far :spam-remote:
 Near :spam-local:
-Patterns *
-Create Both
-Expunge Both
-SyncState *
-
-IMAPAccount Amazon
-Host ballard.amazon.com
-Port 1993
-Tunnel "ssh devdsk -W ballard.amazon.com:1993"
-User dalvrosa
-PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep ballard.amazon.com | awk '{print $8}'"
-SSLType IMAPS
-CertificateFile /usr/local/amazon/var/acme/ca/amazon-root-bundled-ca-certs.pem
-
-IMAPStore amazon-remote
-Account   Amazon
-
-MaildirStore amazon-local
-Path ~/.local/share/mail/Amazon/
-Inbox ~/.local/share/mail/Amazon/Inbox
-SubFolders Verbatim
-
-Channel amazon
-Far :amazon-remote:
-Near :amazon-local:
-Patterns * !Contacts !Journal !Notes !Tasks !Calendar
-Create Both
-Expunge Both
-SyncState *
-
-IMAPAccount Yandex
-Host imap.yandex.com
-User david.alvarez.rosa@yandex.com
-PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep yandex.com | awk '{print $8}'"
-SSLType IMAPS
-
-IMAPStore yandex-remote
-Account Yandex
-
-MaildirStore yandex-local
-Path ~/.local/share/mail/Yandex/
-Inbox ~/.local/share/mail/Yandex/Inbox
-SubFolders Verbatim
-
-Channel yandex
-Far :yandex-remote:
-Near :yandex-local:
 Patterns *
 Create Both
 Expunge Both
