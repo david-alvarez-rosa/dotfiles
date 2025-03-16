@@ -935,19 +935,17 @@ Enable nyan cat. Disabled now.
 ** Font
 Set default font. I'm currently using Hack (in the past I used Inconsolata).
 #+begin_src elisp
-  (set-face-attribute 'default nil :font "Hack" :height 92)
+  (set-face-attribute 'default nil :font "Hack Nerd Font" :height 90)
 #+end_src
 
 Add ability to scale font for frame, instead that for an specifically
 buffer. I've needed to wrap all the functions to reset =doom-modeline= cache
 afterwards.
 #+begin_src elisp
-  (use-package default-text-scale
-    :init (default-text-scale-mode)
-    :config (setq default-text-scale-amount 20)
-    :bind (("s-0" . 'default-text-scale-reset)
-           ("s--" . 'default-text-scale-decrease)
-           ("s-=" . 'default-text-scale-increase)))
+  (global-set-key (kbd "s-0") 'global-text-scale-adjust)
+  (global-set-key (kbd "s-=") 'global-text-scale-adjust)
+  (global-set-key (kbd "s--") 'global-text-scale-adjust)
+  (setq global-text-scale-adjust--increment-factor 20)
 #+end_src
 
 ** Basic Interface Settings
