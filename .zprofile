@@ -29,7 +29,7 @@ export BROWSER="firefox"
 export TERM=xterm-256color
 
 # Path
-export PATH="$PATH:$HOME/.local/bin/global"
+export PATH="$PATH:$HOME/.local/bin"
 export MANPATH="/usr/local/man:$MANPATH"
 
 # Start i3 in tty1

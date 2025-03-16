@@ -1,29 +1,21 @@
-setxkbmap -layout us,es -option grp:menu_toggle
-
-xmodmap -e "clear lock"
-xmodmap -e "add Control = Caps_Lock"
-xmodmap -e "keycode 66 = Control_L Caps_Lock NoSymbol NoSymbol"
-spare_modifier="Hyper_L"
-xmodmap -e "keycode 36 = $spare_modifier"
-xmodmap -e "remove mod4 = $spare_modifier"
-xmodmap -e "add Control = $spare_modifier"
-xmodmap -e "keycode any = Return"
-xcape -e "Control_L=Escape;$spare_modifier=Return"
-
-xset r rate 275 60
-
+xremap ~/.config/xremap/emacs.yml & sleep 2 && xset r rate 275 60 &
+setxkbmap -layout us,es -option grp:win_space_toggle
 xbindkeys -f ~/.config/xbindkeys/config
-
-numlockx on
 
 feh --bg-scale --no-fehbg ~/.local/share/wallpaper.png
 
-unclutter --timeout 2 &
+unclutter --timeout 2 --ignore-scrolling &
+
+if xrandr | grep "DVI-I-1-1 connected"; then
+    xrandr --output DVI-I-1-1 --mode 1920x1200 --primary --output eDP-1 --off
+fi
 
 dunst &
 
-picom --xrender-sync-fence &
+sleep 1
 
-emacs &
+xset r rate 275 60
+
+xrdb -merge ~/.Xresources
 
 exec i3
