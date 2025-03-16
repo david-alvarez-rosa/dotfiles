@@ -229,7 +229,7 @@
          ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
          ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
          ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-Too-buffer
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ("M-g e" . consult-compile-error)
          ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
@@ -288,8 +288,7 @@
   (setq consult-narrow-key "<") ;; "C-+"
 
   ;; below line allows to escape spaces while searching
-  (setq orderless-component-separator 'orderless-escapable-split-on-space)
-)
+  (setq orderless-component-separator 'orderless-escapable-split-on-space))
 
 (savehist-mode)
 
@@ -301,6 +300,7 @@
   (setq corfu-popupinfo-mode t)
   (setq corfu-popupinfo-delay 0.5)
   (add-to-list 'savehist-additional-variables 'corfu-history)
+  (setq text-mode-ispell-word-completion nil)
   :init
   (global-corfu-mode)
   (corfu-history-mode 1))
@@ -330,10 +330,11 @@
 (use-package which-key
   :init (which-key-mode))
 
+(setq ispell-program-name "hunspell")
 (setq ispell-dictionary "english")
 
 (add-hook 'text-mode-hook 'flyspell-mode)
-;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 (use-package sudo-edit)
 

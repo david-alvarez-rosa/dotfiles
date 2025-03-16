@@ -666,7 +666,7 @@ Vertico is
            ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
            ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
            ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-           ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+           ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-Too-buffer
            ("M-y" . consult-yank-pop)                ;; orig. yank-pop
            ("M-g e" . consult-compile-error)
            ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
@@ -725,9 +725,7 @@ Vertico is
     (setq consult-narrow-key "<") ;; "C-+"
 
     ;; below line allows to escape spaces while searching
-    (setq orderless-component-separator 'orderless-escapable-split-on-space)
-  )
-
+    (setq orderless-component-separator 'orderless-escapable-split-on-space))
 #+end_src
 
 Save mini-buffer history.
@@ -748,6 +746,7 @@ minibuffer UI.
     (setq corfu-popupinfo-mode t)
     (setq corfu-popupinfo-delay 0.5)
     (add-to-list 'savehist-additional-variables 'corfu-history)
+    (setq text-mode-ispell-word-completion nil)
     :init
     (global-corfu-mode)
     (corfu-history-mode 1))
@@ -807,17 +806,19 @@ prefix keys you entered.
 #+end_src
 
 ** Spell Checking and Correcting
-Commands to check the spelling of a single word or of a portion of a buffer.
-These commands only work if a spelling checker program, one of Hunspell,
-Aspell, Ispell or Enchant, is installed. These programs are not part of Emacs,
-but one of them is usually installed on GNU/Linux and other free operating
-systems. I have installed Aspell with =pacman -S aspell aspell-es aspell-en=
-(for isntalling english and spanish dictionaries).
+Commands to check the spelling of a single word or of a portion of a
+buffer.  These commands only work if a spelling checker program, one of
+Hunspell, Aspell, Ispell or Enchant, is installed. These programs are
+not part of Emacs, but one of them is usually installed on GNU/Linux and
+other free operating systems. I have installed Hunspell with =pacman -S
+hunspell hunspell-en_us hunspell-es_ES= (for isntalling english and
+spanish dictionaries).
 
 I set the default dictionary to english, since I write more in english than in
 spanish these days. This can be changed with =ispell-change-dictionary=
 function.
 #+begin_src elisp
+  (setq ispell-program-name "hunspell")
   (setq ispell-dictionary "english")
 #+end_src
 
@@ -839,7 +840,7 @@ programming language, where spelling should occur only for comments and
 strings). I have enabled it by default.
 #+begin_src elisp
   (add-hook 'text-mode-hook 'flyspell-mode)
-  ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 #+end_src
 
 ** Sudo Edit
@@ -2641,3 +2642,19 @@ nickname’, nickname”, etc.)
 - [[https://github.com/rememberYou/.emacs.d/blob/master/config.org/][Terencio Agozzino]] is a computer engineer with a very nice (literate) Emacs
   configuration. He has written in Reddit (as =u/rmberYou/=) several Emacs
   tips that are worth checking out.
+
+
+
+
+
+(use-package eglot
+  :config
+  (setq eglot-autoshutdown t)
+  :hook ((c-mode-common . eglot-ensure)
+         (java-mode . eglot-ensure)
+         (ruby-mode . eglot-ensure)
+         (python-mode . eglot-ensure)
+         (brazil-config-mode . eglot-ensure)
+         (latex-mode . eglot-ensure)
+         (cmake-mode . eglot-ensure))
+  :commands eglot)
