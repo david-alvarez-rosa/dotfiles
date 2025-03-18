@@ -43,7 +43,6 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#initialization-macos][Initialization MacOS]]
   - [[#file-management][File Management]]
   - [[#buffer-management][Buffer Management]]
-  - [[#window-management][Window Management]]
   - [[#auto-fill-mode][Auto Fill Mode]]
   - [[#indentation-enhancements][Indentation Enhancements]]
   - [[#subword-mode][Subword Mode]]
@@ -362,30 +361,6 @@ I use =C-x n n= for narrowing to region and then =C-x n w= for widen (i.e.,
 reverting to full page), but there are more narrow functions (enviroment
 dependent), e.g., =C-x n d= for narrowing to defun (useful for narrowing
 functions).
-
-** Window Management
-Split and follow for creating new windows.
-#+begin_src elisp
-  (defun dalvrosa/split-and-follow-horizontally ()
-    (interactive)
-    (split-window-below)
-    (balance-windows)
-    (other-window 1))
-  (global-set-key (kbd "C-x 2") 'dalvrosa/split-and-follow-horizontally)
-
-  (defun dalvrosa/split-and-follow-vertically ()
-    (interactive)
-    (split-window-right)
-    (balance-windows)
-    (other-window 1))
-  (global-set-key (kbd "C-x 3") 'dalvrosa/split-and-follow-vertically)
-#+end_src
-
-New bind for killing buffer *and* window at the same time. To do this press
-=C-x C-k=, by default is bind to =C-x 4 0=, that is far more complex.
-#+begin_src elisp
-  (global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
-#+end_src
 
 *** Winner Mode
 Global minor mode that allows to “undo” and “redo” changes in window
