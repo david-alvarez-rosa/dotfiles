@@ -1041,9 +1041,14 @@ Emacs client/library for Debug Adapter Protocol is a wire protocol for
 communication between client and Debug Server. It's similar to the LSP but
 provides integration with debug server.
 #+begin_src elisp
-  (use-package dap-mode
+  (use-package dape
+    :hook
+    (kill-emacs . dape-breakpoint-save)
+    (after-init . dape-breakpoint-load)
     :config
-    (require 'dap-php))
+    (setq dape-inlay-hints nil))
+
+  (repeat-mode)
 #+end_src
 
 *** Line Numbers
