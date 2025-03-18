@@ -372,8 +372,6 @@ configuration. It is included in GNU Emacs.
 *** Window Move
 Integration with i3wm https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/
 #+begin_src elisp
-  (global-set-key (kbd "M-o") 'other-window)
-
   (require 'windmove)
   (require 'cl-lib)
 
