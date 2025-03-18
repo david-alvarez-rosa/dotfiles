@@ -69,25 +69,7 @@
 (put 'narrow-to-page 'disabled nil)
 (put 'LaTeX-narrow-to-environment 'disabled nil)
 
-(defun dalvrosa/split-and-follow-horizontally ()
-  (interactive)
-  (split-window-below)
-  (balance-windows)
-  (other-window 1))
-(global-set-key (kbd "C-x 2") 'dalvrosa/split-and-follow-horizontally)
-
-(defun dalvrosa/split-and-follow-vertically ()
-  (interactive)
-  (split-window-right)
-  (balance-windows)
-  (other-window 1))
-(global-set-key (kbd "C-x 3") 'dalvrosa/split-and-follow-vertically)
-
-(global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
-
 (winner-mode 1)
-
-(global-set-key (kbd "M-o") 'other-window)
 
 (require 'windmove)
 (require 'cl-lib)
@@ -263,8 +245,9 @@
 
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
-   consult-buffer consult-ripgrep consult-git-grep consult-grep consult-man
-   consult-bookmark consult-recent-file consult-xref
+   consult-buffer consult-buffer-other-tab consult-buffer-other-window
+   consult-buffer-other-frame consult-ripgrep consult-git-grep consult-grep
+   consult-man consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-file-register
    consult--source-recent-file consult--source-project-recent-file
    :preview-key "M-."))
@@ -345,6 +328,7 @@
   (nerd-icons-completion-marginalia-setup))
 
 (use-package nerd-icons-corfu
+  :demand t
   :after corfu
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
@@ -450,9 +434,14 @@ if one already exists."
 	            ("C-c l d" . xref-find-definitions-at-mouse))
   :commands eglot)
 
-(use-package dap-mode
+(use-package dape
+  :hook
+  (kill-emacs . dape-breakpoint-save)
+  (after-init . dape-breakpoint-load)
   :config
-  (require 'dap-php))
+  (setq dape-inlay-hints nil))
+
+(repeat-mode)
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
