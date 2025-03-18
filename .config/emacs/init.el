@@ -208,7 +208,7 @@
 
 (use-package consult
   :bind (
-         ;; ("C-c m" . consult-man)
+         ("C-c m" . consult-man)
          ;; ("C-c i" . consult-info)
          ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
          ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
@@ -307,7 +307,7 @@
 (setq ispell-dictionary "english")
 
 (add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 (use-package sudo-edit)
 
@@ -326,6 +326,7 @@
   :bind
   ("C-c h" . gptel)
   :config
+  (setq gptel-model 'gpt-4o)
   (setq gptel-default-mode 'org-mode)
   :hook (gptel-mode . visual-line-mode))
 
@@ -365,11 +366,6 @@
   :init (nyan-mode))
 
 (set-face-attribute 'default nil :font "Hack Nerd Font" :height 90)
-
-(global-set-key (kbd "s-0") 'global-text-scale-adjust)
-(global-set-key (kbd "s-=") 'global-text-scale-adjust)
-(global-set-key (kbd "s--") 'global-text-scale-adjust)
-(setq global-text-scale-adjust--increment-factor 20)
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -427,7 +423,11 @@ if one already exists."
           (vterm shell-buffer))
       (vterm (generate-new-buffer-name default-project-shell-name)))))
 
-(advice-add 'project-shell :override #'dalvrosa/project-shell)
+(with-eval-after-load 'project
+  (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
+  (add-to-list 'project-switch-commands '(dalvrosa/project-shell "Vterm") t)
+  (keymap-set project-prefix-map "m" #'magit-project-status)
+  (keymap-set project-prefix-map "v" #'dalvrosa/project-shell))
 
 (use-package eglot
   :config
@@ -443,11 +443,11 @@ if one already exists."
          (typescript-ts-mode . eglot-ensure)
          (js-ts-mode . eglot-ensure))
   :bind (:map eglot-mode-map
-	            ("s-l a" . eglot-code-actions)
-	            ("s-l r" . eglot-rename)
-	            ("s-l h" . eldoc)
-	            ("s-l f" . eglot-format)
-	            ("s-l d" . xref-find-definitions-at-mouse))
+	            ("C-c l a" . eglot-code-actions)
+	            ("C-c l r" . eglot-rename)
+	            ("C-c l h" . eldoc)
+	            ("C-c l f" . eglot-format)
+	            ("C-c l d" . xref-find-definitions-at-mouse))
   :commands eglot)
 
 (use-package dap-mode
@@ -507,14 +507,11 @@ if one already exists."
 
 (use-package groovy-mode)
 
-(use-package djinni-mode)
-
 (use-package restclient
   :demand t
   :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode)))
 
 (use-package vlf
-  :defer t
   :init (require 'vlf-setup))
 
 (setq org-use-speed-commands t)
@@ -540,7 +537,7 @@ if one already exists."
 
 (require 'mu4e-org)
 
-(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c L") 'org-store-link)
 (global-set-key (kbd "C-c j") 'org-clock-goto)
 
 (setq org-todo-keywords

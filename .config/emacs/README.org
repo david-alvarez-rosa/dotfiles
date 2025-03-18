@@ -74,7 +74,6 @@ conflict here. Lastly, Emacs is a gift from God.
   - [[#octavematlab][Octave/Matlab]]
   - [[#r][R]]
   - [[#apache-groovy][Apache Groovy]]
-  - [[#djinni][Djinni]]
   - [[#rest-http-api][REST HTTP API]]
   - [[#log-files][Log Files]]
 - [[#org-mode][Org Mode]]
@@ -627,7 +626,7 @@ completion function completing-read.
 #+begin_src elisp
   (use-package consult
     :bind (
-           ;; ("C-c m" . consult-man)
+           ("C-c m" . consult-man)
            ;; ("C-c i" . consult-info)
            ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
            ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
@@ -795,7 +794,7 @@ programming language, where spelling should occur only for comments and
 strings). I have enabled it by default.
 #+begin_src elisp
   (add-hook 'text-mode-hook 'flyspell-mode)
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 #+end_src
 
 ** Sudo Edit
@@ -837,6 +836,7 @@ spirit of Emacs, available at any time and uniformly in any buffer.
     :bind
     ("C-c h" . gptel)
     :config
+    (setq gptel-model 'gpt-4o)
     (setq gptel-default-mode 'org-mode)
     :hook (gptel-mode . visual-line-mode))
 #+end_src
@@ -906,16 +906,6 @@ Enable nyan cat.
 Set default font. I'm currently using Hack (in the past I used Inconsolata).
 #+begin_src elisp
   (set-face-attribute 'default nil :font "Hack Nerd Font" :height 90)
-#+end_src
-
-Add ability to scale font for frame, instead that for an specifically
-buffer. I've needed to wrap all the functions to reset =doom-modeline= cache
-afterwards.
-#+begin_src elisp
-  (global-set-key (kbd "s-0") 'global-text-scale-adjust)
-  (global-set-key (kbd "s-=") 'global-text-scale-adjust)
-  (global-set-key (kbd "s--") 'global-text-scale-adjust)
-  (setq global-text-scale-adjust--increment-factor 20)
 #+end_src
 
 ** Basic Interface Settings
@@ -1039,7 +1029,11 @@ https://mocompute.codeberg.page/item/2024/2024-09-03-emacs-project-vterm.html
             (vterm shell-buffer))
         (vterm (generate-new-buffer-name default-project-shell-name)))))
 
-  (advice-add 'project-shell :override #'dalvrosa/project-shell)
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
+    (add-to-list 'project-switch-commands '(dalvrosa/project-shell "Vterm") t)
+    (keymap-set project-prefix-map "m" #'magit-project-status)
+    (keymap-set project-prefix-map "v" #'dalvrosa/project-shell))
 #+end_src
 
 *** Language Server Protocol
@@ -1060,11 +1054,11 @@ support to be implemented and distributed independently of any given editor.
            (typescript-ts-mode . eglot-ensure)
            (js-ts-mode . eglot-ensure))
     :bind (:map eglot-mode-map
-  	            ("s-l a" . eglot-code-actions)
-  	            ("s-l r" . eglot-rename)
-  	            ("s-l h" . eldoc)
-  	            ("s-l f" . eglot-format)
-  	            ("s-l d" . xref-find-definitions-at-mouse))
+  	            ("C-c l a" . eglot-code-actions)
+  	            ("C-c l r" . eglot-rename)
+  	            ("C-c l h" . eldoc)
+  	            ("C-c l f" . eglot-format)
+  	            ("C-c l d" . xref-find-definitions-at-mouse))
     :commands eglot)
 #+end_src
 
@@ -1251,13 +1245,6 @@ language for the Java platform.  I'm using it mainly for editing
   (use-package groovy-mode)
 #+end_src
 
-** Djinni
-Emacs major mode for Djinni files.  Djinni is an IDL used to generate
-cross-platform interfaces in C++, Objective-C and Java.
-#+begin_src elisp
-  (use-package djinni-mode)
-#+end_src
-
 ** REST HTTP API
 This is a tool to manually explore and test HTTP REST webservices.  Runs
 queries from a plain-text query sheet, displays results as a
@@ -1278,7 +1265,6 @@ whatever) can be instantly and simultaneously accessed without swapping
 and degraded performance.
 #+begin_src elisp
   (use-package vlf
-    :defer t
     :init (require 'vlf-setup))
 #+end_src
 
@@ -1343,7 +1329,7 @@ client used in this configuration), it is needed the following.
 Add some global key binding for storing link =C-c l= and jumping (goto) to
 current clocked task.
 #+begin_src elisp
-  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c L") 'org-store-link)
   (global-set-key (kbd "C-c j") 'org-clock-goto)
 #+end_src
 
