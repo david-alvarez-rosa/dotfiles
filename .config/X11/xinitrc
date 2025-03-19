@@ -1,5 +1,4 @@
-xremap ~/.config/xremap/emacs.yml & sleep 2 && xset r rate 275 60 &
-setxkbmap -layout us,es -option grp:win_space_toggle
+xremap --mouse ~/.config/xremap/emacs.yml & sleep 2 && xset r rate 275 60 && setxkbmap -layout us,es -option grp:win_space_toggle &
 xbindkeys -f ~/.config/xbindkeys/config
 
 feh --bg-scale --no-fehbg ~/.local/share/wallpaper.png
