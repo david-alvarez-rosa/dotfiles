@@ -2113,8 +2113,8 @@ subtree:
 #+end_example
 
 *** Org Msg
-Configure Org Msg that automatically writes HTML emails when needed.
-#+begin_src elisp
+*Not tangled.*  Configure Org Msg that automatically writes HTML emails when needed.
+#+begin_src elisp :tangle no
   (use-package org-msg
     :after (mu4e)
     :init (org-msg-mode)
@@ -2138,7 +2138,7 @@ Configure Org Msg that automatically writes HTML emails when needed.
 ** Attachment Management
 Configure attachment directory for downloading.
 #+begin_src elisp
-  (setq mu4e-attachment-dir "~/Downloads")
+  (setq mu4e-attachment-dir "~/tmp")
 #+end_src
 
 For attaching files while composing new email. To attach file, just mark in

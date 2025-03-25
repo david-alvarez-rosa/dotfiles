@@ -59,6 +59,8 @@
 (setq lock-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
+(setq split-width-threshold 200)
+
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (setq ibuffer-expert t)
@@ -71,6 +73,8 @@
 
 (winner-mode 1)
 
+(global-set-key (kbd "M-o") 'other-window)
+
 (require 'windmove)
 (require 'cl-lib)
 
@@ -80,7 +84,7 @@
 (defun dalvrosa/emacs-i3-windmove (dir)
   (let ((other-window (windmove-find-other-window dir)))
     (if (or (null other-window) (window-minibuffer-p other-window))
-        (i3-msg "focus" (symbol-name dir))
+        (dalvrosa/i3-msg "focus" (symbol-name dir))
       (windmove-do-window-select dir))))
 
 (defun dalvrosa/emacs-i3-direction-exists-p (dir)
@@ -104,7 +108,7 @@
       (window-swap-states (selected-window) other-window))
      (other-direction
       (evil-move-window dir))
-     (t (i3-msg "move" (symbol-name dir))))))
+     (t (dalvrosa/i3-msg "move" (symbol-name dir))))))
 
 (defun dalvrosa/emacs-i3-integration (command)
   (pcase command
@@ -114,7 +118,7 @@
     ((rx bos "move")
      (dalvrosa/emacs-i3-move-window
       (intern (elt (split-string command) 1))))
-    (- (i3-msg command))))
+    (- (dalvrosa/i3-msg command))))
 
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (setq-default fill-column 79)
@@ -365,6 +369,7 @@
 (use-package olivetti
   :config
   (setq-default olivetti-body-width (+ fill-column 10))
+  (setq olivetti-style 'fancy)
   :bind ("C-c o" . 'olivetti-mode))
 
 (use-package treesit-auto
@@ -400,7 +405,7 @@ if one already exists."
   (interactive)
   (require 'comint)
   (let* ((default-directory (project-root (project-current t)))
-         (default-project-shell-name (project-prefixed-buffer-name "shell"))
+         (default-project-shell-name (project-prefixed-buffer-name "vterm"))
          (shell-buffer (get-buffer default-project-shell-name)))
     (if (and shell-buffer (not current-prefix-arg))
         (if (comint-check-proc shell-buffer)
@@ -421,8 +426,9 @@ if one already exists."
   :hook ((c++-ts-mode . eglot-ensure)
          (java-ts-mode . eglot-ensure)
          (ruby-ts-mode . eglot-ensure)
+         (rust-ts-mode . eglot-ensure)
          (python-ts-mode . eglot-ensure)
-         (latex-ts-mode . eglot-ensure)
+         (LaTeX-mode . eglot-ensure)
          (cmake-ts-mode . eglot-ensure)
          (php-ts-mode . eglot-ensure )
          (typescript-ts-mode . eglot-ensure)
@@ -478,6 +484,8 @@ if one already exists."
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 (setq compilation-scroll-output t)
+
+(setq compilation-ask-about-save nil)
 
 (use-package cmake-mode)
 
@@ -922,26 +930,7 @@ if one already exists."
               (("C-c o" . 'org-mime-edit-mail-in-org-mode)
                ("C-c M-o" . 'org-mime-htmlize))))
 
-(use-package org-msg
-  :after (mu4e)
-  :init (org-msg-mode)
-  :config
-  (setq
-   org-msg-options "html-postamble:nil num:nil ^:{} toc:nil author:nil email:nil tex:dvipng"
-   org-msg-default-alternatives '((new . (text))
-                                  (reply-to-html . (text html))
-                                  (reply-to-text . (text)))
-   org-msg-convert-citation t)
-  ;; https://github.com/jeremy-compostella/org-msg/pull/152
-  (setq mu4e-compose-signature-auto-include nil)
-  (advice-add 'org-msg-composition-parameters :before 'dalvrosa/set-org-msg-signature))
-
-(defun dalvrosa/set-org-msg-signature (type alternatives)
-  (if message-signature-file
-      (setq org-msg-signature (f-read-text message-signature-file))
-    (setq org-msg-signature nil)))
-
-(setq mu4e-attachment-dir "~/Downloads")
+(setq mu4e-attachment-dir "~/tmp")
 
 (require 'gnus-dired)
 (defun gnus-dired-mail-buffers ()
