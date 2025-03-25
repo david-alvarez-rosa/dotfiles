@@ -20,6 +20,8 @@ keymap:
     application:
       not: [Emacs, St]
     remap:
+      # Search
+      C-s: C-f
       # Cursor
       C-b: { with_mark: left }
       C-f: { with_mark: right }
@@ -59,8 +61,6 @@ keymap:
       C-Shift-ro: C-z
       # Mark
       C-space: { set_mark: true }
-      # Search
-      C-s: C-f
       # C-r: Shift-F3
       M-Shift-5: C-h
       # Cancel
