@@ -381,7 +381,7 @@ Integration with i3wm https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/
   (defun dalvrosa/emacs-i3-windmove (dir)
     (let ((other-window (windmove-find-other-window dir)))
       (if (or (null other-window) (window-minibuffer-p other-window))
-          (i3-msg "focus" (symbol-name dir))
+          (dalvrosa/i3-msg "focus" (symbol-name dir))
         (windmove-do-window-select dir))))
 
   (defun dalvrosa/emacs-i3-direction-exists-p (dir)
@@ -405,7 +405,7 @@ Integration with i3wm https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/
         (window-swap-states (selected-window) other-window))
        (other-direction
         (evil-move-window dir))
-       (t (i3-msg "move" (symbol-name dir))))))
+       (t (dalvrosa/i3-msg "move" (symbol-name dir))))))
 
   (defun dalvrosa/emacs-i3-integration (command)
     (pcase command
@@ -415,7 +415,7 @@ Integration with i3wm https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/
       ((rx bos "move")
        (dalvrosa/emacs-i3-move-window
         (intern (elt (split-string command) 1))))
-      (- (i3-msg command))))
+      (- (dalvrosa/i3-msg command))))
 #+end_src
 
 ** Auto Fill Mode
@@ -957,7 +957,7 @@ information.
    (global-eldoc-mode)
 #+end_src
 
-*** Flyamake
+*** Flymake
 #+begin_src elisp
   (use-package flymake
     :hook (prog-mode . flymake-mode)
@@ -966,6 +966,7 @@ information.
                 ("C-c ! p" . flymake-goto-prev-error)
                 ("C-c ! l" . flymake-show-buffer-diagnostics)))
 #+end_src
+
 *** Terminal Emulator
 Emacs-libvterm (vterm) is fully-fledged terminal emulator inside GNU
 Emacs based on libvterm, a C library. As a result of using compiled code
@@ -997,7 +998,7 @@ https://mocompute.codeberg.page/item/2024/2024-09-03-emacs-project-vterm.html
     (interactive)
     (require 'comint)
     (let* ((default-directory (project-root (project-current t)))
-           (default-project-shell-name (project-prefixed-buffer-name "shell"))
+           (default-project-shell-name (project-prefixed-buffer-name "vterm"))
            (shell-buffer (get-buffer default-project-shell-name)))
       (if (and shell-buffer (not current-prefix-arg))
           (if (comint-check-proc shell-buffer)
@@ -1023,8 +1024,9 @@ support to be implemented and distributed independently of any given editor.
     :hook ((c++-ts-mode . eglot-ensure)
            (java-ts-mode . eglot-ensure)
            (ruby-ts-mode . eglot-ensure)
+           (rust-ts-mode . eglot-ensure)
            (python-ts-mode . eglot-ensure)
-           (latex-ts-mode . eglot-ensure)
+           (LaTeX-mode . eglot-ensure)
            (cmake-ts-mode . eglot-ensure)
            (php-ts-mode . eglot-ensure )
            (typescript-ts-mode . eglot-ensure)
@@ -2007,6 +2009,7 @@ The main features of the EUDC interface are:
     (bind-key "<M-tab>" 'eudc-expand-inline org-msg-edit-mode-map)
     (setq eudc-inline-expansion-servers 'hotlist))
 #+end_src
+
 *** Big Brother’s Insidious Database
 BBDB is the Big Brother’s Insidious Database, a package for Emacs originally
 written by Jamie Zawinski which provides rolodex-like database functionality
