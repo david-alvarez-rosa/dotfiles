@@ -328,6 +328,11 @@ a problem for me.
 Buffers, in Emacs terminology, hold the contents that display/edit in
 windows. This are the configurations I use.
 
+Change the threshold for windows split.
+#+begin_src elisp
+  (setq split-width-threshold 200)
+#+end_src
+
 *** Ibuffer Mode
 Ibuffer is an advanced replacement for BufferMenu, which lets you operate on
 buffers much in the same manner as Dired. The most important Ibuffer features
@@ -372,6 +377,8 @@ configuration. It is included in GNU Emacs.
 *** Window Move
 Integration with i3wm https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/
 #+begin_src elisp
+  (global-set-key (kbd "M-o") 'other-window)
+
   (require 'windmove)
   (require 'cl-lib)
 
@@ -922,6 +929,7 @@ width, that is =fill-colum= +2.
   (use-package olivetti
     :config
     (setq-default olivetti-body-width (+ fill-column 10))
+    (setq olivetti-style 'fancy)
     :bind ("C-c o" . 'olivetti-mode))
 #+end_src
 
@@ -1169,6 +1177,11 @@ Enable Ansi Color colors in compilation window.
 Automatically scroll the compilation output.
 #+begin_src elisp
   (setq compilation-scroll-output t)
+#+end_src
+
+Automatically save without confirmation.
+#+begin_src elisp
+  (setq compilation-ask-about-save nil)
 #+end_src
 
 ** CMake
