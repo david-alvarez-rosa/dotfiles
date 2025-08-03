@@ -55,5 +55,12 @@
 "maim --select | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
   Mod4 + Control + s
 
+"pkill ffmpeg || ffcast rec ~/tmp/$(date +'%Y%m%d-%H:%M:%S').mp4"
+  Mod4 + r
+"pkill ffmpeg || ffcast -q -# $(xdotool getactivewindow) rec"
+  Mod4 + Shift + r
+"pkill ffmpeg || ffcast -s rec ~/tmp/$(date +'%Y%m%d-%H:%M:%S').mp4"
+  Mod4 + Control + r
+
 "dmenu_run"
   Mod4 + d
