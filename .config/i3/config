@@ -27,7 +27,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 bindsym $mod+Return exec i3-sensible-terminal
 
-bindsym $mod+m bar mode toggle
+bindsym $mod+m exec xzoom
 
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
@@ -53,6 +53,8 @@ bindsym $mod+Tab workspace back_and_forth
 
 for_window [class="mpv"]                 floating enable; exec --no-startup-id ~/.local/bin/bottomright
 for_window [class="mpv"]                 sticky enable
+
+for_window [title="^xzoom"] floating enable
 
 bindsym $mod+q kill
 
