@@ -1,5 +1,5 @@
 # Oh My Zsh
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="$XDG_DATA_HOME"/oh-my-zsh
 plugins=(
     git
     zsh-autosuggestions
@@ -47,3 +47,4 @@ alias yt="youtube-dl --add-metadata -ic --output \"%(uploader)s%(title)s.%(ext)s
 alias yta="yt -x -f bestaudio/best" # Download only audio
 alias ls="ls --color=auto --group-directories-first"
 alias l="ls"
+alias ll="ls -lah"

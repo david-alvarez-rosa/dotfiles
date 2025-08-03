@@ -13,14 +13,15 @@ export GPG_TTY=$(tty)
 # XDG
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share/"
+export XDG_DATA_HOME="$HOME/.local/share"
 export LESSHISTFILE=-
-export HISTFILE="$XDG_DATA_HOME"/history
+export HISTFILE="$XDG_DATA_HOME"/shell/history
 export INPUTRC="$XDG_CONFIG_HOME"/shell/inputrc
 export UNISON="$XDG_CONFIG_HOME"/unison
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 export XINITRC="$XDG_CONFIG_HOME"/X11/xinitrc
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+export PYTHONHISTFILE="$XDG_DATA_HOME"/python/python_history
 
 # Basic
 export EDITOR="nvim"
