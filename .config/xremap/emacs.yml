@@ -40,7 +40,6 @@ keymap:
       M-Shift-comma: { with_mark: C-home }
       M-Shift-dot: { with_mark: C-end }
       # Newline
-      C-m: enter
       C-j: enter
       C-o: [enter, left]
       # Copy
