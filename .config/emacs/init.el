@@ -59,7 +59,7 @@
 (setq lock-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-(setq split-width-threshold 200)
+(setq split-width-threshold 210)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
@@ -75,50 +75,54 @@
 
 (global-set-key (kbd "M-o") 'other-window)
 
-(require 'windmove)
-(require 'cl-lib)
+  (require 'windmove)
+  (require 'cl-lib)
 
-(defmacro dalvrosa/i3-msg (&rest args)
-  `(start-process "emacs-i3-windmove" nil "i3-msg" ,@args))
+(setq frame-title-format '("" "%b - GNU Emacs at " system-name))
 
-(defun dalvrosa/emacs-i3-windmove (dir)
-  (let ((other-window (windmove-find-other-window dir)))
-    (if (or (null other-window) (window-minibuffer-p other-window))
-        (dalvrosa/i3-msg "focus" (symbol-name dir))
-      (windmove-do-window-select dir))))
+  (defmacro dalvrosa/i3-msg (&rest args)
+    `(start-process "emacs-i3-windmove" nil "i3-msg" ,@args))
 
-(defun dalvrosa/emacs-i3-direction-exists-p (dir)
-  (cl-some (lambda (dir)
-             (let ((win (windmove-find-other-window dir)))
-               (and win (not (window-minibuffer-p win)))))
-           (pcase dir
-             ('width '(left right))
-             ('height '(up down)))))
+  (defun dalvrosa/emacs-i3-windmove (dir)
+(message "hello")
+    (let ((other-window (windmove-find-other-window dir)))
+      (if (or (null other-window) (window-minibuffer-p other-window))
+          (dalvrosa/i3-msg "focus" (symbol-name dir))
+        (windmove-do-window-select dir))))
 
-(defun dalvrosa/emacs-i3-move-window (dir)
-  (let ((other-window (windmove-find-other-window dir))
-        (other-direction (dalvrosa/emacs-i3-direction-exists-p
-                          (pcase dir
-                            ('up 'width)
-                            ('down 'width)
-                            ('left 'height)
-                            ('right 'height)))))
-    (cond
-     ((and other-window (not (window-minibuffer-p other-window)))
-      (window-swap-states (selected-window) other-window))
-     (other-direction
-      (evil-move-window dir))
-     (t (dalvrosa/i3-msg "move" (symbol-name dir))))))
+  (defun dalvrosa/emacs-i3-direction-exists-p (dir)
+    (cl-some (lambda (dir)
+               (let ((win (windmove-find-other-window dir)))
+                 (and win (not (window-minibuffer-p win)))))
+             (pcase dir
+               ('width '(left right))
+               ('height '(up down)))))
 
-(defun dalvrosa/emacs-i3-integration (command)
-  (pcase command
-    ((rx bos "focus")
-     (dalvrosa/emacs-i3-windmove
-      (intern (elt (split-string command) 1))))
-    ((rx bos "move")
-     (dalvrosa/emacs-i3-move-window
-      (intern (elt (split-string command) 1))))
-    (- (dalvrosa/i3-msg command))))
+  (defun dalvrosa/emacs-i3-move-window (dir)
+    (let ((other-window (windmove-find-other-window dir))
+          (other-direction (dalvrosa/emacs-i3-direction-exists-p
+                            (pcase dir
+                              ('up 'width)
+                              ('down 'width)
+                              ('left 'height)
+                              ('right 'height)))))
+      (cond
+       ((and other-window (not (window-minibuffer-p other-window)))
+        (window-swap-states (selected-window) other-window))
+       (other-direction
+        (evil-move-window dir))
+       (t (dalvrosa/i3-msg "move" (symbol-name dir))))))
+
+  (defun dalvrosa/emacs-i3-integration (command)
+(message "top")
+    (pcase command
+      ((rx bos "focus")
+       (dalvrosa/emacs-i3-windmove
+        (intern (elt (split-string command) 1))))
+      ((rx bos "move")
+       (dalvrosa/emacs-i3-move-window
+        (intern (elt (split-string command) 1))))
+      (- (dalvrosa/i3-msg command))))
 
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (setq-default fill-column 79)
@@ -288,6 +292,15 @@
   (add-hook 'completion-at-point-functions #'cape-file)
   (add-hook 'completion-at-point-functions #'cape-tex))
 
+(use-package embark
+  :bind
+  (("C-." . embark-act)
+   ("C-;" . embark-dwim)))
+
+(use-package embark-consult
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
 (use-package which-key
   :init (which-key-mode))
 
@@ -314,9 +327,11 @@
   :bind
   ("C-c h" . gptel)
   :config
-  (setq gptel-model 'gpt-4o)
+  (setq gptel-model 'gpt-4.1)
   (setq gptel-default-mode 'org-mode)
   :hook (gptel-mode . visual-line-mode))
+
+(gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
 
 (setq custom-safe-themes t)
 
@@ -414,9 +429,11 @@ if one already exists."
       (vterm (generate-new-buffer-name default-project-shell-name)))))
 
 (with-eval-after-load 'project
+  (add-to-list 'project-switch-commands '(consult-project-buffer "Find buffer") t)
   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
   (add-to-list 'project-switch-commands '(dalvrosa/project-shell "Vterm") t)
-  (keymap-set project-prefix-map "m" #'magit-project-status)
+  (keymap-set project-prefix-map "b" #'consult-project-buffer)
+  (keymap-set project-prefix-map "g" #'magit-project-status)
   (keymap-set project-prefix-map "v" #'dalvrosa/project-shell))
 
 (use-package eglot

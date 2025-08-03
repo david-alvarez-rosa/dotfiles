@@ -330,7 +330,7 @@ windows. This are the configurations I use.
 
 Change the threshold for windows split.
 #+begin_src elisp
-  (setq split-width-threshold 200)
+  (setq split-width-threshold 210)
 #+end_src
 
 *** Ibuffer Mode
@@ -377,52 +377,56 @@ configuration. It is included in GNU Emacs.
 *** Window Move
 Integration with i3wm https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/
 #+begin_src elisp
-  (global-set-key (kbd "M-o") 'other-window)
+    (global-set-key (kbd "M-o") 'other-window)
 
-  (require 'windmove)
-  (require 'cl-lib)
+    (require 'windmove)
+    (require 'cl-lib)
 
-  (defmacro dalvrosa/i3-msg (&rest args)
-    `(start-process "emacs-i3-windmove" nil "i3-msg" ,@args))
+  (setq frame-title-format '("" "%b - GNU Emacs at " system-name))
 
-  (defun dalvrosa/emacs-i3-windmove (dir)
-    (let ((other-window (windmove-find-other-window dir)))
-      (if (or (null other-window) (window-minibuffer-p other-window))
-          (dalvrosa/i3-msg "focus" (symbol-name dir))
-        (windmove-do-window-select dir))))
+    (defmacro dalvrosa/i3-msg (&rest args)
+      `(start-process "emacs-i3-windmove" nil "i3-msg" ,@args))
 
-  (defun dalvrosa/emacs-i3-direction-exists-p (dir)
-    (cl-some (lambda (dir)
-               (let ((win (windmove-find-other-window dir)))
-                 (and win (not (window-minibuffer-p win)))))
-             (pcase dir
-               ('width '(left right))
-               ('height '(up down)))))
+    (defun dalvrosa/emacs-i3-windmove (dir)
+  (message "hello")
+      (let ((other-window (windmove-find-other-window dir)))
+        (if (or (null other-window) (window-minibuffer-p other-window))
+            (dalvrosa/i3-msg "focus" (symbol-name dir))
+          (windmove-do-window-select dir))))
 
-  (defun dalvrosa/emacs-i3-move-window (dir)
-    (let ((other-window (windmove-find-other-window dir))
-          (other-direction (dalvrosa/emacs-i3-direction-exists-p
-                            (pcase dir
-                              ('up 'width)
-                              ('down 'width)
-                              ('left 'height)
-                              ('right 'height)))))
-      (cond
-       ((and other-window (not (window-minibuffer-p other-window)))
-        (window-swap-states (selected-window) other-window))
-       (other-direction
-        (evil-move-window dir))
-       (t (dalvrosa/i3-msg "move" (symbol-name dir))))))
+    (defun dalvrosa/emacs-i3-direction-exists-p (dir)
+      (cl-some (lambda (dir)
+                 (let ((win (windmove-find-other-window dir)))
+                   (and win (not (window-minibuffer-p win)))))
+               (pcase dir
+                 ('width '(left right))
+                 ('height '(up down)))))
 
-  (defun dalvrosa/emacs-i3-integration (command)
-    (pcase command
-      ((rx bos "focus")
-       (dalvrosa/emacs-i3-windmove
-        (intern (elt (split-string command) 1))))
-      ((rx bos "move")
-       (dalvrosa/emacs-i3-move-window
-        (intern (elt (split-string command) 1))))
-      (- (dalvrosa/i3-msg command))))
+    (defun dalvrosa/emacs-i3-move-window (dir)
+      (let ((other-window (windmove-find-other-window dir))
+            (other-direction (dalvrosa/emacs-i3-direction-exists-p
+                              (pcase dir
+                                ('up 'width)
+                                ('down 'width)
+                                ('left 'height)
+                                ('right 'height)))))
+        (cond
+         ((and other-window (not (window-minibuffer-p other-window)))
+          (window-swap-states (selected-window) other-window))
+         (other-direction
+          (evil-move-window dir))
+         (t (dalvrosa/i3-msg "move" (symbol-name dir))))))
+
+    (defun dalvrosa/emacs-i3-integration (command)
+  (message "top")
+      (pcase command
+        ((rx bos "focus")
+         (dalvrosa/emacs-i3-windmove
+          (intern (elt (split-string command) 1))))
+        ((rx bos "move")
+         (dalvrosa/emacs-i3-move-window
+          (intern (elt (split-string command) 1))))
+        (- (dalvrosa/i3-msg command))))
 #+end_src
 
 ** Auto Fill Mode
@@ -732,6 +736,18 @@ combination with Corfu, Company or the default completion UI.
     (add-hook 'completion-at-point-functions #'cape-tex))
 #+end_src
 
+Embark is an Emacs mini-buffer actions rooted in keymaps.
+#+begin_src elisp
+  (use-package embark
+    :bind
+    (("C-." . embark-act)
+     ("C-;" . embark-dwim)))
+
+  (use-package embark-consult
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
+
 *** Keybinding Panel
 Nice utility (=which-key=) for displaying available keybindings in a popup
 panel. You get an overview of what keybindings are available based on the
@@ -818,9 +834,11 @@ spirit of Emacs, available at any time and uniformly in any buffer.
     :bind
     ("C-c h" . gptel)
     :config
-    (setq gptel-model 'gpt-4o)
+    (setq gptel-model 'gpt-4.1)
     (setq gptel-default-mode 'org-mode)
     :hook (gptel-mode . visual-line-mode))
+
+  (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
 #+end_src
 
 * User Interface
@@ -1015,9 +1033,11 @@ https://mocompute.codeberg.page/item/2024/2024-09-03-emacs-project-vterm.html
         (vterm (generate-new-buffer-name default-project-shell-name)))))
 
   (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands '(consult-project-buffer "Find buffer") t)
     (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
     (add-to-list 'project-switch-commands '(dalvrosa/project-shell "Vterm") t)
-    (keymap-set project-prefix-map "m" #'magit-project-status)
+    (keymap-set project-prefix-map "b" #'consult-project-buffer)
+    (keymap-set project-prefix-map "g" #'magit-project-status)
     (keymap-set project-prefix-map "v" #'dalvrosa/project-shell))
 #+end_src
 
