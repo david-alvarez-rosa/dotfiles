@@ -71,6 +71,22 @@
 (put 'narrow-to-page 'disabled nil)
 (put 'LaTeX-narrow-to-environment 'disabled nil)
 
+(defun dalvrosa/split-and-follow-horizontally ()
+  (interactive)
+  (split-window-below)
+  (balance-windows)
+  (other-window 1))
+(global-set-key (kbd "C-x 2") 'dalvrosa/split-and-follow-horizontally)
+
+(defun dalvrosa/split-and-follow-vertically ()
+  (interactive)
+  (split-window-right)
+  (balance-windows)
+  (other-window 1))
+(global-set-key (kbd "C-x 3") 'dalvrosa/split-and-follow-vertically)
+
+(global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
+
 (winner-mode 1)
 
 (global-set-key (kbd "M-o") 'other-window)
