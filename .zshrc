@@ -46,5 +46,5 @@ alias cpc="xclip -selection clipboard"
 alias yt="youtube-dl --add-metadata -ic --output \"%(uploader)s%(title)s.%(ext)s\""
 alias yta="yt -x -f bestaudio/best" # Download only audio
 alias ls="ls --color=auto --group-directories-first"
-alias l="ls"
-alias ll="ls -lah"
+alias l="ls -N"
+alias ll="ls -lahN"
