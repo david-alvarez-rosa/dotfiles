@@ -561,10 +561,7 @@ if one already exists."
          "* TODO [#C] %?\n%a\n%i" :empty-lines 1)
         ("n" "Text Note" entry
          (file+olp "~/docs/Notes.org" "Refile")
-         "* %?" :empty-lines 1)
-        ("j" "Jorunal Entry" entry
-         (file+olp+datetree "~/docs/Journal.org")
-         "* %?")))
+         "* %?" :empty-lines 1)))
 
 (require 'mu4e-org)
 
@@ -630,10 +627,6 @@ if one already exists."
                  (org-agenda-skip-function
                   '(org-agenda-skip-entry-if 'scheduled))))
           (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
-          (tags-todo "TODO=\"TODO\"+uni-backlog"
-                     ((org-agenda-overriding-header "University")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled))))
           (tags-todo "TODO=\"TODO\"+proj-backlog"
                      ((org-agenda-overriding-header "Projects")
                       (org-agenda-skip-function
@@ -650,8 +643,6 @@ if one already exists."
           (todo "NEXT"
                 ((org-agenda-overriding-header "Next Actions")))
           (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
-          (tags-todo "TODO=\"TODO\"+uni-backlog"
-                     ((org-agenda-overriding-header "University")))
           (tags-todo "TODO=\"TODO\"+proj-backlog"
                      ((org-agenda-overriding-header "Projects")))
           (tags-todo "TODO=\"TODO\"+sing-backlog"
