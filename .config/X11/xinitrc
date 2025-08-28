@@ -1,20 +1,5 @@
-xremap --mouse ~/.config/xremap/emacs.yml & sleep 2 && xset r rate 275 60 && setxkbmap -layout us,es -option grp:win_space_toggle &
+xremap --mouse ~/.config/xremap/config.yml & sleep 2 && xset r rate 275 60 && setxkbmap -layout us,es -option grp:win_space_toggle &
 xbindkeys -f ~/.config/xbindkeys/config
-
-feh --bg-scale --no-fehbg ~/.local/share/wallpaper.png
-
 unclutter --timeout 2 --ignore-scrolling &
-
-if xrandr | grep "DVI-I-1-1 connected"; then
-    xrandr --output DVI-I-1-1 --mode 1920x1200 --primary --output eDP-1 --off
-fi
-
-dunst &
-
-sleep 1
-
-xset r rate 275 60
-
 xrdb -merge ~/.Xresources
-
 exec i3
