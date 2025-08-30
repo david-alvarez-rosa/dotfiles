@@ -925,7 +925,8 @@ Enable nyan cat.
 #+begin_src elisp
   (use-package nyan-mode
     :after doom-modeline
-    :init (nyan-mode))
+    :init (nyan-mode)
+    (nyan-start-animation))
 #+end_src
 
 ** Font

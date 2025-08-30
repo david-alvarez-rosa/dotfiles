@@ -383,7 +383,8 @@
 
 (use-package nyan-mode
   :after doom-modeline
-  :init (nyan-mode))
+  :init (nyan-mode)
+  (nyan-start-animation))
 
 (set-face-attribute 'default nil :font "Hack Nerd Font" :height 90)
 
