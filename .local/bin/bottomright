@@ -5,10 +5,10 @@
 
 current=$(xdotool getwindowfocus)
 
-# The window will take up no more than a third of
+# The window will take up no more than a fourth of
 # the width or height of the screen.
-newwidth=$(($(xdotool getdisplaygeometry | awk '{print $2}') / 3))
-newheight=$(($(xdotool getdisplaygeometry | awk '{print $1}') / 3))
+newwidth=$(($(xdotool getdisplaygeometry | awk '{print $2}') / 4))
+newheight=$(($(xdotool getdisplaygeometry | awk '{print $1}') / 4))
 
 xdotool windowsize "$(xdotool getwindowfocus)" $newheight $newwidth
 

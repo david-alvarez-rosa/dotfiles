@@ -19,14 +19,10 @@ Set default font (for window title).
   font pango:Hack Nerd Font 11
 #+end_src
 
-Set initial inner and outer gaps.
+Set initial inner and outer gaps and window border
 #+begin_src conf
   gaps inner 4
   gaps outer 2
-#+end_src
-
-Set window border to 2 pixel.
-#+begin_src conf
   default_border pixel 2
 #+end_src
 
@@ -54,24 +50,12 @@ Set workspace names.
   set $ws9 "9. Auxiliar"
 #+end_src
 
-Init pasword manager.
-#+begin_src conf
-  exec --no-startup-id keepassxc
-#+end_src
-
 * Key bindings
-** General
-Key bindings related to i3wm, such as reloading the configuration, restarting,
-or ending the X session.
+** Apps
+Open a terminal
 #+begin_src conf
-  bindsym $mod+Shift+c reload
-  bindsym $mod+Shift+r restart
-  bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-#+end_src
-
-Open a terminal.
-#+begin_src conf
-  bindsym $mod+Return exec i3-sensible-terminal
+  bindsym $mod+Return exec emacsclient -c -e "(let ((current-prefix-arg t)) (call-interactively 'vterm))"
+  bindsym $mod+Shift+Return exec i3-sensible-terminal
 #+end_src
 
 Magnifier.
@@ -80,8 +64,6 @@ Magnifier.
 #+end_src
 
 ** Workspaces
-Key bindings related to workspaces.
-
 Switching to a workspace.
 #+begin_src conf
   bindsym $mod+1 workspace $ws1
@@ -116,8 +98,7 @@ Switching between the last two used workspaces.
 *** Default Workspaces
 Open =mpv= in a window video for multitasking.
 #+begin_src conf
-  for_window [class="mpv"]                 floating enable; exec --no-startup-id ~/.local/bin/bottomright
-  for_window [class="mpv"]                 sticky enable
+  for_window [class="mpv"] floating enable; exec --no-startup-id ~/.local/bin/bottomright; sticky enable
 #+end_src
 
 Open magnifier =xzoom= as floating
@@ -143,17 +124,9 @@ moving set).
   bindsym $mod+f exec emacs-i3-integration focus right
 #+end_src
 
-Alternative with arrow keys.
-#+begin_src conf
-  bindsym $mod+Left exec emacs-i3-integration focus left
-  bindsym $mod+Down exec emacs-i3-integration focus down
-  bindsym $mod+Up exec emacs-i3-integration focus up
-  bindsym $mod+Right exec emacs-i3-integration focus right
-  #+end_src
-
 Change focus between tiling/floating windows.
 #+begin_src conf
-  bindsym $mod+space focus mode_toggle
+  bindsym $mod+t focus mode_toggle
 #+end_src
 
 *** Window moving
@@ -164,14 +137,6 @@ but with =Shift= modifier.
   bindsym $mod+Shift+n exec emacs-i3-integration move down 20px
   bindsym $mod+Shift+p exec emacs-i3-integration move up 20px
   bindsym $mod+Shift+f exec emacs-i3-integration move right 20px
-#+end_src
-
-Alternative with arrow keys.
-#+begin_src conf
-  bindsym $mod+Shift+Left exec emacs-i3-integration move left 20px
-  bindsym $mod+Shift+Down exec emacs-i3-integration move down 20px
-  bindsym $mod+Shift+Up exec emacs-i3-integration move up 20px
-  bindsym $mod+Shift+Right exec emacs-i3-integration move right 20px
 #+end_src
 
 Use $mod+Mouse for moving floating windows.
@@ -187,14 +152,6 @@ with =Control= modifier.
   bindsym $mod+Control+p exec --no-startup-id "~/.local/bin/i3resize up"
   bindsym $mod+Control+n exec --no-startup-id "~/.local/bin/i3resize down"
   bindsym $mod+Control+b exec --no-startup-id "~/.local/bin/i3resize left"
-  #+end_src
-
-Alternative with arrow keys.
-  #+begin_src conf
-    bindsym $mod+Control+Right exec --no-startup-id "~/.local/bin/i3resize right"
-    bindsym $mod+Control+Upc exec --no-startup-id "~/.local/bin/i3resize up"
-    bindsym $mod+Control+Down exec --no-startup-id "~/.local/bin/i3resize down"
-    bindsym $mod+Control+Left exec --no-startup-id "~/.local/bin/i3resize left"
   #+end_src
 
 *** Window splitting
@@ -213,7 +170,7 @@ Set key for the toggle between tiling/floating.
 *** Window sticky
 Binding for sticky window toggle.
 #+begin_src conf
-  bindsym $mod+Shift+w sticky toggle
+  bindsym $mod+Shift+t sticky toggle
 #+end_src
 
 *** Window fullscreen

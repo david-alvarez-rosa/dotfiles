@@ -2,7 +2,6 @@ font pango:Hack Nerd Font 11
 
 gaps inner 4
 gaps outer 2
-
 default_border pixel 2
 
 set $mod Mod4
@@ -19,13 +18,8 @@ set $ws7 "7. Media"
 set $ws8 "8. Firefox"
 set $ws9 "9. Auxiliar"
 
-exec --no-startup-id keepassxc
-
-bindsym $mod+Shift+c reload
-bindsym $mod+Shift+r restart
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec emacsclient -c -e "(let ((current-prefix-arg t)) (call-interactively 'vterm))"
+bindsym $mod+Shift+Return exec i3-sensible-terminal
 
 bindsym $mod+m exec xzoom
 
@@ -51,8 +45,7 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 
 bindsym $mod+Tab workspace back_and_forth
 
-for_window [class="mpv"]                 floating enable; exec --no-startup-id ~/.local/bin/bottomright
-for_window [class="mpv"]                 sticky enable
+for_window [class="mpv"] floating enable; exec --no-startup-id ~/.local/bin/bottomright; sticky enable
 
 for_window [title="^xzoom"] floating enable
 
@@ -63,22 +56,12 @@ bindsym $mod+n exec emacs-i3-integration focus down
 bindsym $mod+p exec emacs-i3-integration focus up
 bindsym $mod+f exec emacs-i3-integration focus right
 
-bindsym $mod+Left exec emacs-i3-integration focus left
-bindsym $mod+Down exec emacs-i3-integration focus down
-bindsym $mod+Up exec emacs-i3-integration focus up
-bindsym $mod+Right exec emacs-i3-integration focus right
-
-bindsym $mod+space focus mode_toggle
+bindsym $mod+t focus mode_toggle
 
 bindsym $mod+Shift+b exec emacs-i3-integration move left 20px
 bindsym $mod+Shift+n exec emacs-i3-integration move down 20px
 bindsym $mod+Shift+p exec emacs-i3-integration move up 20px
 bindsym $mod+Shift+f exec emacs-i3-integration move right 20px
-
-bindsym $mod+Shift+Left exec emacs-i3-integration move left 20px
-bindsym $mod+Shift+Down exec emacs-i3-integration move down 20px
-bindsym $mod+Shift+Up exec emacs-i3-integration move up 20px
-bindsym $mod+Shift+Right exec emacs-i3-integration move right 20px
 
 floating_modifier $mod
 
@@ -87,17 +70,12 @@ bindsym $mod+Control+p exec --no-startup-id "~/.local/bin/i3resize up"
 bindsym $mod+Control+n exec --no-startup-id "~/.local/bin/i3resize down"
 bindsym $mod+Control+b exec --no-startup-id "~/.local/bin/i3resize left"
 
-bindsym $mod+Control+Right exec --no-startup-id "~/.local/bin/i3resize right"
-bindsym $mod+Control+Upc exec --no-startup-id "~/.local/bin/i3resize up"
-bindsym $mod+Control+Down exec --no-startup-id "~/.local/bin/i3resize down"
-bindsym $mod+Control+Left exec --no-startup-id "~/.local/bin/i3resize left"
-
 bindsym $mod+v split vertical
 bindsym $mod+h split horizontal
 
 bindsym $mod+Shift+space floating toggle
 
-bindsym $mod+Shift+w sticky toggle
+bindsym $mod+Shift+t sticky toggle
 
 bindsym $mod+o fullscreen toggle
 
