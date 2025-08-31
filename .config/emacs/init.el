@@ -7,7 +7,7 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-(setq use-package-always-ensure t)
+;; (setq use-package-always-ensure t)
 (setq use-package-always-defer t)
 
 (setq user-full-name "David Álvarez Rosa")
@@ -339,9 +339,13 @@
     :keybinding "d")
   (engine-mode t))
 
+(defun dalvrosa/new-gpt-chat ()
+  (interactive)
+  (switch-to-buffer (gptel (generate-new-buffer "*ChatGPT*"))))
+
 (use-package gptel
   :bind
-  ("C-c h" . gptel)
+  ("C-c h" . dalvrosa/new-gpt-chat)
   :config
   (setq gptel-model 'gpt-4.1)
   (setq gptel-default-mode 'org-mode)
@@ -726,9 +730,6 @@ if one already exists."
 
 (setq org-archive-tag "archive")
 
-(use-package toc-org
-  :hook (org-mode . toc-org-mode))
-
 (use-package markdown-mode)
 
 (use-package markdown-preview-mode
@@ -992,12 +993,6 @@ if one already exists."
   :after elfeed
   :init (elfeed-org)
   :config (setq rmh-elfeed-org-files (list "~/docs/Subscriptions.org")))
-
-(use-package elfeed-goodies
-  :after elfeed
-  :init (elfeed-goodies/setup)
-  :config
-  (setq elfeed-goodies/entry-pane-position 'bottom))
 
 (defun dalvrosa/elfeed-play-with-mpv ()
   (interactive)

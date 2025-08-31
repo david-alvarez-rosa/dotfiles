@@ -28,90 +28,6 @@ KISS or Unix philosophy: Emacs--at least for me--is a container for
 "do-one-thing-and-do-it-well" packages that behave similarly, I find no
 conflict here. Lastly, Emacs is a gift from God.
 
-
-* Table of Contents                                                     :TOC:
-- [[#preamble][Preamble]]
-  - [[#installation][Installation]]
-  - [[#about-this-configuration][About this Configuration]]
-  - [[#license-and-copyright][License and Copyright]]
-- [[#loading-and-package-management][Loading and Package Management]]
-- [[#general-configuration][General Configuration]]
-  - [[#personal-information][Personal Information]]
-  - [[#server-mode][Server Mode]]
-  - [[#custom-file][Custom File]]
-  - [[#authentication-file][Authentication File]]
-  - [[#initialization-macos][Initialization MacOS]]
-  - [[#file-management][File Management]]
-  - [[#buffer-management][Buffer Management]]
-  - [[#window-management][Window Management]]
-  - [[#auto-fill-mode][Auto Fill Mode]]
-  - [[#indentation-enhancements][Indentation Enhancements]]
-  - [[#subword-mode][Subword Mode]]
-  - [[#region-selection][Region Selection]]
-  - [[#scrolling-and-point-location][Scrolling and Point Location]]
-  - [[#character-pairs][Character Pairs]]
-  - [[#html-renderer][HTML Renderer]]
-  - [[#completion-inteface][Completion Inteface]]
-  - [[#spell-checking-and-correcting][Spell Checking and Correcting]]
-  - [[#sudo-edit][Sudo Edit]]
-  - [[#chronometer][Chronometer]]
-  - [[#disable-kill-confirmation][Disable Kill Confirmation]]
-  - [[#engine-mode][Engine Mode]]
-  - [[#llm-integration][LLM Integration]]
-- [[#user-interface][User Interface]]
-  - [[#theme][Theme]]
-  - [[#icons][Icons]]
-  - [[#modeline][Modeline]]
-  - [[#font][Font]]
-  - [[#basic-interface-settings][Basic Interface Settings]]
-  - [[#distraction-free-mode][Distraction Free Mode]]
-- [[#programming-configuration][Programming Configuration]]
-  - [[#general-configuration-1][General Configuration]]
-  - [[#cmake][CMake]]
-  - [[#php][PHP]]
-  - [[#kotlin][Kotlin]]
-  - [[#swift][Swift]]
-  - [[#octavematlab][Octave/Matlab]]
-  - [[#r][R]]
-  - [[#apache-groovy][Apache Groovy]]
-  - [[#rest-http-api][REST HTTP API]]
-  - [[#log-files][Log Files]]
-- [[#org-mode][Org Mode]]
-  - [[#speed-commands][Speed Commands]]
-  - [[#refile][Refile]]
-  - [[#capture-templates][Capture Templates]]
-  - [[#state-keywords][State Keywords]]
-  - [[#priorities][Priorities]]
-  - [[#code-evaluation][Code Evaluation]]
-  - [[#export][Export]]
-  - [[#interface][Interface]]
-  - [[#agenda][Agenda]]
-  - [[#archive][Archive]]
-  - [[#table-of-contents][Table of Contents]]
-- [[#markup-languages][Markup Languages]]
-  - [[#markdown-mode][Markdown Mode]]
-  - [[#quarto][Quarto]]
-  - [[#texlatex][TeX/LaTeX]]
-  - [[#ledger][Ledger]]
-  - [[#yaml][YAML]]
-- [[#pdf-viewer][PDF Viewer]]
-- [[#email-management][Email Management]]
-  - [[#contexts-for-multiple-accounts][Contexts for Multiple Accounts]]
-  - [[#bookmarks][Bookmarks]]
-  - [[#update-and-notification][Update and Notification]]
-  - [[#queued-email][Queued Email]]
-  - [[#emacs-unified-directory-client][Emacs Unified Directory Client]]
-  - [[#compositionsending][Composition/Sending]]
-  - [[#attachment-management][Attachment Management]]
-  - [[#meetings][Meetings]]
-- [[#web-feed-reader][Web Feed Reader]]
-  - [[#elfeed-org][Elfeed Org]]
-  - [[#elfeed-goodies][Elfeed Goodies]]
-  - [[#custom-functions][Custom Functions]]
-- [[#internet-relay-chat-irc][Internet Relay Chat (IRC)]]
-  - [[#nickname-highlighter][Nickname Highlighter]]
-- [[#useful-resources][Useful Resources]]
-
 * Preamble
 ** Installation
 This configuration is written in a literate style using Org mode (an Emacs
@@ -187,7 +103,7 @@ Add MELPA package repositories.
 Always ensure that all package are installed when starting Emacs. If a
 particular package does not exist, it will be installed automagically.
 #+begin_src elisp
-  (setq use-package-always-ensure t)
+  ;; (setq use-package-always-ensure t)
   (setq use-package-always-defer t)
 #+end_src
 
@@ -855,9 +771,13 @@ Emacs, with support for multiple models and backends. It works in the
 spirit of Emacs, available at any time and uniformly in any buffer.
 
 #+begin_src elisp
+  (defun dalvrosa/new-gpt-chat ()
+    (interactive)
+    (switch-to-buffer (gptel (generate-new-buffer "*ChatGPT*"))))
+
   (use-package gptel
     :bind
-    ("C-c h" . gptel)
+    ("C-c h" . dalvrosa/new-gpt-chat)
     :config
     (setq gptel-model 'gpt-4.1)
     (setq gptel-default-mode 'org-mode)
@@ -1024,7 +944,7 @@ Emacs-libvterm (vterm) is fully-fledged terminal emulator inside GNU
 Emacs based on libvterm, a C library. As a result of using compiled code
 (instead of elisp), emacs-libvterm is fully capable, fast, and it can
 seamlessly handle large outputs.  I launch it with =C-c t= (with =C-u=
-prefix will create a new session), and also with =C-x p s= when inside a
+prefix will create a new session), and also with =C-x p v= when inside a
 Projectile project.
 #+begin_src elisp
   (use-package vterm
@@ -1639,19 +1559,6 @@ Use lowercase tag names.
   (setq org-archive-tag "archive")
 #+end_src
 
-** Table of Contents
-It’s nice to have a table of contents section (without exporting) for long
-literate configuration files (like this one!) so I use org-toc-org to
-automatically update the ToC in any header with a property named TOC.
-#+begin_src elisp
-  (use-package toc-org
-    :hook (org-mode . toc-org-mode))
-#+end_src
-
-The default ToC depth is 2. Is possible to change this with the following tag
-format =:TOC_3:= for seting the max depth of the headlines in the table of
-contents to 3.
-
 * Markup Languages
 Section for markup languages.
 
@@ -2236,16 +2143,6 @@ file.
     :after elfeed
     :init (elfeed-org)
     :config (setq rmh-elfeed-org-files (list "~/docs/Subscriptions.org")))
-#+end_src
-
-** Elfeed Goodies
-This package allows to configure the Elfeed interface.
-#+begin_src elisp
-  (use-package elfeed-goodies
-    :after elfeed
-    :init (elfeed-goodies/setup)
-    :config
-    (setq elfeed-goodies/entry-pane-position 'bottom))
 #+end_src
 
 ** Custom Functions
