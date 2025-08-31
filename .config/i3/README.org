@@ -98,7 +98,8 @@ Switching between the last two used workspaces.
 *** Default Workspaces
 Open =mpv= in a window video for multitasking.
 #+begin_src conf
-  for_window [class="mpv"] floating enable; exec --no-startup-id ~/.local/bin/bottomright; sticky enable
+  for_window [class="mpv"] floating enable; exec --no-startup-id ~/.local/bin/bottomright
+  for_window [class="mpv"] sticky enable
 #+end_src
 
 Open magnifier =xzoom= as floating

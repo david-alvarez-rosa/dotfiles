@@ -45,7 +45,8 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 
 bindsym $mod+Tab workspace back_and_forth
 
-for_window [class="mpv"] floating enable; exec --no-startup-id ~/.local/bin/bottomright; sticky enable
+for_window [class="mpv"] floating enable; exec --no-startup-id ~/.local/bin/bottomright
+for_window [class="mpv"] sticky enable
 
 for_window [title="^xzoom"] floating enable
 
