@@ -1,3 +1,5 @@
+[[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
+
 # C/C++ compiler
 export CC=clang
 export CXX=clang++

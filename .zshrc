@@ -1,3 +1,5 @@
+[[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
+
 export ZSH="$XDG_DATA_HOME"/oh-my-zsh
 plugins=(
     git
@@ -38,8 +40,6 @@ vterm_prompt_end(){
 }
 
 alias cpc="xclip -selection clipboard"
-alias yt="youtube-dl --add-metadata -ic --output \"%(uploader)s%(title)s.%(ext)s\""
-alias yta="yt -x -f bestaudio/best" # Download only audio
 alias ls="ls --color=auto --group-directories-first"
 alias l="ls -N"
 alias ll="ls -lahN"
