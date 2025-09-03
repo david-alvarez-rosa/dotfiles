@@ -50,6 +50,14 @@ Set workspace names.
   set $ws9 "9. Auxiliar"
 #+end_src
 
+* Auto Start
+Auto start Firefox and Emacs.
+#+begin_src conf
+  exec --no-startup-id i3-msg "exec emacs"
+  exec --no-startup-id i3-msg "workspace 2. Browser; exec firefox"
+  exec --no-startup-id i3-msg "workspace 1. Emacs"
+#+end_src
+
 * Key bindings
 ** Apps
 Open a terminal
