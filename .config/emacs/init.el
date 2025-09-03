@@ -87,6 +87,14 @@
 
 (global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
 
+(defun dalvrosa/kill-all-other-buffers ()
+  "Kill all buffers except current and *scratch*."
+  (interactive)
+  (delete-other-windows)
+  (setq scratch (get-buffer "*scratch*"))
+  (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
+(global-set-key (kbd "C-c k") 'dalvrosa/kill-all-other-buffers)
+
 (winner-mode 1)
 
 (global-set-key (kbd "M-o") 'other-window)
@@ -100,7 +108,6 @@
     `(start-process "emacs-i3-windmove" nil "i3-msg" ,@args))
 
   (defun dalvrosa/emacs-i3-windmove (dir)
-(message "hello")
     (let ((other-window (windmove-find-other-window dir)))
       (if (or (null other-window) (window-minibuffer-p other-window))
           (dalvrosa/i3-msg "focus" (symbol-name dir))
@@ -130,7 +137,6 @@
        (t (dalvrosa/i3-msg "move" (symbol-name dir))))))
 
   (defun dalvrosa/emacs-i3-integration (command)
-(message "top")
     (pcase command
       ((rx bos "focus")
        (dalvrosa/emacs-i3-windmove

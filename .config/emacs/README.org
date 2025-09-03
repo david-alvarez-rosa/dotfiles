@@ -308,6 +308,17 @@ New bind for killing buffer *and* window at the same time. To do this press
   (global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
 #+end_src
 
+Kill all buffers except =*scratch*= (similar to restarting Emacs).
+#+begin_src elisp
+  (defun dalvrosa/kill-all-other-buffers ()
+    "Kill all buffers except current and *scratch*."
+    (interactive)
+    (delete-other-windows)
+    (setq scratch (get-buffer "*scratch*"))
+    (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
+  (global-set-key (kbd "C-c k") 'dalvrosa/kill-all-other-buffers)
+#+end_src
+
 *** Winner Mode
 Global minor mode that allows to “undo” and “redo” changes in window
 configuration. It is included in GNU Emacs.
@@ -329,7 +340,6 @@ Integration with i3wm https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/
       `(start-process "emacs-i3-windmove" nil "i3-msg" ,@args))
 
     (defun dalvrosa/emacs-i3-windmove (dir)
-  (message "hello")
       (let ((other-window (windmove-find-other-window dir)))
         (if (or (null other-window) (window-minibuffer-p other-window))
             (dalvrosa/i3-msg "focus" (symbol-name dir))
@@ -359,7 +369,6 @@ Integration with i3wm https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/
          (t (dalvrosa/i3-msg "move" (symbol-name dir))))))
 
     (defun dalvrosa/emacs-i3-integration (command)
-  (message "top")
       (pcase command
         ((rx bos "focus")
          (dalvrosa/emacs-i3-windmove
