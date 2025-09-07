@@ -4,25 +4,20 @@ modmap:
       CapsLock:
         held: Ctrl_R
         alone: Esc
-        free_hold: true
       Enter:
         held: Ctrl_R
         alone: enter
-        free_hold: true
       Tab:
         held: Win_L
         alone: tab
-        free_hold: true
       Backspace:
         held: Win_L
         alone: Backspace
-        free_hold: true
+      Esc:
+        held: CapsLock
+        alone: Esc
 
 keymap:
-  - name: All
-    remap:
-      Esc: CapsLock
-
   - name: Emacs
     application:
       not: [Emacs, St]
