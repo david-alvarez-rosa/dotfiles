@@ -207,6 +207,9 @@
 
 (put 'scroll-left 'disabled nil)
 
+(global-set-key (kbd "C-v") 'View-scroll-half-page-forward)
+(global-set-key (kbd "M-v") 'View-scroll-half-page-backward)
+
 (electric-pair-mode t)
 
 (show-paren-mode 1)

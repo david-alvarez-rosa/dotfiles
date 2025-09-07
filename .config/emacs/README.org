@@ -520,6 +520,12 @@ former is a well-known Emacs command, and the latter is for =reposition-window=
 function, that makes the current definition and/or comment visible (i.e., it
 attempts to scroll the window so the maximum content is visible).
 
+Just scroll amount to just half a page.
+#+begin_src elisp
+  (global-set-key (kbd "C-v") 'View-scroll-half-page-forward)
+  (global-set-key (kbd "M-v") 'View-scroll-half-page-backward)
+#+end_src
+
 ** Character Pairs
 It can be useful to insert parentheses, braces, quotes and the like in matching
 pairs, e.g., pressing “(” inserts "()", with the cursor in between.
