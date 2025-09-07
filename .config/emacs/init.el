@@ -471,6 +471,7 @@ if one already exists."
   (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
   (setq eglot-autoshutdown t)
   :hook ((c++-ts-mode . eglot-ensure)
+         (c-ts-mode . eglot-ensure)
          (java-ts-mode . eglot-ensure)
          (ruby-ts-mode . eglot-ensure)
          (rust-ts-mode . eglot-ensure)
