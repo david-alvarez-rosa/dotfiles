@@ -19,6 +19,10 @@ modmap:
         free_hold: true
 
 keymap:
+  - name: All
+    remap:
+      Esc: CapsLock
+
   - name: Emacs
     application:
       not: [Emacs, St]
