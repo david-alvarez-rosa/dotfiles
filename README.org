@@ -1,14 +1,26 @@
-#+TITLE: Dotfiles
-#+AUTHOR: David Álvarez Rosa
-#+STARTUP: showall
+#+title: Dotfiles
+#+author: David Álvarez Rosa
+#+email: david@alvarezrosa.com
+#+language: en
+#+description: Personal dotfiles
 
+Keyboard-first, minimal, and fast.  Built entirely on free software and
+tuned around Emacs-style keybindings.  Battle-tested for nearly a decade
+across work and personal machines.
 
-This repository is intended to be a backup of my personal configuration files
-(also know as dotfiles). Most of the configuration files are written in
-literate style using Emacs Org Mode. And then this files are tangled so can
-actually be used as configuration files.
+[[./img/dotfiles-demo.png]]
 
-I use this dotfiles in my main work machine running Arch Linux as my prefered
-Linux distribution. Please, if you are planning to use this dotfiles in your
-machine, don't expect them to work out of the box. There might be some fixes
-you will need to perform to adapt this configuration to your distro of choice.
+[[./img/dotfiles-demo-2.png]]
+
+What's included:
+- *Emacs:* Everything from editing, terminal, email, agenda, calendar,
+  notes, PDFs, images, RSS/Atom feeds, IRC, and LLM integration.
+- *i3wm Window Manager:* Tiling window management with custom i3-blocks
+  and dunst notifications.
+- *Shell:* Zsh + oh-my-zsh + starship
+- *Qutebrowser:* Minimal, keyboard-driven web browsing.
+- *mpv:* Lightweight media player.
+- *isync:* Email synchronization.
+- *Key Remapping:* xbindkeys and xremap.
+
+Suggestions or improvements?  Raise a pull request!
