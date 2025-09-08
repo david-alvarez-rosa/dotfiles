@@ -7,7 +7,7 @@ Keyboard-first, minimalist, fast.  Built entirely on free software and
 tuned around Emacs-style keybindings.  Battle-tested for nearly a decade
 across work and personal machines.
 
-| [[./img/dotfiles-demo.png]] | [[./img/dotfiles-demo-2.png]] |
+[[./img/dotfiles-demo.png]]
 
 - Emacs :: Editor, terminal, email, agenda, calendar, notes, PDFs,
   images, file manager, RSS/Atom feeds, IRC, and LLM integration.
