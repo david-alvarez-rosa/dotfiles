@@ -1,26 +1,24 @@
-#+title: Dotfiles
+#+title: Arch Linux Dotfiles
 #+author: David Álvarez Rosa
 #+email: david@alvarezrosa.com
 #+language: en
-#+description: Personal dotfiles
 
-Keyboard-first, minimal, and fast.  Built entirely on free software and
+Keyboard-first, minimalist, fast.  Built entirely on free software and
 tuned around Emacs-style keybindings.  Battle-tested for nearly a decade
 across work and personal machines.
 
-[[./img/dotfiles-demo.png]]
+| [[./img/dotfiles-demo.png]] | [[./img/dotfiles-demo-2.png]] |
 
-[[./img/dotfiles-demo-2.png]]
-
-What's included:
-- *Emacs:* Everything from editing, terminal, email, agenda, calendar,
-  notes, PDFs, images, RSS/Atom feeds, IRC, and LLM integration.
-- *i3wm Window Manager:* Tiling window management with custom i3-blocks
+- Emacs :: Editor, terminal, email, agenda, calendar, notes, PDFs,
+  images, file manager, RSS/Atom feeds, IRC, and LLM integration.
+- i3 Window Manager :: Tiling window management with custom i3-blocks
   and dunst notifications.
-- *Shell:* Zsh + oh-my-zsh + starship
-- *Qutebrowser:* Minimal, keyboard-driven web browsing.
-- *mpv:* Lightweight media player.
-- *isync:* Email synchronization.
-- *Key Remapping:* xbindkeys and xremap.
+- Zsh :: With oh-my-zsh and starship prompt
+- Qutebrowser :: Minimal, keyboard-driven web browsing.
+- mpv :: Lightweight media player.
+- isync :: Email synchronization.
+- xbindkeys / xremap :: Key Remapping.
 
-Suggestions or improvements?  Raise a pull request!
+#+html: <br />
+
+With :heart: by [[https://david.alvarezrosa.com][David Álvarez Rosa]].
