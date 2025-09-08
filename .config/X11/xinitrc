@@ -2,5 +2,6 @@ xremap --mouse ~/.config/xremap/config.yml & sleep 2 && xset r rate 275 60 && se
 xbindkeys -f ~/.config/xbindkeys/config
 unclutter --timeout 2 --ignore-scrolling &
 keepassxc &
+dunst &
 xrdb -merge ~/.Xresources
 exec i3

@@ -1,11 +1,10 @@
 [global]
   width = 350
-  height = 250
+  height = (0, 250)
   offset = 5x25
   padding = 6
   transparency = 10
-  font = Monospace 11
-  monitor = 0
+  font = Monospace 10
   separator_height = 2
   separator_color = frame
   frame_width = 3
