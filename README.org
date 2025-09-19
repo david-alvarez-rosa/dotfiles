@@ -13,11 +13,11 @@ across work and personal machines.
   images, file manager, RSS/Atom feeds, IRC, and LLM integration.
 - i3 Window Manager :: Tiling window management with custom i3-blocks
   and dunst notifications.
-- Zsh :: With oh-my-zsh and starship prompt
+- Zsh :: With oh-my-zsh and starship prompt.
 - Qutebrowser :: Minimal, keyboard-driven web browsing.
 - mpv :: Lightweight media player.
 - isync :: Email synchronization.
-- xbindkeys / xremap :: Key Remapping.
+- xbindkeys / xremap :: Key remapping.
 
 #+html: <br />
 

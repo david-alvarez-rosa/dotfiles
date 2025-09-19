@@ -436,6 +436,7 @@
 
 (use-package vterm
   :config
+  (add-to-list 'vterm-eval-cmds '("man" man))
   (setq vterm-max-scrollback 10000)
   :bind ("C-c t" . 'vterm))
 
