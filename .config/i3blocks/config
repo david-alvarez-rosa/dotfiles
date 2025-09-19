@@ -19,7 +19,7 @@ interval=3600
 color=#21b089
 
 [root]
-command=printf "\\uf292 " && df -h -P -l / | awk '{print $4}' | tail -1
+command=printf "\\uf292 " && df -h -P -l / | awk '{print $2}' | tail -1
 interval=3600
 color=#f9555f
 
@@ -46,7 +46,7 @@ interval=10
 color=#E88939
 
 [wifi]
-instance=wlp1s0
+instance=wlp0s20f3
 interval=15
 color=#589df6
 
