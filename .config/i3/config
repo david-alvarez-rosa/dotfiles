@@ -54,6 +54,8 @@ for_window [class="mpv"] sticky enable
 
 for_window [title="^xzoom"] floating enable
 
+for_window [class="KeePassXC"] floating enable
+
 bindsym $mod+q kill
 
 bindsym $mod+b exec emacs-i3-integration focus left

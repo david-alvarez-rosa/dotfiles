@@ -115,6 +115,11 @@ Open magnifier =xzoom= as floating
   for_window [title="^xzoom"] floating enable
 #+end_src
 
+Open KeePassXC password manager =keepassxc= as floating
+#+begin_src conf
+  for_window [class="KeePassXC"] floating enable
+#+end_src
+
 ** Windows
 Key bindings related to windows (inside a workspace).
 
