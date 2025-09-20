@@ -54,8 +54,8 @@ Set workspace names.
 Auto start Firefox and Emacs.
 #+begin_src conf
   exec --no-startup-id i3-msg "exec emacs"
-  exec --no-startup-id i3-msg "workspace 2. Browser; exec firefox"
-  exec --no-startup-id i3-msg "workspace 1. Emacs"
+  exec --no-startup-id i3-msg "exec firefox"
+  exec --no-startup-id "sh -c 'sleep 1; i3-msg [class=firefox] move container to workspace 2. Browser'"
 #+end_src
 
 * Key bindings
