@@ -266,11 +266,8 @@
   :hook (completion-list-mode . consult-preview-at-point-mode)
 
   :init
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; "C-+"
+  (setq consult-narrow-key "<")
 
-  ;; below line allows to escape spaces while searching
   (setq orderless-component-separator 'orderless-escapable-split-on-space)
   :config
   (setq xref-show-xrefs-function #'consult-xref
@@ -830,13 +827,11 @@ if one already exists."
 (setq mail-user-agent 'mu4e-user-agent)
 (global-set-key (kbd "C-c e") 'mu4e)
 
-(setq mu4e-headers-fields '( (:from-or-to . 16)
-                             (:maildir . 18)
-                             (:subject)))
-
-(add-to-list 'display-buffer-alist
-             `(,(regexp-quote mu4e-main-buffer-name)
-               display-buffer-same-window))
+(setq mu4e-headers-fields '((:human-date . 12)
+                            (:flags . 4)
+                            (:from . 18)
+                            (:maildir . 15)
+                            (:subject)))
 
 (setq mu4e-search-sort-direction 'ascending)
 
