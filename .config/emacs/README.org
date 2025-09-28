@@ -1248,7 +1248,8 @@ Set my custom capture templates. Brief description of them:
 For the above email (or link) capture templates to work with =mu4e= (email
 client used in this configuration), it is needed the following.
 #+begin_src elisp
-  (require 'mu4e-org)
+  (use-package mu4e-org
+    :after mu4e)
 #+end_src
 
 Add some global key binding for storing link =C-c l= and jumping (goto) to
@@ -1314,20 +1315,15 @@ Don't ask for confirmation for evaluating code.
 ** Export
 Add export backends to (GitHub) MarkDown, Jira and Slack.
 #+begin_src elisp
-  (eval-after-load "org"
-    '(require 'ox-md nil t))
+  (use-package ox-jira)
+  (use-package ox-slack)
+  (use-package ox-gfm)
 
-  (use-package ox-jira
-    :after org
-    :init (require 'ox-jira nil t))
-
-  (use-package ox-slack
-    :after org
-    :init (require 'ox-slack nil t))
-
-  (use-package ox-gfm
-    :after org
-    :init (require 'ox-gfm nil t))
+  (with-eval-after-load 'org
+    (require 'ox-md nil t)
+    (require 'ox-jira nil t)
+    (require 'ox-slack nil t)
+    (require 'ox-gfm nil t))
 #+end_src
 
 ** Interface
