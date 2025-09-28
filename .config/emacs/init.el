@@ -779,6 +779,10 @@ if one already exists."
                             (:maildir . 16)
                             (:subject)))
 
+(add-to-list 'display-buffer-alist
+             `(,(regexp-quote mu4e-main-buffer-name)
+               display-buffer-same-window))
+
 (setq mu4e-search-sort-direction 'ascending)
 
 (setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc personal spam")

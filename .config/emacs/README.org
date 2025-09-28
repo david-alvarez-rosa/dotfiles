@@ -1689,6 +1689,15 @@ remove them from headers view.
                               (:subject)))
 #+end_src
 
+Configure ~mu4e~ to display the buffer in the same window (do not force
+full-screen window as the default).
+#+begin_src elisp
+  (with-eval-after-load 'mu4e
+  (add-to-list 'display-buffer-alist
+               `(,(regexp-quote mu4e-main-buffer-name)
+                 display-buffer-same-window)))
+#+end_src
+
 Sort emails in ascending direction.  That means, oldest at top.
 #+begin_src elisp
   (setq mu4e-search-sort-direction 'ascending)
