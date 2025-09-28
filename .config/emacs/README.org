@@ -92,6 +92,9 @@ check with the function =emacs-init-time=.
   ;; Lower threshold back to 8 MiB (default is 800kB)
   (add-hook 'emacs-startup-hook
             (lambda () (setq gc-cons-threshold (expt 2 23))))
+
+  ;; Single VC backend inscreases booting speed
+  (setq vc-handled-backends '(Git))
 #+end_src
 
 Add MELPA package repositories.
@@ -185,7 +188,6 @@ usual, and =g= for going back to the complete file listing.
 Subtree by tabbing.
 #+begin_src elisp
   (use-package dired-subtree
-    :ensure t
     :after dired
     :bind
     ( :map dired-mode-map
@@ -785,8 +787,7 @@ I have recently started using Protesilaos Stavrou nerdy high-contrast themes.
 ** Icons
 Add some nerd-icons here and there.
 #+begin_src elisp
-  (use-package nerd-icons
-    :demand t)
+  (use-package nerd-icons)
 
   (use-package nerd-icons-completion
     :after marginalia
@@ -795,7 +796,6 @@ Add some nerd-icons here and there.
     (nerd-icons-completion-marginalia-setup))
 
   (use-package nerd-icons-corfu
-    :demand t
     :after corfu
     :config
     (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
@@ -812,7 +812,6 @@ nerd-icons-install-fonts=. I have configured it to show column number
 instead of percentage buffer position.
 #+begin_src elisp
   (use-package doom-modeline
-    :demand t
     :init (doom-modeline-mode 1)
     :config
     (setq display-time-default-load-average nil)
@@ -1078,11 +1077,9 @@ GitHub/Bitbucket/GitLab/... repositories.
 URLs are added to the kill ring.
 #+begin_src elisp
   (use-package git-link
-    :demand t
-    :config
-    (global-set-key (kbd "C-c w l") 'git-link)
-    (global-set-key (kbd "C-c w c") 'git-link-commit)
-    (global-set-key (kbd "C-c w h") 'git-link-homepage))
+    :bind (("C-c w l" . git-link)
+           ("C-c w c" . git-link-commit)
+           ("C-c w h" . git-link-homepage)))
 #+end_src
 
 *** Snippets
