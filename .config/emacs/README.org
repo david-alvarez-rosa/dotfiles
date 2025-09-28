@@ -1862,20 +1862,8 @@ email updates every 10 minutes.  Disable minibuffer messages.
   (setq mu4e-hide-index-messages t)
 #+end_src
 
-Use mu4e alert package for displaying unread email in modeline and enable
-notifications. This is currently disabled.
-#+begin_src elisp :tangle no
-  (setq doom-modeline-mu4e t)
-
-  (use-package mu4e-alert
-    :config
-    (mu4e-alert-enable-mode-line-display)
-    (mu4e-alert-enable-notifications))
-#+end_src
-
 Disable email numbering in modeline.
 #+begin_src elisp
-  (mu4e-modeline-mode 0)
   (setq mu4e-modeline-support nil)
 #+end_src
 
