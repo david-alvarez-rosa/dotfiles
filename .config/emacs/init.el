@@ -769,9 +769,9 @@ if one already exists."
   :bind (:map pdf-view-mode-map
               ("C-s" . 'isearch-forward)))
 
-(require 'mu4e)
-(setq mail-user-agent 'mu4e-user-agent)
-(global-set-key (kbd "C-c e") 'mu4e)
+(use-package mu4e
+  :config (setq mail-user-agent 'mu4e-user-agent)
+  :bind ("C-c e" . mu4e))
 
 (setq mu4e-headers-fields '((:human-date . 12)
                             (:flags . 4)
@@ -788,15 +788,17 @@ if one already exists."
     (let ((last (nthcdr (1- nth) list)))
       (setcdr last (cddr last))
       list)))
-(setq mu4e-marks (dalvrosa/remove-nth-element 5 mu4e-marks))
-(add-to-list 'mu4e-marks
-             '(trash
-               :char ("d" . "▼")
-               :prompt "dtrash"
-               :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
-               :action (lambda (docid msg target)
-                         (mu4e--server-move docid
-                                         (mu4e--mark-check-target target) "-N+S-u"))))
+
+(with-eval-after-load 'mu4e
+  (setq mu4e-marks (dalvrosa/remove-nth-element 5 mu4e-marks))
+  (add-to-list 'mu4e-marks
+               '(trash
+                 :char ("d" . "▼")
+                 :prompt "dtrash"
+                 :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
+                 :action (lambda (docid msg target)
+                           (mu4e--server-move docid
+                                              (mu4e--mark-check-target target) "-N+S-u")))))
 
 (with-eval-after-load "mm-decode"
   (add-to-list 'mm-discouraged-alternatives "text/html")
@@ -813,51 +815,53 @@ if one already exists."
 (setq dalvrosa/smtp-server "mail.alvarezrosa.com")
 (setq dalvrosa/smtp-port 587)
 
-(setq mu4e-contexts
-      `( ,(make-mu4e-context
-           :name "Personal"
-           :match-func (lambda (msg)
-                         (when msg
-                           (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
-           :vars `(
-                   (message-signature-file . "~/docs/Signature.txt")
-                   (mu4e-inbox-folder . "/Personal/Inbox")
-                   (mu4e-sent-folder . "/Personal/Sent")
-                   (mu4e-drafts-folder . "/Personal/Drafts")
-                   (mu4e-trash-folder . "/Personal/Trash")
-                   (mu4e-refile-folder . "/Personal/Archive")
-                   (user-mail-address . "david@alvarezrosa.com")
-                   (smtpmail-smtp-service . ,dalvrosa/smtp-port)
-                   (smtpmail-smtp-server . ,dalvrosa/smtp-server)))
-         ,(make-mu4e-context
-           :name "Spam"
-           :match-func (lambda (msg)
-                         (when msg
-                           (string-match-p "^/Spam" (mu4e-message-field msg :maildir))))
-           :vars `(
-                   (message-signature-file . nil)
-                   (mu4e-inbox-folder . "/Spam/Inbox")
-                   (mu4e-sent-folder . "/Spam/Sent")
-                   (mu4e-drafts-folder . "/Spam/Drafts")
-                   (mu4e-trash-folder . "/Spam/Trash")
-                   (mu4e-refile-folder . "/Spam/Archive")
-                   (user-mail-address . "davids@alvarezrosa.com")
-                   (smtpmail-smtp-service . ,dalvrosa/smtp-port)
-                   (smtpmail-smtp-server . ,dalvrosa/smtp-server)))))
+(with-eval-after-load 'mu4e
+  (setq mu4e-contexts
+        `( ,(make-mu4e-context
+             :name "Personal"
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
+             :vars `(
+                     (message-signature-file . "~/docs/Signature.txt")
+                     (mu4e-inbox-folder . "/Personal/Inbox")
+                     (mu4e-sent-folder . "/Personal/Sent")
+                     (mu4e-drafts-folder . "/Personal/Drafts")
+                     (mu4e-trash-folder . "/Personal/Trash")
+                     (mu4e-refile-folder . "/Personal/Archive")
+                     (user-mail-address . "david@alvarezrosa.com")
+                     (smtpmail-smtp-service . ,dalvrosa/smtp-port)
+                     (smtpmail-smtp-server . ,dalvrosa/smtp-server)))
+           ,(make-mu4e-context
+             :name "Spam"
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/Spam" (mu4e-message-field msg :maildir))))
+             :vars `(
+                     (message-signature-file . nil)
+                     (mu4e-inbox-folder . "/Spam/Inbox")
+                     (mu4e-sent-folder . "/Spam/Sent")
+                     (mu4e-drafts-folder . "/Spam/Drafts")
+                     (mu4e-trash-folder . "/Spam/Trash")
+                     (mu4e-refile-folder . "/Spam/Archive")
+                     (user-mail-address . "davids@alvarezrosa.com")
+                     (smtpmail-smtp-service . ,dalvrosa/smtp-port)
+                     (smtpmail-smtp-server . ,dalvrosa/smtp-server))))))
 
-(add-to-list 'mu4e-bookmarks
-             '(:name "All Inboxes"
-              :query "maildir:/Personal/Inbox OR maildir:/Spam/Inbox"
-              :key ?i))
+(with-eval-after-load 'mu4e
+  (add-to-list 'mu4e-bookmarks
+               '(:name "All Inboxes"
+                       :query "maildir:/Personal/Inbox OR maildir:/Spam/Inbox"
+                       :key ?i)))
 
 (defun dalvrosa/mu4e-update-mail-and-index ()
   (interactive)
   (mu4e-update-mail-and-index t))
 
-(define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
-(define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index)
+(with-eval-after-load 'mu4e
+  (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
+  (define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index))
 
-(mu4e t)
 (setq mu4e-update-interval (* 60 10))
 (setq mu4e-hide-index-messages t)
 
@@ -887,8 +891,9 @@ if one already exists."
 (use-package bbdb-vcard
   :after bbdb)
 
-(require 'smtpmail)
-(setq message-send-mail-function 'smtpmail-send-it)
+(with-eval-after-load 'mu4e
+  (require 'smtpmail)
+  (setq message-send-mail-function 'smtpmail-send-it))
 
 (setq message-citation-line-function 'message-insert-formatted-citation-line)
 (setq message-citation-line-format "On %a %d %b %Y at %R, %N wrote:")
@@ -907,27 +912,25 @@ if one already exists."
 
 (setq mu4e-attachment-dir "~/tmp")
 
-(require 'gnus-dired)
-(defun gnus-dired-mail-buffers ()
-  "Return a list of active message buffers."
-  (let (buffers)
-    (save-current-buffer
-      (dolist (buffer (buffer-list t))
-        (set-buffer buffer)
-        (when (and (derived-mode-p 'message-mode)
-                 (null message-sent-message-via))
-          (push (buffer-name buffer) buffers))))
-    (nreverse buffers)))
-(setq gnus-dired-mail-mode 'mu4e-user-agent)
+(with-eval-after-load 'dired
+  (require 'gnus-dired)
+  (defun gnus-dired-mail-buffers ()
+    "Return a list of active message buffers."
+    (let (buffers)
+      (save-current-buffer
+        (dolist (buffer (buffer-list t))
+          (set-buffer buffer)
+          (when (and (derived-mode-p 'message-mode)
+                     (null message-sent-message-via))
+            (push (buffer-name buffer) buffers))))
+      (nreverse buffers)))
+  (setq gnus-dired-mail-mode 'mu4e-user-agent))
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
-(require 'mu4e-icalendar)
-(mu4e-icalendar-setup)
-(setq mu4e-icalendar-trash-after-reply t)
-
-(setq gnus-icalendar-org-capture-file "~/docs/Agenda.org")
-(setq gnus-icalendar-org-capture-headline '("Calendar"))
-(gnus-icalendar-org-setup)
+(with-eval-after-load 'mu4e
+  (require 'mu4e-icalendar)
+  (mu4e-icalendar-setup)
+  (setq mu4e-icalendar-trash-after-reply t))
 
 (use-package elfeed
   :bind (("C-c f" . 'elfeed)
