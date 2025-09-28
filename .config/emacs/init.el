@@ -368,6 +368,7 @@
   :init (doom-modeline-mode 1)
   :config
   (setq display-time-default-load-average nil)
+  (setq doom-modeline-buffer-encoding nil)
   (setq column-number-mode t)
   (setq doom-modeline-buffer-file-name-style 'relative-from-project))
 
