@@ -4,6 +4,9 @@
 (add-hook 'emacs-startup-hook
           (lambda () (setq gc-cons-threshold (expt 2 23))))
 
+;; Single VC backend inscreases booting speed
+(setq vc-handled-backends '(Git))
+
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
@@ -20,23 +23,7 @@
 
 (setq auth-sources '("~/.local/share/authinfo.gpg"))
 
-(when (eq system-type 'darwin)
-  (use-package exec-path-from-shell
-    :demand t
-    :config
-    (exec-path-from-shell-initialize)))
-
-(when (eq system-type 'darwin)
-  (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e"))
-
-(setq ns-pop-up-frames nil)
-
-(when (eq system-type 'darwin)
-  (add-to-list 'image-types 'svg))
-
 (setq-default dired-listing-switches "-alh --group-directories-first")
-(when (eq system-type 'darwin)
-  (setq insert-directory-program "/opt/homebrew/bin/gls"))
 
 (use-package dired-narrow
   :after dired
@@ -44,7 +31,6 @@
               ("/" . 'dired-narrow-fuzzy)))
 
 (use-package dired-subtree
-  :ensure t
   :after dired
   :bind
   ( :map dired-mode-map
@@ -364,8 +350,7 @@
 (load-theme 'modus-operandi)
 (global-set-key (kbd "C-c d") 'modus-themes-toggle)
 
-(use-package nerd-icons
-  :demand t)
+(use-package nerd-icons)
 
 (use-package nerd-icons-completion
   :after marginalia
@@ -374,7 +359,6 @@
   (nerd-icons-completion-marginalia-setup))
 
 (use-package nerd-icons-corfu
-  :demand t
   :after corfu
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
@@ -384,7 +368,6 @@
   (dired-mode . nerd-icons-dired-mode))
 
 (use-package doom-modeline
-  :demand t
   :init (doom-modeline-mode 1)
   :config
   (setq display-time-default-load-average nil)
@@ -393,8 +376,7 @@
 
 (use-package nyan-mode
   :after doom-modeline
-  :init (nyan-mode)
-  (nyan-start-animation))
+  :init (nyan-mode))
 
 (set-face-attribute 'default nil :font "Hack Nerd Font" :height 90)
 
@@ -510,11 +492,9 @@ if one already exists."
 (use-package orgit)
 
 (use-package git-link
-  :demand t
-  :config
-  (global-set-key (kbd "C-c w l") 'git-link)
-  (global-set-key (kbd "C-c w c") 'git-link-commit)
-  (global-set-key (kbd "C-c w h") 'git-link-homepage))
+  :bind (("C-c w l" . git-link)
+         ("C-c w c" . git-link-commit)
+         ("C-c w h" . git-link-homepage)))
 
 (use-package yasnippet
   :config
@@ -551,10 +531,6 @@ if one already exists."
 
 (use-package groovy-mode)
 
-(use-package restclient
-  :demand t
-  :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode)))
-
 (use-package vlf
   :init (require 'vlf-setup))
 
@@ -576,7 +552,8 @@ if one already exists."
          (file+olp "~/docs/Notes.org" "Refile")
          "* %?" :empty-lines 1)))
 
-(require 'mu4e-org)
+(use-package mu4e-org
+  :after mu4e)
 
 (global-set-key (kbd "C-c L") 'org-store-link)
 (global-set-key (kbd "C-c j") 'org-clock-goto)
@@ -589,7 +566,7 @@ if one already exists."
 
 (setq org-lowest-priority ?D)
 
-(eval-after-load "org"
+(with-eval-after-load 'org
       (org-babel-do-load-languages
        'org-babel-load-languages
        '((C . t)
@@ -605,20 +582,15 @@ if one already exists."
 
 (setq org-confirm-babel-evaluate nil)
 
-(eval-after-load "org"
-  '(require 'ox-md nil t))
+(use-package ox-jira)
+(use-package ox-slack)
+(use-package ox-gfm)
 
-(use-package ox-jira
-  :after org
-  :init (require 'ox-jira nil t))
-
-(use-package ox-slack
-  :after org
-  :init (require 'ox-slack nil t))
-
-(use-package ox-gfm
-  :after org
-  :init (require 'ox-gfm nil t))
+(with-eval-after-load 'org
+  (require 'ox-md nil t)
+  (require 'ox-jira nil t)
+  (require 'ox-slack nil t)
+  (require 'ox-gfm nil t))
 
 (setq org-agenda-restore-windows-after-quit t)
 
@@ -708,32 +680,6 @@ if one already exists."
 
 (add-hook 'org-agenda-finalize-hook #'dalvrosa/org-agenda-delete-empty-blocks)
 
-(require 'org-habit)
-
-(setq org-habit-graph-column 55)
-
-(require 'appt)
-(setq appt-time-msg-list nil)
-(setq appt-message-warning-time '15
-      appt-display-interval '5)
-
-(setq appt-display-mode-line nil
-      appt-display-format 'window)
-(appt-activate 1)
-
-(org-agenda-to-appt)
-(run-at-time "24:01" 1800 'org-agenda-to-appt)
-(add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
-
-(defun dalvrosa/appt-send-notification (title msg)
-    (shell-command (concat "notify-send " msg " " title)))
-
-(defun dalvrosa/appt-display (min-to-app new-time msg)
-  (dalvrosa/appt-send-notification
-   (format "'Meeting in %s minutes'" min-to-app)
-   (format "'%s'" msg)))
-(setq appt-disp-window-function (function dalvrosa/appt-display))
-
 (setq org-archive-location "::* Archived Items")
 
 (setq org-archive-tag "archive")
@@ -775,8 +721,8 @@ if one already exists."
 (use-package quarto-mode
   :mode (("\\.Rmd" . poly-quarto-mode)))
 
-(use-package latex
-  :ensure auctex
+(use-package auctex
+  :after latex
   :config
   ;; Always in math mode
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
@@ -817,7 +763,7 @@ if one already exists."
 (use-package yaml-mode)
 
 (use-package pdf-tools
-  :demand t
+  :magic ("%PDF" . pdf-view-mode)
   :config
   (pdf-tools-install)
   :bind (:map pdf-view-mode-map
@@ -829,15 +775,13 @@ if one already exists."
 
 (setq mu4e-headers-fields '((:human-date . 12)
                             (:flags . 4)
-                            (:from . 18)
-                            (:maildir . 15)
+                            (:from . 22)
+                            (:maildir . 16)
                             (:subject)))
 
 (setq mu4e-search-sort-direction 'ascending)
 
-(setq dalvrosa/mailboxes "personal spam")
-(setq mu4e-get-mail-command
-      (concat "mbsync -c ~/.config/isync/mbsyncrc -V " dalvrosa/mailboxes))
+(setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc personal spam")
 
 (defun dalvrosa/remove-nth-element (nth list)
   (if (zerop nth) (cdr list)
@@ -917,7 +861,6 @@ if one already exists."
 (setq mu4e-update-interval (* 60 10))
 (setq mu4e-hide-index-messages t)
 
-(mu4e-modeline-mode 0)
 (setq mu4e-modeline-support nil)
 
 (setq smtpmail-queue-dir "~/.local/share/mail/Queue/cur")
