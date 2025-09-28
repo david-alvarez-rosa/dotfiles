@@ -152,37 +152,6 @@ specification).
   (setq auth-sources '("~/.local/share/authinfo.gpg"))
 #+end_src
 
-** Initialization MacOS
-I currently use Mac on my work laptop, and there are some specific things to
-OS X.
-
-Ensure environment variable inside Emacs look the same as shell.
-#+begin_src elisp
-  (when (eq system-type 'darwin)
-    (use-package exec-path-from-shell
-      :demand t
-      :config
-      (exec-path-from-shell-initialize)))
-#+end_src
-
-Append to path for using mu4e.
-#+begin_src elisp
-  (when (eq system-type 'darwin)
-    (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e"))
-#+end_src
-
-When opening from command line with ~open~ or Finder, don't open in new
-frame.
-#+begin_src elisp
-  (setq ns-pop-up-frames nil)
-#+end_src
-
-Fix a bug with SVG that is already fixed in Emacs 29.
-#+begin_src elisp
-  (when (eq system-type 'darwin)
-    (add-to-list 'image-types 'svg))
-#+end_src
-
 ** File Management
 Configuration related to file management.
 
@@ -198,8 +167,6 @@ file.
 Show file sizes in a human readable style.
 #+begin_src elisp
   (setq-default dired-listing-switches "-alh --group-directories-first")
-  (when (eq system-type 'darwin)
-    (setq insert-directory-program "/opt/homebrew/bin/gls"))
 #+end_src
 
 **** Dired Narrow
