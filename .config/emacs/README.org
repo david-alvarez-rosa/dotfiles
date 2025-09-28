@@ -1576,8 +1576,8 @@ AUCTeX is an extensible package for writing and formatting TeX files in GNU
 Emacs. It supports many different TEX macro packages, including AMS-TeX, LaTeX,
 Texinfo, ConTeXt, and docTeX (dtx files).
 #+begin_src elisp
-  (use-package latex
-    :ensure auctex
+  (use-package auctex
+    :after latex
     :config
     ;; Always in math mode
     (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
@@ -1682,7 +1682,7 @@ Disable here Swiper for searching, and fallback to Isearch, since Swiper
 searchs in the source code rather than in the PDF itself.
 #+begin_src elisp
   (use-package pdf-tools
-    :demand t
+    :magic ("%PDF" . pdf-view-mode)
     :config
     (pdf-tools-install)
     :bind (:map pdf-view-mode-map
@@ -1735,9 +1735,7 @@ Sort emails in ascending direction.  That means, oldest at top.
 
 Set custom mailboxes.
 #+begin_src elisp
-  (setq dalvrosa/mailboxes "personal spam")
-  (setq mu4e-get-mail-command
-        (concat "mbsync -c ~/.config/isync/mbsyncrc -V " dalvrosa/mailboxes))
+  (setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc personal spam")
 #+end_src
 
 Prevent mu4e from permanently deleting trashed items. This snippet was taken
