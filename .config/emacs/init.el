@@ -328,9 +328,11 @@
     :keybinding "d")
   (engine-mode t))
 
-(defun dalvrosa/new-gpt-chat ()
-  (interactive)
-  (switch-to-buffer (gptel (generate-new-buffer "*ChatGPT*"))))
+(defun dalvrosa/new-gpt-chat (arg)
+  (interactive "P")
+  (if arg
+      (switch-to-buffer (gptel (generate-new-buffer "*ChatGPT*")))
+    (call-interactively 'gptel)))
 
 (use-package gptel
   :bind
