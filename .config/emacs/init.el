@@ -85,52 +85,52 @@
 
 (global-set-key (kbd "M-o") 'other-window)
 
-  (require 'windmove)
-  (require 'cl-lib)
+(require 'windmove)
+(require 'cl-lib)
 
 (setq frame-title-format '("" "%b - GNU Emacs at " system-name))
 
-  (defmacro dalvrosa/i3-msg (&rest args)
-    `(start-process "emacs-i3-windmove" nil "i3-msg" ,@args))
+(defmacro dalvrosa/i3-msg (&rest args)
+  `(start-process "emacs-i3-windmove" nil "i3-msg" ,@args))
 
-  (defun dalvrosa/emacs-i3-windmove (dir)
-    (let ((other-window (windmove-find-other-window dir)))
-      (if (or (null other-window) (window-minibuffer-p other-window))
-          (dalvrosa/i3-msg "focus" (symbol-name dir))
-        (windmove-do-window-select dir))))
+(defun dalvrosa/emacs-i3-windmove (dir)
+  (let ((other-window (windmove-find-other-window dir)))
+    (if (or (null other-window) (window-minibuffer-p other-window))
+        (dalvrosa/i3-msg "focus" (symbol-name dir))
+      (windmove-do-window-select dir))))
 
-  (defun dalvrosa/emacs-i3-direction-exists-p (dir)
-    (cl-some (lambda (dir)
-               (let ((win (windmove-find-other-window dir)))
-                 (and win (not (window-minibuffer-p win)))))
-             (pcase dir
-               ('width '(left right))
-               ('height '(up down)))))
+(defun dalvrosa/emacs-i3-direction-exists-p (dir)
+  (cl-some (lambda (dir)
+             (let ((win (windmove-find-other-window dir)))
+               (and win (not (window-minibuffer-p win)))))
+           (pcase dir
+             ('width '(left right))
+             ('height '(up down)))))
 
-  (defun dalvrosa/emacs-i3-move-window (dir)
-    (let ((other-window (windmove-find-other-window dir))
-          (other-direction (dalvrosa/emacs-i3-direction-exists-p
-                            (pcase dir
-                              ('up 'width)
-                              ('down 'width)
-                              ('left 'height)
-                              ('right 'height)))))
-      (cond
-       ((and other-window (not (window-minibuffer-p other-window)))
-        (window-swap-states (selected-window) other-window))
-       (other-direction
-        (evil-move-window dir))
-       (t (dalvrosa/i3-msg "move" (symbol-name dir))))))
+(defun dalvrosa/emacs-i3-move-window (dir)
+  (let ((other-window (windmove-find-other-window dir))
+        (other-direction (dalvrosa/emacs-i3-direction-exists-p
+                          (pcase dir
+                            ('up 'width)
+                            ('down 'width)
+                            ('left 'height)
+                            ('right 'height)))))
+    (cond
+     ((and other-window (not (window-minibuffer-p other-window)))
+      (window-swap-states (selected-window) other-window))
+     (other-direction
+      (evil-move-window dir))
+     (t (dalvrosa/i3-msg "move" (symbol-name dir))))))
 
-  (defun dalvrosa/emacs-i3-integration (command)
-    (pcase command
-      ((rx bos "focus")
-       (dalvrosa/emacs-i3-windmove
-        (intern (elt (split-string command) 1))))
-      ((rx bos "move")
-       (dalvrosa/emacs-i3-move-window
-        (intern (elt (split-string command) 1))))
-      (- (dalvrosa/i3-msg command))))
+(defun dalvrosa/emacs-i3-integration (command)
+  (pcase command
+    ((rx bos "focus")
+     (dalvrosa/emacs-i3-windmove
+      (intern (elt (split-string command) 1))))
+    ((rx bos "move")
+     (dalvrosa/emacs-i3-move-window
+      (intern (elt (split-string command) 1))))
+    (- (dalvrosa/i3-msg command))))
 
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (setq-default fill-column 79)
