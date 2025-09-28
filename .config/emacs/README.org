@@ -1292,7 +1292,7 @@ Allow priorities from A to D.
 ** Code Evaluation
 Allow code blocks in these languages to be evaluated with =C-c C-c=.
 #+begin_src elisp
-  (eval-after-load "org"
+  (with-eval-after-load 'org
         (org-babel-do-load-languages
          'org-babel-load-languages
          '((C . t)
@@ -1469,45 +1469,6 @@ code is from [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266
     (setq buffer-read-only t))
 
   (add-hook 'org-agenda-finalize-hook #'dalvrosa/org-agenda-delete-empty-blocks)
-#+end_src
-
-*** Habits
-Show a nice graph for recurring habits. See [[https://orgmode.org/manual/Tracking-your-habits.html][Tracking your Habits]] in the
-Org-mode manual for more information.
-#+begin_src elisp
-  (require 'org-habit)
-#+end_src
-
-Configure the column the absolute column at which to insert habit consistency
-graphs (consistency graph overwrites anything else in the buffer).
-#+begin_src elisp
-  (setq org-habit-graph-column 55)
-#+end_src
-
-*** Notifications
-Enable notifications for scheduled tasks.
-#+begin_src elisp
-  (require 'appt)
-  (setq appt-time-msg-list nil)
-  (setq appt-message-warning-time '15
-        appt-display-interval '5)
-
-  (setq appt-display-mode-line nil
-        appt-display-format 'window)
-  (appt-activate 1)
-
-  (org-agenda-to-appt)
-  (run-at-time "24:01" 1800 'org-agenda-to-appt)
-  (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
-
-  (defun dalvrosa/appt-send-notification (title msg)
-      (shell-command (concat "notify-send " msg " " title)))
-
-  (defun dalvrosa/appt-display (min-to-app new-time msg)
-    (dalvrosa/appt-send-notification
-     (format "'Meeting in %s minutes'" min-to-app)
-     (format "'%s'" msg)))
-  (setq appt-disp-window-function (function dalvrosa/appt-display))
 #+end_src
 
 ** Archive
