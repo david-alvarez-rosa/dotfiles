@@ -193,9 +193,6 @@
 
 (put 'scroll-left 'disabled nil)
 
-(global-set-key (kbd "C-v") 'View-scroll-half-page-forward)
-(global-set-key (kbd "M-v") 'View-scroll-half-page-backward)
-
 (electric-pair-mode t)
 
 (show-paren-mode 1)
@@ -779,9 +776,10 @@ if one already exists."
                             (:maildir . 16)
                             (:subject)))
 
+(with-eval-after-load 'mu4e
 (add-to-list 'display-buffer-alist
              `(,(regexp-quote mu4e-main-buffer-name)
-               display-buffer-same-window))
+               display-buffer-same-window)))
 
 (setq mu4e-search-sort-direction 'ascending)
 

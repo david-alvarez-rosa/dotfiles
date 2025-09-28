@@ -489,12 +489,6 @@ former is a well-known Emacs command, and the latter is for =reposition-window=
 function, that makes the current definition and/or comment visible (i.e., it
 attempts to scroll the window so the maximum content is visible).
 
-Just scroll amount to just half a page.
-#+begin_src elisp
-  (global-set-key (kbd "C-v") 'View-scroll-half-page-forward)
-  (global-set-key (kbd "M-v") 'View-scroll-half-page-backward)
-#+end_src
-
 ** Character Pairs
 It can be useful to insert parentheses, braces, quotes and the like in matching
 pairs, e.g., pressing “(” inserts "()", with the cursor in between.
@@ -1972,29 +1966,6 @@ subtree:
    :END:
   some text here ...
 #+end_example
-
-*** Org Msg
-*Not tangled.*  Configure Org Msg that automatically writes HTML emails when needed.
-#+begin_src elisp :tangle no
-  (use-package org-msg
-    :after (mu4e)
-    :init (org-msg-mode)
-    :config
-    (setq
-     org-msg-options "html-postamble:nil num:nil ^:{} toc:nil author:nil email:nil tex:dvipng"
-     org-msg-default-alternatives '((new . (text))
-                                    (reply-to-html . (text html))
-                                    (reply-to-text . (text)))
-     org-msg-convert-citation t)
-    ;; https://github.com/jeremy-compostella/org-msg/pull/152
-    (setq mu4e-compose-signature-auto-include nil)
-    (advice-add 'org-msg-composition-parameters :before 'dalvrosa/set-org-msg-signature))
-
-  (defun dalvrosa/set-org-msg-signature (type alternatives)
-    (if message-signature-file
-        (setq org-msg-signature (f-read-text message-signature-file))
-      (setq org-msg-signature nil)))
-#+end_src
 
 ** Attachment Management
 Configure attachment directory for downloading.
