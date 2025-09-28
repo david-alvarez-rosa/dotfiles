@@ -62,7 +62,7 @@ Auto start Firefox and Emacs.
 ** Apps
 Open a terminal
 #+begin_src conf
-  bindsym $mod+Return exec emacsclient -c -e "(let ((current-prefix-arg t)) (call-interactively 'vterm))"
+  bindsym $mod+Return exec emacsclient -c
   bindsym $mod+Shift+Return exec i3-sensible-terminal
 #+end_src
 

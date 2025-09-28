@@ -22,7 +22,7 @@ exec --no-startup-id i3-msg "exec emacs"
 exec --no-startup-id i3-msg "exec firefox"
 exec --no-startup-id "sh -c 'sleep 1; i3-msg [class=firefox] move container to workspace 2. Browser'"
 
-bindsym $mod+Return exec emacsclient -c -e "(let ((current-prefix-arg t)) (call-interactively 'vterm))"
+bindsym $mod+Return exec emacsclient -c
 bindsym $mod+Shift+Return exec i3-sensible-terminal
 
 bindsym $mod+m exec xzoom
