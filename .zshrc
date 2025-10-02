@@ -19,9 +19,7 @@ bindkey "\C-n" history-beginning-search-forward
 
 # vterm integration
 vterm_printf() {
-    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
-        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
-    elif [ "${TERM%%-*}" = "screen" ]; then
+    if [ "${TERM%%-*}" = "screen" ]; then
         printf "\eP\e]%s\007\e\\" "$1"
     else
         printf "\e]%s\e\\" "$1"
@@ -46,10 +44,7 @@ vterm_prompt_end() {
     vterm_printf "51;A$(whoami)@$(hostname):$(pwd)"
 }
 setopt PROMPT_SUBST
-PROMPT=$PROMPT"%{$(vterm_prompt_end)%}"
-vterm_prompt_end(){
-    vterm_printf "51;A$(whoami)@$(hostname):$(pwd)"
-}
+PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
 
 alias cpc="xclip -selection clipboard"
 alias ls="ls --color=auto --group-directories-first"
