@@ -576,9 +576,6 @@ completion function completing-read.
 
     (setq orderless-component-separator 'orderless-escapable-split-on-space)
     :config
-    (setq xref-show-xrefs-function #'consult-xref
-          xref-show-definitions-function #'consult-xref)
-
     (consult-customize
      consult-theme :preview-key '(:debounce 0.2 any)
      consult-buffer consult-buffer-other-tab consult-buffer-other-window
