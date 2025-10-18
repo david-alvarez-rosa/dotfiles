@@ -952,9 +952,10 @@ https://mocompute.codeberg.page/item/2024/2024-09-03-emacs-project-vterm.html
     (add-to-list 'project-switch-commands '(consult-project-buffer "Find buffer") t)
     (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
     (add-to-list 'project-switch-commands '(dalvrosa/project-shell "Vterm") t)
-    (keymap-set project-prefix-map "b" #'consult-project-buffer)
-    (keymap-set project-prefix-map "g" #'magit-project-status)
-    (keymap-set project-prefix-map "v" #'dalvrosa/project-shell))
+    (keymap-set project-prefix-map "b" 'consult-project-buffer)
+    (keymap-set project-prefix-map "g" 'magit-project-status)
+    (keymap-set project-prefix-map "s" 'project-find-regexp)
+    (keymap-set project-prefix-map "v" 'dalvrosa/project-shell))
 #+end_src
 
 *** Language Server Protocol

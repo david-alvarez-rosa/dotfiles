@@ -437,9 +437,10 @@ if one already exists."
   (add-to-list 'project-switch-commands '(consult-project-buffer "Find buffer") t)
   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
   (add-to-list 'project-switch-commands '(dalvrosa/project-shell "Vterm") t)
-  (keymap-set project-prefix-map "b" #'consult-project-buffer)
-  (keymap-set project-prefix-map "g" #'magit-project-status)
-  (keymap-set project-prefix-map "v" #'dalvrosa/project-shell))
+  (keymap-set project-prefix-map "b" 'consult-project-buffer)
+  (keymap-set project-prefix-map "g" 'magit-project-status)
+  (keymap-set project-prefix-map "s" 'project-find-regexp)
+  (keymap-set project-prefix-map "v" 'dalvrosa/project-shell))
 
 (use-package eglot
   :config
