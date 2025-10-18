@@ -273,9 +273,7 @@
   (global-corfu-mode)
   :config
   (setq corfu-auto t)
-  (setq corfu-auto-prefix 2)
   (setq corfu-auto-delay 0.1)
-  (setq corfu-popupinfo-delay 0.5)
   (corfu-popupinfo-mode 1)
   (corfu-history-mode 1)
   (add-to-list 'savehist-additional-variables 'corfu-history)
