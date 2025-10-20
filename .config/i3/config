@@ -82,6 +82,8 @@ bindsym $mod+h split horizontal
 
 bindsym $mod+Shift+space floating toggle
 
+bindsym $mod+s layout toggle tabbed split
+
 bindsym $mod+Shift+t sticky toggle
 
 bindsym $mod+o fullscreen toggle

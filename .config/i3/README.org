@@ -181,6 +181,12 @@ Set key for the toggle between tiling/floating.
   bindsym $mod+Shift+space floating toggle
 #+end_src
 
+*** Window tabbed
+Set key for the toggle between tiling/tabbed (stack).
+#+begin_src conf
+  bindsym $mod+s layout toggle tabbed split
+#+end_src
+
 *** Window sticky
 Binding for sticky window toggle.
 #+begin_src conf
