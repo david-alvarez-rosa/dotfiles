@@ -893,6 +893,12 @@ information.
     (global-treesit-auto-mode))
 #+end_src
 
+*** Ripgreg
+Prefer =ripgrep= for searching over =rgrep=
+#+begin_src elisp
+  (setq xref-search-program 'ripgrep)
+#+end_src
+
 *** Documentation
 #+begin_src elisp
    (global-eldoc-mode)
@@ -981,8 +987,7 @@ support to be implemented and distributed independently of any given editor.
   	            ("C-c l a" . eglot-code-actions)
   	            ("C-c l r" . eglot-rename)
   	            ("C-c l h" . eldoc)
-  	            ("C-c l f" . eglot-format)
-  	            ("C-c l d" . xref-find-definitions-at-mouse))
+  	            ("C-c l f" . eglot-format))
     :commands eglot)
 #+end_src
 

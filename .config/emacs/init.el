@@ -399,6 +399,8 @@
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
+(setq xref-search-program 'ripgrep)
+
 (global-eldoc-mode)
 
 (use-package flymake
@@ -461,8 +463,7 @@ if one already exists."
 	            ("C-c l a" . eglot-code-actions)
 	            ("C-c l r" . eglot-rename)
 	            ("C-c l h" . eldoc)
-	            ("C-c l f" . eglot-format)
-	            ("C-c l d" . xref-find-definitions-at-mouse))
+	            ("C-c l f" . eglot-format))
   :commands eglot)
 
 (use-package dape
