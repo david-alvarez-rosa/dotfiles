@@ -139,11 +139,11 @@ Lock the screen using =slock= programm from Suckless, with =Super+l=.
 * Screenshot
 For taking screenshots.
 #+begin_src conf
-  "maim | tee ~/media/screenshots/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
+  "maim | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
     Print
-  "maim --window ~/media/screenshots/$(xdotool getactivewindow) | tee $(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
+  "maim --window $(xdotool getactivewindow) | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
     Shift + Print
-  "maim --select | tee ~/media/screenshots/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
+  "maim --select | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
     Control + Print
 #+end_src
 
