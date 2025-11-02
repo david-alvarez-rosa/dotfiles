@@ -572,12 +572,15 @@ if one already exists."
          (latex . t)
          (matlab . t)
          (shell . t)
+         (plantuml . t)
          (css . t)
          (calc . t)
          (R . t)
          (js . t))))
 
 (setq org-confirm-babel-evaluate nil)
+
+(setq org-plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar")
 
 (use-package ox-jira)
 (use-package ox-slack)
@@ -714,6 +717,11 @@ if one already exists."
    });
   </script>
 ")))
+
+(use-package plantuml-mode
+  :config
+  (setq plantuml-default-exec-mode 'jar)
+  (setq plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar"))
 
 (use-package quarto-mode
   :mode (("\\.Rmd" . poly-quarto-mode)))

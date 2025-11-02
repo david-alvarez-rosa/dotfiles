@@ -1299,6 +1299,7 @@ Allow code blocks in these languages to be evaluated with =C-c C-c=.
            (latex . t)
            (matlab . t)
            (shell . t)
+           (plantuml . t)
            (css . t)
            (calc . t)
            (R . t)
@@ -1308,6 +1309,11 @@ Allow code blocks in these languages to be evaluated with =C-c C-c=.
 Don't ask for confirmation for evaluating code.
 #+begin_src elisp
   (setq org-confirm-babel-evaluate nil)
+#+end_src
+
+Configure PlantUML with Org babel.
+#+begin_src elisp
+  (setq org-plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar")
 #+end_src
 
 ** Export
@@ -1522,6 +1528,15 @@ Markdown preview mode, just call ~markdown-preview-mode~ function.
      });
     </script>
   ")))
+#+end_src
+
+** PlantUML
+PlantUML support.
+#+begin_src elisp
+  (use-package plantuml-mode
+    :config
+    (setq plantuml-default-exec-mode 'jar)
+    (setq plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar"))
 #+end_src
 
 ** Quarto
