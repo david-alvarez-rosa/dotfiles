@@ -323,21 +323,18 @@
     :keybinding "d")
   (engine-mode t))
 
-(defun dalvrosa/new-gpt-chat (arg)
-  (interactive "P")
-  (if arg
-      (switch-to-buffer (gptel (generate-new-buffer "*ChatGPT*")))
-    (call-interactively 'gptel)))
+(defun dalvrosa/new-gpt-chat ()
+  (interactive)
+  (switch-to-buffer (gptel (generate-new-buffer "*ChatGPT*"))))
 
 (use-package gptel
   :bind
   ("C-c h" . dalvrosa/new-gpt-chat)
+  :init (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
   :config
   (setq gptel-model 'gpt-4.1)
   (setq gptel-default-mode 'org-mode)
   :hook (gptel-mode . visual-line-mode))
-
-(gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
 
 (setq custom-safe-themes t)
 
@@ -719,6 +716,7 @@ if one already exists."
 ")))
 
 (use-package plantuml-mode
+  :mode ("\\.puml\\'" . plantuml-mode)
   :config
   (setq plantuml-default-exec-mode 'jar)
   (setq plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar"))
@@ -792,23 +790,6 @@ if one already exists."
 (setq mu4e-search-sort-direction 'ascending)
 
 (setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc personal spam")
-
-(defun dalvrosa/remove-nth-element (nth list)
-  (if (zerop nth) (cdr list)
-    (let ((last (nthcdr (1- nth) list)))
-      (setcdr last (cddr last))
-      list)))
-
-(with-eval-after-load 'mu4e
-  (setq mu4e-marks (dalvrosa/remove-nth-element 5 mu4e-marks))
-  (add-to-list 'mu4e-marks
-               '(trash
-                 :char ("d" . "▼")
-                 :prompt "dtrash"
-                 :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
-                 :action (lambda (docid msg target)
-                           (mu4e--server-move docid
-                                              (mu4e--mark-check-target target) "-N+S-u")))))
 
 (with-eval-after-load "mm-decode"
   (add-to-list 'mm-discouraged-alternatives "text/html")

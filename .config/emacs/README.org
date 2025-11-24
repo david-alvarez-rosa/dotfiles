@@ -741,21 +741,18 @@ Emacs, with support for multiple models and backends. It works in the
 spirit of Emacs, available at any time and uniformly in any buffer.
 
 #+begin_src elisp
-  (defun dalvrosa/new-gpt-chat (arg)
-    (interactive "P")
-    (if arg
-        (switch-to-buffer (gptel (generate-new-buffer "*ChatGPT*")))
-      (call-interactively 'gptel)))
+  (defun dalvrosa/new-gpt-chat ()
+    (interactive)
+    (switch-to-buffer (gptel (generate-new-buffer "*ChatGPT*"))))
 
   (use-package gptel
     :bind
     ("C-c h" . dalvrosa/new-gpt-chat)
+    :init (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
     :config
     (setq gptel-model 'gpt-4.1)
     (setq gptel-default-mode 'org-mode)
     :hook (gptel-mode . visual-line-mode))
-
-  (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
 #+end_src
 
 * User Interface
