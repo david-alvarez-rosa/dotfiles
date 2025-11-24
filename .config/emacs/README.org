@@ -1534,6 +1534,7 @@ Markdown preview mode, just call ~markdown-preview-mode~ function.
 PlantUML support.
 #+begin_src elisp
   (use-package plantuml-mode
+    :mode ("\\.puml\\'" . plantuml-mode)
     :config
     (setq plantuml-default-exec-mode 'jar)
     (setq plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar"))
