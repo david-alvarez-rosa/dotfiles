@@ -1721,28 +1721,6 @@ Set custom mailboxes.
   (setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc personal spam")
 #+end_src
 
-Prevent mu4e from permanently deleting trashed items. This snippet was taken
-from [[http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/][this article]]. Namespaced and added functionality to mark deleted item as
-read.
-#+begin_src elisp
-  (defun dalvrosa/remove-nth-element (nth list)
-    (if (zerop nth) (cdr list)
-      (let ((last (nthcdr (1- nth) list)))
-        (setcdr last (cddr last))
-        list)))
-
-  (with-eval-after-load 'mu4e
-    (setq mu4e-marks (dalvrosa/remove-nth-element 5 mu4e-marks))
-    (add-to-list 'mu4e-marks
-                 '(trash
-                   :char ("d" . "▼")
-                   :prompt "dtrash"
-                   :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
-                   :action (lambda (docid msg target)
-                             (mu4e--server-move docid
-                                                (mu4e--mark-check-target target) "-N+S-u")))))
-#+end_src
-
 Discourage enriched text alternatives and prefer plain text by default
 for email.
 #+begin_src elisp
