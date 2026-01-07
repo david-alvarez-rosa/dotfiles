@@ -1208,15 +1208,6 @@ Activate single letter commands at beginning of a headline.
 This is very useful for navigating/modifying org mode files. I usually use
 =n/p= for next/previous, =b/f= for backward/forward, and =l/r= for left/right.
 
-** Refile
-Configuration for refiling command =C-c C-w=.
-#+begin_src elisp
-  (setq org-refile-targets '((nil :maxlevel . 2)
-                                  (org-agenda-files :maxlevel . 2)))
-  (setq org-outline-path-complete-in-steps nil)
-  (setq org-refile-use-outline-path 'file)
-#+end_src
-
 ** Capture Templates
 Take notes quickly within Emacs with =C-c c=.
 #+begin_src elisp
@@ -1234,7 +1225,7 @@ Set my custom capture templates. Brief description of them:
   (setq org-capture-templates
         '(("t" "Task" entry
            (file+olp "~/docs/Agenda.org" "Refile")
-           "* TODO [#C] %?\n%a\n%i" :empty-lines 1)
+           "* TODO [#B] %?\n%a\n%i" :empty-lines 1)
           ("n" "Text Note" entry
            (file+olp "~/docs/Notes.org" "Refile")
            "* %?" :empty-lines 1)))
@@ -1264,8 +1255,7 @@ Custom todo keywords. I use them as follows:
   - CANCELLED: task is cancelled.
 #+begin_src elisp
   (setq org-todo-keywords
-        '((sequence "TODO(t!)" "WAIT(w!)" "NEXT(n!)" "|"
-                    "DONE(d!)" "CANCELLED(c!)")))
+        '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)")))
 #+end_src
 
 For tracking TODO state changes, the meaning of the characters is as follows
@@ -1377,35 +1367,23 @@ Custom agenda views. I use a custom view that contains the following blocks:
   (setq org-agenda-custom-commands
         '((" " "Block Agenda"
            ((agenda "" ((org-agenda-span 1)))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Actions")
-                   (org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'scheduled))))
+            (todo "NEXT" ((org-agenda-overriding-header "Next Actions")
+                          (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
             (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
-            (tags-todo "TODO=\"TODO\"+proj-backlog"
-                       ((org-agenda-overriding-header "Projects")
-                        (org-agenda-skip-function
-                         '(org-agenda-skip-entry-if 'scheduled))))
-            (tags-todo "TODO=\"TODO\"+sing-backlog"
-                       ((org-agenda-overriding-header "Standalone Tasks")
-                        (org-agenda-skip-function
-                         '(org-agenda-skip-entry-if 'scheduled))))
+            (tags-todo "TODO=\"TODO\"+work-backlog" ((org-agenda-overriding-header "Work")
+                                                     (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
+            (tags-todo "TODO=\"TODO\"+pers-backlog" ((org-agenda-overriding-header "Personal")
+                                                     (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
             (tags-todo "TODO=\"WAIT\"-backlog" ((org-agenda-overriding-header "Waiting")
-                                                (org-agenda-skip-function
-                                                 '(org-agenda-skip-entry-if 'scheduled))))))
+                                                (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))))
           ("b" "Backlog"
            ((agenda "" ((org-agenda-span 1)))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Actions")))
+            (todo "NEXT" ((org-agenda-overriding-header "Next Actions")))
             (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
-            (tags-todo "TODO=\"TODO\"+proj-backlog"
-                       ((org-agenda-overriding-header "Projects")))
-            (tags-todo "TODO=\"TODO\"+sing-backlog"
-                       ((org-agenda-overriding-header "Standalone Tasks")))
-            (tags-todo "TODO=\"WAIT\"-backlog"
-                       ((org-agenda-overriding-header "Waiting")))
-            (tags-todo "+backlog"
-                       ((org-agenda-overriding-header "Backlog")))))))
+            (tags-todo "TODO=\"TODO\"+work-backlog" ((org-agenda-overriding-header "Work")))
+            (tags-todo "TODO=\"TODO\"+pers-backlog" ((org-agenda-overriding-header "Personal")))
+            (tags-todo "TODO=\"WAIT\"-backlog" ((org-agenda-overriding-header "Waiting")))
+            (tags-todo "+backlog" ((org-agenda-overriding-header "Backlog")))))))
 #+end_src
 
 While in this agenda view press =w= for changing the agenda span to full week
