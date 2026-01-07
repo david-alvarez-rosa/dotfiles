@@ -1306,15 +1306,13 @@ Configure PlantUML with Org babel.
 ** Export
 Add export backends to (GitHub) MarkDown, Jira and Slack.
 #+begin_src elisp
-  (use-package ox-jira)
-  (use-package ox-slack)
-  (use-package ox-gfm)
+  (use-package ox-jira :after ox)
+  (use-package ox-slack :after ox)
+  (use-package ox-gfm :after ox)
+  (use-package ox-hugo :after ox)
 
   (with-eval-after-load 'org
-    (require 'ox-md nil t)
-    (require 'ox-jira nil t)
-    (require 'ox-slack nil t)
-    (require 'ox-gfm nil t))
+    (require 'ox-md nil t))
 #+end_src
 
 ** Interface

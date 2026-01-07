@@ -332,7 +332,7 @@
   ("C-c h" . dalvrosa/new-gpt-chat)
   :init (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
   :config
-  (setq gptel-model 'gpt-4.1)
+  (setq gptel-model 'gpt-5.1)
   (setq gptel-default-mode 'org-mode)
   :hook (gptel-mode . visual-line-mode))
 
@@ -530,18 +530,13 @@ if one already exists."
 
 (setq org-use-speed-commands t)
 
-(setq org-refile-targets '((nil :maxlevel . 2)
-                                (org-agenda-files :maxlevel . 2)))
-(setq org-outline-path-complete-in-steps nil)
-(setq org-refile-use-outline-path 'file)
-
 (setq org-default-notes-file "~/docs/Agenda.org")
 (define-key global-map (kbd "C-c c") 'org-capture)
 
 (setq org-capture-templates
       '(("t" "Task" entry
          (file+olp "~/docs/Agenda.org" "Refile")
-         "* TODO [#C] %?\n%a\n%i" :empty-lines 1)
+         "* TODO [#B] %?\n%a\n%i" :empty-lines 1)
         ("n" "Text Note" entry
          (file+olp "~/docs/Notes.org" "Refile")
          "* %?" :empty-lines 1)))
@@ -553,8 +548,7 @@ if one already exists."
 (global-set-key (kbd "C-c j") 'org-clock-goto)
 
 (setq org-todo-keywords
-      '((sequence "TODO(t!)" "WAIT(w!)" "NEXT(n!)" "|"
-                  "DONE(d!)" "CANCELLED(c!)")))
+      '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)")))
 
 (setq org-log-into-drawer t)
 
@@ -579,15 +573,13 @@ if one already exists."
 
 (setq org-plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar")
 
-(use-package ox-jira)
-(use-package ox-slack)
-(use-package ox-gfm)
+(use-package ox-jira :after ox)
+(use-package ox-slack :after ox)
+(use-package ox-gfm :after ox)
+(use-package ox-hugo :after ox)
 
 (with-eval-after-load 'org
-  (require 'ox-md nil t)
-  (require 'ox-jira nil t)
-  (require 'ox-slack nil t)
-  (require 'ox-gfm nil t))
+  (require 'ox-md nil t))
 
 (setq org-agenda-restore-windows-after-quit t)
 
@@ -604,35 +596,23 @@ if one already exists."
 (setq org-agenda-custom-commands
       '((" " "Block Agenda"
          ((agenda "" ((org-agenda-span 1)))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "Next Actions")
-                 (org-agenda-skip-function
-                  '(org-agenda-skip-entry-if 'scheduled))))
+          (todo "NEXT" ((org-agenda-overriding-header "Next Actions")
+                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
           (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
-          (tags-todo "TODO=\"TODO\"+proj-backlog"
-                     ((org-agenda-overriding-header "Projects")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled))))
-          (tags-todo "TODO=\"TODO\"+sing-backlog"
-                     ((org-agenda-overriding-header "Standalone Tasks")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled))))
+          (tags-todo "TODO=\"TODO\"+work-backlog" ((org-agenda-overriding-header "Work")
+                                                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
+          (tags-todo "TODO=\"TODO\"+pers-backlog" ((org-agenda-overriding-header "Personal")
+                                                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
           (tags-todo "TODO=\"WAIT\"-backlog" ((org-agenda-overriding-header "Waiting")
-                                              (org-agenda-skip-function
-                                               '(org-agenda-skip-entry-if 'scheduled))))))
+                                              (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))))
         ("b" "Backlog"
          ((agenda "" ((org-agenda-span 1)))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "Next Actions")))
+          (todo "NEXT" ((org-agenda-overriding-header "Next Actions")))
           (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
-          (tags-todo "TODO=\"TODO\"+proj-backlog"
-                     ((org-agenda-overriding-header "Projects")))
-          (tags-todo "TODO=\"TODO\"+sing-backlog"
-                     ((org-agenda-overriding-header "Standalone Tasks")))
-          (tags-todo "TODO=\"WAIT\"-backlog"
-                     ((org-agenda-overriding-header "Waiting")))
-          (tags-todo "+backlog"
-                     ((org-agenda-overriding-header "Backlog")))))))
+          (tags-todo "TODO=\"TODO\"+work-backlog" ((org-agenda-overriding-header "Work")))
+          (tags-todo "TODO=\"TODO\"+pers-backlog" ((org-agenda-overriding-header "Personal")))
+          (tags-todo "TODO=\"WAIT\"-backlog" ((org-agenda-overriding-header "Waiting")))
+          (tags-todo "+backlog" ((org-agenda-overriding-header "Backlog")))))))
 
 (setq org-agenda-log-mode-items '(closed clock state))
 
