@@ -7,9 +7,10 @@ modmap:
       Enter:
         held: Ctrl_R
         alone: enter
-      Tab:
-        held: Win_L
-        alone: tab
+      # Tab settings done with xmodmap + xcape for performance reasons
+      # Tab:
+      #   held: Win_L
+      #   alone: tab
       Backspace:
         held: Win_L
         alone: Backspace

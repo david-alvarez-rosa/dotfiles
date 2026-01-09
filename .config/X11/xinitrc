@@ -1,4 +1,5 @@
-xremap --mouse ~/.config/xremap/config.yml & sleep 2 && xset r rate 275 60 && setxkbmap -layout us,es -option grp:win_space_toggle &
+xremap ~/.config/xremap/config.yml & sleep 2 && xset r rate 275 60 && setxkbmap -layout us,es -option grp:win_space_toggle &
+xmodmap -e "keycode 248 = Tab" -e "keycode 23 = Super_L" && xcape -e "Super_L=Tab"
 xbindkeys -f ~/.config/xbindkeys/config
 unclutter --timeout 2 --ignore-scrolling &
 keepassxc &
