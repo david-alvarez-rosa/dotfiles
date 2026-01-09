@@ -591,7 +591,7 @@ if one already exists."
 
 (global-set-key (kbd "C-c a") 'org-agenda)
 
-(setq org-agenda-files '("~/docs/Agenda.org"))
+(setq org-agenda-files '("~/docs/Agenda.org" "~/dev/personal-website/README.org"))
 
 (setq org-agenda-custom-commands
       '((" " "Block Agenda"
