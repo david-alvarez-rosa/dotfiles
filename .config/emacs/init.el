@@ -770,7 +770,11 @@ if one already exists."
              `(,(regexp-quote mu4e-main-buffer-name)
                display-buffer-same-window)))
 
-(setq mu4e-search-sort-direction 'ascending)
+(add-hook 'mu4e-search-hook
+          (lambda (query)
+            (setq-local mu4e-search-sort-direction
+                        (if (string-match-p "/Inbox" (or query ""))
+                            'ascending 'descending))))
 
 (setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc personal spam")
 

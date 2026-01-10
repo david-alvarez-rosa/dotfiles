@@ -1690,7 +1690,11 @@ full-screen window as the default).
 
 Sort emails in ascending direction.  That means, oldest at top.
 #+begin_src elisp
-  (setq mu4e-search-sort-direction 'ascending)
+  (add-hook 'mu4e-search-hook
+            (lambda (query)
+              (setq-local mu4e-search-sort-direction
+                          (if (string-match-p "/Inbox" (or query ""))
+                              'ascending 'descending))))
 #+end_src
 
 Set custom mailboxes.
