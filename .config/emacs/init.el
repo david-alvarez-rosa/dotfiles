@@ -593,6 +593,9 @@ if one already exists."
 
 (setq org-agenda-files '("~/docs/Agenda.org" "~/dev/personal-website/README.org"))
 
+(setq org-agenda-skip-deadline-if-done t)
+(setq org-agenda-skip-scheduled-if-done t)
+
 (setq org-agenda-custom-commands
       '((" " "Block Agenda"
          ((agenda "" ((org-agenda-span 1)))

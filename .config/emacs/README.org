@@ -1362,6 +1362,9 @@ Custom agenda views. I use a custom view that contains the following blocks:
   - Rest of standalone tasks. Also only those that are not schedule.
   - WAIT tasks.
 #+begin_src elisp
+  (setq org-agenda-skip-deadline-if-done t)
+  (setq org-agenda-skip-scheduled-if-done t)
+
   (setq org-agenda-custom-commands
         '((" " "Block Agenda"
            ((agenda "" ((org-agenda-span 1)))
