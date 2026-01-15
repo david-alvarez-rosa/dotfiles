@@ -332,7 +332,7 @@
   ("C-c h" . dalvrosa/new-gpt-chat)
   :init (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
   :config
-  (setq gptel-model 'gpt-5.1)
+  (setq gptel-model 'gpt-5.2)
   (setq gptel-default-mode 'org-mode)
   :hook (gptel-mode . visual-line-mode))
 
