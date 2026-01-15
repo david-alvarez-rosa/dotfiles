@@ -149,8 +149,8 @@
 
 (defun dalvrosa/unfill-paragraph-and-kill (beg end)
   "Save the current region to the kill ring after unfilling it."
-  (setq dalvrosa/previous-major-mode major-mode)
   (interactive "r")
+  (setq dalvrosa/previous-major-mode major-mode)
   (copy-region-as-kill beg end)
   (with-temp-buffer
     (funcall dalvrosa/previous-major-mode)
