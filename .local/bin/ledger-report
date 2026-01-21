@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+
+set -eu
+
+cd ~/tmp
+
+plot () {
+    ledger -f ~/docs/Finances.ledger reg $1 --monthly --collapse \
+           --format '%(date)\t%(account =~ /^Equity|Income/ ? -quantity(scrub(display_total)) : quantity(scrub(display_total)))\n' \
+           > $2.tsv
+
+    gnuplot <<GP
+set terminal pngcairo
+set output '$2.png'
+set title '$2'
+set grid
+set xdata time
+set timefmt '%Y/%m/%d'
+set format x '%b %Y'
+set format y '%.1fk'
+set xtics 60*60*24*30
+plot '$2.tsv' using 1:(\$2/1000) with linespoints notitle
+GP
+}
+
+plot '^Assets ^Liabilities' 'NetWorth'
+plot '^Equity:Profit' 'Profit'
+plot '^Income' 'Income'
+plot '^Expenses' 'Expenses'
+
+magick montage NetWorth.png Profit.png Income.png Expenses.png \
+       -tile 2x2 -geometry +10+10 FinancialReport.png
