@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+DOMAIN="$1"
+if ! grep -q "$DOMAIN" /etc/hosts.full; then
+  echo "127.0.0.1 $DOMAIN" >> /etc/hosts.full
+  echo "127.0.0.1 www.$DOMAIN" >> /etc/hosts.full
+fi
+
+block-hosts

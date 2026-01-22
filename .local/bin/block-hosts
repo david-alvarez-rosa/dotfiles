@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+cp /etc/hosts.full /etc/hosts
