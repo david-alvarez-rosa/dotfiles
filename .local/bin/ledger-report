@@ -29,4 +29,6 @@ plot '^Income' 'Income'
 plot '^Expenses' 'Expenses'
 
 magick montage NetWorth.png Profit.png Income.png Expenses.png \
-       -tile 2x2 -geometry +10+10 FinancialReport.png
+       -tile 2x2 -geometry +10+10 LedgerReport.png
+
+feh LedgerReport.png
