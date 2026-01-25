@@ -969,6 +969,8 @@ support to be implemented and distributed independently of any given editor.
     :config
     (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
     (setq eglot-autoshutdown t)
+    (setf (alist-get '(python-mode python-ts-mode) eglot-server-programs nil nil #'equal)
+          '("ty" "server"))
     :hook ((c++-ts-mode . eglot-ensure)
            (c-ts-mode . eglot-ensure)
            (java-ts-mode . eglot-ensure)
