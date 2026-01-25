@@ -445,6 +445,8 @@ if one already exists."
   :config
   (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
   (setq eglot-autoshutdown t)
+  (setf (alist-get '(python-mode python-ts-mode) eglot-server-programs nil nil #'equal)
+        '("ty" "server"))
   :hook ((c++-ts-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
          (java-ts-mode . eglot-ensure)
@@ -591,7 +593,7 @@ if one already exists."
 
 (global-set-key (kbd "C-c a") 'org-agenda)
 
-(setq org-agenda-files '("~/docs/Agenda.org" "~/dev/personal-website/README.org"))
+(setq org-agenda-files '("~/docs/Agenda.org" "~/dev/personal-website/Content.org"))
 
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)

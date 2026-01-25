@@ -1351,7 +1351,7 @@ most of Emacs. It's great.
 
 Set files to show in agenda.
 #+begin_src elisp
-  (setq org-agenda-files '("~/docs/Agenda.org" "~/dev/personal-website/README.org"))
+  (setq org-agenda-files '("~/docs/Agenda.org" "~/dev/personal-website/Content.org"))
 #+end_src
 
 Custom agenda views. I use a custom view that contains the following blocks:
