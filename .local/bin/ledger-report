@@ -7,20 +7,17 @@ cd ~/tmp
 plot () {
     ledger -f ~/docs/Finances.ledger reg $1 --monthly --collapse \
            --format "%(date)\t%(quantity($3))\n" \
-           > $2.tsv
+            | tail -n12 > $2.tsv
 
     gnuplot <<GP
 set terminal pngcairo
 set output '$2.png'
 set title '$2'
 set grid
-set xtics rotate by -45 left
 set xdata time
 set timefmt '%Y/%m/%d'
-set format x '%b %Y'
-set format y '%.1fk'
-set xtics 60*60*24*30
-plot '$2.tsv' using 1:(\$2/1000) with linespoints notitle
+set format x '%b'
+plot '$2.tsv' using 1:2 with linespoints notitle
 GP
 }
 
