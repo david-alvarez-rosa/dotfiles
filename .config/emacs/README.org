@@ -1230,7 +1230,10 @@ Set my custom capture templates. Brief description of them:
            "* TODO [#B] %?\n%a\n%i" :empty-lines 1)
           ("n" "Text Note" entry
            (file+olp "~/docs/Notes.org" "Refile")
-           "* %?" :empty-lines 1)))
+           "* %?" :empty-lines 1)
+          ("b" "Blog Post" entry
+           (file "~/dev/personal-website/Content.org")
+           "* TODO [#B] %?" :empty-lines 1 :prepend t)))
 #+end_src
 
 For the above email (or link) capture templates to work with =mu4e= (email

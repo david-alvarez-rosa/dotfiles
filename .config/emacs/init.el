@@ -541,7 +541,10 @@ if one already exists."
          "* TODO [#B] %?\n%a\n%i" :empty-lines 1)
         ("n" "Text Note" entry
          (file+olp "~/docs/Notes.org" "Refile")
-         "* %?" :empty-lines 1)))
+         "* %?" :empty-lines 1)
+        ("b" "Blog Post" entry
+         (file "~/dev/personal-website/Content.org")
+         "* TODO [#B] %?" :empty-lines 1 :prepend t)))
 
 (use-package mu4e-org
   :after mu4e)
