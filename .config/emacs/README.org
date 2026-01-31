@@ -931,34 +931,41 @@ Don't ask for confirmation when killing vterm buffer.
   (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 #+end_src
 
-Configure vterm with ~projectile.el~ from
-https://mocompute.codeberg.page/item/2024/2024-09-03-emacs-project-vterm.html
+Configure vterm with ~projectile.el~
 #+begin_src elisp
-  (defun dalvrosa/project-shell ()
-    "Start an inferior shell in the current project's root directory.
-  If a buffer already exists for running a shell in the project's root,
-  switch to it.  Otherwise, create a new shell buffer.
-  With \\[universal-argument] prefix arg, create a new inferior shell buffer even
-  if one already exists."
-    (interactive)
-    (require 'comint)
+  (defun dalvrosa/project-vterm (&optional opencode new)
+    "Open a vterm in the current project root.
+  With NEW (prefix arg), always create a new buffer.
+  With OPENCODE, use the \"vterm-opencode\" base name."
+    (interactive (list nil current-prefix-arg))
+    (require 'vterm)
     (let* ((default-directory (project-root (project-current t)))
-           (default-project-shell-name (project-prefixed-buffer-name "vterm"))
-           (shell-buffer (get-buffer default-project-shell-name)))
-      (if (and shell-buffer (not current-prefix-arg))
-          (if (comint-check-proc shell-buffer)
-              (pop-to-buffer shell-buffer (bound-and-true-p display-comint-buffer-action))
-            (vterm shell-buffer))
-        (vterm (generate-new-buffer-name default-project-shell-name)))))
+           (base (if opencode "vterm-opencode" "vterm"))
+           (name (project-prefixed-buffer-name base))
+           (buf  (and (not new) (get-buffer name))))
+      (if buf
+          (pop-to-buffer buf)
+        (let ((vbuf (vterm (if new (generate-new-buffer-name name) name))))
+          (when opencode
+            (with-current-buffer vbuf
+              (vterm-send-string "opencode")
+              (vterm-send-return)))
+          vbuf))))
+
+  (defun dalvrosa/project-vterm-opencode (&optional new)
+    (interactive (list current-prefix-arg))
+    (dalvrosa/project-vterm t new))
 
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(consult-project-buffer "Find buffer") t)
     (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
-    (add-to-list 'project-switch-commands '(dalvrosa/project-shell "Vterm") t)
+    (add-to-list 'project-switch-commands '(dalvrosa/project-vterm "Vterm") t)
+    (add-to-list 'project-switch-commands '(dalvrosa/project-vterm-opencode "OpenCode Vterm") t)
     (keymap-set project-prefix-map "b" 'consult-project-buffer)
     (keymap-set project-prefix-map "g" 'magit-project-status)
     (keymap-set project-prefix-map "s" 'project-find-regexp)
-    (keymap-set project-prefix-map "v" 'dalvrosa/project-shell))
+    (keymap-set project-prefix-map "h" 'dalvrosa/project-vterm-opencode)
+    (keymap-set project-prefix-map "v" 'dalvrosa/project-vterm))
 #+end_src
 
 *** Language Server Protocol
