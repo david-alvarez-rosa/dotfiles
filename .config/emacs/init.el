@@ -483,9 +483,12 @@ if one already exists."
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (use-package magit
-  :bind ("C-c g" . 'magit-status))
+  :bind ("C-c g" . 'magit-status)
+  :config (require 'forge))
 
 (use-package orgit)
+
+(use-package forge :after magit)
 
 (use-package git-link
   :bind (("C-c w l" . git-link)

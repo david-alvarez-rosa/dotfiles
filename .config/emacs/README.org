@@ -1046,7 +1046,8 @@ runs Git commands and if you wish you can see what exactly is being run, making
 it possible for you to learn the git command-line by using Magit.
 #+begin_src elisp
   (use-package magit
-    :bind ("C-c g" . 'magit-status))
+    :bind ("C-c g" . 'magit-status)
+    :config (require 'forge))
 #+end_src
 
 Using Magit for a while will make you a more effective version control user.
@@ -1059,6 +1060,11 @@ and experts alike.
 Link to Magit buffers from Org documents.
 #+begin_src elisp
   (use-package orgit)
+#+end_src
+
+Magit forge for GitHub/GitLab issues and pull requests
+#+begin_src elisp
+  (use-package forge :after magit)
 #+end_src
 
 *** Git Link
