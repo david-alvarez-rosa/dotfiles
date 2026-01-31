@@ -1052,9 +1052,7 @@ refreshing this output when it becomes outdated. In the background Magit just
 runs Git commands and if you wish you can see what exactly is being run, making
 it possible for you to learn the git command-line by using Magit.
 #+begin_src elisp
-  (use-package magit
-    :bind ("C-c g" . 'magit-status)
-    :config (require 'forge))
+  (use-package magit :bind ("C-c g" . 'magit-status))
 #+end_src
 
 Using Magit for a while will make you a more effective version control user.
@@ -1071,7 +1069,7 @@ Link to Magit buffers from Org documents.
 
 Magit forge for GitHub/GitLab issues and pull requests
 #+begin_src elisp
-  (use-package forge :after magit)
+  (use-package forge :after magit :defer nil)
 #+end_src
 
 *** Git Link

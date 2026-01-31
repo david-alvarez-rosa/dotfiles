@@ -490,13 +490,11 @@ With OPENCODE, use the \"vterm-opencode\" base name."
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(use-package magit
-  :bind ("C-c g" . 'magit-status)
-  :config (require 'forge))
+(use-package magit :bind ("C-c g" . 'magit-status))
 
 (use-package orgit)
 
-(use-package forge :after magit)
+(use-package forge :after magit :defer nil)
 
 (use-package git-link
   :bind (("C-c w l" . git-link)
