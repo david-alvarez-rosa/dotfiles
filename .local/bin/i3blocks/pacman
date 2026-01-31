@@ -16,11 +16,11 @@ echo -n "<span color='white'>"
 number=$(checkupdates 2>/dev/null | wc -l)
 if [ $number -eq 0 ]
 then
-    echo -n "system up to date"
+    echo -n "up to date"
 elif [ $number -eq 1 ]
 then
-    echo -n $number "update available"
+    echo -n $number "update"
 else
-    echo -n $number "updates available"
+    echo -n $number "updates"
 fi
 echo "</span>"

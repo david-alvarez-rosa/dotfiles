@@ -1,7 +1,7 @@
 command=~/.local/bin/i3blocks/$BLOCK_NAME
 align=center
 separator=false
-separator_block_width=20
+separator_block_width=18
 markup=pango
 
 [pacman]
@@ -9,7 +9,8 @@ interval=3600
 signal=1
 color=#1793D1
 
-[ssh]
+[vpn]
+command=printf "\uf084 " && ip -o link | grep -q tun && echo "up" || echo "down"
 interval=30
 color=#589df6
 
@@ -24,16 +25,17 @@ interval=3600
 color=#f9555f
 
 [temperature]
+command=printf "\\uf2c7 " && sensors | grep "CPU: " | awk '{v=$2; sub(/^\+/, "", v); print v}'
 interval=30
 color=#E88939
 
 [cpu]
-interval=5
+interval=10
 color=#589df6
 
 [memory]
 command=printf "\\uf013 " && grep "MemAvailable" /proc/meminfo | awk '{printf("%.1fG\n", $2/1024/1024)}'
-interval=5
+interval=10
 color=#21b089
 
 [volume]
@@ -42,7 +44,7 @@ signal=10
 color=#f9555f
 
 [battery]
-interval=10
+interval=30
 color=#E88939
 
 [wifi]
@@ -52,7 +54,7 @@ color=#589df6
 
 [time]
 command=printf "\\uf017 " && date '+%H:%M'
-interval=10
+interval=20
 color=#21b089
 
 [date]
