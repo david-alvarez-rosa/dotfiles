@@ -407,11 +407,50 @@
               ("C-c ! p" . flymake-goto-prev-error)
               ("C-c ! l" . flymake-show-buffer-diagnostics)))
 
+(defun dalvrosa/vterm-yank-output ()
+  "Yank previous command output from vterm."
+  (interactive)
+  (progn
+    (vterm-copy-mode 1)
+    (previous-line 1)
+    (vterm-beginning-of-line)
+    (set-mark-command nil)
+    (vterm-previous-prompt 1)
+    (kill-ring-save (region-beginning) (region-end))
+    (vterm-copy-mode -1)))
+
+(defun dalvrosa/vterm-output-to-buffer ()
+  "Copy previous command output from vterm to a temp buffer in the same window,
+then run `consult-line'. Restores `kill-ring' afterwards."
+  (interactive)
+  (let ((orig-kill-ring kill-ring)
+        (orig-kill-ring-yank-pointer kill-ring-yank-pointer)
+        (temp (generate-new-buffer "*vterm-output*")))
+    (unwind-protect
+        (progn
+          (vterm-copy-mode 1)
+          (previous-line 1)
+          (vterm-beginning-of-line)
+          (set-mark-command nil)
+          (vterm-previous-prompt 1)
+          (kill-ring-save (region-beginning) (region-end))
+          (vterm-copy-mode -1)
+          (switch-to-buffer temp)
+          (yank)
+          (when (fboundp 'consult-line)
+            (consult-line)))
+      (setq kill-ring orig-kill-ring
+            kill-ring-yank-pointer orig-kill-ring-yank-pointer))))
+
 (use-package vterm
   :config
   (add-to-list 'vterm-eval-cmds '("man" man))
   (setq vterm-max-scrollback 10000)
-  :bind ("C-c t" . 'vterm))
+  :bind (("C-c t" . vterm)
+         :map vterm-mode-map
+         ("C-q" . vterm-send-next-key)
+         ("C-s" . dalvrosa/vterm-output-to-buffer)
+         ("M-w" . dalvrosa/vterm-yank-output)))
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 
