@@ -215,5 +215,6 @@ Status bar configuration.
       status_command i3blocks
       position top
       mode dock
+      tray_output none
   }
 #+end_src

@@ -95,4 +95,5 @@ bar {
     status_command i3blocks
     position top
     mode dock
+    tray_output none
 }
