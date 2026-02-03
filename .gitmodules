@@ -4,3 +4,9 @@
 [submodule "/home/david/.local/share/oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
 	path = /home/david/.local/share/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule ".local/share/plugins/zsh-autosuggestions"]
+	path = .local/share/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
+[submodule ".local/share/plugins/zsh-syntax-highlighting"]
+	path = .local/share/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
