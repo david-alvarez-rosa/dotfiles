@@ -1,11 +1,14 @@
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1="$ " && return
 
-export ZSH="$XDG_DATA_HOME"/oh-my-zsh
+export ZSH=$XDG_DATA_HOME/oh-my-zsh
+export ZSH_CUSTOM=$XDG_DATA_HOME/oh-my-zsh-custom
 plugins=(
     git
     zsh-autosuggestions
     zsh-syntax-highlighting
 )
+fpath+=$ZSH_CUSTOM/plugins/zsh-completions/src
+autoload -U compinit && compinit
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 HYPHEN_INSENSITIVE="true"
 source $ZSH/oh-my-zsh.sh

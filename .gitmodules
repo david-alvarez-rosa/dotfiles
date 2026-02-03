@@ -4,3 +4,6 @@
 [submodule ".local/share/oh-my-zsh-custom/plugins/zsh-syntax-highlighting"]
 	path = .local/share/oh-my-zsh-custom/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule ".local/share/oh-my-zsh-custom/plugins/zsh-completions"]
+	path = .local/share/oh-my-zsh-custom/plugins/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions
