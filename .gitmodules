@@ -7,3 +7,6 @@
 [submodule ".local/share/oh-my-zsh-custom/plugins/zsh-completions"]
 	path = .local/share/oh-my-zsh-custom/plugins/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions
+[submodule ".local/share/oh-my-zsh"]
+	path = .local/share/oh-my-zsh
+	url = https://github.com/ohmyzsh/ohmyzsh.git
