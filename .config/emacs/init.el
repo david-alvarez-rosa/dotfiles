@@ -355,6 +355,13 @@
   (setq gptel-default-mode 'org-mode)
   :hook (gptel-mode . visual-line-mode))
 
+(setq tramp-default-method "ssh")
+(setq tramp-allow-unsafe-temporary-files t)
+(setq tramp-use-connection-share nil)
+(setq remote-file-name-inhibit-cache nil)
+(setq vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
+(setq tramp-verbose 1)
+
 (setq custom-safe-themes t)
 
 (load-theme 'modus-operandi)

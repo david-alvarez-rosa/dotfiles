@@ -782,6 +782,17 @@ spirit of Emacs, available at any time and uniformly in any buffer.
     :hook (gptel-mode . visual-line-mode))
 #+end_src
 
+** TRAMP
+Default to SSH
+#+begin_src elisp
+  (setq tramp-default-method "ssh")
+  (setq tramp-allow-unsafe-temporary-files t)
+  (setq tramp-use-connection-share nil)
+  (setq remote-file-name-inhibit-cache nil)
+  (setq vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
+  (setq tramp-verbose 1)
+#+end_src
+
 * User Interface
 Settings related to the user interface, such as the theme, the modeline, the
 font, other basic interface settings, and the transparency alpha.
