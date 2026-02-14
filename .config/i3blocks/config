@@ -58,6 +58,6 @@ interval=20
 color=#21b089
 
 [date]
-command=printf "\\uf073 " && date '+%A %e '
+command=printf "\\uf073 " && date '+%A %d '
 interval=300
 color=#f9555f
