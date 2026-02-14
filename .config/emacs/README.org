@@ -407,6 +407,12 @@ behaviour.
   (global-subword-mode 1)
 #+end_src
 
+** Change yes/no Questions to y/n
+Shorter and faster.
+#+begin_src elisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
 ** Region Selection
 In Emacs terminology the region is the selected portion of the text.
 

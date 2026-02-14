@@ -169,6 +169,8 @@
 
 (global-subword-mode 1)
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (setq shift-select-mode nil)
 
 (delete-selection-mode 1)
