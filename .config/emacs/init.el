@@ -307,12 +307,29 @@
   :init (which-key-mode))
 
 (setq ispell-program-name "hunspell")
-(setq ispell-dictionary "english")
+(setq ispell-dictionary "en_US")
 
 (add-hook 'text-mode-hook 'flyspell-mode)
 ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
-(use-package sudo-edit)
+(defun dalvrosa/flyspell-cycle ()
+  (interactive)
+  (cond
+   ((not flyspell-mode)
+    (ispell-change-dictionary "en_US")
+    (flyspell-mode 1)
+    (flyspell-buffer))
+   ((string= (or ispell-local-dictionary ispell-dictionary) "en_US")
+    (ispell-change-dictionary "es_ES")
+    (flyspell-buffer))
+   ((string= (or ispell-local-dictionary ispell-dictionary) "es_ES")
+    (flyspell-mode -1))))
+
+(global-set-key (kbd "C-c s") #'dalvrosa/flyspell-cycle)
+(defvar-keymap dalvrosa/flyspell-cycle-repeat-map "s" #'dalvrosa/flyspell-cycle)
+(put 'dalvrosa/flyspell-cycle 'repeat-map 'dalvrosa/flyspell-cycle-repeat-map)
+
+(use-package sudo-edit :bind (("C-c S" . sudo-edit)))
 
 (use-package chronometer)
 
