@@ -485,7 +485,7 @@ With OPENCODE, use the \"vterm-opencode\" base name."
   (interactive (list nil current-prefix-arg))
   (require 'vterm)
   (let* ((default-directory (project-root (project-current t)))
-         (base (if opencode "vterm-opencode" "vterm"))
+         (base (if opencode "opencode" "vterm"))
          (name (project-prefixed-buffer-name base))
          (buf  (and (not new) (get-buffer name))))
     (if buf
@@ -505,7 +505,7 @@ With OPENCODE, use the \"vterm-opencode\" base name."
   (add-to-list 'project-switch-commands '(consult-project-buffer "Find buffer") t)
   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
   (add-to-list 'project-switch-commands '(dalvrosa/project-vterm "Vterm") t)
-  (add-to-list 'project-switch-commands '(dalvrosa/project-vterm-opencode "OpenCode Vterm") t)
+  (add-to-list 'project-switch-commands '(dalvrosa/project-vterm-opencode "OpenCode") t)
   (keymap-set project-prefix-map "b" 'consult-project-buffer)
   (keymap-set project-prefix-map "g" 'magit-project-status)
   (keymap-set project-prefix-map "s" 'project-find-regexp)
