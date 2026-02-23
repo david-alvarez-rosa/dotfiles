@@ -955,16 +955,6 @@ With OPENCODE, use the \"vterm-opencode\" base name."
 
 (setq message-kill-buffer-on-exit t)
 
-(use-package org-mime
-  :config
-  (setq org-mime-export-options '(:with-latex dvipng
-                                  :section-numbers nil
-                                  :with-author nil
-                                  :with-toc nil))
-  :bind (:map message-mode-map
-              (("C-c o" . 'org-mime-edit-mail-in-org-mode)
-               ("C-c M-o" . 'org-mime-htmlize))))
-
 (setq mu4e-attachment-dir "~/tmp")
 
 (with-eval-after-load 'dired

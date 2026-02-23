@@ -1983,59 +1983,6 @@ Kill message buffer after sending a message.
   (setq message-kill-buffer-on-exit t)
 #+end_src
 
-*** Org Mode HTML
-This program sends HTML email using Org-mode HTML export. This approximates a
-WYSiWYG HTML mail editor from within Emacs, and can be useful for sending
-tables, fontified source code, and inline images in email. LaTeX formulas can
-be sent using the modern math delimiters such as \(...\) and \[...\], and also
-environments of any kind (the only requirement is that the ‘\begin’ statement
-appears on a new line, preceded by only whitespace). It's very useful when
-dealing with LaTeX formulas to use =C-c C-x C-l= for producing a preview image
-of the LaTeX fragment at point and overlay it over the source code (f there is
-no fragment at point, process all fragments in the current entry-—between two
-headlines).
-#+begin_src elisp
-  (use-package org-mime
-    :config
-    (setq org-mime-export-options '(:with-latex dvipng
-                                    :section-numbers nil
-                                    :with-author nil
-                                    :with-toc nil))
-    :bind (:map message-mode-map
-                (("C-c o" . 'org-mime-edit-mail-in-org-mode)
-                 ("C-c M-o" . 'org-mime-htmlize))))
-#+end_src
-
-Some useful functions are =org-mime-edit-mail-in-org-mode= (press =C-c o=) for
-editing the mail in a special buffer in Org mode, and then =org-mime-htmilize=
-(with =C-c M-o=) from within a mail composition buffer to export either the
-entire buffer or just the active region to html, and embed the results into the
-buffer as a text/html mime section. After =org-mime-htmlize=, you can always
-run =org-mime-revert-to-plain-text-mail= restore the original plain text mail.
-
-For embedding image into mail body the syntax is as follows:
-=[[/full/path/to/your.jpg]]=.
-
-The function =org-mime-org-buffer-htmlize= can be called from an Org mode
-buffer to export either he whole buffer or the narrowed subtree or active
-region to HTML, and open a new email buffer including the resulting HTML
-content as an embedded mime section.
-
-The function =org-mime-org-subtree-htmlize= is similar to
-=org-mime-org-buffer-htmlize= but works on subtree. It can also read subtree
-properties MAIL_SUBJECT, MAIL_TO, MAIL_CC, and MAIL_BCC. Here is the sample of
-subtree:
-#+begin_example
-  ,* mail one
-   :PROPERTIES:
-   :MAIL_SUBJECT: mail title
-   :MAIL_TO: person1@gmail.com
-   :MAIL_CC: person2@gmail.com
-   :MAIL_BCC: person3@gmail.com
-   :END:
-  some text here ...
-#+end_example
-
 ** Attachment Management
 Configure attachment directory for downloading.
 #+begin_src elisp
