@@ -2,7 +2,7 @@
 
 ;; Lower threshold to 256MB (default is 800kB)
 (add-hook 'emacs-startup-hook
-          (lambda () (setq gc-cons-threshold (* 256 1024 204))))
+          (lambda () (setq gc-cons-threshold (* 256 1024 1024))))
 
 ;; Single VC backend inscreases booting speed
 (setq vc-handled-backends '(Git))
