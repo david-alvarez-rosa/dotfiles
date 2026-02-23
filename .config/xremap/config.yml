@@ -21,7 +21,7 @@ modmap:
 keymap:
   - name: Emacs
     application:
-      not: [Emacs, St]
+      not: [Emacs, St, qutebrowser]
     remap:
       C-s: C-f
       C-b: { with_mark: left }
