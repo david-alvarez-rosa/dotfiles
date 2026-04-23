@@ -975,7 +975,7 @@ With OPENCODE, use the \"vterm-opencode\" base name."
          :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)
                                       ("i" . 'dalvrosa/elfeed-ignore)))
   :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
-                elfeed-search-filter "@1.5-week-ago -no "
+                elfeed-search-filter "@1-week-ago -no "
                 elfeed-sort-order 'ascending
                 elfeed-search-title-max-width 100))
 
