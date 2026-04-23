@@ -1164,21 +1164,6 @@ URLs are added to the kill ring.
            ("C-c w h" . git-link-homepage)))
 #+end_src
 
-*** Snippets
-YASnippets is a template system for Emacs. It allows you to type an
-abbreviation and automatically expand it into function templates.
-#+begin_src elisp
-  (use-package yasnippet
-    :config
-    (use-package yasnippet-snippets)
-    (yas-reload-all)
-    :hook ((prog-mode . yas-minor-mode)
-           (LaTeX-mode . yas-minor-mode)))
-#+end_src
-
-Custom snippets are located in =.config/emacs/snippets= directory (best way to
-create them is using =yas-new-snippet= function).
-
 *** Ediff
 Ediff provides a convenient way for simultaneous browsing through the
 differences between a pair (or a triple) of files or buffers. The files being

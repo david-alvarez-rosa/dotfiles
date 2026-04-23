@@ -564,13 +564,6 @@ With OPENCODE, use the \"vterm-opencode\" base name."
          ("C-c w c" . git-link-commit)
          ("C-c w h" . git-link-homepage)))
 
-(use-package yasnippet
-  :config
-  (use-package yasnippet-snippets)
-  (yas-reload-all)
-  :hook ((prog-mode . yas-minor-mode)
-         (LaTeX-mode . yas-minor-mode)))
-
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
 
