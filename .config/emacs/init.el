@@ -36,7 +36,8 @@
   ( :map dired-mode-map
     ("<tab>" . dired-subtree-toggle))
   :config
-  (setq dired-subtree-use-backgrounds nil))
+  (setq dired-subtree-use-backgrounds nil)
+  (add-hook 'dired-subtree-after-insert-hook #'nerd-icons-dired--refresh))
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))

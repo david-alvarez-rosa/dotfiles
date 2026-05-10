@@ -193,7 +193,8 @@ Subtree by tabbing.
     ( :map dired-mode-map
       ("<tab>" . dired-subtree-toggle))
     :config
-    (setq dired-subtree-use-backgrounds nil))
+    (setq dired-subtree-use-backgrounds nil)
+    (add-hook 'dired-subtree-after-insert-hook #'nerd-icons-dired--refresh))
 #+end_src
 
 *** File Backups, Autosaves and Interlock
@@ -775,7 +776,7 @@ spirit of Emacs, available at any time and uniformly in any buffer.
     ("C-c h" . dalvrosa/new-gpt-chat)
     :init (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
     :config
-    (setq gptel-model 'gpt-5.2)
+    (setq gptel-model 'gpt-5.4)
     (setq gptel-default-mode 'org-mode)
     :hook (gptel-mode . visual-line-mode))
 #+end_src
