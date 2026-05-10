@@ -348,9 +348,9 @@
 (use-package gptel
   :bind
   ("C-c h" . dalvrosa/new-gpt-chat)
-  :init (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
   :config
-  (setq gptel-model 'gpt-5.2)
+  (setq gptel-backend (gptel-make-anthropic "Claude" :stream t :key gptel-api-key))
+  (setq gptel-model 'claude-sonnet-4-6)
   (setq gptel-default-mode 'org-mode)
   :hook (gptel-mode . visual-line-mode))
 
