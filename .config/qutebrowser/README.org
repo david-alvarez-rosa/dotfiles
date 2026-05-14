@@ -57,7 +57,7 @@ Go to end/beginning of page.
 ** Basic Commands
 Prompt and quitting keybindings.
 #+begin_src python
-  config.bind('<Alt-x>', 'set-cmd-text :')
+  config.bind('<Alt-x>', 'cmd-set-text :')
   config.bind('<Ctrl-x><Ctrl-c>', 'quit')
 #+end_src
 
@@ -69,7 +69,7 @@ Convert "C-g" in an escape key.
 
 Help utility.
 #+begin_src python
-  config.bind('<Ctrl-h>', 'set-cmd-text -s :help')
+  config.bind('<Ctrl-h>', 'cmd-set-text -s :help')
 #+end_src
 
 Enter caret mode.
@@ -116,8 +116,8 @@ Command for hinting (for jump).
 ** Searching
 Commands for searching.
 #+begin_src python
-  config.bind('<Ctrl-s>', 'set-cmd-text /')
-  config.bind('<Ctrl-r>', 'set-cmd-text ?')
+  config.bind('<Ctrl-s>', 'cmd-set-text /')
+  config.bind('<Ctrl-r>', 'cmd-set-text ?')
 #+end_src
 
 ** Tabs
@@ -161,12 +161,12 @@ Reopen closed tab.
 For opening links use =l= key, and also standar Emacs binding for opening new
 file.
 #+begin_src python
-  config.bind('<Ctrl-l>', 'set-cmd-text -s :open')
-  config.bind('<Ctrl-Shift-l>', 'set-cmd-text -s :open {url:pretty}')
-  config.bind('<Alt-l>', 'set-cmd-text -s :open -t')
-  config.bind('<Alt-Shift-l>', 'set-cmd-text -s :open -t {url:pretty}')
-  config.bind('<Ctrl-x><Ctrl-f>', 'set-cmd-text -s :open -t')
-  config.bind('<Ctrl-u><Ctrl-x><Ctrl-f>', 'set-cmd-text -s :open')
+  config.bind('<Ctrl-l>', 'cmd-set-text -s :open')
+  config.bind('<Ctrl-Shift-l>', 'cmd-set-text -s :open {url:pretty}')
+  config.bind('<Alt-l>', 'cmd-set-text -s :open -t')
+  config.bind('<Alt-Shift-l>', 'cmd-set-text -s :open -t {url:pretty}')
+  config.bind('<Ctrl-x><Ctrl-f>', 'cmd-set-text -s :open -t')
+  config.bind('<Ctrl-u><Ctrl-x><Ctrl-f>', 'cmd-set-text -s :open')
 #+end_src
 
 * Insert Mode
@@ -295,5 +295,5 @@ Configure title format for tabs.
 I am using the themes of [[https://github.com/theova/base16-qutebrowser][base16-qutebrowser]], I have all of them downloaded in
 =./themes/= directory.
 #+begin_src python
-  config.source('./themes/default/base16-gruvbox-dark-medium.config.py')
+  # config.source('./themes/default/base16-gruvbox-dark-medium.config.py')
 #+end_src

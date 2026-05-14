@@ -21,13 +21,13 @@ config.bind('<Alt-v>', 'scroll-page 0 -0.5')
 config.bind('<Alt-,>', 'scroll-to-perc 0')
 config.bind('<Alt-.>', 'scroll-to-perc')
 
-config.bind('<Alt-x>', 'set-cmd-text :')
+config.bind('<Alt-x>', 'cmd-set-text :')
 config.bind('<Ctrl-x><Ctrl-c>', 'quit')
 
 ESC_BIND = 'clear-keychain ;; search ;; fullscreen --leave'
 config.bind('<Ctrl-g>', ESC_BIND)
 
-config.bind('<Ctrl-h>', 'set-cmd-text -s :help')
+config.bind('<Ctrl-h>', 'cmd-set-text -s :help')
 
 config.bind('<Ctrl-Space>', 'mode-enter caret')
 
@@ -48,8 +48,8 @@ config.bind('<Alt-m>', 'hint links spawn mpv {hint-url}')
 config.bind('<Ctrl-j>', 'hint all')
 config.bind('<Alt-j>', 'hint all tab')
 
-config.bind('<Ctrl-s>', 'set-cmd-text /')
-config.bind('<Ctrl-r>', 'set-cmd-text ?')
+config.bind('<Ctrl-s>', 'cmd-set-text /')
+config.bind('<Ctrl-r>', 'cmd-set-text ?')
 
 config.bind('<Ctrl-]>', 'tab-next')
 config.bind('<Ctrl-[>', 'tab-prev')
@@ -69,12 +69,12 @@ config.bind('<Ctrl-/>', 'undo')
 config.bind('<Alt-a>', 'back')
 config.bind('<Alt-e>', 'forward')
 
-config.bind('<Ctrl-l>', 'set-cmd-text -s :open')
-config.bind('<Ctrl-Shift-l>', 'set-cmd-text -s :open {url:pretty}')
-config.bind('<Alt-l>', 'set-cmd-text -s :open -t')
-config.bind('<Alt-Shift-l>', 'set-cmd-text -s :open -t {url:pretty}')
-config.bind('<Ctrl-x><Ctrl-f>', 'set-cmd-text -s :open -t')
-config.bind('<Ctrl-u><Ctrl-x><Ctrl-f>', 'set-cmd-text -s :open')
+config.bind('<Ctrl-l>', 'cmd-set-text -s :open')
+config.bind('<Ctrl-Shift-l>', 'cmd-set-text -s :open {url:pretty}')
+config.bind('<Alt-l>', 'cmd-set-text -s :open -t')
+config.bind('<Alt-Shift-l>', 'cmd-set-text -s :open -t {url:pretty}')
+config.bind('<Ctrl-x><Ctrl-f>', 'cmd-set-text -s :open -t')
+config.bind('<Ctrl-u><Ctrl-x><Ctrl-f>', 'cmd-set-text -s :open')
 
 c.input.insert_mode.auto_enter = False
 c.input.insert_mode.plugins = False
@@ -132,4 +132,4 @@ c.completion.scrollbar.width = 0
 
 c.tabs.title.format = '{perc} {index} {current_title}'
 
-config.source('./themes/default/base16-gruvbox-dark-medium.config.py')
+# config.source('./themes/default/base16-gruvbox-dark-medium.config.py')
