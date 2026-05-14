@@ -650,6 +650,8 @@ With OPENCODE, use the \"vterm-opencode\" base name."
 (use-package ox-hugo :after ox)
 
 (with-eval-after-load 'org
+  (load-library "org-element.el")
+  (require 'ox-hugo nil t)
   (require 'ox-md nil t))
 
 (setq org-agenda-restore-windows-after-quit t)

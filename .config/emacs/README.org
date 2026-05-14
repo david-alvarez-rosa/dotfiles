@@ -1389,6 +1389,8 @@ Add export backends to (GitHub) MarkDown, Jira and Slack.
   (use-package ox-hugo :after ox)
 
   (with-eval-after-load 'org
+    (load-library "org-element.el")
+    (require 'ox-hugo nil t)
     (require 'ox-md nil t))
 #+end_src
 
