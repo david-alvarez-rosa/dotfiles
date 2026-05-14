@@ -968,37 +968,16 @@ Projectile project.
       (kill-ring-save (region-beginning) (region-end))
       (vterm-copy-mode -1)))
 
-  (defun dalvrosa/vterm-output-to-buffer ()
-    "Copy previous command output from vterm to a temp buffer in the same window,
-  then run `consult-line'. Restores `kill-ring' afterwards."
-    (interactive)
-    (let ((orig-kill-ring kill-ring)
-          (orig-kill-ring-yank-pointer kill-ring-yank-pointer)
-          (temp (generate-new-buffer "*vterm-output*")))
-      (unwind-protect
-          (progn
-            (vterm-copy-mode 1)
-            (previous-line 1)
-            (vterm-beginning-of-line)
-            (set-mark-command nil)
-            (vterm-previous-prompt 1)
-            (kill-ring-save (region-beginning) (region-end))
-            (vterm-copy-mode -1)
-            (switch-to-buffer temp)
-            (yank)
-            (when (fboundp 'consult-line)
-              (consult-line)))
-        (setq kill-ring orig-kill-ring
-              kill-ring-yank-pointer orig-kill-ring-yank-pointer))))
-
   (use-package vterm
     :config
     (add-to-list 'vterm-eval-cmds '("man" man))
     (setq vterm-max-scrollback 10000)
     :bind (("C-c t" . vterm)
+           :map vterm-copy-mode-map
+           ("M->" . #'vterm-copy-mode)
            :map vterm-mode-map
            ("C-q" . vterm-send-next-key)
-           ("C-s" . dalvrosa/vterm-output-to-buffer)
+           ("C-M-p" . (lambda () (interactive) (vterm-copy-mode 1) (previous-line)))
            ("M-w" . dalvrosa/vterm-yank-output)))
 #+end_src
 
