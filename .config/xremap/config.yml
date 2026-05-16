@@ -61,9 +61,9 @@ keymap:
           C-c: C-q
           u: [C-z, { set_mark: false }]
 
-  - name: Firefox
+  - name: Browser
     application:
-      only: firefox
+      only: [firefox, Chromium, "Tor Browser"]
     remap:
       C-Shift-p: C-Shift-p
       C-Shift-r: C-F5
