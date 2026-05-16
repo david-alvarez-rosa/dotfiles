@@ -42,12 +42,13 @@ Set workspace names.
   set $ws1 "1. Emacs"
   set $ws2 "2. Browser"
   set $ws3 "3. Terminal"
-  set $ws4 "4. Ranger"
-  set $ws5 "5. Communication"
-  set $ws6 "6. Executing"
-  set $ws7 "7. Media"
-  set $ws8 "8. Firefox"
-  set $ws9 "9. Auxiliar"
+  set $ws4 "4. Executing"
+  set $ws5 "5. Extra"
+  set $ws6 "6. Extra"
+  set $ws7 "7. Emacs"
+  set $ws8 "8. Browser"
+  set $ws9 "9. Terminal"
+  set $ws10 "10. Executing"
 #+end_src
 
 * Auto Start
@@ -83,6 +84,7 @@ Switching to a workspace.
   bindsym $mod+7 workspace $ws7
   bindsym $mod+8 workspace $ws8
   bindsym $mod+9 workspace $ws9
+  bindsym $mod+0 workspace $ws10
 #+end_src
 
 Moving a container/window to a workspace.
@@ -96,6 +98,7 @@ Moving a container/window to a workspace.
   bindsym $mod+Shift+7 move container to workspace $ws7
   bindsym $mod+Shift+8 move container to workspace $ws8
   bindsym $mod+Shift+9 move container to workspace $ws9
+  bindsym $mod+Shift+0 move container to workspace $ws0
 #+end_src
 
 Switching between the last two used workspaces.
