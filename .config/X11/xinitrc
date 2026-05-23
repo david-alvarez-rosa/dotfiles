@@ -5,4 +5,5 @@ unclutter --timeout 2 --ignore-scrolling &
 keepassxc &
 dunst &
 xrdb -merge ~/.Xresources
+systemctl --user import-environment DISPLAY XAUTHORITY
 exec i3
