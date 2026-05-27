@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Emacs Mail
+Exec=emacs-mailto %u
+Type=Application
+Terminal=false
+MimeType=x-scheme-handler/mailto;

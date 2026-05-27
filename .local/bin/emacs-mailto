@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+emacsclient --no-wait --eval "(browse-url-mail \"$1\")"

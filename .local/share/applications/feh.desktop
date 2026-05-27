@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=feh
+Exec=feh %u
+Terminal=false
+Type=Application
+MimeType=image/jpeg;image/png;image/gif;image/bmp;image/webp;
