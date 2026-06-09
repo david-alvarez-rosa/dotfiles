@@ -3,7 +3,7 @@
 # Print battery information.
 
 function printBatteryInfo() {
-    printf $1" "$2"%%\n"
+    printf "<span font_family='FontAwesome'>"$1"</span> "$2"%%\n"
     exit
 }
 
@@ -35,7 +35,7 @@ then
     [[ $percent -le 100 ]] && printBatteryInfo "\uf240" $percent
 elif [ $status == "Charging" ]
 then
-    printf " $percent""%%\n"
+    printf "<span font_family='FontAwesome'></span> $percent""%%\n"
 else
-    printf " 100""%%\n"
+    printf "<span font_family='FontAwesome'></span> 100""%%\n"
 fi
