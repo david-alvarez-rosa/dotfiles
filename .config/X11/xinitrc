@@ -4,6 +4,6 @@ xbindkeys -f ~/.config/xbindkeys/config
 unclutter --timeout 2 --ignore-scrolling &
 keepassxc &
 dunst &
-xrdb -merge ~/.Xresources
+xrdb -merge ~/.config/X11/Xresources
 systemctl --user import-environment DISPLAY XAUTHORITY
 exec i3

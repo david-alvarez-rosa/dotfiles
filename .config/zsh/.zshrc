@@ -8,7 +8,8 @@ plugins=(
     zsh-syntax-highlighting
 )
 fpath+=$ZSH_CUSTOM/plugins/zsh-completions/src
-autoload -U compinit && compinit
+export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
+autoload -U compinit && compinit -d "$ZSH_COMPDUMP"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 HYPHEN_INSENSITIVE="true"
 source $ZSH/oh-my-zsh.sh
