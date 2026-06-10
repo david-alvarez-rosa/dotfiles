@@ -1,0 +1,11 @@
+[Unit]
+Description=KeePassXC
+
+[Service]
+ExecStart=/usr/bin/keepassxc
+Environment=DISPLAY=:0
+Environment=XDG_RUNTIME_DIR=/run/user/%U
+User=david
+
+[Install]
+WantedBy=default.target
