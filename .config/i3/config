@@ -23,6 +23,8 @@ exec --no-startup-id i3-msg "exec emacs"
 exec --no-startup-id i3-msg "exec firefox"
 exec --no-startup-id "sh -c 'sleep 1; i3-msg [class=firefox] move container to workspace 2. Browser'"
 
+exec --no-startup-id xss-lock --transfer-sleep-lock -- slock
+
 bindsym $mod+Return exec emacsclient -c
 bindsym $mod+Shift+Return exec i3-sensible-terminal
 
@@ -94,7 +96,7 @@ bindsym $mod+o fullscreen toggle
 bindsym $mod+Shift+v floating toggle; exec --no-startup-id ~/.local/bin/bottomright; sticky enable
 
 bar {
-    font pango:mono 9
+    font pango:DejaVu Sans Mono 9
     status_command i3blocks
     position top
     mode dock

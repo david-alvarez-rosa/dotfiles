@@ -59,6 +59,12 @@ Auto start Firefox and Emacs.
   exec --no-startup-id "sh -c 'sleep 1; i3-msg [class=firefox] move container to workspace 2. Browser'"
 #+end_src
 
+Lock the screen with =slock= before sleep/suspend. =xss-lock= holds a sleep
+inhibitor until the screen is locked.
+#+begin_src conf
+  exec --no-startup-id xss-lock --transfer-sleep-lock -- slock
+#+end_src
+
 * Key bindings
 ** Apps
 Open a terminal
@@ -214,7 +220,7 @@ for productivity, though).
 Status bar configuration.
 #+begin_src conf
   bar {
-      font pango:mono 9
+      font pango:DejaVu Sans Mono 9
       status_command i3blocks
       position top
       mode dock
