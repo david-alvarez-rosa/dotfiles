@@ -15,7 +15,7 @@ interval=30
 color=#589df6
 
 [home]
-command=printf "<span font_family='FontAwesome'>\\uf015</span> " && df -h -P -l $HOME | awk '{print $4}' | tail -1
+command=printf "<span font_family='FontAwesome' font_size='10pt'>\\uf015</span> " && df -h -P -l $HOME | awk '{print $4}' | tail -1
 interval=3600
 color=#21b089
 
@@ -53,7 +53,7 @@ interval=15
 color=#589df6
 
 [time]
-command=printf "<span font_family='FontAwesome'>\\uf017</span> " && date '+%H:%M'
+command=printf "<span font_family='FontAwesome' font_size='10pt'>\\uf017</span> " && date '+%H:%M'
 interval=20
 color=#21b089
 
