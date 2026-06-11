@@ -956,8 +956,8 @@ With CLAUDE, use the \"vterm-claude\" base name."
   :bind (("C-c f" . 'elfeed)
          :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)
                                       ("i" . 'dalvrosa/elfeed-ignore)))
+  :init (setq elfeed-search-filter "@1-week-ago -no ")
   :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
-                elfeed-search-filter "@1-week-ago -no "
                 elfeed-sort-order 'ascending
                 elfeed-search-title-max-width 100))
 
