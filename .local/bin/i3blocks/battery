@@ -1,41 +1,44 @@
 #!/bin/bash
 
-# Print battery information.
-
-function printBatteryInfo() {
-    printf "<span font_family='FontAwesome'>"$1"</span> "$2"%%\n"
-    exit
-}
-
+bat=/sys/class/power_supply/BAT0
+percentage=$(< "$bat/capacity")
+state=$(< "$bat/status")
 
 function notifyBatteryInfo() {
-    time=$(acpi -b | awk '{print $5}')
-    percent=$(acpi -b | awk '{print $4}' | tr -d ',' | tr -d '%')
-    status=$(acpi -b | awk '{print $3}' | tr -d ',')
-    notify-send "Battery information" "Status: $status, $percent%\nTime: $time"
+    info=$(upower --battery)
+    time=$(echo "$info" | awk '/time to/ {print $4, $5}')
+    rate=$(echo "$info" | awk '/energy-rate:/ {print $2, $3}')
+    capacity=$(echo "$info" | awk '/energy-full:/ {print $2, $3}')
+    design=$(echo "$info" | awk '/energy-full-design:/ {print $2, $3}')
+    health=$(echo "$info" | awk '/capacity:/ {sub(/%/, "", $2); printf "%.1f%%", $2}')
+
+    body="Status: $percentage% ($state)"
+    case $state in
+        Discharging) body="$body
+Time to empty: ${time:-calculating…}" ;;
+        Charging) body="$body
+Time to full: ${time:-calculating…}" ;;
+    esac
+    body="$body
+Energy rate: $rate
+Capacity: $capacity / $design ($health)"
+
+    notify-send "Battery information" "$body"
 }
 
-
-percent=$(acpi -b | awk '{print $4}' | tr -d ',' | tr -d '%')
-status=$(acpi -b | awk '{print $3}' | tr -d ',')
-
-
 case $BLOCK_BUTTON in
-    1) notifyBatteryInfo ;;
-    2) notifyBatteryInfo ;;
-    3) notifyBatteryInfo ;;
+    1|2|3) notifyBatteryInfo ;;
 esac
 
-if [ $status == "Discharging" ]
-then
-    [[ $percent -lt 20 ]] && printBatteryInfo "\uf244" $percent
-    [[ $percent -lt 40 ]] && printBatteryInfo "\uf243" $percent
-    [[ $percent -lt 60 ]] && printBatteryInfo "\uf242" $percent
-    [[ $percent -lt 85 ]] && printBatteryInfo "\uf241" $percent
-    [[ $percent -le 100 ]] && printBatteryInfo "\uf240" $percent
-elif [ $status == "Charging" ]
-then
-    printf "<span font_family='FontAwesome'></span> $percent""%%\n"
+if [ "$state" = "Discharging" ]; then
+    if   [ "$percentage" -lt 20 ]; then icon=''
+    elif [ "$percentage" -lt 40 ]; then icon=''
+    elif [ "$percentage" -lt 60 ]; then icon=''
+    elif [ "$percentage" -lt 85 ]; then icon=''
+    else                                icon=''
+    fi
 else
-    printf "<span font_family='FontAwesome'></span> 100""%%\n"
+    icon=''
 fi
+
+printf "<span font_family='FontAwesome'>$icon</span> %s%%\n" "$percentage"
