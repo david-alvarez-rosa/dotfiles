@@ -1,5 +1,3 @@
-(setq gc-cons-threshold most-positive-fixnum)
-
 ;; Lower threshold to 256MB (default is 800kB)
 (add-hook 'emacs-startup-hook
           (lambda () (setq gc-cons-threshold (* 256 1024 1024))))
@@ -7,9 +5,35 @@
 ;; Single VC backend inscreases booting speed
 (setq vc-handled-backends '(Git))
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(with-eval-after-load 'package
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/")))
 (setq use-package-always-defer t)
+
+(defvar dalvrosa/preload-queue
+  '(;; Org, bottom-up; `org' also pulls in Babel and the exporters
+    calendar find-func format-spec org-macs org-compat org-faces
+    org-entities org-list org-pcomplete org-src org-footnote org-macro
+    ob org org-agenda agenda-files org-capture
+    ;; Magit, with Forge and its database
+    dash transient with-editor magit forge
+    ispell flyspell
+    vterm dired mu4e latex tramp pdf-tools elfeed bbdb)
+  "Libraries to preload while Emacs is idle, in order.")
+
+(defun dalvrosa/preload-next ()
+  "Load the next entry in `dalvrosa/preload-queue', then re-arm."
+  (let ((inhibit-message t))
+    (ignore-errors
+      (pcase (pop dalvrosa/preload-queue)
+        ('nil)
+        ('agenda-files (org-agenda-prepare-buffers (org-agenda-files)))
+        (lib (unless (featurep lib) (require lib nil t))))))
+  (when dalvrosa/preload-queue
+    (if (current-idle-time)
+        (run-with-timer 0.2 nil #'dalvrosa/preload-next)
+      (run-with-idle-timer 0.75 nil #'dalvrosa/preload-next))))
+
+(run-with-idle-timer 1 nil #'dalvrosa/preload-next)
 
 (setq user-full-name "David Álvarez Rosa")
 (setq user-mail-address "david@alvarezrosa.com")
@@ -435,6 +459,9 @@
   :config
   (add-to-list 'vterm-eval-cmds '("man" man))
   (setq vterm-max-scrollback 10000)
+  (setq vterm-timer-delay 0.02)
+  (add-hook 'vterm-mode-hook
+            (lambda () (setq-local global-hl-line-mode nil)))
   :bind (("C-c t" . vterm)
          :map vterm-copy-mode-map
          ("M->" . #'vterm-copy-mode)
@@ -547,6 +574,9 @@ With CLAUDE, use the \"vterm-claude\" base name."
 (use-package vlf
   :init (require 'vlf-setup))
 
+(setq org-modules '(ol-doi ol-bbdb ol-bibtex ol-docview ol-eww
+                    ol-info ol-irc))
+
 (setq org-use-speed-commands t)
 
 (setq org-default-notes-file "~/docs/Agenda.org")
@@ -580,26 +610,17 @@ With CLAUDE, use the \"vterm-claude\" base name."
       (org-babel-do-load-languages
        'org-babel-load-languages
        '((C . t)
-         ;; (C++ . t)
          (python . t)
          (latex . t)
-         (matlab . t)
          (shell . t)
-         (plantuml . t)
-         (css . t)
-         (calc . t)
-         (js . t))))
+         (plantuml . t))))
 
 (setq org-confirm-babel-evaluate nil)
 (setq org-plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar")
 
-(use-package ox-jira :after ox)
-(use-package ox-slack :after ox)
-(use-package ox-gfm :after ox)
 (use-package ox-hugo :after ox)
 
 (with-eval-after-load 'org
-  (load-library "org-element.el")
   (require 'ox-hugo nil t)
   (require 'ox-md nil t))
 
@@ -872,8 +893,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
   (bind-key "<M-tab>" 'eudc-expand-inline org-msg-edit-mode-map)
   (setq eudc-inline-expansion-servers 'hotlist))
 
-(use-package bbdb
-  :demand t)
+(use-package bbdb)
 
 (use-package bbdb-vcard
   :after bbdb)
