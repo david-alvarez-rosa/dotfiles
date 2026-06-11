@@ -575,7 +575,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
          (plantuml . t)
          (css . t)
          (calc . t)
-         (R . t)
          (js . t))))
 
 (setq org-confirm-babel-evaluate nil)
