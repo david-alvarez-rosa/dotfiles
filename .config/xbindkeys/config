@@ -1,13 +1,13 @@
-"pamixer -i 5"
-  XF86AudioRaiseVolume
 "pamixer -i 10"
+  XF86AudioRaiseVolume
+"pamixer -i 5"
   Shift + XF86AudioRaiseVolume
 "pamixer -i 1"
   Control + XF86AudioRaiseVolume
 
-"pamixer -d 5"
-  XF86AudioLowerVolume
 "pamixer -d 10"
+  XF86AudioLowerVolume
+"pamixer -d 5"
   Shift + XF86AudioLowerVolume
 "pamixer -d 1"
   Control + XF86AudioLowerVolume

@@ -6,40 +6,34 @@
 #+PROPERTY: header-args :tangle config
 
 
-Xbindkeys is a program that allows to bind commands to certain keys or key
-combinations on the keyboard. Xbindkeys works with multimedia keys and is
-independent of the window manager and desktop environment.
-
-This program should be added to the =.xinitrc= file as follows.
+Xbindkeys binds commands to keys or key combinations, works with multimedia
+keys and is independent of the window manager. It is started from =.xinitrc=
+as follows.
 #+begin_src conf :tangle no
   xbindkeys -f ~/.config/xbindkeys/config
 #+end_src
 
 * Volume
-Commands for controlling the volume. This binds laptop =Fn= keys for adjust
-audio, such as volume (increase, drecrease) and toggle mute status.
-
-Commands for increasing and decreasing the volume have an step size of 5, but
-using =Shift= modifier on this keys will change step size to 10 and using
-=Ctrl= modifier to 1.
+Volume control with the laptop =Fn= keys. The default step size is 10, with
+=Shift= it becomes 5 and with =Ctrl= it becomes 1.
 #+begin_src conf
-  "pamixer -i 5"
-    XF86AudioRaiseVolume
   "pamixer -i 10"
+    XF86AudioRaiseVolume
+  "pamixer -i 5"
     Shift + XF86AudioRaiseVolume
   "pamixer -i 1"
     Control + XF86AudioRaiseVolume
 
-  "pamixer -d 5"
-    XF86AudioLowerVolume
   "pamixer -d 10"
+    XF86AudioLowerVolume
+  "pamixer -d 5"
     Shift + XF86AudioLowerVolume
   "pamixer -d 1"
     Control + XF86AudioLowerVolume
 #+end_src
 
-Remember that is possible to allow volume boost (volume above 100%), from the
-command line with =pamixer -i --allow-boost <arg>=.
+Note that volume boost (above 100%) is possible with =pamixer -i
+--allow-boost <arg>=.
 
 Toggle mute status.
 #+begin_src conf
@@ -51,30 +45,23 @@ Toggle mute status.
 Configuration both for display brightness and display.
 
 ** Brightness
-Due to incompatibility problems, I am using Acpilight (a backward-compatible
-xbacklight replacement) for setting the display brightness. This programm uses
-the ACPI interface and can control both display and keyboard backlight
-uniformly on either X11, the console or Wayland. Personally I am just using
-this for display brightness in X.
-
-Similarly to the volume control bindings, I am providing here functionality for
-increasing and decreasing brightness with =Fn= laptop keys with a step size
-of 5. If this keys are combined with =Shift= modifier the step size changes to
-10, and when combined with =Ctrl= to 1.
-
+Brightness control with the laptop =Fn= keys, using Acpilight (a
+backward-compatible =xbacklight= replacement based on the ACPI interface).
+The default step size is 10, with =Shift= it becomes 20 and with =Ctrl= it
+becomes 5.
 #+begin_src conf
-  "xbacklight -inc 5"
-    XF86MonBrightnessUp
   "xbacklight -inc 10"
+    XF86MonBrightnessUp
+  "xbacklight -inc 20"
     Shift + XF86MonBrightnessUp
-  "xbacklight -inc 1"
+  "xbacklight -inc 5"
     Control + XF86MonBrightnessUp
 
-  "xbacklight -dec 5"
-    XF86MonBrightnessDown
   "xbacklight -dec 10"
+    XF86MonBrightnessDown
+  "xbacklight -dec 20"
     Shift + XF86MonBrightnessDown
-  "xbacklight -dec 1"
+  "xbacklight -dec 5"
     Control + XF86MonBrightnessDown
 #+end_src
 
@@ -82,19 +69,17 @@ of 5. If this keys are combined with =Shift= modifier the step size changes to
 :LOGBOOK:
 - State "TODO"       from              [2022-05-01 Sun 12:56]
 :END:
-*Disclaimer* This is not working currently (there is clash between the =Fn= key
-and =Mod + p=, I am not tangling the blocks to follow.
+*Disclaimer* Not working currently (there is a clash between the =Fn= key and
+=Mod + p=), so these blocks are not tangled.
 
-Switching off the backlight can be useful to conserve battery energy. I have
-bind this to the =F4= key, because why not.
+Switch off the backlight to conserve battery.
 #+begin_src conf :tangle no
   "xset dpms force off"
     Mod4 + p
 #+end_src
 
-This same display =Fn= laptop key is also bound with the =Ctrl= and =Shift=
-modifiers for toggling graphical output and volume to a external monitor (very
-useful whenever I connect laptop to a TV).
+With =Ctrl= and =Shift= modifiers, toggle graphical and audio output to an
+external monitor (useful when connecting the laptop to a TV).
 #+begin_src conf :tangle no
   "xrandr --output HDMI-1 --auto --output eDP-1 --off; pactl set-card-profile 0 output:hdmi-stereo"
     Control + Mod4 + p
@@ -103,9 +88,7 @@ useful whenever I connect laptop to a TV).
 #+end_src
 
 * Music Player
-For listening to music and other audio files I use, of course, the =mpd=
-daemon. I set some basic binds for next/prev song and toggling between play and
-pause status.
+Basic bindings for =mpd= (via =mpc=): play/pause toggle and prev/next song.
 #+begin_src conf
   "mpc toggle"
     XF86AudioPlay
@@ -116,41 +99,40 @@ pause status.
 #+end_src
 
 * Touchpad
-Any real Emacs user knows that touchpads are annoying. I set the laptop =Fn=
-key for toggling between touchpad status: enabled/disabled.
+Toggle the touchpad enabled/disabled with the laptop =Fn= key. The touchpad
+name is laptop-specific (here "ELAN1200:00 04F3:309F Touchpad") and can be
+found with =xinput=.
 #+begin_src conf
   "if xinput list-props 'ELAN1200:00 04F3:309F Touchpad' | grep 'Device Enabled (149):.*1'; then xinput disable 'ELAN1200:00 04F3:309F Touchpad'; else xinput enable 'ELAN1200:00 04F3:309F Touchpad'; fi"
     XF86TouchpadToggle
 #+end_src
 
-Of course, take into account that the name for the touchpad must be changed
-accordingly to the laptop, in my case it is called "SynPS/2 Synaptics
-Touchpad". The touchpad name can be search with =xinput=.
-
 *NOTE:* The key it's not working! Don't know why.
 
 * Screen lock
-Lock the screen using =slock= programm from Suckless, with =Super+l=.
+Lock the screen with =Super+l= using =slock= from Suckless.
 #+begin_src conf
   "slock"
     Mod2 + Mod4 + l
 #+end_src
 
 * Screenshot
-For taking screenshots.
+Take screenshots with =maim= (=-u= hides the cursor): full screen, active
+window (=Shift=) or selection (=Ctrl=). The image is saved to =~/tmp= and
+copied to the clipboard.
 #+begin_src conf
-  "maim | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
+  "maim -u | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
     Print
-  "maim --window $(xdotool getactivewindow) | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
+  "maim -u --window $(xdotool getactivewindow) | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
     Shift + Print
-  "maim --select | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
+  "maim -u --select | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
     Control + Print
 #+end_src
 
 * Application Launcher
-I am using dmenu as application launcher.
+Launch applications with dmenu.
 #+begin_src conf
-  "dmenu_run"
+  "dmenu_run -fn 'Hack:size=11'"
     Mod4 + d
 #+end_src
 
@@ -179,10 +161,8 @@ I am using dmenu as application launcher.
 #+end_src
 
 ** Network Manager
-Toggle wifi status: enabled/disabled. Wi-Fi status can be check in the command
-line with the command =nmcli radio wifi=. I am using NetworkManager program
-(originally developep by Red Hat) for network configuration (both wireless and
-wired). For interacting with the daemon I use the command-line tool nmcli.
+Toggle Wi-Fi enabled/disabled using =nmcli=, the command-line tool for
+NetworkManager. The current status can be checked with =nmcli radio wifi=.
 #+begin_src conf
   "[[ $(nmcli radio wifi) == 'enabled' ]] && nmcli radio wifi off || nmcli radio wifi on"
     XF86WLAN
@@ -194,7 +174,7 @@ wired). For interacting with the daemon I use the command-line tool nmcli.
 - State "TODO"       from              [2021-09-02 Thu 08:40]
 :END:
 This approach might be a better alternative (in general for all commands), but
-this will only be needed if not using any status bar.
+only needed if not using any status bar.
 #+begin_src conf :tangle no
   "nmcli radio wifi off"
     XF86WLAN
