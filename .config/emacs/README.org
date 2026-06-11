@@ -352,11 +352,11 @@ Emacs windows and i3 windows (see
 Long lines are a bad practice: stick to at most 80 characters and use
 =M-q= to fill paragraphs.
 #+begin_src elisp
-  (add-hook 'text-mode-hook 'turn-on-auto-fill)
   (setq-default fill-column 79)
   (add-hook 'text-mode-hook
             (lambda ()
-              (set-fill-column 72)))
+              (turn-on-auto-fill)
+              (setq fill-column 72)))
 #+end_src
 
 Custom unfill function with =M-Q= (the inverse of =M-q=).
