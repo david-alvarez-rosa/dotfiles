@@ -958,36 +958,6 @@ Use the built-in tree-sitter mode.
   (add-to-list 'auto-mode-alist '("\\.php\\'" . php-ts-mode))
 #+end_src
 
-** Kotlin
-#+begin_src elisp
-  (use-package kotlin-mode)
-#+end_src
-
-** Swift
-#+begin_src elisp
-  (use-package swift-mode)
-#+end_src
-
-** Octave/Matlab
-Open Matlab files (.m) in Octave mode by default.
-#+begin_src elisp
-  (setq auto-mode-alist
-        (cons '("\\.m$" . octave-mode) auto-mode-alist))
-#+end_src
-
-** R
-ESS ("Emacs Speaks Statistics") for editing R code. Eval buffer/line/region
-/function with =C-c C-b= / =C-c C-j= / =C-c C-r= / =C-c C-f=.
-#+begin_src elisp
-  (use-package ess)
-#+end_src
-
-** Apache Groovy
-Mainly for editing Gradle build files.
-#+begin_src elisp
-  (use-package groovy-mode)
-#+end_src
-
 ** Log Files
 VLF views/edits very large files in batches, trading memory for processor
 time.
@@ -1246,12 +1216,6 @@ Live preview in the browser with ~markdown-preview-mode~, styled like GitHub.
     :config
     (setq plantuml-default-exec-mode 'jar)
     (setq plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar"))
-#+end_src
-
-** Quarto
-#+begin_src elisp
-  (use-package quarto-mode
-    :mode (("\\.Rmd" . poly-quarto-mode)))
 #+end_src
 
 ** TeX/LaTeX

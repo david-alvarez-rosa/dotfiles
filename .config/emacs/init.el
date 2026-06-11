@@ -531,17 +531,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
 
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-ts-mode))
 
-(use-package kotlin-mode)
-
-(use-package swift-mode)
-
-(setq auto-mode-alist
-      (cons '("\\.m$" . octave-mode) auto-mode-alist))
-
-(use-package ess)
-
-(use-package groovy-mode)
-
 (use-package vlf
   :init (require 'vlf-setup))
 
@@ -716,9 +705,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
   :config
   (setq plantuml-default-exec-mode 'jar)
   (setq plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar"))
-
-(use-package quarto-mode
-  :mode (("\\.Rmd" . poly-quarto-mode)))
 
 (use-package auctex
   :after latex
