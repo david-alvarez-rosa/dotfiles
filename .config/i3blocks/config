@@ -34,7 +34,7 @@ interval=10
 color=#589df6
 
 [memory]
-command=printf "<span font_family='FontAwesome'>\\uf013</span> " && grep "MemAvailable" /proc/meminfo | awk '{printf("%.1fG\n", $2/1024/1024)}'
+command=printf "<span font_family='FontAwesome'>\\uf013</span> " && grep "MemAvailable" /proc/meminfo | awk '{printf("%.1fG\n", $2/1024/1024 + 8)}'
 interval=10
 color=#21b089
 
