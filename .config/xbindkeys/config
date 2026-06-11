@@ -15,18 +15,18 @@
 "pamixer -t"
   XF86AudioMute
 
-"xbacklight -inc 5"
-  XF86MonBrightnessUp
 "xbacklight -inc 10"
+  XF86MonBrightnessUp
+"xbacklight -inc 20"
   Shift + XF86MonBrightnessUp
-"xbacklight -inc 1"
+"xbacklight -inc 5"
   Control + XF86MonBrightnessUp
 
-"xbacklight -dec 5"
-  XF86MonBrightnessDown
 "xbacklight -dec 10"
+  XF86MonBrightnessDown
+"xbacklight -dec 20"
   Shift + XF86MonBrightnessDown
-"xbacklight -dec 1"
+"xbacklight -dec 5"
   Control + XF86MonBrightnessDown
 
 "mpc toggle"
