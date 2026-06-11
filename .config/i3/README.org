@@ -52,11 +52,12 @@ Set workspace names.
 #+end_src
 
 * Auto Start
-Auto start Firefox and Emacs.
+Auto start Emacs on workspace 1 and Firefox on workspace 2 (retrying until
+its window appears).
 #+begin_src conf
   exec --no-startup-id i3-msg "exec emacs"
   exec --no-startup-id i3-msg "exec firefox"
-  exec --no-startup-id "sh -c 'sleep 1; i3-msg [class=firefox] move container to workspace 2. Browser'"
+  exec --no-startup-id "sh -c 'until i3-msg [class=firefox] move container to workspace 2. Browser; do sleep 0.5; done'"
 #+end_src
 
 Lock the screen with =slock= before sleep/suspend. =xss-lock= holds a sleep

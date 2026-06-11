@@ -21,7 +21,7 @@ set $ws10 "10. Executing"
 
 exec --no-startup-id i3-msg "exec emacs"
 exec --no-startup-id i3-msg "exec firefox"
-exec --no-startup-id "sh -c 'sleep 1; i3-msg [class=firefox] move container to workspace 2. Browser'"
+exec --no-startup-id "sh -c 'until i3-msg [class=firefox] move container to workspace 2. Browser; do sleep 0.5; done'"
 
 exec --no-startup-id xss-lock --transfer-sleep-lock -- slock
 
