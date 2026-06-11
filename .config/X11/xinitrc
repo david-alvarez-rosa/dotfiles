@@ -3,7 +3,7 @@ xmodmap -e "keycode 248 = Tab" -e "keycode 23 = Super_L" && xcape -e "Super_L=Ta
 xbindkeys -f ~/.config/xbindkeys/config
 unclutter --timeout 2 --ignore-scrolling &
 keepassxc &
-dunst &
 xrdb -merge ~/.config/X11/Xresources
+dunst &
 systemctl --user import-environment DISPLAY XAUTHORITY
 exec i3
