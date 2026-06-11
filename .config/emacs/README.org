@@ -1176,15 +1176,12 @@ Automatically save without confirmation.
 #+end_src
 
 ** CMake
-Use CMake mode for editing CMakeLists.txt files.
+Use the built-in tree-sitter CMake mode for editing CMake files. The
+~treesit-auto~ recipe only covers =.cmake= files, so =CMakeLists.txt= needs an
+explicit entry.
 #+begin_src elisp
-  (use-package cmake-mode)
-#+end_src
-
-~eldoc-cmake~ shows documentation (using ~eldoc-mode~) when editing CMake files.
-#+begin_src elisp
-  (use-package eldoc-cmake
-    :hook (cmake-mode . eldoc-cmake-enable))
+  (add-to-list 'auto-mode-alist
+               '("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode))
 #+end_src
 
 ** PHP

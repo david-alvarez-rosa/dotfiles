@@ -554,10 +554,8 @@ With CLAUDE, use the \"vterm-claude\" base name."
 
 (setq compilation-ask-about-save nil)
 
-(use-package cmake-mode)
-
-(use-package eldoc-cmake
-  :hook (cmake-mode . eldoc-cmake-enable))
+(add-to-list 'auto-mode-alist
+             '("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode))
 
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-ts-mode))
 
