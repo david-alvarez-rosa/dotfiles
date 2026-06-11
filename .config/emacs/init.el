@@ -789,13 +789,38 @@ With CLAUDE, use the \"vterm-claude\" base name."
 (use-package mu4e
   :ensure nil
   :config (setq mail-user-agent 'mu4e-user-agent)
-  :bind ("C-c e" . mu4e))
+  :bind ("C-c e" . dalvrosa/mu4e-inbox))
 
-(setq mu4e-headers-fields '((:human-date . 12)
-                            (:flags . 4)
-                            (:from . 22)
-                            (:maildir . 16)
-                            (:subject)))
+(defun dalvrosa/mu4e-inbox ()
+  "Open mu4e on the All Inboxes view and start a background sync."
+  (interactive)
+  (require 'mu4e)
+  (unless mu4e--initialized
+    (mu4e--init-handlers))
+  (mu4e--start
+   (lambda ()
+     (mu4e-search-bookmark (mu4e-get-bookmark-query ?i))
+     (dalvrosa/mu4e-update-mail-and-index))))
+
+(defvar dalvrosa/mu4e-headers-fields-wide
+  '((:human-date . 12)
+    (:flags . 4)
+    (:from . 22)
+    (:maildir . 16)
+    (:subject))
+  "Header columns shown in wide windows.")
+
+(setq mu4e-headers-fields dalvrosa/mu4e-headers-fields-wide)
+
+(add-hook 'mu4e-search-hook
+          (lambda (_query)
+            (let* ((buf (mu4e-get-headers-buffer))
+                   (win (and buf (get-buffer-window buf)))
+                   (width (if win (window-width win) (window-width))))
+              (setq mu4e-headers-fields
+                    (if (< width 110)
+                        '((:from . 22) (:subject))
+                      dalvrosa/mu4e-headers-fields-wide)))))
 
 (with-eval-after-load 'mu4e
 (add-to-list 'display-buffer-alist
