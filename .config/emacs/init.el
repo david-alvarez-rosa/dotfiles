@@ -9,8 +9,6 @@
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-
-;; (setq use-package-always-ensure t)
 (setq use-package-always-defer t)
 
 (setq user-full-name "David Álvarez Rosa")
@@ -49,9 +47,7 @@
 (setq split-width-threshold 210)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-
 (setq ibuffer-expert t)
-
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
 
 (put 'narrow-to-region 'disabled nil)
@@ -78,8 +74,8 @@
   "Kill all buffers except current and *scratch*."
   (interactive)
   (delete-other-windows)
-  (setq scratch (get-buffer "*scratch*"))
-  (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list)))))
+  (let ((scratch (get-buffer "*scratch*")))
+    (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list))))))
 (global-set-key (kbd "C-c k") 'dalvrosa/kill-all-other-buffers)
 
 (winner-mode 1)
@@ -87,7 +83,6 @@
 (global-set-key (kbd "M-o") 'other-window)
 
 (require 'windmove)
-(require 'cl-lib)
 
 (setq frame-title-format '("" "%b - GNU Emacs at " system-name))
 
@@ -100,28 +95,11 @@
         (dalvrosa/i3-msg "focus" (symbol-name dir))
       (windmove-do-window-select dir))))
 
-(defun dalvrosa/emacs-i3-direction-exists-p (dir)
-  (cl-some (lambda (dir)
-             (let ((win (windmove-find-other-window dir)))
-               (and win (not (window-minibuffer-p win)))))
-           (pcase dir
-             ('width '(left right))
-             ('height '(up down)))))
-
 (defun dalvrosa/emacs-i3-move-window (dir)
-  (let ((other-window (windmove-find-other-window dir))
-        (other-direction (dalvrosa/emacs-i3-direction-exists-p
-                          (pcase dir
-                            ('up 'width)
-                            ('down 'width)
-                            ('left 'height)
-                            ('right 'height)))))
-    (cond
-     ((and other-window (not (window-minibuffer-p other-window)))
-      (window-swap-states (selected-window) other-window))
-     (other-direction
-      (evil-move-window dir))
-     (t (dalvrosa/i3-msg "move" (symbol-name dir))))))
+  (let ((other-window (windmove-find-other-window dir)))
+    (if (and other-window (not (window-minibuffer-p other-window)))
+        (window-swap-states (selected-window) other-window)
+      (dalvrosa/i3-msg "move" (symbol-name dir)))))
 
 (defun dalvrosa/emacs-i3-integration (command)
   (pcase command
@@ -151,14 +129,14 @@
 (defun dalvrosa/unfill-paragraph-and-kill (beg end)
   "Save the current region to the kill ring after unfilling it."
   (interactive "r")
-  (setq dalvrosa/previous-major-mode major-mode)
-  (copy-region-as-kill beg end)
-  (with-temp-buffer
-    (funcall dalvrosa/previous-major-mode)
-    (yank)
-    (dalvrosa/unfill-paragraph (mark-whole-buffer))
-    (mark-whole-buffer)
-    (kill-region (point-min) (point-max))))
+  (let ((mode major-mode))
+    (copy-region-as-kill beg end)
+    (with-temp-buffer
+      (funcall mode)
+      (yank)
+      (dalvrosa/unfill-paragraph (mark-whole-buffer))
+      (mark-whole-buffer)
+      (kill-region (point-min) (point-max)))))
 (define-key global-map (kbd "M-W") 'dalvrosa/unfill-paragraph-and-kill)
 
 (define-key indent-rigidly-map "<" 'indent-rigidly-left)
@@ -173,7 +151,6 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (setq shift-select-mode nil)
-
 (delete-selection-mode 1)
 
 (use-package expand-region
@@ -186,18 +163,15 @@
 
 (define-key global-map (kbd "M-n") 'forward-paragraph)
 (define-key global-map (kbd "M-p") 'backward-paragraph)
-
 (global-set-key (kbd "C-M-n") 'scroll-up-line)
 (global-set-key (kbd "C-M-p") 'scroll-down-line)
 
 (setq scroll-preserve-screen-position t)
 
 (put 'set-goal-column 'disabled nil)
-
 (put 'scroll-left 'disabled nil)
 
 (electric-pair-mode t)
-
 (show-paren-mode 1)
 
 (setq shr-use-fonts nil)
@@ -216,7 +190,7 @@
          ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
          ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
          ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-Too-buffer
+         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ("M-g e" . consult-compile-error)
          ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
@@ -303,6 +277,7 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package which-key
+  :ensure nil
   :init (which-key-mode))
 
 (setq ispell-program-name "hunspell")
@@ -362,7 +337,6 @@
 (setq tramp-verbose 1)
 
 (setq custom-safe-themes t)
-
 (load-theme 'modus-operandi)
 (global-set-key (kbd "C-c d") 'modus-themes-toggle)
 
@@ -401,7 +375,6 @@
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
 (tooltip-mode 0)
-
 (setq inhibit-splash-screen t)
 (setq inhibit-startup-message t)
 
@@ -426,6 +399,7 @@
 (global-eldoc-mode)
 
 (use-package flymake
+  :ensure nil
   :hook (prog-mode . flymake-mode)
   :bind (:map flymake-mode-map
               ("C-c ! n" . flymake-goto-next-error)
@@ -493,6 +467,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
   (keymap-set project-prefix-map "v" 'dalvrosa/project-vterm))
 
 (use-package eglot
+  :ensure nil
   :config
   (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
   (setq eglot-autoshutdown t)
@@ -506,7 +481,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
          (python-ts-mode . eglot-ensure)
          (LaTeX-mode . eglot-ensure)
          (cmake-ts-mode . eglot-ensure)
-         (php-ts-mode . eglot-ensure )
+         (php-ts-mode . eglot-ensure)
          (typescript-ts-mode . eglot-ensure)
          (js-ts-mode . eglot-ensure))
   :bind (:map eglot-mode-map
@@ -528,7 +503,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 (setq-default tab-width 2)
-
 (setq-default indent-tabs-mode nil)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -549,9 +523,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
 
 (require 'ansi-color)
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
-
 (setq compilation-scroll-output t)
-
 (setq compilation-ask-about-save nil)
 
 (add-to-list 'auto-mode-alist
@@ -590,6 +562,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
          "* TODO [#B] %?" :empty-lines 1 :prepend t)))
 
 (use-package mu4e-org
+  :ensure nil
   :after mu4e)
 
 (global-set-key (kbd "C-c L") 'org-store-link)
@@ -597,7 +570,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
 
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)")))
-
 (setq org-log-into-drawer t)
 
 (setq org-lowest-priority ?D)
@@ -618,7 +590,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
          (js . t))))
 
 (setq org-confirm-babel-evaluate nil)
-
 (setq org-plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar")
 
 (use-package ox-jira :after ox)
@@ -632,15 +603,11 @@ With CLAUDE, use the \"vterm-claude\" base name."
   (require 'ox-md nil t))
 
 (setq org-agenda-restore-windows-after-quit t)
-
 (setq org-list-allow-alphabetical t)
-
 (setq org-startup-indented t)
-
 (setq org-startup-folded 'content)
 
 (global-set-key (kbd "C-c a") 'org-agenda)
-
 (setq org-agenda-files '("~/docs/Agenda.org" "~/dev/personal-website/Content.org"))
 
 (setq org-agenda-skip-deadline-if-done t)
@@ -668,11 +635,8 @@ With CLAUDE, use the \"vterm-claude\" base name."
           (tags-todo "+backlog" ((org-agenda-overriding-header "Backlog")))))))
 
 (setq org-agenda-log-mode-items '(closed clock state))
-
 (setq org-deadline-warning-days 7)
-
 (setq org-agenda-sticky t)
-
 (setq org-agenda-window-setup 'current-window)
 
 (defun dalvrosa/org-agenda-delete-empty-blocks ()
@@ -693,7 +657,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
         (cond
          ((looking-at-p block-re)
           (when (< content-line-count 2)
-            (delete-region start-pos (1+ (point-at-bol))))
+            (delete-region start-pos (1+ (line-beginning-position))))
           (setq start-pos (point))
           (forward-line)
           (setq content-line-count (if (looking-at-p blank-line-re) 0 1)))
@@ -705,13 +669,12 @@ With CLAUDE, use the \"vterm-claude\" base name."
       ;; The above strategy can leave a separator line at the beginning
       ;; of the buffer.
       (when (looking-at-p block-re)
-        (delete-region (point) (1+ (point-at-eol))))))
+        (delete-region (point) (1+ (line-end-position))))))
   (setq buffer-read-only t))
 
 (add-hook 'org-agenda-finalize-hook #'dalvrosa/org-agenda-delete-empty-blocks)
 
 (setq org-archive-location "::* Archived Items")
-
 (setq org-archive-tag "archive")
 
 (use-package markdown-mode)
@@ -782,7 +745,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
 (setq reftex-toc-split-windows-fraction 0.2)
 
 (setq TeX-command-extra-options "-shell-escape -synctex=1")
-
 (setq TeX-save-query nil)
 (add-hook 'TeX-after-compilation-finished-functions
           #'TeX-revert-document-buffer)
@@ -806,6 +768,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
               ("C-s" . 'isearch-forward)))
 
 (use-package mu4e
+  :ensure nil
   :config (setq mail-user-agent 'mu4e-user-agent)
   :bind ("C-c e" . mu4e))
 
@@ -834,7 +797,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
   (add-to-list 'mm-discouraged-alternatives "multipart/related"))
 
 (setq mu4e-context-policy 'pick-first)
-
 (setq mu4e-sent-messages-behavior 'sent)
 (setq smtpmail-stream-type 'starttls)
 (setq smtpmail-smtp-service 587)
@@ -892,7 +854,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
 
 (setq mu4e-update-interval (* 60 10))
 (setq mu4e-hide-index-messages t)
-
 (setq mu4e-modeline-support nil)
 
 (setq smtpmail-queue-dir "~/.local/share/mail/Queue/cur")
@@ -925,7 +886,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
 
 (setq message-citation-line-function 'message-insert-formatted-citation-line)
 (setq message-citation-line-format "On %a %d %b %Y at %R, %N wrote:")
-
 (setq message-kill-buffer-on-exit t)
 
 (setq mu4e-attachment-dir "~/tmp")
@@ -966,17 +926,16 @@ With CLAUDE, use the \"vterm-claude\" base name."
 
 (defun dalvrosa/elfeed-play-with-mpv ()
   (interactive)
-  (setq url (elfeed-entry-link (elfeed-search-selected :single)))
-  (start-process "elfeed-mpv" nil "mpv" "--ytdl-format=[height<=720]" url)
+  (let ((url (elfeed-entry-link (elfeed-search-selected :single))))
+    (start-process "elfeed-mpv" nil "mpv" "--ytdl-format=[height<=720]" url))
   (elfeed-search-untag-all-unread))
 
 (defun dalvrosa/elfeed-ignore ()
   (interactive)
-  (setq entry (elfeed-search-selected :single))
-  (setq tag (intern "no"))
-  (elfeed-tag entry tag)
-  (elfeed-search-update-entry entry)
-  (forward-line))
+  (let ((entry (elfeed-search-selected :single)))
+    (elfeed-tag entry 'no)
+    (elfeed-search-update-entry entry)
+    (forward-line)))
 
 (global-set-key (kbd "C-c i") 'erc-tls)
 
