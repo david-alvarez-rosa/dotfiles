@@ -97,9 +97,22 @@
 
 (defun dalvrosa/emacs-i3-move-window (dir)
   (let ((other-window (windmove-find-other-window dir)))
-    (if (and other-window (not (window-minibuffer-p other-window)))
-        (window-swap-states (selected-window) other-window)
-      (dalvrosa/i3-msg "move" (symbol-name dir)))))
+    (cond
+     ((and other-window (not (window-minibuffer-p other-window)))
+      (window-swap-states (selected-window) other-window))
+     ;; Already spanning the frame in DIR: let i3 move the frame.
+     ((if (memq dir '(up down)) (window-full-width-p) (window-full-height-p))
+      (dalvrosa/i3-msg "move" (symbol-name dir)))
+     ;; No window in DIR but the split can be rearranged: re-place
+     ;; the selected window on that side of the frame, like i3 does
+     ;; when moving perpendicular to the current split.
+     (t
+      (let ((state (window-state-get (selected-window)))
+            (side (pcase dir ('up 'above) ('down 'below) (other other))))
+        (delete-window)
+        (let ((new-window (split-window (frame-root-window) nil side)))
+          (window-state-put state new-window t)
+          (select-window new-window)))))))
 
 (defun dalvrosa/emacs-i3-integration (command)
   (pcase command
