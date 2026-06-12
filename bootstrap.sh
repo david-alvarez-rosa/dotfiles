@@ -88,7 +88,7 @@ emacs --batch --eval '(progn
   (add-to-list (quote package-archives) (quote ("melpa" . "https://melpa.org/packages/")))
   (package-refresh-contents)
   (setq use-package-always-ensure t)
-  (load user-init-file))'
+  (load (locate-user-emacs-file "init.el")))'
 
 sudo systemctl enable NetworkManager.service tlp.service
 systemctl --user enable keepassxc.service mbsync.timer
