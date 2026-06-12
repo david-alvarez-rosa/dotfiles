@@ -11,6 +11,7 @@ PACMAN_PACKAGES="
   fd
   feh
   firefox
+  alacritty
   cmake
   gcc
   clang
@@ -95,5 +96,8 @@ emacs --batch --eval '(progn
   (require (quote package))
   (add-to-list (quote package-archives) (quote ("melpa" . "https://melpa.org/packages/")))
   (package-refresh-contents)
+  (require (quote use-package))
   (setq use-package-always-ensure t)
   (load (locate-user-emacs-file "init.el")))'
+
+reboot
