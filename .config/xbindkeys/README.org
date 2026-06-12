@@ -17,27 +17,24 @@ as follows.
 Volume control with the laptop =Fn= keys. The default step size is 10, with
 =Shift= it becomes 5 and with =Ctrl= it becomes 1.
 #+begin_src conf
-  "pamixer -i 10"
+  "wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+"
     XF86AudioRaiseVolume
-  "pamixer -i 5"
+  "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
     Shift + XF86AudioRaiseVolume
-  "pamixer -i 1"
+  "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+"
     Control + XF86AudioRaiseVolume
 
-  "pamixer -d 10"
+  "wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-"
     XF86AudioLowerVolume
-  "pamixer -d 5"
+  "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
     Shift + XF86AudioLowerVolume
-  "pamixer -d 1"
+  "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-"
     Control + XF86AudioLowerVolume
 #+end_src
 
-Note that volume boost (above 100%) is possible with =pamixer -i
---allow-boost <arg>=.
-
 Toggle mute status.
 #+begin_src conf
-  "pamixer -t"
+  "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     XF86AudioMute
 #+end_src
 
@@ -132,7 +129,7 @@ copied to the clipboard.
 * Application Launcher
 Launch applications with dmenu.
 #+begin_src conf
-  "dmenu_run -fn 'Hack:size=11'"
+  "dmenu_run -fn 'monospace:size=11'"
     Mod4 + d
 #+end_src
 

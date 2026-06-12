@@ -1,18 +1,18 @@
-"pamixer -i 10"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+"
   XF86AudioRaiseVolume
-"pamixer -i 5"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
   Shift + XF86AudioRaiseVolume
-"pamixer -i 1"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+"
   Control + XF86AudioRaiseVolume
 
-"pamixer -d 10"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-"
   XF86AudioLowerVolume
-"pamixer -d 5"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
   Shift + XF86AudioLowerVolume
-"pamixer -d 1"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-"
   Control + XF86AudioLowerVolume
 
-"pamixer -t"
+"wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
   XF86AudioMute
 
 "xbacklight -inc 10"
@@ -49,5 +49,5 @@
 "maim -u --select | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
   Control + Print
 
-"dmenu_run -fn 'Hack:size=11'"
+"dmenu_run -fn 'monospace:size=11'"
   Mod4 + d
