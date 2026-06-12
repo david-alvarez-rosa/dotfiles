@@ -1,4 +1,4 @@
-font pango:Hack Nerd Font 11
+font pango:monospace 11
 
 gaps inner 4
 gaps outer 2

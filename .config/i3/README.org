@@ -16,7 +16,7 @@ key bindings are set following the holy Emacs philosophy.
 * Theme
 Set default font (for window title).
 #+begin_src conf
-  font pango:Hack Nerd Font 11
+  font pango:monospace 11
 #+end_src
 
 Set initial inner and outer gaps and window border
