@@ -11,7 +11,7 @@ case $BLOCK_BUTTON in
     3) notify-send "Available updates" "$(checkupdates | awk '{print $1}')" ;;
 esac
 
-printf "<span font_family='Hack Nerd Font'>\\uf303</span>  "
+printf "<span font_family='monospace'>\\uf303</span>  "
 echo -n "<span color='white'>"
 number=$(checkupdates 2>/dev/null | wc -l)
 if [ $number -eq 0 ]

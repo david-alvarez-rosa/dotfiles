@@ -406,7 +406,7 @@
   :after doom-modeline
   :init (nyan-mode))
 
-(set-face-attribute 'default nil :font "Hack Nerd Font" :height 90)
+(set-face-attribute 'default nil :font "monospace" :height 90)
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)

@@ -777,7 +777,7 @@ Enable nyan cat.
 Set default font.  I'm currently using Hack (in the past I used
 Inconsolata).
 #+begin_src elisp
-  (set-face-attribute 'default nil :font "Hack Nerd Font" :height 90)
+  (set-face-attribute 'default nil :font "monospace" :height 90)
 #+end_src
 
 ** Basic Interface Settings
