@@ -19,6 +19,18 @@ across work and personal machines.
 - isync :: Email synchronization.
 - xbindkeys / xremap :: Key remapping.
 
+*Installation.* Clone into =$HOME= and run =bootstrap.sh=:
+
+#+begin_src sh
+  git init
+  git remote add origin https://github.com/david-alvarez-rosa/dotfiles.git
+  git fetch origin
+  git checkout -ft origin/main
+  git submodule update --init --recursive
+  git config status.showUntrackedFiles no
+  ./bootstrap.sh
+#+end_src
+
 #+html: <br />
 
 With :heart: by [[https://david.alvarezrosa.com][David Álvarez Rosa]].
