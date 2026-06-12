@@ -1,26 +1,18 @@
-#!/bin/bash
-
-# Pacman block.
-# The package pacman-contrib must be installed, for the utility checkupdates.
-
+#!/bin/sh
 
 case $BLOCK_BUTTON in
-    1) st -e ~/.scripts/i3scripts/update ;;
-    2) notify-send "Upgrade module" "- Left click to upgrade packages
-    - Middle click to show upgradable packages" ;;
-    3) notify-send "Available updates" "$(checkupdates | awk '{print $1}')" ;;
+  1) notify-send "Available updates" "$(checkupdates --nocolor 2>/dev/null | awk '{print $1}')" ;;
 esac
 
-printf "<span font_family='monospace'>\\uf303</span>  "
-echo -n "<span color='white'>"
-number=$(checkupdates 2>/dev/null | wc -l)
-if [ $number -eq 0 ]
-then
-    echo -n "up to date"
-elif [ $number -eq 1 ]
-then
-    echo -n $number "update"
+number=$(checkupdates --nocolor 2>/dev/null | wc -l)
+
+printf "<span font_family='monospace'>\357\214\203</span>  "
+printf "<span color='white'>"
+if [ "$number" -eq 0 ]; then
+  printf "up to date"
+elif [ "$number" -eq 1 ]; then
+  printf "%s update" "$number"
 else
-    echo -n $number "updates"
+  printf "%s updates" "$number"
 fi
-echo "</span>"
+printf "</span>\n"
