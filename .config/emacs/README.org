@@ -1489,7 +1489,7 @@ Sort inbox searches in ascending direction (oldest at top).
 
 Set the mail fetching command.
 #+begin_src elisp
-  (setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc personal spam")
+  (setq mu4e-get-mail-command "~/.local/bin/mailsync")
 #+end_src
 
 Prefer plain text over enriched alternatives.

@@ -1,0 +1,16 @@
+host: mail.alvarezrosa.com
+port: 993
+tls: true
+tlsOptions:
+  rejectUnauthorized: true
+username: david@alvarezrosa.com
+passwordCmd: "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $8}'"
+boxes:
+  - INBOX
+  - Archive
+  - Drafts
+  - Junk
+  - Sent
+  - Trash
+onNewMail: "/home/david/.local/bin/mailsync personal"
+onNewMailPost: "emacsclient -e '(when (and (fboundp (quote mu4e-running-p)) (mu4e-running-p) (not (bound-and-true-p mu4e--server-indexing))) (mu4e-update-index))' >/dev/null 2>&1 || true"

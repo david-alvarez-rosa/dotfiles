@@ -833,7 +833,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
                         (if (string-match-p "/Inbox" (or query ""))
                             'ascending 'descending))))
 
-(setq mu4e-get-mail-command "mbsync -c ~/.config/isync/mbsyncrc personal spam")
+(setq mu4e-get-mail-command "~/.local/bin/mailsync")
 
 (with-eval-after-load "mm-decode"
   (add-to-list 'mm-discouraged-alternatives "text/html")
