@@ -21,7 +21,7 @@ across work and personal machines.
 
 #+html: <br />
 
-*Installation.* Clone into =$HOME= and run =bootstrap.sh=:
+For installation, clone into =$HOME= and run =bootstrap.sh=
 
 #+begin_src sh
   git init

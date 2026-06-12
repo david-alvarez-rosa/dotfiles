@@ -11,6 +11,9 @@ PACMAN_PACKAGES="
   fd
   feh
   firefox
+  cmake
+  gcc
+  clang
   git
   git-lfs
   gnupg
@@ -83,14 +86,14 @@ fi
 
 yay -S --needed --noconfirm $AUR_PACKAGES
 
+sudo systemctl enable NetworkManager.service tlp.service
+systemctl --user enable keepassxc.service mbsync.timer
+
+chsh --shell $(which zsh)
+
 emacs --batch --eval '(progn
   (require (quote package))
   (add-to-list (quote package-archives) (quote ("melpa" . "https://melpa.org/packages/")))
   (package-refresh-contents)
   (setq use-package-always-ensure t)
   (load (locate-user-emacs-file "init.el")))'
-
-sudo systemctl enable NetworkManager.service tlp.service
-systemctl --user enable keepassxc.service mbsync.timer
-
-chsh --shell $(which zsh)
