@@ -19,6 +19,8 @@ across work and personal machines.
 - isync :: Email synchronization.
 - xbindkeys / xremap :: Key remapping.
 
+#+html: <br />
+
 *Installation.* Clone into =$HOME= and run =bootstrap.sh=:
 
 #+begin_src sh
