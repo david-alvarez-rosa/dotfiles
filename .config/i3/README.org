@@ -74,11 +74,6 @@ Open a terminal
   bindsym $mod+Shift+Return exec i3-sensible-terminal
 #+end_src
 
-Magnifier.
-#+begin_src conf
-  bindsym $mod+m exec xzoom
-#+end_src
-
 ** Workspaces
 Switching to a workspace.
 #+begin_src conf
@@ -118,11 +113,6 @@ Open =mpv= in a window video for multitasking.
 #+begin_src conf
   for_window [class="mpv"] floating enable; exec --no-startup-id ~/.local/bin/bottomright
   for_window [class="mpv"] sticky enable
-#+end_src
-
-Open magnifier =xzoom= as floating
-#+begin_src conf
-  for_window [title="^xzoom"] floating enable
 #+end_src
 
 Open KeePassXC password manager =keepassxc= as floating
