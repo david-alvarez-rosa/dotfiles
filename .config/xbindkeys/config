@@ -1,18 +1,18 @@
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+ && pkill -RTMIN+10 i3blocks"
   XF86AudioRaiseVolume
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+10 i3blocks"
   Shift + XF86AudioRaiseVolume
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+ && pkill -RTMIN+10 i3blocks"
   Control + XF86AudioRaiseVolume
 
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%- && pkill -RTMIN+10 i3blocks"
   XF86AudioLowerVolume
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+10 i3blocks"
   Shift + XF86AudioLowerVolume
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%- && pkill -RTMIN+10 i3blocks"
   Control + XF86AudioLowerVolume
 
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 0; wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 0; wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+10 i3blocks"
   XF86AudioMute
 
 "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
