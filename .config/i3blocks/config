@@ -30,6 +30,7 @@ interval=30
 color=#E88939
 
 [cpu]
+command=printf "<span font_family='monospace'></span>  " && LC_ALL=C mpstat 1 1 | awk '/Average:/ {printf "%.2f%%\n", 100 - $NF}'
 interval=10
 color=#589df6
 
