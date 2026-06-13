@@ -3,3 +3,4 @@ docs/Notes.org               filter=git-crypt diff=git-crypt
 docs/Finances.ledger         filter=git-crypt diff=git-crypt
 docs/Subscriptions.org       filter=git-crypt diff=git-crypt
 .ssh/id_ed25519              filter=git-crypt diff=git-crypt
+.config/emacs/bookmarks      filter=git-crypt diff=git-crypt
