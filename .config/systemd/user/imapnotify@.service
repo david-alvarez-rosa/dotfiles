@@ -4,7 +4,6 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-Environment=GNUPGHOME=%h/.local/share/gnupg
 ExecStart=/usr/bin/goimapnotify -conf %h/.config/imapnotify/%i.yaml
 Restart=always
 RestartSec=30

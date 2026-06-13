@@ -3,5 +3,4 @@ Description=Sync mail (mbsync backstop for goimapnotify)
 
 [Service]
 Type=oneshot
-Environment=GNUPGHOME=%h/.local/share/gnupg
 ExecStart=%h/.local/bin/mailsync
