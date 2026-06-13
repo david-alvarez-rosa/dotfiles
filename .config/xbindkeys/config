@@ -55,5 +55,5 @@
 "maim -u --select | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
   Control + Print
 
-"dmenu_run -fn 'monospace:size=11'"
+"rofi -show drun"
   Mod4 + d

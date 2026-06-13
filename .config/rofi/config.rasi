@@ -1,0 +1,76 @@
+configuration {
+    modi:       "drun";
+    show-icons: false;
+    font:       "DejaVu Sans Mono 11";
+}
+
+* {
+    background-color: #222222;
+    text-color:       #ffffff;
+}
+
+window {
+    location: center;
+    anchor:   center;
+    y-offset: -260px;
+    width:    460px;
+    border:   0;
+    border-radius: 0;
+    padding:  0;
+    background-color: #222222;
+}
+
+mainbox {
+    padding: 8px;
+    children: [ inputbar, listview ];
+    background-color: #222222;
+}
+
+inputbar {
+    padding: 4px 0px 8px 0px;
+    background-color: #222222;
+    text-color: #ffffff;
+}
+
+entry {
+    placeholder: "";
+    background-color: #222222;
+    text-color: #ffffff;
+}
+
+prompt {
+    background-color: #222222;
+    text-color: #ffffff;
+}
+
+listview {
+    lines:     6;
+    scrollbar: false;
+    background-color: #222222;
+}
+
+element {
+    padding: 4px;
+    background-color: #222222;
+    text-color: #ffffff;
+}
+
+element normal normal {
+    background-color: #222222;
+    text-color: #ffffff;
+}
+
+element alternate normal {
+    background-color: #222222;
+    text-color: #ffffff;
+}
+
+element selected normal {
+    background-color: #555555;
+    text-color: #ffffff;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+}

@@ -8,7 +8,7 @@ trap 'sudo rm -f /etc/sudoers.d/bootstrap' EXIT
 PACMAN_PACKAGES="
   acpi
   cloudflared
-  dmenu
+  rofi
   dunst
   emacs
   fd
