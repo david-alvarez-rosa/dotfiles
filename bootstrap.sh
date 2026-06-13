@@ -2,8 +2,14 @@
 
 set -eux
 
-sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" 2>/dev/null || exit; done &
+cd ~
+git init
+git remote add origin https://github.com/david-alvarez-rosa/dotfiles.git
+git fetch
+git checkout -ft origin/main
+
+echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/bootstrap >/dev/null
+trap 'sudo rm -f /etc/sudoers.d/bootstrap' EXIT
 
 git submodule update --init --recursive
 git config status.showUntrackedFiles no
