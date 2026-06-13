@@ -100,6 +100,7 @@ git submodule update --init --recursive
 git config status.showUntrackedFiles no
 
 if [ -f ~/gpg-key.asc ]; then
+  export GNUPGHOME="$HOME/.local/share/gnupg"
   gpg --import ~/gpg-key.asc
   git-crypt unlock
 fi
