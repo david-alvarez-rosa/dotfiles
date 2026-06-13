@@ -2,6 +2,9 @@
 
 set -eux
 
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" 2>/dev/null || exit; done &
+
 git submodule update --init --recursive
 git config status.showUntrackedFiles no
 
@@ -104,7 +107,7 @@ systemctl --user enable keepassxc.service mbsync.timer imapnotify@personal.servi
 mkdir -p ~/.local/share/mail
 mu init --maildir=~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=davids@alvarezrosa.com
 
-chsh --shell $(which zsh)
+sudo chsh -s "$(which zsh)" "$USER"
 
 emacs --batch --eval '(progn
   (require (quote package))
