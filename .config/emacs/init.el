@@ -81,8 +81,6 @@
 (setq lock-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-(setq split-width-threshold 210)
-
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (setq ibuffer-expert t)
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
@@ -90,6 +88,12 @@
 (put 'narrow-to-region 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
 (put 'LaTeX-narrow-to-environment 'disabled nil)
+
+(setq display-buffer-base-action
+      '((display-buffer-reuse-window
+         display-buffer-same-window)))
+(setq split-height-threshold nil
+      split-width-threshold nil)
 
 (defun dalvrosa/split-and-follow-horizontally ()
   (interactive)
