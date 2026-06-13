@@ -2,17 +2,8 @@
 
 set -eux
 
-cd ~
-git init
-git remote add origin https://github.com/david-alvarez-rosa/dotfiles.git
-git fetch
-git checkout -ft origin/main
-
 echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/bootstrap >/dev/null
 trap 'sudo rm -f /etc/sudoers.d/bootstrap' EXIT
-
-git submodule update --init --recursive
-git config status.showUntrackedFiles no
 
 PACMAN_PACKAGES="
   acpi
@@ -101,6 +92,14 @@ fi
 yay -S --needed --noconfirm $AUR_PACKAGES
 
 rmdir Downloads
+
+cd ~
+git init
+git remote add origin https://github.com/david-alvarez-rosa/dotfiles.git
+git fetch
+git checkout -ft origin/main
+git submodule update --init --recursive
+git config status.showUntrackedFiles no
 
 if [ -f ~/gpg-key.asc ]; then
   gpg --import ~/gpg-key.asc
