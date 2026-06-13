@@ -228,7 +228,10 @@
 
 (use-package vertico
   :init
-  (vertico-mode))
+  (vertico-mode)
+  :bind (:map vertico-map
+              ("M-DEL" . vertico-directory-delete-word))
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package consult
   :bind (

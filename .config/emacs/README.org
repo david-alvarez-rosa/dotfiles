@@ -502,7 +502,10 @@ default completion system.
 #+begin_src elisp
   (use-package vertico
     :init
-    (vertico-mode))
+    (vertico-mode)
+    :bind (:map vertico-map
+                ("M-DEL" . vertico-directory-delete-word))
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 #+end_src
 
 Consult provides search and navigation commands built on
