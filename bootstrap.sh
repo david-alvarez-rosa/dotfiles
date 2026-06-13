@@ -2,6 +2,9 @@
 
 set -eux
 
+git submodule update --init --recursive
+git config status.showUntrackedFiles no
+
 PACMAN_PACKAGES="
   acpi
   cloudflared

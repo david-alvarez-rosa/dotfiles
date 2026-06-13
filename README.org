@@ -29,8 +29,6 @@ For installation, optionally export your GPG key from KeePassXC to
   git remote add origin https://github.com/david-alvarez-rosa/dotfiles.git
   git fetch origin
   git checkout -ft origin/main
-  git submodule update --init --recursive
-  git config status.showUntrackedFiles no
   ./bootstrap.sh
 #+end_src
 
