@@ -85,6 +85,7 @@ sudo pacman -Syu --needed --noconfirm $PACMAN_PACKAGES
 
 if ! command -v yay >/dev/null; then
   sudo pacman -S --needed --noconfirm git base-devel
+  rm -rf /tmp/yay
   git clone https://aur.archlinux.org/yay.git /tmp/yay
   (cd /tmp/yay && makepkg -si --noconfirm)
 fi
