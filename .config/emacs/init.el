@@ -587,7 +587,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
          (file+olp "~/docs/Agenda.org" "Refile")
          "* TODO [#B] %?\n%a\n%i" :empty-lines 1)
         ("n" "Text Note" entry
-         (file+olp "~/docs/Notes.org" "Refile")
+         (file+olp "~/docs/Notes.org" "Notes")
          "* %?" :empty-lines 1)
         ("b" "Blog Post" entry
          (file "~/dev/personal-website/Content.org")
