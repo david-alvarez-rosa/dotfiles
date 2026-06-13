@@ -1,7 +1,7 @@
 [user]
   name = David Álvarez Rosa
   email = david@alvarezrosa.com
-  signingkey = 294E9602C197251F
+  signingkey = D84726EC15C55C1E
 [credential]
   helper = store
 [core]
