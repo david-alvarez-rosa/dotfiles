@@ -1,0 +1,8 @@
+[Unit]
+Description=Auto-commit modified org docs to dotfiles repo
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h
+ExecStart=/usr/bin/git add -u docs/
+ExecStart=-/usr/bin/git commit -m "[docs] Update Agenda.org and Notes.org files"
