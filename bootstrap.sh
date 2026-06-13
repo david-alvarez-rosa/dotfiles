@@ -88,8 +88,18 @@ fi
 
 yay -S --needed --noconfirm $AUR_PACKAGES
 
+rmdir Downloads
+
+if [ -f ~/gpg-key.asc ]; then
+  gpg --import ~/gpg-key.asc
+  git-crypt unlock
+fi
+
 sudo systemctl enable NetworkManager.service tlp.service
-systemctl --user enable keepassxc.service mbsync.timer
+systemctl --user enable keepassxc.service mbsync.timer imapnotify@personal.service imapnotify@spam.service
+
+mkdir -p ~/.local/share/mail
+mu init --maildir=~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=davids@alvarezrosa.com
 
 chsh --shell $(which zsh)
 

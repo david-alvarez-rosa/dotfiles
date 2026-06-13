@@ -21,7 +21,8 @@ across work and personal machines.
 
 #+html: <br />
 
-For installation, clone into =$HOME= and run =bootstrap.sh=
+For installation, optionally export your GPG key from KeePassXC to
+=~/gpg-key.asc=, clone into =$HOME=, and run =bootstrap.sh=
 
 #+begin_src sh
   git init
