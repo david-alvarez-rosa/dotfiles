@@ -32,14 +32,11 @@
 "xbacklight -dec 5"
   Control + XF86MonBrightnessDown
 
-"autorandr --cycle"
+"id=$(xinput list | grep -i touchpad | grep -o 'id=[0-9]*' | head -1 | cut -d= -f2); xinput list-props $id | grep -q 'Device Enabled.*1$' && xinput disable $id || xinput enable $id"
   XF86Display
 
-"nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on"
-  XF86RFKill
-
-"id=$(xinput list --name-only | grep -im1 touchpad); xinput list-props \"$id\" | grep -q 'Device Enabled.*1$' && xinput disable \"$id\" || xinput enable \"$id\""
-  XF86TouchpadToggle
+"if [ -e /tmp/.zoom ]; then xrandr --output eDP-1 --auto; rm /tmp/.zoom; else xrandr --output eDP-1 --mode 1280x800; touch /tmp/.zoom; fi"
+  XF86Favorites
 
 "mpc toggle"
   XF86AudioPlay
