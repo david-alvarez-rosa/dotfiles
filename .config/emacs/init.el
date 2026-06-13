@@ -197,13 +197,12 @@
 (put 'downcase-region 'disabled nil)
 
 (setq scroll-conservatively 101)
+(setq scroll-preserve-screen-position t)
 
 (define-key global-map (kbd "M-n") 'forward-paragraph)
 (define-key global-map (kbd "M-p") 'backward-paragraph)
 (global-set-key (kbd "C-M-n") 'scroll-up-line)
 (global-set-key (kbd "C-M-p") 'scroll-down-line)
-
-(setq scroll-preserve-screen-position t)
 
 (put 'set-goal-column 'disabled nil)
 (put 'scroll-left 'disabled nil)
