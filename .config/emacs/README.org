@@ -180,10 +180,23 @@ store it following the XDG specification.
 
 Dired ("directory editor") is the Emacs file manager; make a buffer
 editable with =C-x C-q= to bulk-rename or change permissions as text.
-Show human readable sizes and group directories first.
+Show human readable sizes and group directories first, except when
+sorting by date. Always open =~/tmp= sorted by date.
 
 #+begin_src elisp
   (setq-default dired-listing-switches "-alh --group-directories-first")
+
+  (defun david/dired-fix-group-directories ()
+    (setq dired-actual-switches
+          (if (string-match-p "\\(^\\| \\)-[[:alpha:]]*t" dired-actual-switches)
+              "-Alh -t"
+            "-alh --group-directories-first")))
+  (advice-add 'dired-sort-toggle :after #'david/dired-fix-group-directories)
+
+  (add-hook 'dired-mode-hook
+            (lambda ()
+              (when (equal (expand-file-name default-directory) (expand-file-name "~/tmp/"))
+                (dired-sort-other "-Alh -t"))))
 #+end_src
 
 Live filtering with =/= (fuzzy match, =g= reverts) and subdirectory

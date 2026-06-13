@@ -47,6 +47,18 @@
 
 (setq-default dired-listing-switches "-alh --group-directories-first")
 
+(defun david/dired-fix-group-directories ()
+  (setq dired-actual-switches
+        (if (string-match-p "\\(^\\| \\)-[[:alpha:]]*t" dired-actual-switches)
+            "-Alh -t"
+          "-alh --group-directories-first")))
+(advice-add 'dired-sort-toggle :after #'david/dired-fix-group-directories)
+
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (when (equal (expand-file-name default-directory) (expand-file-name "~/tmp/"))
+              (dired-sort-other "-Alh -t"))))
+
 (use-package dired-narrow
   :after dired
   :bind (:map dired-mode-map
