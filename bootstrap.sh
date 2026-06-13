@@ -122,4 +122,6 @@ emacs --batch --eval '(progn
   (defalias (quote yes-or-no-p) (lambda (&rest _) t))
   (load (locate-user-emacs-file "init.el")))'
 
+[ -e .bashrc ] && mv .bash* ~/tmp
+
 reboot
