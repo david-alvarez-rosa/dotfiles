@@ -547,7 +547,9 @@ With CLAUDE, use the \"vterm-claude\" base name."
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(use-package magit :bind ("C-c g" . 'magit-status))
+(use-package magit
+  :bind ("C-c g" . 'magit-status)
+  :custom (magit-save-repository-buffers 'dontask))
 
 (use-package orgit)
 

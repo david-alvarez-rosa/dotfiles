@@ -997,7 +997,9 @@ interface to Git where every bit of visible information is actionable.
 It will make you a more effective version control user, beginner and
 expert alike.
 #+begin_src elisp
-  (use-package magit :bind ("C-c g" . 'magit-status))
+  (use-package magit
+    :bind ("C-c g" . 'magit-status)
+    :custom (magit-save-repository-buffers 'dontask))
 #+end_src
 
 Link to Magit buffers from Org documents.
