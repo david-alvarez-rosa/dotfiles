@@ -26,6 +26,15 @@ Set initial inner and outer gaps and window border
   default_border pixel 1
 #+end_src
 
+Use a uniform dark border on every side.
+#+begin_src conf
+  #                       border  backgr. text    indicator child
+  client.focused          #555555 #555555 #ffffff #555555   #555555
+  client.focused_inactive #222222 #222222 #888888 #222222   #222222
+  client.unfocused        #222222 #222222 #888888 #222222   #222222
+  client.urgent           #900000 #900000 #ffffff #900000   #900000
+#+end_src
+
 * Functionality
 Set modifier key to Super (Windows key).
 #+begin_src conf
