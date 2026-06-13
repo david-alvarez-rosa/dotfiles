@@ -21,7 +21,7 @@ color=#21b089
 
 [root]
 command=printf "<span font_family='FontAwesome'>\\uf292</span> " && df -h -P -l / | awk '{print $2}' | tail -1
-interval=3600
+interval=once
 color=#f9555f
 
 [temperature]
