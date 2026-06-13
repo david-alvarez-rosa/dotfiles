@@ -376,7 +376,8 @@
   (setq gptel-backend (gptel-make-anthropic "Claude" :stream t :key gptel-api-key))
   (setq gptel-model 'claude-sonnet-4-6)
   (setq gptel-default-mode 'org-mode)
-  :hook (gptel-mode . visual-line-mode))
+  :hook ((gptel-mode . visual-line-mode)
+         (gptel-mode . (lambda () (flyspell-mode -1)))))
 
 (setq tramp-default-method "ssh")
 (setq tramp-allow-unsafe-temporary-files t)
