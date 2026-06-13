@@ -5,8 +5,7 @@ separator_block_width=18
 markup=pango
 
 [pacman]
-interval=3600
-signal=1
+interval=21600
 color=#1793D1
 
 [vpn]
@@ -41,7 +40,7 @@ color=#21b089
 
 [volume]
 interval=once
-signal=10
+signal=1
 color=#f9555f
 
 [battery]
