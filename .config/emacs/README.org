@@ -765,11 +765,20 @@ Default to SSH and speed up remote file access.
 ** Theme
 
 Protesilaos Stavrou's high-contrast Modus themes, toggling light/dark
-with =C-c d=.
+with =C-c d=.  Give the frame 90% background transparency in dark mode
+only (=alpha-background= leaves text fully opaque).
 
 #+begin_src elisp
   (setq custom-safe-themes t)
+
+  (defun dalvrosa/set-background-alpha ()
+    (let ((alpha (if (eq (car custom-enabled-themes) 'modus-vivendi) 90 100)))
+      (set-frame-parameter nil 'alpha-background alpha)
+      (setf (alist-get 'alpha-background default-frame-alist) alpha)))
+  (add-hook 'modus-themes-post-load-hook #'dalvrosa/set-background-alpha)
+
   (load-theme 'modus-operandi)
+  (dalvrosa/set-background-alpha)
   (global-set-key (kbd "C-c d") 'modus-themes-toggle)
 #+end_src
 

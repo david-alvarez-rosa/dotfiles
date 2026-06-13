@@ -394,7 +394,15 @@
 (setq tramp-verbose 1)
 
 (setq custom-safe-themes t)
+
+(defun dalvrosa/set-background-alpha ()
+  (let ((alpha (if (eq (car custom-enabled-themes) 'modus-vivendi) 90 100)))
+    (set-frame-parameter nil 'alpha-background alpha)
+    (setf (alist-get 'alpha-background default-frame-alist) alpha)))
+(add-hook 'modus-themes-post-load-hook #'dalvrosa/set-background-alpha)
+
 (load-theme 'modus-operandi)
+(dalvrosa/set-background-alpha)
 (global-set-key (kbd "C-c d") 'modus-themes-toggle)
 
 (use-package nerd-icons)
