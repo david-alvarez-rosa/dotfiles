@@ -185,6 +185,7 @@ sorting by date. Always open =~/tmp= sorted by date.
 
 #+begin_src elisp
   (setq-default dired-listing-switches "-alh --group-directories-first")
+  (setq dired-auto-revert-buffer t)
 
   (defun david/dired-fix-group-directories ()
     (setq dired-actual-switches

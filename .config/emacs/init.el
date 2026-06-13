@@ -46,6 +46,7 @@
 (setq auth-sources '("~/.local/share/authinfo.gpg"))
 
 (setq-default dired-listing-switches "-alh --group-directories-first")
+(setq dired-auto-revert-buffer t)
 
 (defun david/dired-fix-group-directories ()
   (setq dired-actual-switches
