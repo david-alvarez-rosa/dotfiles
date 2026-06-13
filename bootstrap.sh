@@ -91,8 +91,6 @@ fi
 
 yay -S --needed --noconfirm $AUR_PACKAGES
 
-rmdir Downloads
-
 cd ~
 git init
 git remote add origin https://github.com/david-alvarez-rosa/dotfiles.git
@@ -120,6 +118,8 @@ emacs --batch --eval '(progn
   (package-refresh-contents)
   (require (quote use-package))
   (setq use-package-always-ensure t)
+  (defalias (quote y-or-n-p) (lambda (&rest _) t))
+  (defalias (quote yes-or-no-p) (lambda (&rest _) t))
   (load (locate-user-emacs-file "init.el")))'
 
 reboot

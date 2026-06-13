@@ -21,8 +21,8 @@ across work and personal machines.
 
 #+html: <br />
 
-For installation, optionally export your GPG key (KeePassXC) to
-=~/gpg-key.asc=, then run
+On a fresh Arch Linux machine, optionally export your GPG key
+(KeePassXC) to =~/gpg-key.asc=, then run
 
 #+begin_src sh
   curl -fsSL https://raw.githubusercontent.com/david-alvarez-rosa/dotfiles/main/bootstrap.sh | sh
