@@ -235,6 +235,12 @@ dangerous, but I version-control everything important.
 
 ** Buffer Management
 
+Raise the automatic window-splitting threshold.
+
+#+begin_src elisp
+  (setq split-width-threshold 210)
+#+end_src
+
 Ibuffer replaces BufferMenu and operates on buffers like Dired does on
 files.  Start it in expert mode and kill the current buffer without
 asking.
@@ -255,18 +261,6 @@ Enable narrowing commands (=C-x n n= region, =C-x n d= defun,
 #+end_src
 
 ** Window Management
-
-Make =display-buffer= deterministic: reuse a window already showing the
-buffer, else open it in the current window, but never split or create
-windows automatically.  Splits stay manual (=C-x 2=, =C-x 3=).
-
-#+begin_src elisp
-  (setq display-buffer-base-action
-        '((display-buffer-reuse-window
-           display-buffer-same-window)))
-  (setq split-height-threshold nil
-        split-width-threshold nil)
-#+end_src
 
 Split and follow when creating new windows.
 
