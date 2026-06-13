@@ -1,0 +1,4 @@
+docs/Agenda.org              filter=git-crypt diff=git-crypt
+docs/Notes.org               filter=git-crypt diff=git-crypt
+docs/Finances.ledger         filter=git-crypt diff=git-crypt
+docs/Subscriptions.org       filter=git-crypt diff=git-crypt

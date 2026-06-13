@@ -16,6 +16,7 @@ PACMAN_PACKAGES="
   gcc
   clang
   git
+  git-crypt
   git-lfs
   gnupg
   gnuplot
