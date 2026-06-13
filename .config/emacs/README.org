@@ -420,7 +420,7 @@ Don't treat camelCase strings as a single word.
 Shorter and faster than yes/no.
 
 #+begin_src elisp
-  (defalias 'yes-or-no-p 'y-or-n-p)
+  (setq use-short-answers t)
 #+end_src
 
 ** Region Selection
