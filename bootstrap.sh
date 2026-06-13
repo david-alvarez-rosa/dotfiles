@@ -93,7 +93,7 @@ yay -S --needed --noconfirm $AUR_PACKAGES
 
 cd ~
 git init
-git remote add origin https://github.com/david-alvarez-rosa/dotfiles.git
+git remote add origin https://github.com/david-alvarez-rosa/dotfiles.git || true
 git fetch
 git checkout -ft origin/main
 git submodule update --init --recursive
@@ -101,6 +101,8 @@ git config status.showUntrackedFiles no
 
 if [ -f ~/gpg-key.asc ]; then
   export GNUPGHOME="$HOME/.local/share/gnupg"
+  mkdir -p "$GNUPGHOME"
+  chmod 700 "$GNUPGHOME"
   gpg --import ~/gpg-key.asc
   git-crypt unlock
 fi
