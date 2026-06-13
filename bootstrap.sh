@@ -29,6 +29,7 @@ PACMAN_PACKAGES="
   hunspell-es_es
   i3-wm
   i3blocks
+  i3lock
   imagemagick
   inter-font
   isync
@@ -49,7 +50,6 @@ PACMAN_PACKAGES="
   qutebrowser
   ripgrep
   rsync
-  slock
   starship
   sysstat
   tlp

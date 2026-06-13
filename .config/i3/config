@@ -2,7 +2,7 @@ font pango:monospace 11
 
 gaps inner 4
 gaps outer 2
-default_border pixel 2
+default_border pixel 1
 
 set $mod Mod4
 
@@ -23,9 +23,9 @@ exec --no-startup-id i3-msg "exec emacs"
 exec --no-startup-id i3-msg "exec firefox"
 exec --no-startup-id "sh -c 'until i3-msg [class=firefox] move container to workspace 2. Browser; do sleep 0.5; done'"
 
-exec --no-startup-id xss-lock --transfer-sleep-lock -- slock
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -i ~/media/wallpaper.png -u
 
-exec_always --no-startup-id feh --no-fehbg --bg-scale ~/media/wallpaper.png
+exec_always --no-startup-id feh --no-fehbg --bg-fill ~/media/wallpaper.png
 
 bindsym $mod+Return exec emacsclient -c
 bindsym $mod+Shift+Return exec i3-sensible-terminal
@@ -96,6 +96,7 @@ bindsym $mod+Shift+v floating toggle; exec --no-startup-id ~/.local/bin/bottomri
 bar {
     font pango:DejaVu Sans Mono 9
     status_command i3blocks
+    height 31
     position top
     mode dock
     tray_output none

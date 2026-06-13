@@ -23,7 +23,7 @@ Set initial inner and outer gaps and window border
 #+begin_src conf
   gaps inner 4
   gaps outer 2
-  default_border pixel 2
+  default_border pixel 1
 #+end_src
 
 * Functionality
@@ -60,15 +60,15 @@ its window appears).
   exec --no-startup-id "sh -c 'until i3-msg [class=firefox] move container to workspace 2. Browser; do sleep 0.5; done'"
 #+end_src
 
-Lock the screen with =slock= before sleep/suspend. =xss-lock= holds a sleep
+Lock the screen with =i3lock= before sleep/suspend. =xss-lock= holds a sleep
 inhibitor until the screen is locked.
 #+begin_src conf
-  exec --no-startup-id xss-lock --transfer-sleep-lock -- slock
+  exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -i ~/media/wallpaper.png -u
 #+end_src
 
 Set the wallpaper.
 #+begin_src conf
-  exec_always --no-startup-id feh --no-fehbg --bg-scale ~/media/wallpaper.png
+  exec_always --no-startup-id feh --no-fehbg --bg-fill ~/media/wallpaper.png
 #+end_src
 
 * Key bindings
@@ -218,6 +218,7 @@ Status bar configuration.
   bar {
       font pango:DejaVu Sans Mono 9
       status_command i3blocks
+      height 31
       position top
       mode dock
       tray_output none

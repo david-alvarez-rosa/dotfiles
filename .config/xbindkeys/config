@@ -12,8 +12,11 @@
 "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-"
   Control + XF86AudioLowerVolume
 
-"sh -c 'wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q MUTED && wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 || { wpctl set-volume @DEFAULT_AUDIO_SINK@ 0; wpctl set-mute @DEFAULT_AUDIO_SINK@ 1; }'"
+"wpctl set-volume @DEFAULT_AUDIO_SINK@ 0; wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
   XF86AudioMute
+
+"wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+  XF86AudioMicMute
 
 "xbacklight -inc 10"
   XF86MonBrightnessUp
@@ -29,6 +32,15 @@
 "xbacklight -dec 5"
   Control + XF86MonBrightnessDown
 
+"autorandr --cycle"
+  XF86Display
+
+"nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on"
+  XF86RFKill
+
+"id=$(xinput list --name-only | grep -im1 touchpad); xinput list-props \"$id\" | grep -q 'Device Enabled.*1$' && xinput disable \"$id\" || xinput enable \"$id\""
+  XF86TouchpadToggle
+
 "mpc toggle"
   XF86AudioPlay
 "mpc prev"
@@ -36,11 +48,8 @@
 "mpc next"
   XF86AudioNext
 
-"if xinput list-props 'ELAN1200:00 04F3:309F Touchpad' | grep 'Device Enabled (149):.*1'; then xinput disable 'ELAN1200:00 04F3:309F Touchpad'; else xinput enable 'ELAN1200:00 04F3:309F Touchpad'; fi"
-  XF86TouchpadToggle
-
-"slock"
-  Mod2 + Mod4 + l
+"i3lock -i ~/media/wallpaper.png -u"
+  Mod4 + l
 
 "maim -u | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
   Print
