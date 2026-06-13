@@ -21,6 +21,7 @@ export HISTFILE="$XDG_DATA_HOME"/shell/history
 export INPUTRC="$XDG_CONFIG_HOME"/shell/inputrc
 export UNISON="$XDG_CONFIG_HOME"/unison
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR"/ssh-agent.socket
 export XINITRC="$XDG_CONFIG_HOME"/X11/xinitrc
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export PYTHON_HISTORY="$XDG_STATE_HOME"/python/history
