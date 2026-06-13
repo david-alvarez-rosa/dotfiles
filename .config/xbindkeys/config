@@ -12,7 +12,7 @@
 "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-"
   Control + XF86AudioLowerVolume
 
-"wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+"sh -c 'wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q MUTED && wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 || { wpctl set-volume @DEFAULT_AUDIO_SINK@ 0; wpctl set-mute @DEFAULT_AUDIO_SINK@ 1; }'"
   XF86AudioMute
 
 "xbacklight -inc 10"
