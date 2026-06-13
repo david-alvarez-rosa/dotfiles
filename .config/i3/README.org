@@ -66,6 +66,11 @@ inhibitor until the screen is locked.
   exec --no-startup-id xss-lock --transfer-sleep-lock -- slock
 #+end_src
 
+Set the wallpaper.
+#+begin_src conf
+  exec_always --no-startup-id feh --no-fehbg --bg-scale ~/media/wallpaper.png
+#+end_src
+
 * Key bindings
 ** Apps
 Open a terminal

@@ -25,6 +25,8 @@ exec --no-startup-id "sh -c 'until i3-msg [class=firefox] move container to work
 
 exec --no-startup-id xss-lock --transfer-sleep-lock -- slock
 
+exec_always --no-startup-id feh --no-fehbg --bg-scale ~/media/wallpaper.png
+
 bindsym $mod+Return exec emacsclient -c
 bindsym $mod+Shift+Return exec i3-sensible-terminal
 
