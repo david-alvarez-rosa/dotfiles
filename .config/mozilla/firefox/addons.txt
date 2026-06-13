@@ -1,0 +1,12 @@
+# Firefox add-ons (reinstall on a fresh machine; XPIs are not tracked).
+# Settings for these live in user.js + extension-{settings,preferences}.json.
+
+uBlock Origin           https://addons.mozilla.org/firefox/addon/ublock-origin/
+KeePassXC-Browser       https://addons.mozilla.org/firefox/addon/keepassxc-browser/
+Privacy Badger          https://addons.mozilla.org/firefox/addon/privacy-badger17/
+ClearURLs               https://addons.mozilla.org/firefox/addon/clearurls/
+React Developer Tools   https://addons.mozilla.org/firefox/addon/react-devtools/
+Unhook (YouTube)        https://addons.mozilla.org/firefox/addon/youtube-recommended-videos/
+Toggle Pin Tab          https://addons.mozilla.org/firefox/addon/toggle-pin-tab/
+Spanish (es-ES) dictionary   langpack: pacman -S firefox-i18n-es-es  (or AMO dictionary)
+Bypass Paywalls Clean   https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
