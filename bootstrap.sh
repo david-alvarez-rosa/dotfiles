@@ -30,6 +30,7 @@ PACMAN_PACKAGES="
   i3-wm
   i3blocks
   i3lock
+  picom
   imagemagick
   inter-font
   isync

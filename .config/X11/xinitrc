@@ -5,5 +5,6 @@ unclutter --timeout 2 --ignore-scrolling &
 xrdb -merge ~/.config/X11/Xresources
 keepassxc &
 dunst &
+picom &
 systemctl --user import-environment DISPLAY XAUTHORITY
 exec i3
