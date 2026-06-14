@@ -11,17 +11,18 @@ function notifyBatteryInfo() {
     capacity=$(echo "$info" | awk '/energy-full:/ {print $2, $3}')
     design=$(echo "$info" | awk '/energy-full-design:/ {print $2, $3}')
     health=$(echo "$info" | awk '/capacity:/ {sub(/%/, "", $2); printf "%.1f%%", $2}')
+    profile=$(tlp-stat -s 2>/dev/null | awk -F'= ' '/TLP profile/ {print $2}')
 
-    body="Status: $percentage% ($state)"
     case $state in
-        Discharging) body="$body
-Time to empty: ${time:-calculating…}" ;;
-        Charging) body="$body
-Time to full: ${time:-calculating…}" ;;
+        Discharging) eta="Time to empty: ${time:-calculating…}" ;;
+        Charging)    eta="Time to full: ${time:-calculating…}" ;;
     esac
-    body="$body
-Energy rate: $rate
-Capacity: $capacity / $design ($health)"
+
+    body="Status: $percentage% ($state)
+${eta:+$eta
+}Energy rate: $rate
+Capacity: $capacity / $design ($health)
+TLP profile: ${profile:-unknown}"
 
     notify-send "Battery information" "$body"
 }
