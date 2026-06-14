@@ -48,17 +48,19 @@
 (setq-default dired-listing-switches "-alh --group-directories-first")
 (setq dired-auto-revert-buffer t)
 
-(defun david/dired-fix-group-directories ()
+(defun dalvrosa/dired-goto-top ()
+  (goto-char (point-min))
+  (while (and (not (eobp)) (not (dired-move-to-filename)))
+    (forward-line 1)))
+
+(defun dalvrosa/dired-fix-group-directories ()
   (setq dired-actual-switches
         (if (string-match-p "\\(^\\| \\)-[[:alpha:]]*t" dired-actual-switches)
-            "-Alh -t"
-          "-alh --group-directories-first")))
-(advice-add 'dired-sort-toggle :after #'david/dired-fix-group-directories)
-
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (when (equal (expand-file-name default-directory) (expand-file-name "~/tmp/"))
-              (dired-sort-other "-Alh -t"))))
+            "-alh -t"
+          "-alh --group-directories-first"))
+  (revert-buffer)
+  (dalvrosa/dired-goto-top))
+(advice-add 'dired-sort-toggle :after #'dalvrosa/dired-fix-group-directories)
 
 (use-package dired-narrow
   :after dired
