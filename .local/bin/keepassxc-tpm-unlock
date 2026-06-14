@@ -1,18 +1,16 @@
 #!/usr/bin/env sh
-set -eux
+set -u
 
 TPM_DIR="$HOME/.config/keepassxc/tpm"
 DB="$HOME/docs/Passwords.kdbx"
 
 unseal() {
+    tpm2_flushcontext -t 2>/dev/null
     tpm2_createprimary -Q -C o -g sha256 -G ecc -c "$TPM_DIR/primary.ctx" \
         && tpm2_load -Q -C "$TPM_DIR/primary.ctx" -u "$TPM_DIR/seal.pub" -r "$TPM_DIR/seal.priv" -c "$TPM_DIR/seal.ctx" \
         && tpm2_unseal -Q -c "$TPM_DIR/seal.ctx"
 }
 
-set +x
-if pw=$(unseal 2>/dev/null) && [ -n "$pw" ]; then
-    printf '%s' "$pw" | keepassxc --pw-stdin "$DB"
-else
-    exec keepassxc "$DB"
-fi
+pw=$(unseal 2>/dev/null) || pw=""
+[ -n "$pw" ] || exec keepassxc "$DB"
+printf '%s' "$pw" | keepassxc --pw-stdin "$DB"
