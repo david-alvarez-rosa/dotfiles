@@ -69,9 +69,10 @@ its window appears).
   exec --no-startup-id "sh -c 'until i3-msg [class=firefox] move container to workspace 2. Browser; do sleep 0.5; done'"
 #+end_src
 
-Start the Nextcloud client in the background.
+Start the Nextcloud client in the background, once KeePassXC has unlocked the
+keychain it reads its token from (waits until the SSH key is loaded).
 #+begin_src conf
-  exec --no-startup-id nextcloud --background
+  exec --no-startup-id sh -c 'until ssh-add -l >/dev/null 2>&1; do sleep 0.5; done; nextcloud --background'
 #+end_src
 
 Lock the screen with =i3lock= before sleep/suspend. =xss-lock= holds a sleep
