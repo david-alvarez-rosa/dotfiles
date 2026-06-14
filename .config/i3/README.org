@@ -69,6 +69,11 @@ its window appears).
   exec --no-startup-id "sh -c 'until i3-msg [class=firefox] move container to workspace 2. Browser; do sleep 0.5; done'"
 #+end_src
 
+Start the Nextcloud client in the background.
+#+begin_src conf
+  exec --no-startup-id nextcloud --background
+#+end_src
+
 Lock the screen with =i3lock= before sleep/suspend. =xss-lock= holds a sleep
 inhibitor until the screen is locked.
 #+begin_src conf

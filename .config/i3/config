@@ -29,6 +29,8 @@ exec --no-startup-id i3-msg "exec emacs"
 exec --no-startup-id i3-msg "exec firefox"
 exec --no-startup-id "sh -c 'until i3-msg [class=firefox] move container to workspace 2. Browser; do sleep 0.5; done'"
 
+exec --no-startup-id nextcloud --background
+
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -i ~/media/wallpaper.png -u
 
 exec_always --no-startup-id feh --no-fehbg --bg-fill ~/media/wallpaper.png
