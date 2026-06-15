@@ -83,6 +83,10 @@
 (setq lock-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
+(global-auto-revert-mode 1)
+
 (setq split-width-threshold 210)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)

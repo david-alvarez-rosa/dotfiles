@@ -235,6 +235,16 @@ dangerous, but I version-control everything important.
         `((".*" ,temporary-file-directory t)))
 #+end_src
 
+** Auto Revert
+
+Reload buffers instantly when files change on disk.
+
+#+begin_src elisp
+  (setq global-auto-revert-non-file-buffers t)
+  (setq auto-revert-verbose nil)
+  (global-auto-revert-mode 1)
+#+end_src
+
 ** Buffer Management
 
 Raise the automatic window-splitting threshold.
