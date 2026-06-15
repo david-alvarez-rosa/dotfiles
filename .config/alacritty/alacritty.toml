@@ -1,5 +1,5 @@
-[window]
-opacity = 0.96
+[general]
+import = ["~/.config/alacritty/colors.toml"]
 
 [font]
 size = 9.0

@@ -2,12 +2,14 @@
 set -eu
 
 if [ "$(gsettings get org.gnome.desktop.interface color-scheme)" = "'prefer-dark'" ]; then
-    scheme=default; gtk=Adwaita
+    scheme=default; gtk=Adwaita; alacritty=light
 else
-    scheme=prefer-dark; gtk=Adwaita-dark
+    scheme=prefer-dark; gtk=Adwaita-dark; alacritty=dark
 fi
 
 gsettings set org.gnome.desktop.interface color-scheme "$scheme"
 gsettings set org.gnome.desktop.interface gtk-theme "$gtk"
+
+cp "$HOME/.config/alacritty/themes/$alacritty.toml" "$HOME/.config/alacritty/colors.toml"
 
 emacsclient -e "(modus-themes-toggle)" >/dev/null
