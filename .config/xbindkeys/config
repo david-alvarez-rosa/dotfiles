@@ -1,15 +1,11 @@
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+ && pkill -RTMIN+1 i3blocks"
+"v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+12)/5*5));[ $n -gt 100 ]&&n=100;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;pkill -RTMIN+1 i3blocks"
   XF86AudioRaiseVolume
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+1 i3blocks"
-  Shift + XF86AudioRaiseVolume
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+ && pkill -RTMIN+1 i3blocks"
+"v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+7)/5*5));[ $n -gt 100 ]&&n=100;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;pkill -RTMIN+1 i3blocks"
   Control + XF86AudioRaiseVolume
 
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%- && pkill -RTMIN+1 i3blocks"
+"v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v-8)/5*5));[ $n -lt 0 ]&&n=0;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;pkill -RTMIN+1 i3blocks"
   XF86AudioLowerVolume
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+1 i3blocks"
-  Shift + XF86AudioLowerVolume
-"wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%- && pkill -RTMIN+1 i3blocks"
+"v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v-3)/5*5));[ $n -lt 0 ]&&n=0;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;pkill -RTMIN+1 i3blocks"
   Control + XF86AudioLowerVolume
 
 "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0; wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+1 i3blocks"
@@ -20,15 +16,11 @@
 
 "xbacklight -inc 10"
   XF86MonBrightnessUp
-"xbacklight -inc 20"
-  Shift + XF86MonBrightnessUp
 "xbacklight -inc 5"
   Control + XF86MonBrightnessUp
 
 "xbacklight -dec 10"
   XF86MonBrightnessDown
-"xbacklight -dec 20"
-  Shift + XF86MonBrightnessDown
 "xbacklight -dec 5"
   Control + XF86MonBrightnessDown
 
@@ -45,15 +37,9 @@
 "mpc next"
   XF86AudioNext
 
-"i3lock -i ~/media/wallpaper.png -u"
-  Mod4 + l
-
 "maim -u | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
   Print
 "maim -u --window $(xdotool getactivewindow) | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
   Shift + Print
 "maim -u --select | tee ~/tmp/$(date +'%Y%m%d-%H:%M:%S').png | xclip -selection clipboard -t image/png"
   Control + Print
-
-"rofi -show drun"
-  Mod4 + d

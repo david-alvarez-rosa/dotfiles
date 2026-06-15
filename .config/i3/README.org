@@ -101,9 +101,15 @@ Open a terminal
   bindsym $mod+Shift+Return exec i3-sensible-terminal
 #+end_src
 
+Application launcher and manual screen lock.
+#+begin_src conf
+  bindsym $mod+r exec --no-startup-id rofi -show drun
+  bindsym $mod+l exec --no-startup-id i3lock -i ~/media/wallpaper.png -u
+#+end_src
+
 Toggle between light and dark mode.
 #+begin_src conf
-  bindsym $mod+Shift+d exec --no-startup-id dark-mode-toggle
+  bindsym $mod+d exec --no-startup-id dark-mode-toggle
 #+end_src
 
 ** Workspaces
@@ -210,7 +216,7 @@ Customize splitting direction for windows.
 *** Window floating
 Set key for the toggle between tiling/floating.
 #+begin_src conf
-  bindsym $mod+Shift+space floating toggle
+  bindsym $mod+Shift+t floating toggle
 #+end_src
 
 *** Window tabbed
@@ -222,7 +228,7 @@ Set key for the toggle between tiling/tabbed (stack).
 *** Window sticky
 Binding for sticky window toggle.
 #+begin_src conf
-  bindsym $mod+Shift+t sticky toggle
+  bindsym $mod+Shift+s sticky toggle
 #+end_src
 
 *** Window fullscreen

@@ -40,7 +40,9 @@ exec_always --no-startup-id feh --no-fehbg --bg-fill ~/media/wallpaper.png
 
 bindsym $mod+Return exec emacsclient -c
 bindsym $mod+Shift+Return exec i3-sensible-terminal
-bindsym $mod+Shift+d exec --no-startup-id dark-mode-toggle
+bindsym $mod+r exec --no-startup-id rofi -show drun
+bindsym $mod+l exec --no-startup-id i3lock -i ~/media/wallpaper.png -u
+bindsym $mod+d exec --no-startup-id dark-mode-toggle
 
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
@@ -95,11 +97,10 @@ bindsym $mod+Control+b exec --no-startup-id "~/.local/bin/i3resize left"
 bindsym $mod+v split vertical
 bindsym $mod+h split horizontal
 
-bindsym $mod+Shift+space floating toggle
-
 bindsym $mod+s layout toggle tabbed split
 
-bindsym $mod+Shift+t sticky toggle
+bindsym $mod+Shift+t floating toggle
+bindsym $mod+Shift+s sticky toggle
 
 bindsym $mod+o fullscreen toggle
 
