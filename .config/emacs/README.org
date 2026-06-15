@@ -769,7 +769,8 @@ only (=alpha-background= leaves text fully opaque).
 
   (defun dalvrosa/set-background-alpha ()
     (let ((alpha (if (eq (car custom-enabled-themes) 'modus-vivendi) 90 100)))
-      (set-frame-parameter nil 'alpha-background alpha)
+      (dolist (frame (frame-list))
+        (set-frame-parameter frame 'alpha-background alpha))
       (setf (alist-get 'alpha-background default-frame-alist) alpha)))
   (add-hook 'modus-themes-post-load-hook #'dalvrosa/set-background-alpha)
 
