@@ -303,7 +303,8 @@
   (corfu-popupinfo-mode 1)
   (corfu-history-mode 1)
   (add-to-list 'savehist-additional-variables 'corfu-history)
-  (setq text-mode-ispell-word-completion nil))
+  (setq text-mode-ispell-word-completion nil)
+  :hook (org-mode . (lambda () (setq-local corfu-auto nil))))
 
 (use-package orderless
   :init
@@ -374,9 +375,16 @@
   (interactive)
   (switch-to-buffer (gptel (generate-new-buffer "*ChatGPT*"))))
 
+(defun dalvrosa/gptel-send ()
+  (interactive)
+  (goto-char (point-max))
+  (gptel-send))
+
 (use-package gptel
   :bind
-  ("C-c h" . dalvrosa/new-gpt-chat)
+  (("C-c h" . dalvrosa/new-gpt-chat)
+   (:map gptel-mode-map
+         ("RET" . dalvrosa/gptel-send)))
   :config
   (setq gptel-backend (gptel-make-anthropic "Claude" :stream t :key gptel-api-key))
   (setq gptel-model 'claude-sonnet-4-6)
