@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+set -eu
+
+if [ "$(gsettings get org.gnome.desktop.interface color-scheme)" = "'prefer-dark'" ]; then
+    scheme=default; gtk=Adwaita
+else
+    scheme=prefer-dark; gtk=Adwaita-dark
+fi
+
+gsettings set org.gnome.desktop.interface color-scheme "$scheme"
+gsettings set org.gnome.desktop.interface gtk-theme "$gtk"
+
+emacsclient -e "(modus-themes-toggle)" >/dev/null

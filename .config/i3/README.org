@@ -61,6 +61,13 @@ Set workspace names.
 #+end_src
 
 * Auto Start
+Start =xdg-desktop-portal= (before Firefox) so apps follow the system
+light/dark color scheme.
+#+begin_src conf
+  exec --no-startup-id env XDG_CURRENT_DESKTOP=i3 /usr/lib/xdg-desktop-portal-gtk
+  exec --no-startup-id env XDG_CURRENT_DESKTOP=i3 /usr/lib/xdg-desktop-portal -r
+#+end_src
+
 Auto start Emacs on workspace 1 and Firefox on workspace 2 (retrying until
 its window appears).
 #+begin_src conf
@@ -92,6 +99,11 @@ Open a terminal
 #+begin_src conf
   bindsym $mod+Return exec emacsclient -c
   bindsym $mod+Shift+Return exec i3-sensible-terminal
+#+end_src
+
+Toggle between light and dark mode.
+#+begin_src conf
+  bindsym $mod+Shift+d exec --no-startup-id dark-mode-toggle
 #+end_src
 
 ** Workspaces
