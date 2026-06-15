@@ -944,6 +944,22 @@ Don't ask for confirmation when killing vterm buffers.
   (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 #+end_src
 
+Nudge visible vterm buffers to repaint on theme reload.
+
+#+begin_src elisp
+  (add-hook 'modus-themes-post-load-hook
+            (lambda ()
+              (dolist (buf (buffer-list))
+                (with-current-buffer buf
+                  (let ((win (get-buffer-window buf t))
+                        (inhibit-read-only t))
+                    (when (and win (derived-mode-p 'vterm-mode) (not vterm-copy-mode))
+                      (vterm--set-size vterm--term (1- (window-body-height win))
+                                       (window-body-width win))
+                      (vterm--window-adjust-process-window-size
+                       vterm--process (list win))))))))
+#+end_src
+
 Project integration: =C-x p v= opens a vterm at the project root and
 =C-x p h= one running Claude Code.
 

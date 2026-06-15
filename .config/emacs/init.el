@@ -499,6 +499,18 @@
 
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 
+(add-hook 'modus-themes-post-load-hook
+          (lambda ()
+            (dolist (buf (buffer-list))
+              (with-current-buffer buf
+                (let ((win (get-buffer-window buf t))
+                      (inhibit-read-only t))
+                  (when (and win (derived-mode-p 'vterm-mode) (not vterm-copy-mode))
+                    (vterm--set-size vterm--term (1- (window-body-height win))
+                                     (window-body-width win))
+                    (vterm--window-adjust-process-window-size
+                     vterm--process (list win))))))))
+
 (defun dalvrosa/project-vterm (&optional claude new)
   "Open a vterm in the current project root.
 With NEW (prefix arg), always create a new buffer.
