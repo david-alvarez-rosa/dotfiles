@@ -1,6 +1,6 @@
-"v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+12)/5*5));[ $n -gt 100 ]&&n=100;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;pkill -RTMIN+1 i3blocks"
+"v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+12)/5*5));[ $n -gt 100 ]&&n=100;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;wpctl set-mute @DEFAULT_AUDIO_SINK@ 0;pkill -RTMIN+1 i3blocks"
   XF86AudioRaiseVolume
-"v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+7)/5*5));[ $n -gt 100 ]&&n=100;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;pkill -RTMIN+1 i3blocks"
+"v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+7)/5*5));[ $n -gt 100 ]&&n=100;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;wpctl set-mute @DEFAULT_AUDIO_SINK@ 0;pkill -RTMIN+1 i3blocks"
   Control + XF86AudioRaiseVolume
 
 "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v-8)/5*5));[ $n -lt 0 ]&&n=0;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;pkill -RTMIN+1 i3blocks"
