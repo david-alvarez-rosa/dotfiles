@@ -9,22 +9,23 @@ interval=21600
 color=#1793D1
 
 [vpn]
-command=printf "<span font_family='FontAwesome'>\uf084</span> " && ip -o link | grep -q tun && echo "up" || echo "down"
+command=printf "<span font_family='FontAwesome'></span> " && ip -o link | grep -q tun && echo "up" || echo "down"
 interval=30
+signal=3
 color=#589df6
 
 [home]
-command=printf "<span font_family='FontAwesome' font_size='10pt'>\\uf015</span> " && df -h -P -l $HOME | awk '{print $4}' | tail -1
+command=printf "<span font_family='FontAwesome' font_size='10pt'></span> " && df -h -P -l $HOME | awk '{print $4}' | tail -1
 interval=3600
 color=#21b089
 
 [root]
-command=printf "<span font_family='FontAwesome'>\\uf292</span> " && df -h -P -l / | awk '{print $2}' | tail -1
+command=printf "<span font_family='FontAwesome'></span> " && df -h -P -l / | awk '{print $2}' | tail -1
 interval=once
 color=#f9555f
 
 [temperature]
-command=printf "\\uf2c7 " && sensors | grep "CPU: " | awk '{v=$2; sub(/^\+/, "", v); print v}'
+command=printf "<span font_family='FontAwesome'></span> " && sensors | grep "CPU: " | awk '{v=$2; sub(/^\+/, "", v); print v}'
 interval=30
 color=#E88939
 
@@ -34,7 +35,7 @@ interval=10
 color=#589df6
 
 [memory]
-command=printf "<span font_family='FontAwesome'>\\uf013</span> " && grep "MemAvailable" /proc/meminfo | awk '{printf("%.1fG\n", $2/1024/1024 + 8)}'
+command=printf "<span font_family='FontAwesome'></span> " && grep "MemAvailable" /proc/meminfo | awk '{printf("%.1fG\n", $2/1024/1024 + 8)}'
 interval=10
 color=#21b089
 
@@ -53,11 +54,17 @@ interval=15
 color=#589df6
 
 [time]
-command=printf "<span font_family='FontAwesome' font_size='10pt'>\\uf017</span> " && date '+%H:%M'
+command=printf "<span font_family='FontAwesome'></span> " && date '+%H:%M'
 interval=20
 color=#21b089
 
 [date]
-command=printf "<span font_family='FontAwesome'>\\uf073</span> " && date '+%A %d '
+command=printf "<span font_family='FontAwesome'></span> " && date '+%A %d'
 interval=300
 color=#f9555f
+
+[keyboard]
+command=case "$(setxkbmap -query | awk '/^layout:/{print $2}')" in es*) printf "<span rise='1024' font_family='FontAwesome'></span> ES \n";; *) printf "\n";; esac
+interval=once
+signal=2
+color=#9b59b6

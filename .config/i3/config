@@ -43,6 +43,7 @@ bindsym $mod+Shift+Return exec emacsclient -c -e "(vterm t)"
 bindsym $mod+r exec --no-startup-id rofi -show drun
 bindsym $mod+l exec --no-startup-id i3lock -i ~/media/wallpaper.png -u
 bindsym $mod+d exec --no-startup-id dark-mode-toggle
+bindsym $mod+space exec --no-startup-id "setxkbmap -query | grep -qE 'layout:[[:space:]]*es' && setxkbmap -layout us,es -option '' -option compose:ralt || setxkbmap -layout es,us -option '' -option compose:ralt; pkill -RTMIN+2 i3blocks"
 
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
