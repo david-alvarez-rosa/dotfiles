@@ -10677,43 +10677,39 @@ Limit searched to BOUND.
 (setq package-activated-list
       (delete-dups
        (append
-	'(yaml-mode yaml compat cond-let with-editor websocket
-		    web-server vterm vlf vertico treesit-auto treepy
-		    transient tomelr tablist sudo-edit s dash f
-		    shrink-path deflate plantuml-mode pdf-tools
-		    ox-hugo llama magit-section magit org orgit
-		    orderless olivetti nyan-mode nerd-icons
-		    nerd-icons-dired nerd-icons-corfu
-		    nerd-icons-completion markdown-mode
-		    markdown-preview-mode marginalia ledger-mode gptel
-		    git-link ghub emacsql closql forge expand-region
-		    erc-hl-nicks engine-mode embark consult
-		    embark-consult elfeed elfeed-org doom-modeline
-		    dired-hacks-utils dired-subtree dired-narrow dape
-		    corfu chronometer cdlatex cape bbdb bbdb-vcard
-		    auctex)
-	package-activated-list)))
+        '(yaml-mode yaml compat cond-let with-editor websocket web-server vterm
+                    vlf vertico treesit-auto treepy transient tomelr tablist
+                    sudo-edit s dash f shrink-path deflate plantuml-mode
+                    pdf-tools ox-hugo llama magit-section magit org orgit
+                    orderless olivetti nyan-mode nerd-icons nerd-icons-dired
+                    nerd-icons-corfu nerd-icons-completion markdown-mode
+                    markdown-preview-mode marginalia ledger-mode gptel git-link
+                    ghub emacsql closql forge expand-region erc-hl-nicks
+                    engine-mode embark consult embark-consult elfeed elfeed-org
+                    doom-modeline dired-hacks-utils dired-subtree dired-narrow
+                    dape corfu chronometer cdlatex cape bbdb bbdb-vcard auctex)
+        package-activated-list)))
 (progn
   (require 'info) (info-initialize)
   (setq Info-directory-list
-	(append
-	 '("/home/david/.config/emacs/elpa/auctex-14.1.2"
-	   "/home/david/.config/emacs/elpa/bbdb-vcard-20210325.2208"
-	   "/home/david/.config/emacs/elpa/bbdb-20231122.1326"
-	   "/home/david/.config/emacs/elpa/embark-20260610.302"
-	   "/home/david/.config/emacs/elpa/forge-20260601.1610"
-	   "/home/david/.config/emacs/elpa/ghub-20260603.1818"
-	   "/home/david/.config/emacs/elpa/ledger-mode-20260609.609"
-	   "/home/david/.config/emacs/elpa/orderless-20260519.1029"
-	   "/home/david/.config/emacs/elpa/org-9.8.5"
-	   "/home/david/.config/emacs/elpa/magit-20260609.956"
-	   "/home/david/.config/emacs/elpa/magit-section-20260514.937"
-	   "/home/david/.config/emacs/elpa/dash-20260221.1346"
-	   "/home/david/.config/emacs/elpa/transient-20260601.1529"
-	   "/home/david/.config/emacs/elpa/web-server-20210708.2242"
-	   "/home/david/.config/emacs/elpa/with-editor-20260601.1526"
-	   "/home/david/.config/emacs/elpa/compat-31.0.0.1")
-	 Info-directory-list)))
+        (append
+         '("/home/david/.config/emacs/elpa/auctex-14.1.2"
+           "/home/david/.config/emacs/elpa/bbdb-vcard-20210325.2208"
+           "/home/david/.config/emacs/elpa/bbdb-20231122.1326"
+           "/home/david/.config/emacs/elpa/embark-20260610.302"
+           "/home/david/.config/emacs/elpa/forge-20260601.1610"
+           "/home/david/.config/emacs/elpa/ghub-20260603.1818"
+           "/home/david/.config/emacs/elpa/ledger-mode-20260609.609"
+           "/home/david/.config/emacs/elpa/orderless-20260519.1029"
+           "/home/david/.config/emacs/elpa/org-9.8.5"
+           "/home/david/.config/emacs/elpa/magit-20260609.956"
+           "/home/david/.config/emacs/elpa/magit-section-20260514.937"
+           "/home/david/.config/emacs/elpa/dash-20260221.1346"
+           "/home/david/.config/emacs/elpa/transient-20260601.1529"
+           "/home/david/.config/emacs/elpa/web-server-20210708.2242"
+           "/home/david/.config/emacs/elpa/with-editor-20260601.1526"
+           "/home/david/.config/emacs/elpa/compat-31.0.0.1")
+         Info-directory-list)))
 
 ;; Local Variables:
 ;; version-control: never

@@ -644,7 +644,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
 
 (setq org-capture-templates
       '(("t" "Task" entry
-         (file+olp "~/docs/Agenda.org" "Refile")
+         (file+olp "~/docs/Agenda.org" "Standalone")
          "* TODO [#B] %?\n%a\n%i" :empty-lines 1)
         ("n" "Text Note" entry
          (file+olp "~/docs/Notes.org" "Notes")
@@ -700,19 +700,20 @@ With CLAUDE, use the \"vterm-claude\" base name."
          ((agenda "" ((org-agenda-span 1)))
           (todo "NEXT" ((org-agenda-overriding-header "Next Actions")
                         (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
-          (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
-          (tags-todo "TODO=\"TODO\"+work-backlog" ((org-agenda-overriding-header "Work")
+          (tags-todo "TODO=\"TODO\"-work-blog-backlog" ((org-agenda-overriding-header "Standalone")
                                                    (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
-          (tags-todo "TODO=\"TODO\"+pers-backlog" ((org-agenda-overriding-header "Personal")
+          (tags-todo "TODO=\"TODO\"+blog-backlog" ((org-agenda-overriding-header "Blog")
+                                                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
+          (tags-todo "TODO=\"TODO\"+work-backlog" ((org-agenda-overriding-header "Work")
                                                    (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
           (tags-todo "TODO=\"WAIT\"-backlog" ((org-agenda-overriding-header "Waiting")
                                               (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))))
         ("b" "Backlog"
          ((agenda "" ((org-agenda-span 1)))
           (todo "NEXT" ((org-agenda-overriding-header "Next Actions")))
-          (tags-todo "+refile" ((org-agenda-overriding-header "Refile")))
+          (tags-todo "TODO=\"TODO\"-work-blog-backlog" ((org-agenda-overriding-header "Standalone")))
+          (tags-todo "TODO=\"TODO\"+blog-backlog" ((org-agenda-overriding-header "Blog")))
           (tags-todo "TODO=\"TODO\"+work-backlog" ((org-agenda-overriding-header "Work")))
-          (tags-todo "TODO=\"TODO\"+pers-backlog" ((org-agenda-overriding-header "Personal")))
           (tags-todo "TODO=\"WAIT\"-backlog" ((org-agenda-overriding-header "Waiting")))
           (tags-todo "+backlog" ((org-agenda-overriding-header "Backlog")))))))
 
