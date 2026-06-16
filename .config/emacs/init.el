@@ -41,6 +41,8 @@
 (run-with-idle-timer 0.1 nil
                      (lambda ()
                        (require 'server)
+                       (when (server-running-p)
+                         (setq server-name (format "server-%d" (emacs-pid))))
                        (unless (server-running-p) (server-start))))
 
 (setq custom-file "~/.config/emacs/custom.el")

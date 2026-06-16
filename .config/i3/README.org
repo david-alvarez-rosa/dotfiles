@@ -98,7 +98,7 @@ Set the wallpaper.
 Open a terminal
 #+begin_src conf
   bindsym $mod+Return exec emacsclient -c
-  bindsym $mod+Shift+Return exec i3-sensible-terminal
+  bindsym $mod+Shift+Return exec emacsclient -c -e "(vterm t)"
 #+end_src
 
 Application launcher and manual screen lock.
