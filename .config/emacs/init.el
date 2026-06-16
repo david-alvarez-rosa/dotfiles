@@ -17,7 +17,7 @@
     ;; Magit, with Forge and its database
     dash transient with-editor magit forge
     ispell flyspell
-    vterm dired mu4e latex tramp pdf-tools elfeed bbdb)
+    vterm dired mu4e latex tramp pdf-tools elfeed bbdb vlf-setup)
   "Libraries to preload while Emacs is idle, in order.")
 
 (defun dalvrosa/preload-next ()
@@ -38,7 +38,10 @@
 (setq user-full-name "David Álvarez Rosa")
 (setq user-mail-address "david@alvarezrosa.com")
 
-(server-start)
+(run-with-idle-timer 0.1 nil
+                     (lambda ()
+                       (require 'server)
+                       (unless (server-running-p) (server-start))))
 
 (setq custom-file "~/.config/emacs/custom.el")
 (load custom-file t)
@@ -85,7 +88,7 @@
 
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
-(global-auto-revert-mode 1)
+(run-with-idle-timer 0.1 nil #'global-auto-revert-mode)
 
 (setq split-width-threshold 210)
 
@@ -121,11 +124,9 @@
     (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list))))))
 (global-set-key (kbd "C-c k") 'dalvrosa/kill-all-other-buffers)
 
-(winner-mode 1)
+(run-with-idle-timer 0.1 nil #'winner-mode)
 
 (global-set-key (kbd "M-o") 'other-window)
-
-(require 'windmove)
 
 (setq frame-title-format '("" "%b - GNU Emacs at " system-name))
 
@@ -158,6 +159,7 @@
           (select-window new-window)))))))
 
 (defun dalvrosa/emacs-i3-integration (command)
+  (require 'windmove)
   (pcase command
     ((rx bos "focus")
      (dalvrosa/emacs-i3-windmove
@@ -337,7 +339,7 @@
 
 (use-package which-key
   :ensure nil
-  :init (which-key-mode))
+  :init (run-with-idle-timer 0.1 nil #'which-key-mode))
 
 (setq ispell-program-name "hunspell")
 (setq ispell-dictionary "en_US")
@@ -412,7 +414,11 @@
     (setf (alist-get 'alpha-background default-frame-alist) alpha)))
 (add-hook 'modus-themes-post-load-hook #'dalvrosa/set-background-alpha)
 
-(load-theme 'modus-operandi)
+(if (string-match-p "prefer-dark"
+                    (shell-command-to-string
+                     "gsettings get org.gnome.desktop.interface color-scheme"))
+    (load-theme 'modus-vivendi)
+  (load-theme 'modus-operandi))
 (dalvrosa/set-background-alpha)
 (global-set-key (kbd "C-c d") 'modus-themes-toggle)
 
@@ -434,10 +440,11 @@
   (dired-mode . nerd-icons-dired-mode))
 
 (use-package doom-modeline
-  :init (doom-modeline-mode 1)
+  :init (run-with-idle-timer 0.05 nil #'doom-modeline-mode)
   :config
   (setq display-time-default-load-average nil)
   (setq doom-modeline-buffer-encoding nil)
+  (setq doom-modeline-height 28)
   (setq column-number-mode t)
   (setq doom-modeline-buffer-file-name-style 'relative-from-project))
 
@@ -463,7 +470,7 @@
   :bind ("C-c o" . 'olivetti-mode))
 
 (use-package treesit-auto
-  :demand t
+  :defer 0.2
   :custom
   (treesit-auto-install 'prompt)
   :config
@@ -589,7 +596,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
   :config
   (setq dape-inlay-hints nil))
 
-(repeat-mode)
+(run-with-idle-timer 0.1 nil #'repeat-mode)
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
@@ -614,7 +621,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
 
-(require 'ansi-color)
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 (setq compilation-scroll-output t)
 (setq compilation-ask-about-save nil)
@@ -624,8 +630,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
 
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-ts-mode))
 
-(use-package vlf
-  :init (require 'vlf-setup))
+(use-package vlf)
 
 (setq org-modules '(ol-doi ol-bbdb ol-bibtex ol-docview ol-eww
                     ol-info ol-irc))

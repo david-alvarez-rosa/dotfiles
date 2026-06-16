@@ -116,7 +116,7 @@ threads share one global lock, so a load blocks input either way.
       ;; Magit, with Forge and its database
       dash transient with-editor magit forge
       ispell flyspell
-      vterm dired mu4e latex tramp pdf-tools elfeed bbdb)
+      vterm dired mu4e latex tramp pdf-tools elfeed bbdb vlf-setup)
     "Libraries to preload while Emacs is idle, in order.")
 
   (defun dalvrosa/preload-next ()
@@ -153,7 +153,10 @@ Name and mail address (the latter is overridden by =mu4e= contexts).
 Start the Emacs server so all =emacsclient= calls reach this instance.
 
 #+begin_src elisp
-  (server-start)
+  (run-with-idle-timer 0.1 nil
+                       (lambda ()
+                         (require 'server)
+                         (unless (server-running-p) (server-start))))
 #+end_src
 
 ** Custom File
@@ -242,7 +245,7 @@ Reload buffers instantly when files change on disk.
 #+begin_src elisp
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil)
-  (global-auto-revert-mode 1)
+  (run-with-idle-timer 0.1 nil #'global-auto-revert-mode)
 #+end_src
 
 ** Buffer Management
@@ -310,7 +313,7 @@ the current one and =*scratch*= with =C-c k=.
 Winner mode undoes/redoes window configuration changes.
 
 #+begin_src elisp
-  (winner-mode 1)
+  (run-with-idle-timer 0.1 nil #'winner-mode)
 #+end_src
 
 Integration with i3wm, so focus/move commands cross seamlessly between
@@ -319,8 +322,6 @@ Emacs windows and i3 windows (see
 
 #+begin_src elisp
   (global-set-key (kbd "M-o") 'other-window)
-
-  (require 'windmove)
 
   (setq frame-title-format '("" "%b - GNU Emacs at " system-name))
 
@@ -353,6 +354,7 @@ Emacs windows and i3 windows (see
             (select-window new-window)))))))
 
   (defun dalvrosa/emacs-i3-integration (command)
+    (require 'windmove)
     (pcase command
       ((rx bos "focus")
        (dalvrosa/emacs-i3-windmove
@@ -652,7 +654,7 @@ Display available keybindings in a popup based on the prefix entered
 #+begin_src elisp
   (use-package which-key
     :ensure nil
-    :init (which-key-mode))
+    :init (run-with-idle-timer 0.1 nil #'which-key-mode))
 #+end_src
 
 ** Spell Checking
@@ -792,7 +794,11 @@ only (=alpha-background= leaves text fully opaque).
       (setf (alist-get 'alpha-background default-frame-alist) alpha)))
   (add-hook 'modus-themes-post-load-hook #'dalvrosa/set-background-alpha)
 
-  (load-theme 'modus-operandi)
+  (if (string-match-p "prefer-dark"
+                      (shell-command-to-string
+                       "gsettings get org.gnome.desktop.interface color-scheme"))
+      (load-theme 'modus-vivendi)
+    (load-theme 'modus-operandi))
   (dalvrosa/set-background-alpha)
   (global-set-key (kbd "C-c d") 'modus-themes-toggle)
 #+end_src
@@ -827,10 +833,11 @@ Doom Modeline with a column number, plus nyan cat.
 
 #+begin_src elisp
   (use-package doom-modeline
-    :init (doom-modeline-mode 1)
+    :init (run-with-idle-timer 0.05 nil #'doom-modeline-mode)
     :config
     (setq display-time-default-load-average nil)
     (setq doom-modeline-buffer-encoding nil)
+    (setq doom-modeline-height 28)
     (setq column-number-mode t)
     (setq doom-modeline-buffer-file-name-style 'relative-from-project))
 
@@ -885,7 +892,7 @@ grammars.
 
 #+begin_src elisp
   (use-package treesit-auto
-    :demand t
+    :defer 0.2
     :custom
     (treesit-auto-install 'prompt)
     :config
@@ -1060,7 +1067,7 @@ Dape is the debugging counterpart of LSP.
     :config
     (setq dape-inlay-hints nil))
 
-  (repeat-mode)
+  (run-with-idle-timer 0.1 nil #'repeat-mode)
 #+end_src
 
 ** Line Numbers
@@ -1134,7 +1141,6 @@ Merge differences without a separate frame, splitting horizontally.
 ANSI colors in the compilation window, auto-scroll, save without asking.
 
 #+begin_src elisp
-  (require 'ansi-color)
   (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
   (setq compilation-scroll-output t)
   (setq compilation-ask-about-save nil)
@@ -1162,8 +1168,7 @@ Use the built-in tree-sitter mode.
 VLF views/edits very large files in batches.
 
 #+begin_src elisp
-  (use-package vlf
-    :init (require 'vlf-setup))
+  (use-package vlf)
 #+end_src
 
 * Org Mode
