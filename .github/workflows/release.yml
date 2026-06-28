@@ -13,13 +13,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Build source tarball
         run: |
           git archive --format=tar.gz --prefix="dotfiles-${GITHUB_REF_NAME}/" \
             -o "dotfiles-${GITHUB_REF_NAME}.tar.gz" "${GITHUB_REF_NAME}"
 
+      - name: Generate release notes
+        run: |
+          prev=$(git describe --tags --abbrev=0 "${GITHUB_REF_NAME}^" 2>/dev/null || true)
+          if [ -n "$prev" ]; then
+            range="$prev..${GITHUB_REF_NAME}"
+          else
+            range="${GITHUB_REF_NAME}"
+          fi
+          {
+            echo "## Changes"
+            echo
+            git log --no-merges --pretty="- %s (%h)" "$range"
+          } > notes.md
+
       - uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          name: ${{ github.ref_name }}
+          body_path: notes.md
           files: dotfiles-*.tar.gz
