@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Emacs (Open PDF)
+Comment=Open files in Emacs
+MimeType=application/pdf;
+Exec=emacsclient --alternate-editor= %F
+Icon=emacs
+Type=Application
+Terminal=false
+StartupNotify=true
+StartupWMClass=Emacs
+NoDisplay=true

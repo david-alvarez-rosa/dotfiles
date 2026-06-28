@@ -1,0 +1,13 @@
+[Default Applications]
+text/html=firefox.desktop
+x-scheme-handler/http=firefox.desktop
+x-scheme-handler/https=firefox.desktop
+x-scheme-handler/about=firefox.desktop
+x-scheme-handler/unknown=firefox.desktop
+image/jpeg=feh.desktop
+image/png=feh.desktop
+image/gif=feh.desktop
+application/xhtml+xml=firefox.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop
+x-scheme-handler/mailto=emacs-mailto.desktop
+application/pdf=emacsclient-pdf.desktop
