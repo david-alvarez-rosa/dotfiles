@@ -1211,7 +1211,10 @@ Capture with =C-c c=: tasks under the "Refile" heading, notes in
            "* %?" :empty-lines 1)
           ("b" "Blog Post" entry
            (file "~/dev/personal-website/Content.org")
-           "* TODO [#B] %?" :empty-lines 1 :prepend t)))
+           "* TODO [#B] %?" :empty-lines 1 :prepend t)
+          ("e" "Event" entry
+           (file "~/docs/Calendar.org")
+           "* %?\n%^T" :empty-lines 1)))
 #+end_src
 
 Enable email (or link) capture with =mu4e=.
@@ -1297,7 +1300,7 @@ Open the agenda with =C-c a=.
 
 #+begin_src elisp
   (global-set-key (kbd "C-c a") 'org-agenda)
-  (setq org-agenda-files '("~/docs/Agenda.org" "~/dev/personal-website/Content.org"))
+  (setq org-agenda-files '("~/docs/Agenda.org" "~/docs/Calendar.org" "~/dev/personal-website/Content.org"))
 #+end_src
 
 Custom block agenda: today, unscheduled NEXT actions, standalone, blog
@@ -1387,6 +1390,27 @@ Archive within the same file under an "Archived Items" heading.
 #+begin_src elisp
   (setq org-archive-location "::* Archived Items")
   (setq org-archive-tag "archive")
+#+end_src
+
+** Calendar
+
+Two-way sync between =~/docs/Calendar.org= and the Nextcloud "personal"
+calendar over CalDAV.  Credentials come from auth-source (host
+=cloud.alvarezrosa.com=).  The file is both inbox and source, so events
+authored in Emacs push up and Nextcloud events land here; nothing else is
+synced.  Syncs automatically after 15 min idle, or on demand with =C-c d=.
+
+#+begin_src elisp
+  (use-package org-caldav
+    :init
+    (setq org-caldav-url "https://cloud.alvarezrosa.com/remote.php/dav/calendars/david"
+          org-caldav-calendar-id "personal"
+          org-caldav-inbox "~/docs/Calendar.org"
+          org-caldav-files nil
+          org-caldav-save-directory "~/.local/state/emacs/org-caldav/"
+          org-icalendar-timezone "Europe/Dublin")
+    (global-set-key (kbd "C-c d") 'org-caldav-sync)
+    (run-with-idle-timer 900 t #'org-caldav-sync))
 #+end_src
 
 * Markup Languages
@@ -1858,13 +1882,17 @@ composition buffer plain =C-c C-a= works fine).
 
 ** Meetings
 
-Reply to iCalendar emails (accept, decline or tentatively accept).
+Reply to iCalendar emails; accepting stores the event under the
+pre-existing =Invitations= heading in =Calendar.org=.
 
 #+begin_src elisp
   (with-eval-after-load 'mu4e
     (require 'mu4e-icalendar)
     (mu4e-icalendar-setup)
-    (setq mu4e-icalendar-trash-after-reply t))
+    (setq mu4e-icalendar-trash-after-reply t)
+    (setq gnus-icalendar-org-capture-file "~/docs/Calendar.org")
+    (setq gnus-icalendar-org-capture-headline '("Invitations"))
+    (gnus-icalendar-org-setup))
 #+end_src
 
 * Web Feed Reader

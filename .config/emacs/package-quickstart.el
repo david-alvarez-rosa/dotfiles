@@ -5427,6 +5427,33 @@ store links to the Magit-Revision mode buffers for these commits.")
 
 
 )
+(let* ((load-file-name "/home/david/.config/emacs/elpa/org-caldav-20260501.8/org-caldav-autoloads.el")(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(autoload 'org-caldav-sync "org-caldav" "\
+Sync Org with calendar." t)
+(autoload 'org-caldav-convert-ics-to-datetree "org-caldav" "\
+Convert ics content in current buffer to Org datetree format.
+Output is displayed in the buffer *org-caldav-convert-ics-to-datetree*." t)
+(autoload 'org-caldav-import-ics-buffer-to-org "org-caldav" "\
+Add ics content in current buffer to `org-caldav-inbox'." t)
+(autoload 'org-caldav-import-ics-to-org "org-caldav" "\
+Add ics content in PATH to `org-caldav-inbox'.
+
+(fn PATH)" t)
+(register-definition-prefixes "org-caldav" '("org-caldav-"))
+
+
+(provide 'org-caldav-autoloads)
+
+
+)
 (let* ((load-file-name "/home/david/.config/emacs/elpa/orderless-20260519.1029/orderless-autoloads.el")(load-true-file-name load-file-name))
 
 
@@ -10681,13 +10708,14 @@ Limit searched to BOUND.
                     vlf vertico treesit-auto treepy transient tomelr tablist
                     sudo-edit s dash f shrink-path deflate plantuml-mode
                     pdf-tools ox-hugo llama magit-section magit org orgit
-                    orderless olivetti nyan-mode nerd-icons nerd-icons-dired
-                    nerd-icons-corfu nerd-icons-completion markdown-mode
-                    markdown-preview-mode marginalia ledger-mode gptel git-link
-                    ghub emacsql closql forge expand-region erc-hl-nicks
-                    engine-mode embark consult embark-consult elfeed elfeed-org
-                    doom-modeline dired-hacks-utils dired-subtree dired-narrow
-                    dape corfu chronometer cdlatex cape bbdb bbdb-vcard auctex)
+                    org-caldav orderless olivetti nyan-mode nerd-icons
+                    nerd-icons-dired nerd-icons-corfu nerd-icons-completion
+                    markdown-mode markdown-preview-mode marginalia ledger-mode
+                    gptel git-link ghub emacsql closql forge expand-region
+                    erc-hl-nicks engine-mode embark consult embark-consult
+                    elfeed elfeed-org doom-modeline dired-hacks-utils
+                    dired-subtree dired-narrow dape corfu chronometer cdlatex
+                    cape bbdb bbdb-vcard auctex)
         package-activated-list)))
 (progn
   (require 'info) (info-initialize)
@@ -10701,6 +10729,7 @@ Limit searched to BOUND.
            "/home/david/.config/emacs/elpa/ghub-20260603.1818"
            "/home/david/.config/emacs/elpa/ledger-mode-20260609.609"
            "/home/david/.config/emacs/elpa/orderless-20260519.1029"
+           "/home/david/.config/emacs/elpa/org-caldav-20260501.8"
            "/home/david/.config/emacs/elpa/org-9.8.5"
            "/home/david/.config/emacs/elpa/magit-20260609.956"
            "/home/david/.config/emacs/elpa/magit-section-20260514.937"

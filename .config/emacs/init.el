@@ -651,7 +651,10 @@ With CLAUDE, use the \"vterm-claude\" base name."
          "* %?" :empty-lines 1)
         ("b" "Blog Post" entry
          (file "~/dev/personal-website/Content.org")
-         "* TODO [#B] %?" :empty-lines 1 :prepend t)))
+         "* TODO [#B] %?" :empty-lines 1 :prepend t)
+        ("e" "Event" entry
+         (file "~/docs/Calendar.org")
+         "* %?\n%^T" :empty-lines 1)))
 
 (use-package mu4e-org
   :ensure nil
@@ -690,7 +693,7 @@ With CLAUDE, use the \"vterm-claude\" base name."
 (setq org-startup-folded 'content)
 
 (global-set-key (kbd "C-c a") 'org-agenda)
-(setq org-agenda-files '("~/docs/Agenda.org" "~/dev/personal-website/Content.org"))
+(setq org-agenda-files '("~/docs/Agenda.org" "~/docs/Calendar.org" "~/dev/personal-website/Content.org"))
 
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
@@ -759,6 +762,17 @@ With CLAUDE, use the \"vterm-claude\" base name."
 
 (setq org-archive-location "::* Archived Items")
 (setq org-archive-tag "archive")
+
+(use-package org-caldav
+  :init
+  (setq org-caldav-url "https://cloud.alvarezrosa.com/remote.php/dav/calendars/david"
+        org-caldav-calendar-id "personal"
+        org-caldav-inbox "~/docs/Calendar.org"
+        org-caldav-files nil
+        org-caldav-save-directory "~/.local/state/emacs/org-caldav/"
+        org-icalendar-timezone "Europe/Dublin")
+  (global-set-key (kbd "C-c d") 'org-caldav-sync)
+  (run-with-idle-timer 900 t #'org-caldav-sync))
 
 (use-package markdown-mode)
 
@@ -1049,7 +1063,10 @@ With CLAUDE, use the \"vterm-claude\" base name."
 (with-eval-after-load 'mu4e
   (require 'mu4e-icalendar)
   (mu4e-icalendar-setup)
-  (setq mu4e-icalendar-trash-after-reply t))
+  (setq mu4e-icalendar-trash-after-reply t)
+  (setq gnus-icalendar-org-capture-file "~/docs/Calendar.org")
+  (setq gnus-icalendar-org-capture-headline '("Invitations"))
+  (gnus-icalendar-org-setup))
 
 (use-package elfeed
   :bind (("C-c f" . 'elfeed)
