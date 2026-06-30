@@ -1759,12 +1759,58 @@ Expand a name to an email address inline with =M-TAB= while composing.
 
 BBDB is a contact database integrated with the mail readers;
 =bbdb-vcard= imports/exports vCards.  Loaded by the idle preloader.
+Contacts live in Nextcloud; =vdirsyncer= mirrors them to a local vCard
+directory and =dalvrosa/contacts-refresh= rebuilds BBDB from it (driven
+by the =contacts-sync= systemd timer).  BBDB is a read-only cache here.
 
 #+begin_src elisp
-  (use-package bbdb)
+  (use-package bbdb
+    :custom (bbdb-file "~/.local/state/emacs/bbdb")
+    :config
+    (with-eval-after-load 'ol-bbdb
+      (setq org-bbdb-anniversary-field 'birthday))
+    (defvar dalvrosa/contacts-dir "~/.local/share/contacts/"
+      "Local vCard mirror synced from Nextcloud by vdirsyncer.")
+    (defun dalvrosa/contacts-refresh ()
+      "Rebuild BBDB from the Nextcloud-synced vCard mirror."
+      (interactive)
+      (require 'bbdb-vcard)
+      (let ((bbdb-vcard-try-merge nil))
+        (bbdb-delete-records (bbdb-records) t)
+        (dolist (f (directory-files-recursively dalvrosa/contacts-dir "\\.vcf\\'"))
+          (bbdb-vcard-import-file f))
+        (bbdb-save))))
 
   (use-package bbdb-vcard
     :after bbdb)
+#+end_src
+
+A static =completion-at-point= source so address-book contacts complete
+inline in mu4e recipient headers, alongside mu4e's own completion.  It
+reads BBDB in memory, so it never blocks.
+
+#+begin_src elisp
+  (defun dalvrosa/bbdb-mail-candidates ()
+    (let (acc)
+      (dolist (r (bbdb-records))
+        (dolist (m (bbdb-record-mail r))
+          (push (format "%s <%s>" (bbdb-record-name r) m) acc)))
+      (nreverse acc)))
+
+  (defun dalvrosa/bbdb-capf ()
+    (when (and (derived-mode-p 'message-mode)
+               (message-point-in-header-p)
+               (save-excursion
+                 (beginning-of-line)
+                 (looking-at-p "\\(To\\|Cc\\|Bcc\\|Reply-To\\):")))
+      (let ((end (point))
+            (beg (save-excursion (skip-chars-backward "^:,")
+                                 (skip-chars-forward " \t") (point))))
+        (list beg end (dalvrosa/bbdb-mail-candidates) :exclusive 'no))))
+
+  (add-hook 'mu4e-compose-mode-hook
+            (lambda () (add-hook 'completion-at-point-functions
+                                 #'dalvrosa/bbdb-capf -50 t)))
 #+end_src
 
 ** Composition/Sending

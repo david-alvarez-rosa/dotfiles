@@ -1,0 +1,7 @@
+[Unit]
+Description=Sync Nextcloud contacts and refresh BBDB
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/vdirsyncer sync
+ExecStartPost=-/usr/bin/emacsclient --eval "(if (fboundp 'dalvrosa/contacts-refresh) (dalvrosa/contacts-refresh))"

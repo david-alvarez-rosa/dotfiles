@@ -979,10 +979,47 @@ With CLAUDE, use the \"vterm-claude\" base name."
   (bind-key "<M-tab>" 'eudc-expand-inline org-msg-edit-mode-map)
   (setq eudc-inline-expansion-servers 'hotlist))
 
-(use-package bbdb)
+(use-package bbdb
+  :custom (bbdb-file "~/.local/state/emacs/bbdb")
+  :config
+  (with-eval-after-load 'ol-bbdb
+    (setq org-bbdb-anniversary-field 'birthday))
+  (defvar dalvrosa/contacts-dir "~/.local/share/contacts/"
+    "Local vCard mirror synced from Nextcloud by vdirsyncer.")
+  (defun dalvrosa/contacts-refresh ()
+    "Rebuild BBDB from the Nextcloud-synced vCard mirror."
+    (interactive)
+    (require 'bbdb-vcard)
+    (let ((bbdb-vcard-try-merge nil))
+      (bbdb-delete-records (bbdb-records) t)
+      (dolist (f (directory-files-recursively dalvrosa/contacts-dir "\\.vcf\\'"))
+        (bbdb-vcard-import-file f))
+      (bbdb-save))))
 
 (use-package bbdb-vcard
   :after bbdb)
+
+(defun dalvrosa/bbdb-mail-candidates ()
+  (let (acc)
+    (dolist (r (bbdb-records))
+      (dolist (m (bbdb-record-mail r))
+        (push (format "%s <%s>" (bbdb-record-name r) m) acc)))
+    (nreverse acc)))
+
+(defun dalvrosa/bbdb-capf ()
+  (when (and (derived-mode-p 'message-mode)
+             (message-point-in-header-p)
+             (save-excursion
+               (beginning-of-line)
+               (looking-at-p "\\(To\\|Cc\\|Bcc\\|Reply-To\\):")))
+    (let ((end (point))
+          (beg (save-excursion (skip-chars-backward "^:,")
+                               (skip-chars-forward " \t") (point))))
+      (list beg end (dalvrosa/bbdb-mail-candidates) :exclusive 'no))))
+
+(add-hook 'mu4e-compose-mode-hook
+          (lambda () (add-hook 'completion-at-point-functions
+                               #'dalvrosa/bbdb-capf -50 t)))
 
 (with-eval-after-load 'mu4e
   (require 'smtpmail)

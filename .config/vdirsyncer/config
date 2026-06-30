@@ -1,0 +1,19 @@
+[general]
+status_path = "~/.local/state/vdirsyncer/status/"
+
+[pair contacts]
+a = "contacts_local"
+b = "contacts_remote"
+collections = ["contacts"]
+conflict_resolution = "b wins"
+
+[storage contacts_local]
+type = "filesystem"
+path = "~/.local/share/contacts/"
+fileext = ".vcf"
+
+[storage contacts_remote]
+type = "carddav"
+url = "https://cloud.alvarezrosa.com/remote.php/dav/addressbooks/users/david/"
+username = "david"
+password.fetch = ["command", "sh", "-c", "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep cloud.alvarezrosa.com | awk '{print $NF}'"]
