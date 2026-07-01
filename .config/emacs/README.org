@@ -1394,11 +1394,7 @@ Archive within the same file under an "Archived Items" heading.
 
 ** Calendar
 
-Two-way sync between =~/docs/Calendar.org= and the Nextcloud "personal"
-calendar over CalDAV.  Credentials come from auth-source (host
-=cloud.alvarezrosa.com=).  The file is both inbox and source, so events
-authored in Emacs push up and Nextcloud events land here; nothing else is
-synced.  Syncs automatically after 15 min idle, or on demand with =C-c d=.
+Two-way CalDAV sync between =~/docs/Calendar.org= and Nextcloud.
 
 #+begin_src elisp
   (use-package org-caldav
@@ -1408,9 +1404,15 @@ synced.  Syncs automatically after 15 min idle, or on demand with =C-c d=.
           org-caldav-inbox "~/docs/Calendar.org"
           org-caldav-files nil
           org-caldav-save-directory "~/.local/state/emacs/org-caldav/"
+          org-caldav-delete-org-entries 'always
+          org-caldav-delete-calendar-entries 'always
           org-icalendar-timezone "Europe/Dublin")
-    (global-set-key (kbd "C-c d") 'org-caldav-sync)
-    (run-with-idle-timer 900 t #'org-caldav-sync))
+    (defun dalvrosa/org-caldav-sync-quietly ()
+      (let ((org-caldav-show-sync-results nil))
+        (org-caldav-sync))
+      (when (org-caldav-sync-result-filter-errors)
+        (org-caldav-display-sync-results)))
+    (run-with-timer 900 900 #'dalvrosa/org-caldav-sync-quietly))
 #+end_src
 
 * Markup Languages

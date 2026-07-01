@@ -770,9 +770,15 @@ With CLAUDE, use the \"vterm-claude\" base name."
         org-caldav-inbox "~/docs/Calendar.org"
         org-caldav-files nil
         org-caldav-save-directory "~/.local/state/emacs/org-caldav/"
+        org-caldav-delete-org-entries 'always
+        org-caldav-delete-calendar-entries 'always
         org-icalendar-timezone "Europe/Dublin")
-  (global-set-key (kbd "C-c d") 'org-caldav-sync)
-  (run-with-idle-timer 900 t #'org-caldav-sync))
+  (defun dalvrosa/org-caldav-sync-quietly ()
+    (let ((org-caldav-show-sync-results nil))
+      (org-caldav-sync))
+    (when (org-caldav-sync-result-filter-errors)
+      (org-caldav-display-sync-results)))
+  (run-with-timer 900 900 #'dalvrosa/org-caldav-sync-quietly))
 
 (use-package markdown-mode)
 
