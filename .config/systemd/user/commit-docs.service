@@ -4,5 +4,5 @@ Description=Auto-commit Agenda.org, Notes.org and bookmarks
 [Service]
 Type=oneshot
 WorkingDirectory=%h
-ExecStart=/usr/bin/git add -u docs/Agenda.org docs/Notes.org .config/emacs/bookmarks
-ExecStart=-/usr/bin/git commit -m "[docs] Update Agenda.org, Notes.org and bookmarks files"
+ExecStart=/usr/bin/git add -u docs/Agenda.org docs/Calendar.org docs/Notes.org .config/emacs/bookmarks
+ExecStart=-/usr/bin/git commit -m "[docs] Update Agenda.org, Calendar.org, Notes.org and bookmarks files"
