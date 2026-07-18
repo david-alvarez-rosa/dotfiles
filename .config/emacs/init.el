@@ -1121,3 +1121,27 @@ With CLAUDE, use the \"vterm-claude\" base name."
 (setq erc-track-exclude-server-buffer t)
 
 (use-package erc-hl-nicks)
+
+(use-package ement
+  :config
+  (setq ement-save-sessions t)
+  (setq ement-notify-notification-predicates nil)
+  (setq ement-room-send-read-receipts nil))
+
+(defun dalvrosa/ement-connect ()
+  "Show the Matrix room list, connecting first if needed.
+Reuses a saved session or, on first login, the authentication file."
+  (interactive)
+  (require 'ement)
+  (if ement-sessions
+      (ement-room-list)
+    (if (ignore-errors (setf ement-sessions (ement--read-sessions)))
+        (call-interactively #'ement-connect)
+      (ement-connect
+       :user-id "@david:matrix.alvarezrosa.com"
+       :uri-prefix "https://matrix.alvarezrosa.com"
+       :password (auth-source-pick-first-password
+                  :host "matrix.alvarezrosa.com"
+                  :user "@david:matrix.alvarezrosa.com")))))
+
+(global-set-key (kbd "C-c x") 'dalvrosa/ement-connect)

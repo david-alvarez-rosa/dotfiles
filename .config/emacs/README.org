@@ -32,7 +32,7 @@ powerful.  Startup takes about 0.276 seconds (check with
 Main entry points:
 - =C-c a= Org agenda and =C-c c= Org capture.
 - =C-c e= email (mu4e), =C-c f= web feeds (Elfeed), =C-c i= IRC
-  (ERC).
+  (ERC), =C-c x= Matrix/WhatsApp (ement).
 - =C-c g= Git (Magit), =C-c t= terminal (vterm), =C-c h= LLM chat
   (gptel).
 - =C-c d= toggle light/dark theme, =C-c s= cycle spell checking.
@@ -1990,6 +1990,39 @@ Auto colorize nicknames.
 
 #+begin_src elisp
   (use-package erc-hl-nicks)
+#+end_src
+
+* Matrix
+
+Ement.el for Matrix, bound to =C-c x= (matri/x/), used mainly for WhatsApp through
+a bridge on my homeserver.  The helper pops to the room list, connecting first
+if needed by reusing a saved session or, on first login, the password from the
+[[*Authentication File][authentication file]] by user ID.
+
+#+begin_src elisp
+  (use-package ement
+    :config
+    (setq ement-save-sessions t)
+    (setq ement-notify-notification-predicates nil)
+    (setq ement-room-send-read-receipts nil))
+
+  (defun dalvrosa/ement-connect ()
+    "Show the Matrix room list, connecting first if needed.
+  Reuses a saved session or, on first login, the authentication file."
+    (interactive)
+    (require 'ement)
+    (if ement-sessions
+        (ement-room-list)
+      (if (ignore-errors (setf ement-sessions (ement--read-sessions)))
+          (call-interactively #'ement-connect)
+        (ement-connect
+         :user-id "@david:matrix.alvarezrosa.com"
+         :uri-prefix "https://matrix.alvarezrosa.com"
+         :password (auth-source-pick-first-password
+                    :host "matrix.alvarezrosa.com"
+                    :user "@david:matrix.alvarezrosa.com")))))
+
+  (global-set-key (kbd "C-c x") 'dalvrosa/ement-connect)
 #+end_src
 
 * Useful Resources
