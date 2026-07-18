@@ -865,6 +865,193 @@ See info node `(transient)Modifying Existing Transients'.
 
 
 )
+(let* ((load-file-name "/home/david/.config/emacs/elpa/llama-20260601.1455/llama-autoloads.el")(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(autoload 'llama "llama" "\
+Expand to a `lambda' expression that wraps around FN and BODY.
+
+This macro provides a compact way to write short `lambda' expressions.
+It expands to a `lambda' expression, which calls the function FN with
+arguments BODY and returns its value.  The arguments of the `lambda'
+expression are derived from symbols found in BODY.
+
+Each symbol from `%1' through `%9', which appears in an unquoted part
+of BODY, specifies a mandatory argument.  Each symbol from `&1' through
+`&9', which appears in an unquoted part of BODY, specifies an optional
+argument.  The symbol `&*' specifies extra (`&rest') arguments.
+
+The shorter symbol `%' can be used instead of `%1', but using both in
+the same expression is not allowed.  Likewise `&' can be used instead
+of `&1'.  These shorthands are not recognized in function position.
+
+To support binding forms that use a vector as VARLIST (such as `-let'
+from the `dash' package), argument symbols are also detected inside of
+vectors.
+
+The space between `##' and FN can be omitted because `##' is read-syntax
+for the symbol whose name is the empty string.  If you prefer you can
+place a space there anyway, and if you prefer to not use this somewhat
+magical symbol at all, you can instead use the alternative name `llama'.
+
+Instead of:
+
+  (lambda (a &optional _ c &rest d)
+    (foo a (bar c) d))
+
+you can use this macro and write:
+
+  (##foo %1 (bar &3) &*)
+
+which expands to:
+
+  (lambda (%1 &optional _&2 &3 &rest &*)
+    (foo %1 (bar &3) &*))
+
+Unused trailing arguments and mandatory unused arguments at the border
+between mandatory and optional arguments are also supported:
+
+  (##list %1 _%3 &5 _&6)
+
+becomes:
+
+  (lambda (%1 _%2 _%3 &optional _&4 &5 _&6)
+    (list %1 &5))
+
+Note how `_%3' and `_&6' are removed from the body, because their names
+begin with an underscore.  Also note that `_&4' is optional, unlike the
+explicitly specified `_%3'.
+
+Consider enabling `llama-fontify-mode' to highlight `##' and its
+special arguments.
+
+(fn FN &rest BODY)" nil t)
+(defvar llama-fontify-mode nil "\
+Non-nil if Llama-Fontify mode is enabled.
+See the `llama-fontify-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `llama-fontify-mode'.")
+(custom-autoload 'llama-fontify-mode "llama" nil)
+(autoload 'llama-fontify-mode "llama" "\
+In Emacs Lisp mode, highlight the `##' macro and its special arguments.
+
+This is a global minor mode.  If called interactively, toggle the
+`Llama-Fontify mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='llama-fontify-mode)'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "llama" '("##" "all-completions" "elisp-" "intern" "lisp--el-match-keyword@llama" "llama-"))
+
+
+(provide 'llama-autoloads)
+
+
+)
+(let* ((load-file-name "/home/david/.config/emacs/elpa/magit-section-20260514.937/magit-section-autoloads.el")(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(autoload 'magit-add-section-hook "magit-section" "\
+Add to the value of section hook HOOK the function FUNCTION.
+
+Add FUNCTION at the beginning of the hook list unless optional
+APPEND is non-nil, in which case FUNCTION is added at the end.
+If FUNCTION already is a member, then move it to the new location.
+
+If optional AT is non-nil and a member of the hook list, then
+add FUNCTION next to that instead.  Add before or after AT, or
+replace AT with FUNCTION depending on APPEND.  If APPEND is the
+symbol `replace', then replace AT with FUNCTION.  For any other
+non-nil value place FUNCTION right after AT.  If nil, then place
+FUNCTION right before AT.  If FUNCTION already is a member of the
+list but AT is not, then leave FUNCTION where ever it already is.
+
+If optional LOCAL is non-nil, then modify the hook's buffer-local
+value rather than its global value.  This makes the hook local by
+copying the default value.  That copy is then modified.
+
+HOOK should be a symbol.  If HOOK is void, it is first set to nil.
+HOOK's value must not be a single hook function.  FUNCTION should
+be a function that takes no arguments and inserts one or multiple
+sections at point, moving point forward.  FUNCTION may choose not
+to insert its section(s), when doing so would not make sense.  It
+should not be abused for other side-effects.  To remove FUNCTION
+again use `remove-hook'.
+
+(fn HOOK FUNCTION &optional AT APPEND LOCAL)")
+(autoload 'magit--handle-bookmark "magit-section" "\
+Open a bookmark created by `magit--make-bookmark'.
+
+Call the generic function `magit-bookmark-get-buffer-create' to get
+the appropriate buffer without displaying it.
+
+Then call the `magit-*-setup-buffer' function of the the major-mode
+with the variables' values as arguments, which were recorded by
+`magit--make-bookmark'.
+
+(fn BOOKMARK)")
+(register-definition-prefixes "magit-section" '("context-menu-region" "isearch-clean-overlays" "magit-"))
+
+
+(provide 'magit-section-autoloads)
+
+
+)
+(let* ((load-file-name "/home/david/.config/emacs/elpa/taxy-0.10.2/taxy-autoloads.el")(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(register-definition-prefixes "taxy" '("taxy-"))
+
+
+(provide 'taxy-autoloads)
+
+
+)
+(let* ((load-file-name "/home/david/.config/emacs/elpa/taxy-magit-section-0.14.3/taxy-magit-section-autoloads.el")(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(register-definition-prefixes "taxy-magit-section" '("taxy-magit-section-"))
+
+
+(provide 'taxy-magit-section-autoloads)
+
+
+)
 (let* ((load-file-name "/home/david/.config/emacs/elpa/tablist-20231019.1126/tablist-autoloads.el")(load-true-file-name load-file-name))
 
 
@@ -904,6 +1091,22 @@ disabled.
 
 
 (provide 'tablist-autoloads)
+
+
+)
+(let* ((load-file-name "/home/david/.config/emacs/elpa/svg-lib-0.3/svg-lib-autoloads.el")(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(register-definition-prefixes "svg-lib" '("svg-lib-"))
+
+
+(provide 'svg-lib-autoloads)
 
 
 )
@@ -1082,6 +1285,22 @@ This allows Dash symbols to be looked up with \\[info-lookup-symbol]." t)
 
 
 )
+(let* ((load-file-name "/home/david/.config/emacs/elpa/plz-0.9.1/plz-autoloads.el")(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(register-definition-prefixes "plz" '("plz-"))
+
+
+(provide 'plz-autoloads)
+
+
+)
 (let* ((load-file-name "/home/david/.config/emacs/elpa/deflate-20250703.808/deflate-autoloads.el")(load-true-file-name load-file-name))
 
 
@@ -1130,6 +1349,22 @@ Shortcuts             Command Name
 
 
 (provide 'plantuml-mode-autoloads)
+
+
+)
+(let* ((load-file-name "/home/david/.config/emacs/elpa/persist-0.8/persist-autoloads.el")(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(register-definition-prefixes "persist" '("persist-"))
+
+
+(provide 'persist-autoloads)
 
 
 )
@@ -1955,161 +2190,6 @@ buffer and returned as a string in Org format." t)
 
 
 (provide 'ox-hugo-autoloads)
-
-
-)
-(let* ((load-file-name "/home/david/.config/emacs/elpa/llama-20260601.1455/llama-autoloads.el")(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(autoload 'llama "llama" "\
-Expand to a `lambda' expression that wraps around FN and BODY.
-
-This macro provides a compact way to write short `lambda' expressions.
-It expands to a `lambda' expression, which calls the function FN with
-arguments BODY and returns its value.  The arguments of the `lambda'
-expression are derived from symbols found in BODY.
-
-Each symbol from `%1' through `%9', which appears in an unquoted part
-of BODY, specifies a mandatory argument.  Each symbol from `&1' through
-`&9', which appears in an unquoted part of BODY, specifies an optional
-argument.  The symbol `&*' specifies extra (`&rest') arguments.
-
-The shorter symbol `%' can be used instead of `%1', but using both in
-the same expression is not allowed.  Likewise `&' can be used instead
-of `&1'.  These shorthands are not recognized in function position.
-
-To support binding forms that use a vector as VARLIST (such as `-let'
-from the `dash' package), argument symbols are also detected inside of
-vectors.
-
-The space between `##' and FN can be omitted because `##' is read-syntax
-for the symbol whose name is the empty string.  If you prefer you can
-place a space there anyway, and if you prefer to not use this somewhat
-magical symbol at all, you can instead use the alternative name `llama'.
-
-Instead of:
-
-  (lambda (a &optional _ c &rest d)
-    (foo a (bar c) d))
-
-you can use this macro and write:
-
-  (##foo %1 (bar &3) &*)
-
-which expands to:
-
-  (lambda (%1 &optional _&2 &3 &rest &*)
-    (foo %1 (bar &3) &*))
-
-Unused trailing arguments and mandatory unused arguments at the border
-between mandatory and optional arguments are also supported:
-
-  (##list %1 _%3 &5 _&6)
-
-becomes:
-
-  (lambda (%1 _%2 _%3 &optional _&4 &5 _&6)
-    (list %1 &5))
-
-Note how `_%3' and `_&6' are removed from the body, because their names
-begin with an underscore.  Also note that `_&4' is optional, unlike the
-explicitly specified `_%3'.
-
-Consider enabling `llama-fontify-mode' to highlight `##' and its
-special arguments.
-
-(fn FN &rest BODY)" nil t)
-(defvar llama-fontify-mode nil "\
-Non-nil if Llama-Fontify mode is enabled.
-See the `llama-fontify-mode' command
-for a description of this minor mode.
-Setting this variable directly does not take effect;
-either customize it (see the info node `Easy Customization')
-or call the function `llama-fontify-mode'.")
-(custom-autoload 'llama-fontify-mode "llama" nil)
-(autoload 'llama-fontify-mode "llama" "\
-In Emacs Lisp mode, highlight the `##' macro and its special arguments.
-
-This is a global minor mode.  If called interactively, toggle the
-`Llama-Fontify mode' mode.  If the prefix argument is positive, enable
-the mode, and if it is zero or negative, disable the mode.
-
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
-mode if ARG is nil, omitted, or is a positive number.  Disable the mode
-if ARG is a negative number.
-
-To check whether the minor mode is enabled in the current buffer,
-evaluate `(default-value \\='llama-fontify-mode)'.
-
-The mode's hook is called both when the mode is enabled and when it is
-disabled.
-
-(fn &optional ARG)" t)
-(register-definition-prefixes "llama" '("##" "all-completions" "elisp-" "intern" "lisp--el-match-keyword@llama" "llama-"))
-
-
-(provide 'llama-autoloads)
-
-
-)
-(let* ((load-file-name "/home/david/.config/emacs/elpa/magit-section-20260514.937/magit-section-autoloads.el")(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(autoload 'magit-add-section-hook "magit-section" "\
-Add to the value of section hook HOOK the function FUNCTION.
-
-Add FUNCTION at the beginning of the hook list unless optional
-APPEND is non-nil, in which case FUNCTION is added at the end.
-If FUNCTION already is a member, then move it to the new location.
-
-If optional AT is non-nil and a member of the hook list, then
-add FUNCTION next to that instead.  Add before or after AT, or
-replace AT with FUNCTION depending on APPEND.  If APPEND is the
-symbol `replace', then replace AT with FUNCTION.  For any other
-non-nil value place FUNCTION right after AT.  If nil, then place
-FUNCTION right before AT.  If FUNCTION already is a member of the
-list but AT is not, then leave FUNCTION where ever it already is.
-
-If optional LOCAL is non-nil, then modify the hook's buffer-local
-value rather than its global value.  This makes the hook local by
-copying the default value.  That copy is then modified.
-
-HOOK should be a symbol.  If HOOK is void, it is first set to nil.
-HOOK's value must not be a single hook function.  FUNCTION should
-be a function that takes no arguments and inserts one or multiple
-sections at point, moving point forward.  FUNCTION may choose not
-to insert its section(s), when doing so would not make sense.  It
-should not be abused for other side-effects.  To remove FUNCTION
-again use `remove-hook'.
-
-(fn HOOK FUNCTION &optional AT APPEND LOCAL)")
-(autoload 'magit--handle-bookmark "magit-section" "\
-Open a bookmark created by `magit--make-bookmark'.
-
-Call the generic function `magit-bookmark-get-buffer-create' to get
-the appropriate buffer without displaying it.
-
-Then call the `magit-*-setup-buffer' function of the the major-mode
-with the variables' values as arguments, which were recorded by
-`magit--make-bookmark'.
-
-(fn BOOKMARK)")
-(register-definition-prefixes "magit-section" '("context-menu-region" "isearch-clean-overlays" "magit-"))
-
-
-(provide 'magit-section-autoloads)
 
 
 )
@@ -7543,6 +7623,178 @@ Hitting \"C-x / w\" will be bound to the newly-defined
 
 
 )
+(let* ((load-file-name "/home/david/.config/emacs/elpa/ement-0.17/ement-autoloads.el")(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(autoload 'ement-connect "ement" "\
+Connect to Matrix with USER-ID and PASSWORD, or using SESSION.
+Interactively, with prefix, ignore a saved session and log in
+again; otherwise, use a saved session if `ement-save-sessions' is
+enabled and a saved session is available, or prompt to log in if
+not enabled or available.
+
+If USER-ID or PASSWORD are not specified, the user will be
+prompted for them.
+
+If URI-PREFIX is specified, it should be the prefix of the
+server's API URI, including protocol, hostname, and optionally
+the port, e.g.
+
+  \"https://matrix-client.matrix.org\"
+  \"http://localhost:8080\"
+
+(fn &key USER-ID PASSWORD URI-PREFIX SESSION)" t)
+(register-definition-prefixes "ement" '("ement-"))
+
+
+
+(register-definition-prefixes "ement-api" '("ement-api-error"))
+
+
+
+(autoload 'ement-directory "ement-directory" "\
+View the public room directory on SERVER with SESSION.
+Show up to LIMIT rooms.  Interactively, with prefix, prompt for
+server and LIMIT.
+
+SINCE may be a next-batch token.
+
+(fn &key SERVER SESSION SINCE (LIMIT 100))" t)
+(autoload 'ement-directory-search "ement-directory" "\
+View public rooms on SERVER matching QUERY.
+QUERY is a string used to filter results.
+
+(fn QUERY &key SERVER SESSION SINCE (LIMIT 1000))" t)
+(autoload 'ement-view-space "ement-directory" "\
+View child rooms in SPACE on SESSION.
+SPACE may be a room ID or an `ement-room' struct.
+
+(fn SPACE SESSION)" t)
+(register-definition-prefixes "ement-directory" '("ement-directory-"))
+
+
+
+(register-definition-prefixes "ement-lib" '("ement-"))
+
+
+
+(register-definition-prefixes "ement-macros" '("ement-"))
+
+
+
+(autoload 'ement-notifications "ement-notifications" "\
+Show the notifications buffer for SESSION.
+FROM may be a \"next_token\" token from a previous request.
+LIMIT may be a maximum number of events to return.  ONLY may be
+the string \"highlight\" to only return notifications that have
+the highlight tweak set.  THEN and ELSE may be callbacks passed
+to `ement-api', which see.
+
+(fn SESSION &key FROM LIMIT ONLY (THEN (apply-partially #\\='ement-notifications-callback session)) ELSE)" t)
+(register-definition-prefixes "ement-notifications" '("ement-notifications-"))
+
+
+
+(register-definition-prefixes "ement-notify" '("ement-notify"))
+
+
+
+(defvar ement-room-self-insert-mode nil "\
+Non-nil if Ement-Room-Self-Insert mode is enabled.
+See the `ement-room-self-insert-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `ement-room-self-insert-mode'.")
+(custom-autoload 'ement-room-self-insert-mode "ement-room" nil)
+(autoload 'ement-room-self-insert-mode "ement-room" "\
+When enabled, `self-insert-command' keys begin a new message.
+
+The user options `ement-room-self-insert-chars' and
+`ement-room-self-insert-commands' determine the specific keys and
+commands which will have this effect.
+
+When this mode is enabled, `ement-room-mode-self-insert-keymap'
+takes precedence over `ement-room-mode-map', with the shadowed
+key bindings in `ement-room-mode-map' becoming accessible via
+`ement-room-mode-map-prefix-key'.
+
+If you define custom key bindings in `ement-room-mode-map', you
+should call `ement-room-self-insert-mode' after defining those
+keys (rather than before).  Your bindings will be functional in
+either case, but they may not appear in the help for
+`ement-room-mode' if you define them afterwards.
+
+If you bind keys in `ement-room-mode-self-insert-keymap', do so
+via `ement-room-mode-self-insert-keymap-update-hook' (see which).
+
+This is a global minor mode.  If called interactively, toggle the
+`Ement-Room-Self-Insert mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='ement-room-self-insert-mode)'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "ement-room" '("ement-"))
+
+
+
+(autoload 'ement-room-list--after-initial-sync "ement-room-list" "\
+Call `ement-room-list', ignoring arguments.
+To be called from `ement-after-initial-sync-hook'.
+
+(fn &rest IGNORE)")
+(defalias 'ement-list-rooms 'ement-room-list)
+(autoload 'ement-room-list "ement-room-list" "\
+Show a buffer listing Ement rooms, grouped with Taxy KEYS.
+After showing it, its window is selected.  The buffer is named
+BUFFER-NAME and is shown with DISPLAY-BUFFER-ACTION; or if
+DISPLAY-BUFFER-ACTION is nil, the buffer is not displayed.
+
+(fn &key (BUFFER-NAME \"*Ement Room List*\") (KEYS ement-room-list-default-keys) (DISPLAY-BUFFER-ACTION \\='((display-buffer-reuse-window display-buffer-same-window))))" t)
+(autoload 'ement-room-list-auto-update "ement-room-list" "\
+Automatically update the Taxy room list buffer.
++Does so when variable `ement-room-list-auto-update' is non-nil.
++To be called in `ement-sync-callback-hook'.
+
+(fn SESSION)")
+(register-definition-prefixes "ement-room-list" '("ement-room-list-"))
+
+
+
+(autoload 'ement-tabulated-room-list "ement-tabulated-room-list" "\
+Show buffer listing joined rooms.
+Calls `pop-to-buffer-same-window'.  Interactively, with prefix,
+call `pop-to-buffer'.
+
+(fn &rest IGNORE)" t)
+(autoload 'ement-tabulated-room-list-auto-update "ement-tabulated-room-list" "\
+Automatically update the room list buffer.
+Does so when variable `ement-tabulated-room-list-auto-update' is non-nil.
+To be called in `ement-sync-callback-hook'.
+
+(fn SESSION)")
+(register-definition-prefixes "ement-tabulated-room-list" '("ement-tabulated-room-list-"))
+
+
+(provide 'ement-autoloads)
+
+
+)
 (let* ((load-file-name "/home/david/.config/emacs/elpa/embark-20260610.302/embark-autoloads.el")(load-true-file-name load-file-name))
 
 
@@ -10705,17 +10957,18 @@ Limit searched to BOUND.
       (delete-dups
        (append
         '(yaml-mode yaml compat cond-let with-editor websocket web-server vterm
-                    vlf vertico treesit-auto treepy transient tomelr tablist
-                    sudo-edit s dash f shrink-path deflate plantuml-mode
-                    pdf-tools ox-hugo llama magit-section magit org orgit
-                    org-caldav orderless olivetti nyan-mode nerd-icons
-                    nerd-icons-dired nerd-icons-corfu nerd-icons-completion
-                    markdown-mode markdown-preview-mode marginalia ledger-mode
-                    gptel git-link ghub emacsql closql forge expand-region
-                    erc-hl-nicks engine-mode embark consult embark-consult
-                    elfeed elfeed-org doom-modeline dired-hacks-utils
-                    dired-subtree dired-narrow dape corfu chronometer cdlatex
-                    cape bbdb bbdb-vcard auctex)
+                    vlf vertico treesit-auto treepy transient tomelr llama
+                    magit-section taxy taxy-magit-section tablist svg-lib
+                    sudo-edit s dash f shrink-path plz deflate plantuml-mode
+                    persist pdf-tools ox-hugo magit org orgit org-caldav
+                    orderless olivetti nyan-mode nerd-icons nerd-icons-dired
+                    nerd-icons-corfu nerd-icons-completion markdown-mode
+                    markdown-preview-mode marginalia ledger-mode gptel git-link
+                    ghub emacsql closql forge expand-region erc-hl-nicks
+                    engine-mode ement embark consult embark-consult elfeed
+                    elfeed-org doom-modeline dired-hacks-utils dired-subtree
+                    dired-narrow dape corfu chronometer cdlatex cape bbdb
+                    bbdb-vcard auctex)
         package-activated-list)))
 (progn
   (require 'info) (info-initialize)
@@ -10725,6 +10978,7 @@ Limit searched to BOUND.
            "/home/david/.config/emacs/elpa/bbdb-vcard-20210325.2208"
            "/home/david/.config/emacs/elpa/bbdb-20231122.1326"
            "/home/david/.config/emacs/elpa/embark-20260610.302"
+           "/home/david/.config/emacs/elpa/ement-0.17"
            "/home/david/.config/emacs/elpa/forge-20260601.1610"
            "/home/david/.config/emacs/elpa/ghub-20260603.1818"
            "/home/david/.config/emacs/elpa/ledger-mode-20260609.609"
@@ -10732,8 +10986,11 @@ Limit searched to BOUND.
            "/home/david/.config/emacs/elpa/org-caldav-20260501.8"
            "/home/david/.config/emacs/elpa/org-9.8.5"
            "/home/david/.config/emacs/elpa/magit-20260609.956"
-           "/home/david/.config/emacs/elpa/magit-section-20260514.937"
+           "/home/david/.config/emacs/elpa/plz-0.9.1"
            "/home/david/.config/emacs/elpa/dash-20260221.1346"
+           "/home/david/.config/emacs/elpa/taxy-magit-section-0.14.3"
+           "/home/david/.config/emacs/elpa/taxy-0.10.2"
+           "/home/david/.config/emacs/elpa/magit-section-20260514.937"
            "/home/david/.config/emacs/elpa/transient-20260601.1529"
            "/home/david/.config/emacs/elpa/web-server-20210708.2242"
            "/home/david/.config/emacs/elpa/with-editor-20260601.1526"
