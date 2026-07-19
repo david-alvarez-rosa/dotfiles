@@ -40,7 +40,7 @@ interval=10
 color=#21b089
 
 [volume]
-interval=once
+interval=5
 signal=1
 color=#f9555f
 
