@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+set -eu
+
+while :; do
+    if [ "$(awk '{print $2}' /proc/acpi/button/lid/LID/state)" = closed ]; then
+        wpctl set-volume @DEFAULT_AUDIO_SINK@ 0
+        wpctl set-mute @DEFAULT_AUDIO_SINK@ 1
+    fi
+    sleep 2
+done
