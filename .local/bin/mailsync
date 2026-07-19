@@ -3,6 +3,6 @@
 sync_one() { flock "${XDG_RUNTIME_DIR:-/tmp}/mbsync-$1.lock" mbsync -c ~/.config/isync/mbsyncrc "$1"; }
 
 case "$1" in
-	"") sync_one personal & sync_one spam & wait ;;
+	"") sync_one personal ;;
 	*)  sync_one "$1" ;;
 esac

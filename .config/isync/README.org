@@ -26,7 +26,7 @@ After the first sync of emails, the =mu= database must be started. It is useful
 to specify personal email addresses (e.g., for not replying to yourself in a
 "Reply All").
 #+begin_src conf :tangle no
-  mu init -m ~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=davids@alvarezrosa.com
+  mu init -m ~/.local/share/mail --my-address=david@alvarezrosa.com
 #+end_src
 
 
@@ -50,32 +50,6 @@ Configuration for my personal email account.
   Channel personal
   Far :personal-remote:
   Near :personal-local:
-  Patterns *
-  Create Both
-  Expunge Both
-  SyncState *
-#+end_src
-
-* Spam
-Configuration of my spam account.
-#+begin_src conf
-  IMAPAccount Spam
-  Host mail.alvarezrosa.com
-  User davids@alvarezrosa.com
-  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep alvarezrosa.com | awk '{print $8}'"
-  TLSType IMAPS
-
-  IMAPStore spam-remote
-  Account   Spam
-
-  MaildirStore spam-local
-  Path ~/.local/share/mail/Spam/
-  Inbox ~/.local/share/mail/Spam/Inbox
-  SubFolders Verbatim
-
-  Channel spam
-  Far :spam-remote:
-  Near :spam-local:
   Patterns *
   Create Both
   Expunge Both

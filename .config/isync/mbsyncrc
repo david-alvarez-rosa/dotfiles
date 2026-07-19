@@ -19,25 +19,3 @@ Patterns *
 Create Both
 Expunge Both
 SyncState *
-
-IMAPAccount Spam
-Host mail.alvarezrosa.com
-User davids@alvarezrosa.com
-PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep alvarezrosa.com | awk '{print $8}'"
-TLSType IMAPS
-
-IMAPStore spam-remote
-Account   Spam
-
-MaildirStore spam-local
-Path ~/.local/share/mail/Spam/
-Inbox ~/.local/share/mail/Spam/Inbox
-SubFolders Verbatim
-
-Channel spam
-Far :spam-remote:
-Near :spam-local:
-Patterns *
-Create Both
-Expunge Both
-SyncState *

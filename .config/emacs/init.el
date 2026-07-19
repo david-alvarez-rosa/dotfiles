@@ -922,13 +922,14 @@ With CLAUDE, use the \"vterm-claude\" base name."
   (add-to-list 'mm-discouraged-alternatives "multipart/related"))
 
 (setq mu4e-context-policy 'pick-first)
+(setq mu4e-compose-context-policy 'pick-first)
 (setq mu4e-sent-messages-behavior 'sent)
-(setq smtpmail-stream-type 'starttls)
-(setq smtpmail-smtp-service 587)
+(setq smtpmail-stream-type 'ssl)
+(setq smtpmail-smtp-service 465)
 (setq mu4e-change-filenames-when-moving t)
 
 (setq dalvrosa/smtp-server "mail.alvarezrosa.com")
-(setq dalvrosa/smtp-port 587)
+(setq dalvrosa/smtp-port 465)
 
 (with-eval-after-load 'mu4e
   (setq mu4e-contexts
@@ -946,27 +947,12 @@ With CLAUDE, use the \"vterm-claude\" base name."
                      (mu4e-refile-folder . "/Personal/Archive")
                      (user-mail-address . "david@alvarezrosa.com")
                      (smtpmail-smtp-service . ,dalvrosa/smtp-port)
-                     (smtpmail-smtp-server . ,dalvrosa/smtp-server)))
-           ,(make-mu4e-context
-             :name "Spam"
-             :match-func (lambda (msg)
-                           (when msg
-                             (string-match-p "^/Spam" (mu4e-message-field msg :maildir))))
-             :vars `(
-                     (message-signature-file . nil)
-                     (mu4e-inbox-folder . "/Spam/Inbox")
-                     (mu4e-sent-folder . "/Spam/Sent")
-                     (mu4e-drafts-folder . "/Spam/Drafts")
-                     (mu4e-trash-folder . "/Spam/Trash")
-                     (mu4e-refile-folder . "/Spam/Archive")
-                     (user-mail-address . "davids@alvarezrosa.com")
-                     (smtpmail-smtp-service . ,dalvrosa/smtp-port)
                      (smtpmail-smtp-server . ,dalvrosa/smtp-server))))))
 
 (with-eval-after-load 'mu4e
   (add-to-list 'mu4e-bookmarks
                '(:name "All Inboxes"
-                       :query "maildir:/Personal/Inbox OR maildir:/Spam/Inbox"
+                       :query "maildir:/Personal/Inbox"
                        :key ?i)))
 
 (defun dalvrosa/mu4e-update-mail-and-index ()
