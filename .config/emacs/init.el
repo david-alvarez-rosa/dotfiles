@@ -963,7 +963,6 @@ With CLAUDE, use the \"vterm-claude\" base name."
   (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
   (define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index))
 
-(setq mu4e-update-interval (* 60 10))
 (setq mu4e-hide-index-messages t)
 (setq mu4e-modeline-support nil)
 

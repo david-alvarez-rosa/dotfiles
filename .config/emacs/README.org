@@ -1671,18 +1671,18 @@ asking.
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-compose-context-policy 'pick-first)
   (setq mu4e-sent-messages-behavior 'sent)
-  (setq smtpmail-stream-type 'starttls)
-  (setq smtpmail-smtp-service 587)
+  (setq smtpmail-stream-type 'ssl)
+  (setq smtpmail-smtp-service 465)
   (setq mu4e-change-filenames-when-moving t)
 #+end_src
 
 SMTP server variables (kept separate so they're easy to point at an SSH
-tunnel when port 587 is blocked,
-e.g. =ssh -NTfL 1587:localhost:1587 root@alvarezrosa.com=).
+tunnel when port 465 is blocked,
+e.g. =ssh -NTfL 1465:localhost:465 root@alvarezrosa.com=).
 
 #+begin_src elisp
   (setq dalvrosa/smtp-server "mail.alvarezrosa.com")
-  (setq dalvrosa/smtp-port 587)
+  (setq dalvrosa/smtp-port 465)
 #+end_src
 
 The actual context accounts.
@@ -1721,8 +1721,9 @@ Custom bookmark for all inboxes.
 
 ** Update and Notification
 
-Update in the background every 10 minutes, hiding index messages and
-modeline numbering.
+No polling: =goimapnotify= pushes on IMAP IDLE.  Hide index messages and
+modeline numbering; mu4e's own =mu4e-headers-auto-update= refreshes the
+headers buffer after indexing, without pulling it into the current frame.
 
 #+begin_src elisp
   (defun dalvrosa/mu4e-update-mail-and-index ()
@@ -1733,7 +1734,6 @@ modeline numbering.
     (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
     (define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index))
 
-  (setq mu4e-update-interval (* 60 10))
   (setq mu4e-hide-index-messages t)
   (setq mu4e-modeline-support nil)
 #+end_src
