@@ -143,7 +143,7 @@ Moving a container/window to a workspace.
 
 Switching between the last two used workspaces.
 #+begin_src conf
-  bindsym $mod+Tab workspace back_and_forth
+  bindsym $mod+grave workspace back_and_forth
 #+end_src
 
 *** Default Workspaces

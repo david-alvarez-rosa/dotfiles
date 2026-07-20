@@ -7,10 +7,6 @@ modmap:
       Enter:
         held: Ctrl_R
         alone: enter
-      # Tab settings done with xmodmap + xcape for performance reasons
-      # Tab:
-      #   held: Win_L
-      #   alone: tab
       Backspace:
         held: Win_L
         alone: Backspace
@@ -19,6 +15,10 @@ modmap:
         alone: Esc
 
 keymap:
+  - name: Workspace
+    remap:
+      Super-Tab: Super-grave
+
   - name: Emacs
     application:
       not: [Emacs, Alacritty, qutebrowser, Qemu-system-x86_64]
