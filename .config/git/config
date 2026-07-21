@@ -6,6 +6,7 @@
   helper = store
 [core]
   editor = vim
+	hooksPath = /home/david/.config/git/hooks
 [color]
   diff = auto
   status = auto
