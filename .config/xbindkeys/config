@@ -14,10 +14,10 @@
 "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
   XF86AudioMicMute
 
-"v=$(xbacklight -get|cut -d. -f1);if [ $v -lt 1 ];then n=1;elif [ $v -lt 20 ];then n=20;else n=$((v/20*20+20));[ $n -gt 100 ]&&n=100;fi;xbacklight -set $n"
+"v=$(xbacklight -get|cut -d. -f1);if [ $v -lt 1 ];then n=1;elif [ $v -lt 10 ];then n=10;elif [ $v -lt 20 ];then n=20;else n=$((v/20*20+20));[ $n -gt 100 ]&&n=100;fi;xbacklight -set $n"
   XF86MonBrightnessUp
 
-"v=$(xbacklight -get|cut -d. -f1);if [ $v -le 1 ];then n=0;elif [ $v -le 20 ];then n=1;else n=$(((v+19)/20*20-20));fi;xbacklight -set $n"
+"v=$(xbacklight -get|cut -d. -f1);if [ $v -le 1 ];then n=0;elif [ $v -le 10 ];then n=1;elif [ $v -le 20 ];then n=10;else n=$(((v+19)/20*20-20));fi;xbacklight -set $n"
   XF86MonBrightnessDown
 
 "id=$(xinput list | grep -i touchpad | grep -o 'id=[0-9]*' | head -1 | cut -d= -f2); xinput list-props $id | grep -q 'Device Enabled.*1$' && xinput disable $id || xinput enable $id"
