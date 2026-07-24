@@ -6,7 +6,6 @@
   helper = store
 [core]
   editor = vim
-	hooksPath = /home/david/.config/git/hooks
 [color]
   diff = auto
   status = auto
@@ -23,6 +22,7 @@
 	autoSetupRemote = true
 [init]
 	defaultBranch = main
+	templateDir = /home/david/.config/git/template
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
