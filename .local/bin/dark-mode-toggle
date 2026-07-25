@@ -12,6 +12,12 @@ gsettings set org.gnome.desktop.interface gtk-theme "$gtk"
 
 cp "$HOME/.config/alacritty/themes/$alacritty.toml" "$HOME/.config/alacritty/colors.toml"
 
+settings="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/settings.json"
+if [ -f "$settings" ]; then
+    jq --arg t "$alacritty" '.theme = $t' "$settings" >"$settings.tmp"
+    mv "$settings.tmp" "$settings"
+fi
+
 for sock in "${XDG_RUNTIME_DIR:-/tmp/emacs$(id -u)}/emacs"/*; do
     [ -S "$sock" ] && emacsclient -s "$sock" -e "(modus-themes-toggle)" >/dev/null 2>&1 || true
 done
