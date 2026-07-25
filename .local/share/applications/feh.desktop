@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=feh
-Exec=feh %u
+Exec=feh --start-at %u
 Terminal=false
 Type=Application
 MimeType=image/jpeg;image/png;image/gif;image/bmp;image/webp;
