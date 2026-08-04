@@ -22,34 +22,13 @@ bindkey "\e[B" history-beginning-search-forward
 bindkey "\C-p" history-beginning-search-backward
 bindkey "\C-n" history-beginning-search-forward
 
-# vterm integration
-vterm_printf() {
-    if [ "${TERM%%-*}" = "screen" ]; then
-        printf "\eP\e]%s\007\e\\" "$1"
-    else
-        printf "\e]%s\e\\" "$1"
-    fi
-}
-vterm_cmd() {
-    local vterm_elisp
-    vterm_elisp=""
-    while [ $# -gt 0 ]; do
-        vterm_elisp="$vterm_elisp""$(printf '"%s" ' "$(printf "%s" "$1" | sed -e 's|\\|\\\\|g' -e 's|"|\\"|g')")"
-        shift
-    done
-    vterm_printf "51;E$vterm_elisp"
-}
-if [[ "$INSIDE_EMACS" = "vterm" ]]; then
-    alias man="vterm_cmd man"
+# ghostel integration
+if [[ "${INSIDE_EMACS%%,*}" = "ghostel" ]]; then
+    alias man="ghostel_cmd man"
     open() {
-        vterm_cmd find-file "$(realpath "${@:-.}")"
+        ghostel_cmd find-file "$(realpath "${@:-.}")"
     }
 fi
-vterm_prompt_end() {
-    vterm_printf "51;A$(whoami)@$(hostname):$(pwd)"
-}
-setopt PROMPT_SUBST
-PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
 
 alias cpc="xclip -selection clipboard"
 alias ls="ls --color=auto --group-directories-first"
