@@ -247,75 +247,6 @@ function.
 
 
 )
-(let* ((load-file-name "/home/david/.config/emacs/elpa/vterm-20260528.1919/vterm-autoloads.el")(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(autoload 'vterm-module-compile "vterm" "\
-Compile vterm-module." t)
-(autoload 'vterm--bookmark-handler "vterm" "\
-Handler to restore a vterm bookmark BMK.
-
-If a vterm buffer of the same name does not exist, the function will create a
-new vterm buffer of the name. It also checks the current directory and sets
-it to the bookmarked directory if needed.
-
-(fn BMK)")
-(autoload 'vterm-next-error-function "vterm" "\
-Advance to the next error message and visit the file where the error was.
-This is the value of `next-error-function' in Compilation
-buffers.  Prefix arg N says how many error messages to move
-forwards (or backwards, if negative).
-
-Optional argument RESET clears all the errors.
-
-(fn N &optional RESET)" t)
-(autoload 'vterm "vterm" "\
-Create an interactive Vterm buffer.
-Start a new Vterm session, or switch to an already active
-session.  Return the buffer selected (or created).
-
-With a nonnumeric prefix arg, create a new session.
-
-With a string prefix arg, create a new session with arg as buffer name.
-
-With a numeric prefix arg (as in `C-u 42 M-x vterm RET'), switch
-to the session with that number, or create it if it doesn't
-already exist.
-
-The buffer name used for Vterm sessions is determined by the
-value of `vterm-buffer-name'.
-
-(fn &optional ARG)" t)
-(autoload 'vterm-other-window "vterm" "\
-Create an interactive Vterm buffer in another window.
-Start a new Vterm session, or switch to an already active
-session.  Return the buffer selected (or created).
-
-With a nonnumeric prefix arg, create a new session.
-
-With a string prefix arg, create a new session with arg as buffer name.
-
-With a numeric prefix arg (as in `C-u 42 M-x vterm RET'), switch
-to the session with that number, or create it if it doesn't
-already exist.
-
-The buffer name used for Vterm sessions is determined by the
-value of `vterm-buffer-name'.
-
-(fn &optional ARG)" t)
-(register-definition-prefixes "vterm" '("vterm-"))
-
-
-(provide 'vterm-autoloads)
-
-
-)
 (let* ((load-file-name "/home/david/.config/emacs/elpa/vlf-1.7.2/vlf-autoloads.el")(load-true-file-name load-file-name))
 
 
@@ -6944,6 +6875,384 @@ and call `auth-source-forget+'." t)
 
 
 )
+(let* ((load-file-name "/home/david/.config/emacs/elpa/ghostel-20260803.1326/ghostel-autoloads.el")(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(autoload 'ghostel "ghostel" "\
+Start a new Ghostel terminal.  If the buffer already exists, switch to it.
+With a non-numeric prefix arg, create a new buffer.
+With a numeric prefix ARG, switch to the buffer with that number or
+create it if it doesn't exist yet.
+The name of the buffer is determined by the value of `ghostel-buffer-name'.
+Returns the buffer.
+
+(fn &optional ARG)" t)
+(autoload 'ghostel-project "ghostel" "\
+Start a new Ghostel terminal in the current project's root.
+The buffer name is prefixed with the project name; remote (TRAMP) projects also
+carry the remote host, to distinguish equally named local and remote projects.
+If a buffer already exists for this project, switch to it.
+Otherwise create a new Ghostel buffer.  ARG is passed through to
+`ghostel' and accepts the same universal argument conventions.
+To add this to `project-switch-commands':
+  (add-to-list \\='project-switch-commands \\='(ghostel-project \"Ghostel\") t)
+Returns the buffer.
+
+(fn &optional ARG)" t)
+(autoload 'ghostel-next "ghostel" "\
+Switch to the next ghostel buffer (sorted by name, wraps around)." t)
+(autoload 'ghostel-previous "ghostel" "\
+Switch to the previous ghostel buffer (sorted by name, wraps around)." t)
+(autoload 'ghostel-project-next "ghostel" "\
+Switch to the next ghostel buffer in the current project (wraps around).
+Project membership is determined by `ghostel-project-buffer-scope'." t)
+(autoload 'ghostel-project-previous "ghostel" "\
+Switch to the previous ghostel buffer in the current project (wraps around).
+Project membership is determined by `ghostel-project-buffer-scope'." t)
+(autoload 'ghostel-list-buffers "ghostel" "\
+Pick a ghostel buffer to switch to via `read-buffer'." t)
+(autoload 'ghostel-project-list-buffers "ghostel" "\
+Pick a ghostel buffer in the current project via `read-buffer'.
+Project membership is determined by `ghostel-project-buffer-scope'." t)
+(register-definition-prefixes "ghostel" '("ghostel-"))
+
+
+
+(autoload 'ghostel--bookmark-make-record "ghostel-bookmark" "\
+Return a bookmark record for the current ghostel buffer.
+Notes the working directory and buffer name.
+See `ghostel--bookmark-handler' for how they are restored.")
+(autoload 'ghostel--bookmark-handler "ghostel-bookmark" "\
+Restore the ghostel bookmark BMK.
+Reuse a live ghostel buffer of the bookmarked name, or create one with a shell
+started in the bookmarked directory.  When a reused buffer's directory differs
+and `ghostel-bookmark-check-dir' is non-nil, type a `cd' into the shell.
+
+(fn BMK)")
+(register-definition-prefixes "ghostel-bookmark" '("ghostel-bookmark-check-dir"))
+
+
+
+(autoload 'ghostel-comint-mode "ghostel-comint" "\
+Replace comint's ANSI handling with ghostel's libghostty-vt parser.
+
+Adds `ghostel-comint-filter' as the first entry of the buffer-local
+`comint-preoutput-filter-functions', and removes
+`ansi-color-process-output' from `comint-output-filter-functions' so the
+two don't double-process bytes.
+
+
+For performance, xterm-color recommends disabling font-locking in
+shell-mode buffers — the same advice applies here.  Add this to your
+`shell-mode-hook' if `compilation-shell-minor-mode' isn't required:
+
+  (font-lock-mode -1)
+  (setq-local font-lock-function (lambda (_) nil))
+
+This is a minor mode.  If called interactively, toggle the
+`Ghostel-Comint mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate the variable `ghostel-comint-mode'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(defvar ghostel-comint-global-mode nil "\
+Non-nil if Ghostel-Comint-Global mode is enabled.
+See the `ghostel-comint-global-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `ghostel-comint-global-mode'.")
+(custom-autoload 'ghostel-comint-global-mode "ghostel-comint" nil)
+(autoload 'ghostel-comint-global-mode "ghostel-comint" "\
+Enable `ghostel-comint-mode' in every comint-derived buffer.
+
+Adds `ghostel-comint-mode' to `comint-mode-hook' and turns it on in
+all existing comint buffers.
+
+This is a global minor mode.  If called interactively, toggle the
+`Ghostel-Comint-Global mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='ghostel-comint-global-mode)'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "ghostel-comint" '("ghostel-comint-"))
+
+
+
+(autoload 'ghostel-compile "ghostel-compile" "\
+Run COMMAND in a ghostel terminal with compilation integration.
+
+Like \\[compile], but uses a ghostel buffer so programs that require
+a real TTY work correctly.  The buffer gets a compilation-mode-like
+header and footer, and when the command finishes the major mode is
+switched to `ghostel-compile-finished-major-mode' (by default
+`ghostel-compile-view-mode', derived from `compilation-mode').
+Error locations become available through `next-error'.
+
+COMMAND is passed verbatim to `shell-file-name -c', so multi-line
+scripts work exactly as in \\[shell-command].  No shell-integration
+setup is required — the process sentinel reports the real exit
+status.
+
+If optional second arg INTERACTIVE is non-nil the buffer forwards
+keystrokes to the terminal during the run.
+Otherwise (the default) the buffer behaves like a `compilation-mode'
+buffer with `g' reruns, `n'/`p' walk errors, etc.
+
+Interactively, prompts for the command if option
+`compilation-read-command' is non-nil, otherwise uses
+`compile-command'.  With prefix arg, always prompts.
+
+Output always scrolls as it arrives (equivalent to
+`compilation-scroll-output' being non-nil).  `compilation-ask-about-save'
+and `compilation-auto-jump-to-first-error' are honoured.  The command
+default and history are shared with \\[compile] via `compile-command'
+and `compile-history'.
+
+(fn COMMAND &optional INTERACTIVE)" t)
+(defvar ghostel-compile-global-mode nil "\
+Non-nil if Ghostel-Compile-Global mode is enabled.
+See the `ghostel-compile-global-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `ghostel-compile-global-mode'.")
+(custom-autoload 'ghostel-compile-global-mode "ghostel-compile" nil)
+(autoload 'ghostel-compile-global-mode "ghostel-compile" "\
+Global minor mode: route all `compile'-style calls through ghostel.
+
+When enabled, advises `compilation-start' so that \\[compile],
+\\[recompile], \\[project-compile], and every other caller that
+goes through `compilation-start' runs in a ghostel terminal —
+giving you a real TTY for progress bars, colours, and curses tools
+without having to switch commands.
+
+The default routing is read-only: a plain \\[compile] (or any caller
+passing `MODE=nil' / `MODE=compilation-mode') yields a read-only buffer
+that behaves like a `compilation-mode' buffer.  Callers asking for the
+comint variant (\\[universal-argument] \\[compile], i.e. `MODE=t') are
+routed to an interactive ghostel terminal throughout the run, so
+programs like `htop' or test prompts work - instead of falling
+through to `comint-mode'.  Note: this means `compilation-shell-minor-mode'
+is *not* enabled in the interactive variant - its keymap would shadow
+`ghostel-mode's input handlers and break key forwarding to the PTY.
+Custom `compilation-mode' subclasses yield a read-only buffer that
+finalizes into the subclass.
+
+Modes in `ghostel-compile-global-mode-excluded-modes' (by default,
+`grep-mode') still use the stock implementation, since their output
+parsers and window-management conventions don't fit a live TTY.
+
+This is a global minor mode.  If called interactively, toggle the
+`Ghostel-Compile-Global mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='ghostel-compile-global-mode)'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "ghostel-compile" '("ghostel-"))
+
+
+
+(autoload 'ghostel-debug-password-events-show "ghostel-debug" "\
+Display recent password-prompt rising edges.
+Shows which detection arm fired, the cursor row text at the time,
+and whether the buffer was in a remote shell.  Use this to diagnose
+spurious `read-passwd' prompts." t)
+(autoload 'ghostel-debug-start "ghostel-debug" "\
+Start logging ghostel events to *ghostel-debug* buffer.
+Logs filter calls, key sends, resize events, redraw decisions
+(including DEC 2026 skip/force), and window scroll state." t)
+(autoload 'ghostel-debug-glyph-at-point "ghostel-debug" "\
+Display text, font, and shaped glyph diagnostics for the char at point.
+The report mirrors the glyph lookup used by the native renderer: it
+shows text properties at point, `query-font' metrics for the selected
+font, and the shaped glyph vector metrics for the glyph string Emacs
+will render." t)
+(autoload 'ghostel-debug-info "ghostel-debug" "\
+Display diagnostic info about the ghostel environment.
+Collects Emacs version, system info, native module state, frame and
+window geometry, terminal state, process info, and any non-default
+ghostel settings into *ghostel-debug* for pasting into bug reports.
+
+Works in any buffer: buffer, window, and rendering sections are
+always reported for the invoking buffer; process/spawn/terminal
+sections need a live ghostel buffer.  In a `ghostel-compile' buffer
+(running or finished) a Compile run section reports the command,
+timings, exit status, and error-parse state.
+
+In a ghostel buffer with a TRAMP `default-directory', also prints a
+TRAMP section (version, `tramp-terminal-type', direct-async path,
+local-vs-toplevel TERM stripping diagnostics).
+
+When the buffer was started via \\[ghostel-debug-ghostel], also prints
+the spawn capture (wrapper script, `process-environment' as sent,
+first PTY output bytes, first keystrokes).
+
+With prefix arg WITH-REMOTE-PROBES, runs live probes against the
+remote (`infocmp', terminfo path checks, `/bin/sh' identity, login
+shell) - adds latency and requires a healthy TRAMP connection, so
+omit it when the connection itself is the suspected fault.
+
+(fn &optional WITH-REMOTE-PROBES)" t)
+(autoload 'ghostel-debug-ghostel "ghostel-debug" "\
+Like `ghostel', but capture spawn diagnostics into the new buffer.
+
+The capture includes the wrapper script, process environment, phase
+timestamps, early PTY output, and the first keystrokes typed.
+
+ARG is forwarded to `ghostel' (same prefix-argument conventions).
+View the capture with \\[ghostel-debug-info].
+
+(fn &optional ARG)" t)
+(autoload 'ghostel-debug-keypress "ghostel-debug" "\
+Capture diagnostics for the next keystroke in this ghostel buffer.
+After you press one key, a report appears in *ghostel-debug-keypress*
+suitable for pasting into a GitHub issue.
+
+Captures the raw event, resolved key binding, terminal bytes emitted
+during the command, terminal mode flags, and process state." t)
+(register-definition-prefixes "ghostel-debug" '("ghostel-"))
+
+
+
+(autoload 'eshell/ghostel "ghostel-eshell" "\
+Run ARGS as a visual command in a dedicated ghostel buffer.
+This is an eshell built-in; type `ghostel PROGRAM ...' at the
+eshell prompt to launch any program in a ghostel terminal buffer
+without adding it to `eshell-visual-commands'.  Dispatches through
+`eshell-exec-visual', so when `ghostel-eshell-visual-command-mode'
+is enabled the program runs under ghostel; otherwise it falls
+back to eshell's default `term-mode' visual handling.
+
+(fn &rest ARGS)")
+(defvar ghostel-eshell-visual-command-mode nil "\
+Non-nil if Ghostel-Eshell-Visual-Command mode is enabled.
+See the `ghostel-eshell-visual-command-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `ghostel-eshell-visual-command-mode'.")
+(custom-autoload 'ghostel-eshell-visual-command-mode "ghostel-eshell" nil)
+(autoload 'ghostel-eshell-visual-command-mode "ghostel-eshell" "\
+Run Eshell visual commands (vim, htop, less, ...) in ghostel buffers.
+
+When enabled, `eshell-exec-visual' is overridden to launch the
+program in a dedicated ghostel terminal buffer.  When the program
+exits, the buffer stays on `[Process exited]' so any remaining
+output is visible; press `q' to dismiss it.  Set
+`eshell-destroy-buffer-when-process-dies' to non-nil to kill the
+buffer automatically on exit instead.
+
+This is a global minor mode.  If called interactively, toggle the
+`Ghostel-Eshell-Visual-Command mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='ghostel-eshell-visual-command-mode)'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "ghostel-eshell" '("ghostel-eshell-"))
+
+
+
+(register-definition-prefixes "ghostel-faces" '("ghostel-"))
+
+
+
+(autoload 'ghostel-ime-mode "ghostel-ime" "\
+Toggle Emacs Lisp input-method integration in this ghostel buffer.
+
+When enabled, ghostel forwards committed text from Lisp input methods
+that insert directly into the buffer, and defers redraws and insert
+forwarding while a composition is in flight.  Enable it for any Emacs
+Lisp input method (Hangul, Quail-based Japanese/Chinese, ...).  A
+typical setup is:
+
+  (add-hook ='ghostel-mode-hook #='ghostel-ime-mode)
+
+This is a minor mode.  If called interactively, toggle the `Ghostel-Ime
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate the variable `ghostel-ime-mode'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "ghostel-ime" '("ghostel-ime-"))
+
+
+
+(register-definition-prefixes "ghostel-kitty" '("ghostel-"))
+
+
+
+(register-definition-prefixes "ghostel-line-mode" '("ghostel-"))
+
+
+
+(register-definition-prefixes "ghostel-links" '("ghostel-"))
+
+
+
+(register-definition-prefixes "ghostel-module-install" '("ghostel-"))
+
+
+
+(register-definition-prefixes "ghostel-prompt" '("ghostel-"))
+
+
+(provide 'ghostel-autoloads)
+
+
+)
 (let* ((load-file-name "/home/david/.config/emacs/elpa/emacsql-20260601.1722/emacsql-autoloads.el")(load-true-file-name load-file-name))
 
 
@@ -10956,19 +11265,19 @@ Limit searched to BOUND.
 (setq package-activated-list
       (delete-dups
        (append
-        '(yaml-mode yaml compat cond-let with-editor websocket web-server vterm
-                    vlf vertico treesit-auto treepy transient tomelr llama
+        '(yaml-mode yaml compat cond-let with-editor websocket web-server vlf
+                    vertico treesit-auto treepy transient tomelr llama
                     magit-section taxy taxy-magit-section tablist svg-lib
                     sudo-edit s dash f shrink-path plz deflate plantuml-mode
                     persist pdf-tools ox-hugo magit org orgit org-caldav
                     orderless olivetti nyan-mode nerd-icons nerd-icons-dired
                     nerd-icons-corfu nerd-icons-completion markdown-mode
                     markdown-preview-mode marginalia ledger-mode gptel git-link
-                    ghub emacsql closql forge expand-region erc-hl-nicks
-                    engine-mode ement embark consult embark-consult elfeed
-                    elfeed-org doom-modeline dired-hacks-utils dired-subtree
-                    dired-narrow dape corfu chronometer cdlatex cape bbdb
-                    bbdb-vcard auctex)
+                    ghub ghostel emacsql closql forge expand-region
+                    erc-hl-nicks engine-mode ement embark consult
+                    embark-consult elfeed elfeed-org doom-modeline
+                    dired-hacks-utils dired-subtree dired-narrow dape corfu
+                    chronometer cdlatex cape bbdb bbdb-vcard auctex)
         package-activated-list)))
 (progn
   (require 'info) (info-initialize)

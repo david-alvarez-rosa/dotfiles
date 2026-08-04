@@ -17,7 +17,7 @@
     ;; Magit, with Forge and its database
     dash transient with-editor magit forge
     ispell flyspell
-    vterm dired mu4e latex tramp pdf-tools elfeed bbdb vlf-setup)
+    ghostel dired mu4e latex tramp pdf-tools elfeed bbdb vlf-setup)
   "Libraries to preload while Emacs is idle, in order.")
 
 (defun dalvrosa/preload-next ()
@@ -491,80 +491,60 @@
               ("C-c ! p" . flymake-goto-prev-error)
               ("C-c ! l" . flymake-show-buffer-diagnostics)))
 
-(defun dalvrosa/vterm-yank-output ()
-  "Yank previous command output from vterm."
+(defun dalvrosa/ghostel-yank-output ()
+  "Copy the output of the last command to the kill ring."
   (interactive)
-  (progn
-    (vterm-copy-mode 1)
-    (previous-line 1)
-    (vterm-beginning-of-line)
-    (set-mark-command nil)
-    (vterm-previous-prompt 1)
-    (kill-ring-save (region-beginning) (region-end))
-    (vterm-copy-mode -1)))
+  (let* ((input-end (or (previous-single-property-change (point-max) 'ghostel-input)
+                        (user-error "No command found")))
+         (start (save-excursion (goto-char input-end) (forward-line 1) (point)))
+         (end (or (text-property-any start (point-max) 'ghostel-prompt t) (point-max)))
+         (output (string-trim-right (buffer-substring-no-properties start end))))
+    (if (string-empty-p output)
+        (user-error "Last command produced no output")
+      (kill-new output)
+      (message "Copied last command output"))))
 
-(use-package vterm
+(use-package ghostel
+  :init
+  (setq ghostel-module-directory (expand-file-name "ghostel/" user-emacs-directory))
   :config
-  (add-to-list 'vterm-eval-cmds '("man" man))
-  (setq vterm-max-scrollback 10000)
-  (setq vterm-timer-delay 0.02)
-  (add-hook 'vterm-mode-hook
+  (setq ghostel-buffer-name-function nil)
+  (setq ghostel-query-before-killing nil)
+  (setq ghostel-max-scrollback (* 10 1024 1024))
+  (add-to-list 'ghostel-eval-cmds '("man" man))
+  (add-hook 'ghostel-mode-hook
             (lambda () (setq-local global-hl-line-mode nil)))
-  :bind (("C-c t" . vterm)
-         :map vterm-copy-mode-map
-         ("M->" . #'vterm-copy-mode)
-         :map vterm-mode-map
-         ("C-q" . vterm-send-next-key)
-         ("C-M-p" . (lambda () (interactive) (vterm-copy-mode 1) (previous-line)))
-         ("M-w" . dalvrosa/vterm-yank-output)))
+  :bind (("C-c t" . ghostel)
+         :map ghostel-semi-char-mode-map
+         ("C-q" . ghostel-send-next-key)
+         ("M-w" . dalvrosa/ghostel-yank-output)))
 
-(setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+(defvar-local dalvrosa/ghostel-claude-started nil
+  "Non-nil once Claude Code has been launched in this buffer.")
 
-(add-hook 'modus-themes-post-load-hook
-          (lambda ()
-            (dolist (buf (buffer-list))
-              (with-current-buffer buf
-                (let ((win (get-buffer-window buf t))
-                      (inhibit-read-only t))
-                  (when (and win (derived-mode-p 'vterm-mode) (not vterm-copy-mode))
-                    (vterm--set-size vterm--term (1- (window-body-height win))
-                                     (window-body-width win))
-                    (vterm--window-adjust-process-window-size
-                     vterm--process (list win))))))))
-
-(defun dalvrosa/project-vterm (&optional claude new)
-  "Open a vterm in the current project root.
-With NEW (prefix arg), always create a new buffer.
-With CLAUDE, use the \"vterm-claude\" base name."
-  (interactive (list nil current-prefix-arg))
-  (require 'vterm)
-  (let* ((default-directory (project-root (project-current t)))
-         (base (if claude "claude" "vterm"))
-         (name (project-prefixed-buffer-name base))
-         (buf  (and (not new) (get-buffer name))))
-    (if buf
-        (pop-to-buffer buf)
-      (let ((vbuf (vterm (if new (generate-new-buffer-name name) name))))
-        (when claude
-          (with-current-buffer vbuf
-            (vterm-send-string "claude")
-            (vterm-send-return)))
-        vbuf))))
-
-(defun dalvrosa/project-vterm-claude (&optional new)
-  (interactive (list current-prefix-arg))
-  (dalvrosa/project-vterm t new))
+(defun dalvrosa/ghostel-project-claude (&optional arg)
+  "Open a ghostel terminal running Claude Code in the project root.
+ARG is passed through to `ghostel-project'."
+  (interactive "P")
+  (require 'ghostel)
+  (let* ((ghostel-buffer-name "*claude*")
+         (buffer (ghostel-project arg)))
+    (with-current-buffer buffer
+      (unless dalvrosa/ghostel-claude-started
+        (setq dalvrosa/ghostel-claude-started t)
+        (ghostel-send-string "claude\n")))
+    buffer))
 
 (with-eval-after-load 'project
   (add-to-list 'project-switch-commands '(consult-project-buffer "Find buffer") t)
   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
-  (add-to-list 'project-switch-commands '(dalvrosa/project-vterm "Vterm") t)
-  (add-to-list 'project-switch-commands '(dalvrosa/project-vterm-claude "Claude") t)
+  (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
+  (add-to-list 'project-switch-commands '(dalvrosa/ghostel-project-claude "Claude") t)
   (keymap-set project-prefix-map "b" 'consult-project-buffer)
   (keymap-set project-prefix-map "g" 'magit-project-status)
   (keymap-set project-prefix-map "s" 'project-find-regexp)
-  (keymap-set project-prefix-map "h" 'dalvrosa/project-vterm-claude)
-  (keymap-set project-prefix-map "v" 'dalvrosa/project-vterm))
+  (keymap-set project-prefix-map "h" 'dalvrosa/ghostel-project-claude)
+  (keymap-set project-prefix-map "v" 'ghostel-project))
 
 (use-package eglot
   :ensure nil
