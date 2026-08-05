@@ -508,6 +508,7 @@
   :init
   (setq ghostel-module-directory (expand-file-name "ghostel/" user-emacs-directory))
   :config
+  (setopt ghostel-keymap-exceptions (cons "M-o" ghostel-keymap-exceptions))
   (setq ghostel-buffer-name-function nil)
   (setq ghostel-query-before-killing nil)
   (setq ghostel-max-scrollback (* 10 1024 1024))
@@ -517,7 +518,11 @@
   :bind (("C-c t" . ghostel)
          :map ghostel-semi-char-mode-map
          ("C-q" . ghostel-send-next-key)
-         ("M-w" . dalvrosa/ghostel-yank-output)))
+         ("C-M-p" . ghostel-copy-mode)
+         ("M-w" . dalvrosa/ghostel-yank-output)
+         :map ghostel-readonly-mode-map
+         ("M-w" . (lambda () (interactive)
+                    (let (ghostel-readonly-fast-exit) (ghostel-readonly-copy))))))
 
 (defvar-local dalvrosa/ghostel-claude-started nil
   "Non-nil once Claude Code has been launched in this buffer.")

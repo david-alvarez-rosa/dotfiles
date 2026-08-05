@@ -961,6 +961,7 @@ renaming from the terminal title is off to keep project buffer names.
     :init
     (setq ghostel-module-directory (expand-file-name "ghostel/" user-emacs-directory))
     :config
+    (setopt ghostel-keymap-exceptions (cons "M-o" ghostel-keymap-exceptions))
     (setq ghostel-buffer-name-function nil)
     (setq ghostel-query-before-killing nil)
     (setq ghostel-max-scrollback (* 10 1024 1024))
@@ -970,7 +971,11 @@ renaming from the terminal title is off to keep project buffer names.
     :bind (("C-c t" . ghostel)
            :map ghostel-semi-char-mode-map
            ("C-q" . ghostel-send-next-key)
-           ("M-w" . dalvrosa/ghostel-yank-output)))
+           ("C-M-p" . ghostel-copy-mode)
+           ("M-w" . dalvrosa/ghostel-yank-output)
+           :map ghostel-readonly-mode-map
+           ("M-w" . (lambda () (interactive)
+                      (let (ghostel-readonly-fast-exit) (ghostel-readonly-copy))))))
 #+end_src
 
 Project integration: =C-x p v= opens a terminal at the project root and
