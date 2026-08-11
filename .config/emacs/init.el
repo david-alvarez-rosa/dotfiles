@@ -395,8 +395,10 @@
          ("RET" . dalvrosa/gptel-send)))
   :config
   (setq gptel-backend (gptel-make-anthropic "Claude" :stream t :key gptel-api-key))
-  (setq gptel-model 'claude-sonnet-4-6)
+  (setq gptel-model 'claude-sonnet-5)
   (setq gptel-default-mode 'org-mode)
+  (setq gptel-system-prompt
+        "You are a large language model living in Emacs.  Answer directly and concisely: no preamble, no summary, no unrequested caveats or alternatives.")
   :hook ((gptel-mode . visual-line-mode)
          (gptel-mode . (lambda () (flyspell-mode -1)))))
 
