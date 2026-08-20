@@ -3,8 +3,7 @@ Description=Periodic mail sync (backstop for missed IDLE notifications)
 
 [Timer]
 OnBootSec=2min
-OnUnitActiveSec=30min
-Persistent=true
+OnUnitActiveSec=5min
 
 [Install]
 WantedBy=timers.target

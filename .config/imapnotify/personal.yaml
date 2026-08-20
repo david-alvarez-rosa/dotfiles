@@ -13,4 +13,3 @@ boxes:
   - Sent
   - Trash
 onNewMail: "/home/david/.local/bin/mailsync personal"
-onNewMailPost: "emacsclient -e '(when (and (fboundp (quote mu4e-running-p)) (mu4e-running-p) (not (bound-and-true-p mu4e--server-indexing))) (mu4e-update-index))' >/dev/null 2>&1 || true"

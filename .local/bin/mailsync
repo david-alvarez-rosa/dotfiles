@@ -2,7 +2,9 @@
 
 sync_one() { flock "${XDG_RUNTIME_DIR:-/tmp}/mbsync-$1.lock" mbsync -c ~/.config/isync/mbsyncrc "$1"; }
 
-case "$1" in
+case "${1:-}" in
 	"") sync_one personal ;;
 	*)  sync_one "$1" ;;
 esac
+
+emacsclient -e '(when (and (fboundp (quote mu4e-running-p)) (mu4e-running-p) (not (bound-and-true-p mu4e--server-indexing))) (mu4e-update-index))' >/dev/null 2>&1 || true
