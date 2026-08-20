@@ -953,8 +953,6 @@ ARG is passed through to `ghostel-project'."
 (setq mu4e-hide-index-messages t)
 (setq mu4e-modeline-support nil)
 
-(setq smtpmail-queue-dir "~/.local/share/mail/Queue/cur")
-
 (use-package eudc
   :ensure nil
   :after (ldap bbdb org-msg)

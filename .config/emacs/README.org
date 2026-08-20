@@ -1722,14 +1722,6 @@ headers buffer after indexing, without pulling it into the current frame.
   (setq mu4e-modeline-support nil)
 #+end_src
 
-** Queued Email
-
-Queue outgoing mail to send later (useful offline); toggle with =m=.
-
-#+begin_src elisp
-  (setq smtpmail-queue-dir "~/.local/share/mail/Queue/cur")
-#+end_src
-
 ** Directory Client
 
 EUDC is a common interface to directory servers, here backed by BBDB.
