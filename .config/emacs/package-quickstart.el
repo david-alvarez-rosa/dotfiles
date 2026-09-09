@@ -7436,6 +7436,48 @@ disabled.
 
 
 )
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/gcmh-20201116.2251/gcmh-autoloads.el"))(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(defvar gcmh-mode nil
+"Non-nil if GCMH mode is enabled.
+See the `gcmh-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `gcmh-mode'.")
+(custom-autoload 'gcmh-mode "gcmh" nil)
+(autoload 'gcmh-mode "gcmh"
+"Minor mode to tweak Garbage Collection strategy.
+
+This is a global minor mode.  If called interactively, toggle the `GCMH
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='gcmh-mode)'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "gcmh" '("gcmh-"))
+
+
+(provide 'gcmh-autoloads)
+
+
+)
 (let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/emacsql-20260601.1722/emacsql-autoloads.el"))(load-true-file-name load-file-name))
 
 
@@ -11482,9 +11524,9 @@ Limit searched to BOUND.
                     ox-hugo magit org orgit org-caldav orderless olivetti
                     nyan-mode nerd-icons nerd-icons-dired nerd-icons-corfu
                     nerd-icons-completion markdown-mode markdown-preview-mode
-                    marginalia ledger-mode gptel git-link ghub ghostel emacsql
-                    closql forge expand-region erc-hl-nicks engine-mode ement
-                    embark consult embark-consult elfeed elfeed-org
+                    marginalia ledger-mode gptel git-link ghub ghostel gcmh
+                    emacsql closql forge expand-region erc-hl-nicks engine-mode
+                    ement embark consult embark-consult elfeed elfeed-org
                     doom-modeline dired-hacks-utils dired-subtree dired-narrow
                     dape corfu chronometer cdlatex cape bbdb bbdb-vcard auctex)
         package-activated-list)))

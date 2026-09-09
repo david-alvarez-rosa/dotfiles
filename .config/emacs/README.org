@@ -69,15 +69,20 @@ packages.
   (setq native-comp-async-report-warnings-errors nil)
 #+end_src
 
-Keep garbage collection infrequent during normal use too, lowering the
-threshold back after init.
+Keep garbage collection out of the way during normal use: =gcmh= holds
+the threshold high while typing and collects once Emacs goes idle, so
+the pause never lands mid-keystroke.
 
 #+begin_src elisp
   ;;; -*- lexical-binding: t; -*-
 
-  ;; Lower threshold to 256MB (default is 800kB)
+  ;; Collect garbage when idle, so the ~170ms pause never lands mid-keystroke
   (add-hook 'emacs-startup-hook
-            (lambda () (setq gc-cons-threshold (* 256 1024 1024))))
+            (lambda ()
+              (require 'gcmh)
+              (setq gcmh-idle-delay 'auto
+                    gcmh-high-cons-threshold (* 256 1024 1024))
+              (gcmh-mode 1)))
 
   ;; Single VC backend inscreases booting speed
   (setq vc-handled-backends '(Git))

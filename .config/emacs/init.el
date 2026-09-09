@@ -1,8 +1,12 @@
 ;;; -*- lexical-binding: t; -*-
 
-;; Lower threshold to 256MB (default is 800kB)
+;; Collect garbage when idle, so the ~170ms pause never lands mid-keystroke
 (add-hook 'emacs-startup-hook
-          (lambda () (setq gc-cons-threshold (* 256 1024 1024))))
+          (lambda ()
+            (require 'gcmh)
+            (setq gcmh-idle-delay 'auto
+                  gcmh-high-cons-threshold (* 256 1024 1024))
+            (gcmh-mode 1)))
 
 ;; Single VC backend inscreases booting speed
 (setq vc-handled-backends '(Git))
