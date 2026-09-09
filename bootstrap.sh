@@ -110,7 +110,7 @@ if [ -f ~/gpg-key.asc ]; then
 fi
 
 sudo systemctl enable NetworkManager.service tlp.service
-systemctl --user enable keepassxc.service mbsync.timer commit-docs.timer imapnotify@personal.service imapnotify@spam.service
+systemctl --user enable keepassxc.service mbsync.timer commit-docs.timer imapnotify@personal.service imapnotify@spam.service systemd-tmpfiles-setup.service
 
 mkdir -p ~/.local/share/mail
 mu init --maildir=~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=davids@alvarezrosa.com
