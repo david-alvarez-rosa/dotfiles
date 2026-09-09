@@ -1874,6 +1874,17 @@ pre-existing =Invitations= heading in =Calendar.org=.
     (gnus-icalendar-org-setup))
 #+end_src
 
+Work around a mu4e bug: =mu4e--view-add-mime-icons= calls
+=mm-handle-filename= on the =gnus-data= of every button, but for the
+iCalendar reply buttons that is =(handle status event)=, not a MIME
+handle.  Something without a buffer has no filename.
+
+#+begin_src elisp
+  (with-eval-after-load 'mm-decode
+    (advice-add 'mm-handle-filename :before-while
+                (lambda (handle) (bufferp (car-safe handle)))))
+#+end_src
+
 * Web Feed Reader
 
 Elfeed is a web feed reader for Atom and RSS, bound to =C-c f=.

@@ -1051,6 +1051,10 @@ ARG is passed through to `ghostel-project'."
   (setq gnus-icalendar-org-capture-headline '("Invitations"))
   (gnus-icalendar-org-setup))
 
+(with-eval-after-load 'mm-decode
+  (advice-add 'mm-handle-filename :before-while
+              (lambda (handle) (bufferp (car-safe handle)))))
+
 (use-package elfeed
   :bind (("C-c f" . 'elfeed)
          :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)
