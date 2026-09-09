@@ -45,9 +45,13 @@ Emacs loads =early-init.el= before the package system and initial frame,
 making it the place for startup optimizations: defer garbage collection,
 skip special file handlers while loading, disable UI elements before
 they are drawn and enable the package quickstart (a concatenated
-autoloads file, refreshed on install/remove).
+autoloads file, refreshed on install/remove) and mute
+native-compilation warnings, which only ever come from third-party
+packages.
 
 #+begin_src elisp :tangle early-init.el
+  ;;; -*- lexical-binding: t; -*-
+
   (setq gc-cons-threshold most-positive-fixnum)
 
   (defvar dalvrosa/file-name-handler-alist file-name-handler-alist)
@@ -62,12 +66,15 @@ autoloads file, refreshed on install/remove).
   (setq frame-inhibit-implied-resize t)
 
   (setq package-quickstart t)
+  (setq native-comp-async-report-warnings-errors nil)
 #+end_src
 
 Keep garbage collection infrequent during normal use too, lowering the
 threshold back after init.
 
 #+begin_src elisp
+  ;;; -*- lexical-binding: t; -*-
+
   ;; Lower threshold to 256MB (default is 800kB)
   (add-hook 'emacs-startup-hook
             (lambda () (setq gc-cons-threshold (* 256 1024 1024))))
@@ -364,7 +371,7 @@ Emacs windows and i3 windows (see
       ((rx bos "move")
        (dalvrosa/emacs-i3-move-window
         (intern (elt (split-string command) 1))))
-      (- (dalvrosa/i3-msg command))))
+      (_ (dalvrosa/i3-msg command))))
 #+end_src
 
 ** Auto Fill Mode
@@ -404,8 +411,9 @@ Emacs).
       (with-temp-buffer
         (funcall mode)
         (yank)
-        (dalvrosa/unfill-paragraph (mark-whole-buffer))
-        (mark-whole-buffer)
+        (let ((fill-column (point-max))
+              (emacs-lisp-docstring-fill-column t))
+          (fill-region (point-min) (point-max)))
         (kill-region (point-min) (point-max)))))
   (define-key global-map (kbd "M-W") 'dalvrosa/unfill-paragraph-and-kill)
 #+end_src
@@ -759,8 +767,10 @@ client, available uniformly in any buffer (=C-c h=).
            ("RET" . dalvrosa/gptel-send)))
     :config
     (setq gptel-backend (gptel-make-anthropic "Claude" :stream t :key gptel-api-key))
-    (setq gptel-model 'claude-sonnet-4-6)
+    (setq gptel-model 'claude-sonnet-5)
     (setq gptel-default-mode 'org-mode)
+    (setq gptel-system-prompt
+          "You are a large language model living in Emacs.  Answer directly and concisely: no preamble, no summary, no unrequested caveats or alternatives.")
     :hook ((gptel-mode . visual-line-mode)
            (gptel-mode . (lambda () (flyspell-mode -1)))))
 #+end_src
@@ -1870,7 +1880,7 @@ Elfeed is a web feed reader for Atom and RSS, bound to =C-c f=.
                                         ("i" . 'dalvrosa/elfeed-ignore)))
     :init (setq elfeed-search-filter "@1-week-ago -no ")
     :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
-                  elfeed-sort-order 'ascending
+                  elfeed-search-sort-order 'ascending
                   elfeed-search-title-max-width 100))
 #+end_src
 
@@ -1890,7 +1900,7 @@ Open video entries with mpv by pressing =v=.
     (interactive)
     (let ((url (elfeed-entry-link (elfeed-search-selected :single))))
       (start-process "elfeed-mpv" nil "mpv" "--ytdl-format=[height<=720]" url))
-    (elfeed-search-untag-all-unread))
+    (elfeed-search-untag-unread))
 #+end_src
 
 Ignore the current entry by tagging it =no= (excluded by the default

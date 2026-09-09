@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;; Lower threshold to 256MB (default is 800kB)
 (add-hook 'emacs-startup-hook
           (lambda () (setq gc-cons-threshold (* 256 1024 1024))))
@@ -169,7 +171,7 @@
     ((rx bos "move")
      (dalvrosa/emacs-i3-move-window
       (intern (elt (split-string command) 1))))
-    (- (dalvrosa/i3-msg command))))
+    (_ (dalvrosa/i3-msg command))))
 
 (setq-default fill-column 79)
 (add-hook 'text-mode-hook
@@ -194,8 +196,9 @@
     (with-temp-buffer
       (funcall mode)
       (yank)
-      (dalvrosa/unfill-paragraph (mark-whole-buffer))
-      (mark-whole-buffer)
+      (let ((fill-column (point-max))
+            (emacs-lisp-docstring-fill-column t))
+        (fill-region (point-min) (point-max)))
       (kill-region (point-min) (point-max)))))
 (define-key global-map (kbd "M-W") 'dalvrosa/unfill-paragraph-and-kill)
 
@@ -1050,7 +1053,7 @@ ARG is passed through to `ghostel-project'."
                                       ("i" . 'dalvrosa/elfeed-ignore)))
   :init (setq elfeed-search-filter "@1-week-ago -no ")
   :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
-                elfeed-sort-order 'ascending
+                elfeed-search-sort-order 'ascending
                 elfeed-search-title-max-width 100))
 
 (use-package elfeed-org
@@ -1062,7 +1065,7 @@ ARG is passed through to `ghostel-project'."
   (interactive)
   (let ((url (elfeed-entry-link (elfeed-search-selected :single))))
     (start-process "elfeed-mpv" nil "mpv" "--ytdl-format=[height<=720]" url))
-  (elfeed-search-untag-all-unread))
+  (elfeed-search-untag-unread))
 
 (defun dalvrosa/elfeed-ignore ()
   (interactive)

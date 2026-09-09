@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (setq gc-cons-threshold most-positive-fixnum)
 
 (defvar dalvrosa/file-name-handler-alist file-name-handler-alist)
@@ -12,3 +14,4 @@
 (setq frame-inhibit-implied-resize t)
 
 (setq package-quickstart t)
+(setq native-comp-async-report-warnings-errors nil)
