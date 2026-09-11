@@ -533,21 +533,18 @@
          ("M-w" . (lambda () (interactive)
                     (let (ghostel-readonly-fast-exit) (ghostel-readonly-copy))))))
 
-(defvar-local dalvrosa/ghostel-claude-started nil
-  "Non-nil once Claude Code has been launched in this buffer.")
-
-(defun dalvrosa/ghostel-project-claude (&optional arg)
-  "Open a ghostel terminal running Claude Code in the project root.
-ARG is passed through to `ghostel-project'."
+(defun dalvrosa/ghostel-project-claude (&optional new)
+  "Switch to this project's Claude Code session, starting one if needed.
+With prefix arg NEW, start an additional session instead."
   (interactive "P")
   (require 'ghostel)
-  (let* ((ghostel-buffer-name "*claude*")
-         (buffer (ghostel-project arg)))
-    (with-current-buffer buffer
-      (unless dalvrosa/ghostel-claude-started
-        (setq dalvrosa/ghostel-claude-started t)
-        (ghostel-send-string "claude\n")))
-    buffer))
+  (let* ((default-directory (project-root (project-current t)))
+         (name (project-prefixed-buffer-name "claude"))
+         (buffer (and (not new) (get-buffer name)))
+         (ghostel-shell (list "claude" "--dangerously-skip-permissions")))
+    (if buffer
+        (pop-to-buffer-same-window buffer)
+      (ghostel-create name '((display-buffer-same-window))))))
 
 (with-eval-after-load 'project
   (add-to-list 'project-switch-commands '(consult-project-buffer "Find buffer") t)
@@ -558,6 +555,7 @@ ARG is passed through to `ghostel-project'."
   (keymap-set project-prefix-map "g" 'magit-project-status)
   (keymap-set project-prefix-map "s" 'project-find-regexp)
   (keymap-set project-prefix-map "h" 'dalvrosa/ghostel-project-claude)
+  (keymap-set project-prefix-map "j" 'ghostel-project-list-buffers)
   (keymap-set project-prefix-map "v" 'ghostel-project))
 
 (use-package eglot
