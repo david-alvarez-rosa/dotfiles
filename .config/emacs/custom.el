@@ -9,12 +9,11 @@
                   dape dired-narrow dired-subtree doom-modeline elfeed
                   elfeed-org embark embark-consult ement engine-mode
                   erc-hl-nicks expand-region forge ghostel git-link gptel
-                  ledger-mode
-                  magit marginalia markdown-mode markdown-preview-mode
-                  nerd-icons nerd-icons-completion nerd-icons-corfu
-                  nerd-icons-dired nyan-mode olivetti orderless org-caldav
-                  orgit ox-hugo pdf-tools plantuml-mode sudo-edit treesit-auto
-                  vertico vlf yaml-mode))
+                  ledger-mode magit marginalia markdown-mode
+                  markdown-preview-mode nerd-icons nerd-icons-completion
+                  nerd-icons-corfu nerd-icons-dired nyan-mode olivetti
+                  orderless org-caldav orgit orgit-forge ox-hugo pdf-tools
+                  plantuml-mode sudo-edit treesit-auto vertico vlf yaml-mode))
  '(safe-local-variable-values
    '((project-current-directory . t)
      (org-hugo-external-file-extensions-allowed-for-copying)

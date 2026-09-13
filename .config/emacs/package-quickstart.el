@@ -2155,6 +2155,108 @@ buffer and returned as a string in Org format." t)
 
 
 )
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/emacsql-20260601.1722/emacsql-autoloads.el"))(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(autoload 'emacsql-show-last-sql "emacsql" "\
+Display the compiled SQL of the s-expression SQL expression before point.
+A prefix argument causes the SQL to be printed into the current buffer.
+
+(fn &optional PREFIX)" t)
+(register-definition-prefixes "emacsql" '("emacsql-"))
+
+
+
+(register-definition-prefixes "emacsql-compiler" '("emacsql-"))
+
+
+
+(register-definition-prefixes "emacsql-mysql" '("emacsql-mysql-"))
+
+
+
+(register-definition-prefixes "emacsql-pg" '("emacsql-pg-connection"))
+
+
+
+(register-definition-prefixes "emacsql-psql" '("emacsql-psql-"))
+
+
+
+(register-definition-prefixes "emacsql-sqlite" '("emacsql-"))
+
+
+
+(register-definition-prefixes "emacsql-sqlite-builtin" '("emacsql-sqlite-builtin-connection"))
+
+
+
+(register-definition-prefixes "emacsql-sqlite-module" '("emacsql-sqlite-module-connection"))
+
+
+(provide 'emacsql-autoloads)
+
+
+)
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/closql-20260601.1540/closql-autoloads.el"))(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(register-definition-prefixes "closql" '("closql-" "eieio-"))
+
+
+(provide 'closql-autoloads)
+
+
+)
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghub-20260902.1834/ghub-autoloads.el"))(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(autoload 'ghub-clear-caches "ghub"
+"Clear all caches that might negatively affect Ghub.
+
+If a library that is used by Ghub caches incorrect information
+such as a mistyped password, then that can prevent Ghub from
+asking the user for the correct information again.
+
+Set `url-http-real-basic-auth-storage' to nil
+and call `auth-source-forget+'." t)
+(register-definition-prefixes "ghub" '("auth-source-netrc-parse" "ghub-"))
+
+
+
+(register-definition-prefixes "ghub-graphql" '("ghub-"))
+
+
+
+(register-definition-prefixes "ghub-legacy" '("ghub-fetch-repository"))
+
+
+
+(register-definition-prefixes "gsexp" '("gsexp-"))
+
+
+(provide 'ghub-autoloads)
+
+
+)
 (let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-20260907.1411/magit-autoloads.el"))(load-true-file-name load-file-name))
 
 
@@ -4360,6 +4462,392 @@ Interactively, use `magit-read-worktree-directory-function'.
 
 
 )
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/markdown-mode-20260827.909/markdown-mode-autoloads.el"))(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(autoload 'markdown-mode "markdown-mode"
+"Major mode for editing Markdown files.
+
+In addition to any hooks its parent mode `text-mode' might have run, this mode
+runs the hook `markdown-mode-hook', as the final or penultimate step during
+initialization.
+
+\\{markdown-mode-map}" t)
+(add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\|mdx\\)\\'" . markdown-mode))
+(autoload 'gfm-mode "markdown-mode"
+"Major mode for editing GitHub Flavored Markdown files.
+
+In addition to any hooks its parent mode `markdown-mode' might have run, this
+mode runs the hook `gfm-mode-hook', as the final or penultimate step during
+initialization.
+
+\\{gfm-mode-map}" t)
+(autoload 'markdown-view-mode "markdown-mode"
+"Major mode for viewing Markdown content.
+
+In addition to any hooks its parent mode `markdown-mode' might have run, this
+mode runs the hook `markdown-view-mode-hook', as the final or penultimate step
+during initialization.
+
+\\{markdown-view-mode-map}" t)
+(autoload 'gfm-view-mode "markdown-mode"
+"Major mode for viewing GitHub Flavored Markdown content.
+
+In addition to any hooks its parent mode `gfm-mode' might have run, this mode
+runs the hook `gfm-view-mode-hook', as the final or penultimate step during
+initialization.
+
+\\{gfm-view-mode-map}" t)
+(autoload 'markdown-live-preview-mode "markdown-mode"
+"Toggle native previewing on save for a specific markdown file.
+
+This is a minor mode.  If called interactively, toggle the
+`Markdown-Live-Preview mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate the variable `markdown-live-preview-mode'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "markdown-mode" '("defun-markdown-" "gfm-" "markdown"))
+
+
+(provide 'markdown-mode-autoloads)
+
+
+)
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/forge-20260901.1514/forge-autoloads.el"))(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(defvar forge-add-default-bindings t
+"Whether to add Forge's bindings to various Magit keymaps.
+
+If you want to disable this, then you must set this to nil before
+`magit' is loaded.  If you do it before `forge' but after `magit'
+is loaded, then `magit-mode-map' ends up being modified anyway.")
+(with-eval-after-load 'magit-mode (when forge-add-default-bindings (keymap-set magit-mode-map "'" #'forge-dispatch) (keymap-set magit-mode-map "N" #'forge-dispatch) (keymap-set magit-mode-map "<remap> <magit-browse-thing>" #'forge-browse) (keymap-set magit-mode-map "<remap> <magit-copy-thing>" #'forge-copy-url-at-point-as-kill)))
+(with-eval-after-load 'magit-repos (when forge-add-default-bindings (keymap-set magit-repolist-mode-map "N" #'forge-dispatch)))
+(with-eval-after-load 'git-commit (when forge-add-default-bindings (keymap-set git-commit-mode-map "C-c C-v" #'forge-visit-topic)))
+(register-definition-prefixes "forge" '("forge-"))
+
+
+
+(register-definition-prefixes "forge-bitbucket" '("forge-bitbucket-repository"))
+
+
+
+(register-definition-prefixes "forge-client" '("forge--" "ghub--prepare-mutation"))
+
+
+
+(autoload 'forge-dispatch "forge-commands" nil t)
+(autoload 'forge-configure "forge-commands" nil t)
+(autoload 'forge-pull "forge-commands" nil t)
+(autoload 'forge-pull-notifications "forge-commands" nil t)
+(autoload 'forge-pull-topic "forge-commands" nil t)
+(autoload 'forge-pull-this-topic "forge-commands" nil t)
+(autoload 'forge-browse-discussions "forge-commands"
+"Visit the current repository's discussions using a browser." t)
+(autoload 'forge-browse-issues "forge-commands"
+"Visit the current repository's issues using a browser." t)
+(autoload 'forge-browse-pullreqs "forge-commands"
+"Visit the current repository's pull-requests using a browser." t)
+(autoload 'forge-browse-topic "forge-commands"
+"Read a TOPIC and visit it using a browser.
+By default only offer open topics but with a prefix argument
+also offer closed topics.
+
+(fn TOPIC)" t)
+(autoload 'forge-browse-discussion "forge-commands"
+"Read a DISCUSSION and visit it using a browser.
+By default only offer open discussions but with a prefix argument
+also offer closed issues.
+
+(fn DISCUSSION)" t)
+(autoload 'forge-browse-issue "forge-commands"
+"Read an ISSUE and visit it using a browser.
+By default only offer open issues but with a prefix argument
+also offer closed issues.
+
+(fn ISSUE)" t)
+(autoload 'forge-browse-pullreq "forge-commands"
+"Read a PULL-REQUEST and visit it using a browser.
+By default only offer open pull-requests but with a prefix
+argument also offer closed pull-requests.
+
+(fn PULL-REQUEST)" t)
+(autoload 'forge-browse-commit "forge-commands"
+"Read a COMMIT and visit it using a browser.
+
+(fn COMMIT)" t)
+(autoload 'forge-browse-branch "forge-commands"
+"Read a BRANCH and visit it using a browser.
+
+(fn BRANCH)" t)
+(autoload 'forge-browse-remote "forge-commands"
+"Read a REMOTE and visit it using a browser.
+
+(fn REMOTE)" t)
+(autoload 'forge-browse-repository "forge-commands"
+"Read a REPOSITORY and visit it using a browser.
+
+(fn REPOSITORY)" t)
+(autoload 'forge-browse-blob "forge-commands"
+"Visit a blob using a browser.
+
+When invoked from a blob- or file-visiting buffer, visit that blob
+without prompting.  If the region is active, try to jump to the marked
+line or lines, and highlight them in the browser.  To what extend that
+is possible depends on the forge.  When the region is not active just
+visit the blob, without trying to jump to the current line.  When
+jumping to a line, always use a commit hash as part of the URL.  From
+a file in the worktree with no active region, instead use the branch
+name as part of the URL, unless a prefix argument is used.
+
+When invoked from a Dired buffer, visit the blob at point without
+prompting. If a prefix argument is used, the commit hash is included
+in the URL.
+
+When invoked from any other buffer, prompt the user for a branch or
+commit, and for a file.
+
+(fn COMMIT FILE &optional LINE END FORCE-HASH)" t)
+(autoload 'forge-browse-this-topic "forge-commands" nil t)
+(autoload 'forge-browse-this-repository "forge-commands"
+"Visit the repository at point using a browser." t)
+(autoload 'forge-copy-url-at-point-as-kill "forge-commands"
+"Copy the url of thing at point or the thing visited in the current buffer." t)
+(autoload 'forge-browse "forge-commands"
+"Visit the thing at point using a browser." t)
+(autoload 'forge-visit-topic "forge-commands"
+"Read a TOPIC and visit it.
+By default only offer active topics for completion.  With a prefix
+argument offer all topics.  While completion is in progress, \\<forge-read-topic-minibuffer-map>\\[forge-read-topic-lift-limit] lifts
+the limitation to active topics.
+
+(fn TOPIC)" t)
+(autoload 'forge-visit-discussion "forge-commands"
+"Read a DISCUSSION and visit it.
+By default only offer active topics for completion.  With a prefix
+argument offer all topics.  While completion is in progress, \\<forge-read-topic-minibuffer-map>\\[forge-read-topic-lift-limit] lifts
+the limitation to active topics.
+
+(fn DISCUSSION)" t)
+(autoload 'forge-visit-issue "forge-commands"
+"Read an ISSUE and visit it.
+By default only offer active issues for completion.  With a prefix
+argument offer all topics.  While completion is in progress, \\<forge-read-topic-minibuffer-map>\\[forge-read-topic-lift-limit] lifts
+the limitation to active issues.
+
+(fn ISSUE)" t)
+(autoload 'forge-visit-pullreq "forge-commands"
+"Read a PULL-REQUEST and visit it.
+By default only offer active pull-requests for completion.  With a
+prefix argument offer all topics.  While completion is in progress,
+\\<forge-read-topic-minibuffer-map>\\[forge-read-topic-lift-limit] lifts the limitation to active pull-requests.
+
+(fn PULL-REQUEST)" t)
+(autoload 'forge-visit-topic-from-url "forge-commands"
+"Visit the topic specified by web URL.
+
+(fn URL)" t)
+(autoload 'forge-visit-this-topic "forge-commands"
+"Visit the topic at point.
+With prefix argument MENU, also show the topic menu.
+
+(fn &optional MENU)" t)
+(autoload 'forge-visit-this-repository "forge-commands"
+"Visit the repository at point." t)
+(autoload 'forge-branch-pullreq "forge-commands"
+"Create and configure a new branch from a pull-request.
+Please see the manual for more information.
+
+(fn PULLREQ)" t)
+(autoload 'forge-checkout-pullreq "forge-commands"
+"Create, configure and checkout a new branch from a pull-request.
+Please see the manual for more information.
+
+(fn PULLREQ)" t)
+(autoload 'forge-checkout-this-pullreq "forge-commands" nil t)
+(autoload 'forge-checkout-worktree "forge-commands"
+"Create, configure and checkout a new worktree from a pull-request.
+This is like `forge-checkout-pullreq', except that it also
+creates a new worktree.  Please see the manual for more
+information.
+
+(fn PATH PULLREQ)" t)
+(autoload 'forge-push-to-unnamed-pullreq "forge-commands" nil t)
+(autoload 'forge-fork "forge-commands"
+"Fork the current repository to FORK and add it as a REMOTE.
+
+If the fork already exists, then that isn't an error; the remote
+is added anyway.  Currently this only supports Github and Gitlab.
+
+With prefix argument ALL, fork all branches, not just the default
+branch.  On Gitlab it is not possible to fork only the default.
+
+(fn FORK REMOTE ALL)" t)
+(autoload 'forge-merge "forge-commands" nil t)
+(autoload 'forge-set-default-branch "forge-commands"
+"Change the default branch on the upstream remote and locally.
+Also update the upstream branches of local branches accordingly." t)
+(autoload 'forge-rename-default-branch "forge-commands"
+"Rename the default branch on the upstream remote and locally.
+Also update the upstream branches of local branches accordingly." t)
+(autoload 'forge-add-pullreq-refspec "forge-commands" nil t)
+(autoload 'forge-add-repository "forge-commands" nil t)
+(autoload 'forge-add-user-repositories "forge-commands"
+"Add all of USER's repositories from HOST to the database.
+This may take a while.  Only Github is supported at the moment.
+
+(fn HOST USER)" t)
+(autoload 'forge-add-organization-repositories "forge-commands"
+"Add all of ORGANIZATION's repositories from HOST to the database.
+This may take a while.  Only Github is supported at the moment.
+
+(fn HOST ORGANIZATION)" t)
+(autoload 'forge-remove-repository "forge-commands"
+"Remove a repository from the database.
+
+(fn REPOSITORY)" t)
+(autoload 'forge-remove-topic-locally "forge-commands"
+"Remove a topic from the local database only.
+
+When the region marks multiple topics, then offer to remove them all.
+
+The topic is not removed from the forge and, if it is later modified,
+then it will be added to the database again when fetching all topics.
+
+This is useful for users who only fetch individual topics and want to
+remove the topics they are no longer interested in.  This can also be
+used to remove topics locally, which have already been removed on the
+forge (the service).  Forge (the package) cannot automatically detect
+when that happens, because given how the APIs work, this would be too
+expensive.
+
+(fn TOPIC)" t)
+(autoload 'forge-reset-database "forge-commands"
+"Move the current database file to the trash.
+This is useful after the database scheme has changed, which will
+happen a few times while the forge functionality is still under
+heavy development." t)
+(register-definition-prefixes "forge-commands" '("forge-"))
+
+
+
+(register-definition-prefixes "forge-core" '("forge-"))
+
+
+
+(register-definition-prefixes "forge-db" '("forge-"))
+
+
+
+(register-definition-prefixes "forge-discussion" '("forge-"))
+
+
+
+(register-definition-prefixes "forge-forgejo" '("forge-forgejo-repository"))
+
+
+
+(register-definition-prefixes "forge-gitea" '("forge-gitea-repository"))
+
+
+
+(register-definition-prefixes "forge-github" '("forge-"))
+
+
+
+(register-definition-prefixes "forge-gitlab" '("forge-gitlab-repository"))
+
+
+
+(register-definition-prefixes "forge-gogs" '("forge-gogs-repository"))
+
+
+
+(register-definition-prefixes "forge-issue" '("forge-"))
+
+
+
+(autoload 'forge-list-notifications "forge-notify" nil t)
+(register-definition-prefixes "forge-notify" '("forge-"))
+
+
+
+(register-definition-prefixes "forge-post" '("forge-"))
+
+
+
+(register-definition-prefixes "forge-pullreq" '("forge-"))
+
+
+
+(register-definition-prefixes "forge-repo" '("forge-"))
+
+
+
+(autoload 'forge-repositories-menu "forge-repos" nil t)
+(autoload 'forge-list-repositories "forge-repos" nil t)
+(autoload 'forge-list-owned-repositories "forge-repos" nil t)
+(register-definition-prefixes "forge-repos" '("forge-"))
+
+
+
+(register-definition-prefixes "forge-revnote" '("forge-revnote"))
+
+
+
+(register-definition-prefixes "forge-semi" '("forge-"))
+
+
+
+(register-definition-prefixes "forge-tablist" '("forge--tab"))
+
+
+
+(autoload 'forge-topic-menu "forge-topic" nil t)
+(autoload 'forge-topic-state-menu "forge-topic" nil t)
+(autoload 'forge-topic-status-menu "forge-topic" nil t)
+(register-definition-prefixes "forge-topic" '("forge-"))
+
+
+
+(autoload 'forge-topics-menu "forge-topics" nil t)
+(autoload 'forge-list-topics "forge-topics" nil t)
+(autoload 'forge-list-discussions "forge-topics" nil t)
+(autoload 'forge-list-issues "forge-topics" nil t)
+(autoload 'forge-list-pullreqs "forge-topics" nil t)
+(autoload 'forge-list-global-topics "forge-topics" nil t)
+(autoload 'forge-list-global-issues "forge-topics" nil t)
+(autoload 'forge-list-global-pullreqs "forge-topics" nil t)
+(register-definition-prefixes "forge-topics" '("forge-"))
+
+
+(provide 'forge-autoloads)
+
+
+)
 (let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/org-9.8.10/org-autoloads.el"))(load-true-file-name load-file-name))
 
 
@@ -5557,6 +6045,44 @@ store links to the Magit-Revision mode buffers for these commits.")
 
 
 )
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orgit-forge-20260731.2256/orgit-forge-autoloads.el"))(load-true-file-name load-file-name))
+
+
+
+(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
+
+
+
+
+(with-eval-after-load 'org (org-link-set-parameters "orgit-topic" :store #'orgit-topic-store :follow #'orgit-topic-open :export #'orgit-topic-export :complete #'orgit-topic-complete-link :insert-description #'orgit-topic-describe-link))
+(autoload 'orgit-topic-store "orgit-forge"
+"Store a link to a Forge-Topic mode buffer.
+
+When the region selects a topic, then store a link to the
+Forge-Topic mode buffer for that topic.")
+(autoload 'orgit-topic-open "orgit-forge"
+"
+
+(fn ID)")
+(autoload 'orgit-topic-export "orgit-forge"
+"
+
+(fn ID DESC BACKEND INFO)")
+(autoload 'orgit-topic-complete-link "orgit-forge"
+"
+
+(fn &optional ARG)")
+(autoload 'orgit-topic-describe-link "orgit-forge"
+"
+
+(fn LINK DEFAULT)")
+(register-definition-prefixes "orgit-forge" '("orgit-"))
+
+
+(provide 'orgit-forge-autoloads)
+
+
+)
 (let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/org-caldav-20260501.8/org-caldav-autoloads.el"))(load-true-file-name load-file-name))
 
 
@@ -5892,73 +6418,6 @@ disabled.
 
 
 (provide 'nerd-icons-completion-autoloads)
-
-
-)
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/markdown-mode-20260827.909/markdown-mode-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(autoload 'markdown-mode "markdown-mode"
-"Major mode for editing Markdown files.
-
-In addition to any hooks its parent mode `text-mode' might have run, this mode
-runs the hook `markdown-mode-hook', as the final or penultimate step during
-initialization.
-
-\\{markdown-mode-map}" t)
-(add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\|mdx\\)\\'" . markdown-mode))
-(autoload 'gfm-mode "markdown-mode"
-"Major mode for editing GitHub Flavored Markdown files.
-
-In addition to any hooks its parent mode `markdown-mode' might have run, this
-mode runs the hook `gfm-mode-hook', as the final or penultimate step during
-initialization.
-
-\\{gfm-mode-map}" t)
-(autoload 'markdown-view-mode "markdown-mode"
-"Major mode for viewing Markdown content.
-
-In addition to any hooks its parent mode `markdown-mode' might have run, this
-mode runs the hook `markdown-view-mode-hook', as the final or penultimate step
-during initialization.
-
-\\{markdown-view-mode-map}" t)
-(autoload 'gfm-view-mode "markdown-mode"
-"Major mode for viewing GitHub Flavored Markdown content.
-
-In addition to any hooks its parent mode `gfm-mode' might have run, this mode
-runs the hook `gfm-view-mode-hook', as the final or penultimate step during
-initialization.
-
-\\{gfm-view-mode-map}" t)
-(autoload 'markdown-live-preview-mode "markdown-mode"
-"Toggle native previewing on save for a specific markdown file.
-
-This is a minor mode.  If called interactively, toggle the
-`Markdown-Live-Preview mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
-
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
-mode if ARG is nil, omitted, or is a positive number.  Disable the mode
-if ARG is a negative number.
-
-To check whether the minor mode is enabled in the current buffer,
-evaluate the variable `markdown-live-preview-mode'.
-
-The mode's hook is called both when the mode is enabled and when it is
-disabled.
-
-(fn &optional ARG)" t)
-(register-definition-prefixes "markdown-mode" '("defun-markdown-" "gfm-" "markdown"))
-
-
-(provide 'markdown-mode-autoloads)
 
 
 )
@@ -6993,43 +7452,6 @@ Defaults to \"origin\".
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghub-20260902.1834/ghub-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(autoload 'ghub-clear-caches "ghub"
-"Clear all caches that might negatively affect Ghub.
-
-If a library that is used by Ghub caches incorrect information
-such as a mistyped password, then that can prevent Ghub from
-asking the user for the correct information again.
-
-Set `url-http-real-basic-auth-storage' to nil
-and call `auth-source-forget+'." t)
-(register-definition-prefixes "ghub" '("auth-source-netrc-parse" "ghub-"))
-
-
-
-(register-definition-prefixes "ghub-graphql" '("ghub-"))
-
-
-
-(register-definition-prefixes "ghub-legacy" '("ghub-fetch-repository"))
-
-
-
-(register-definition-prefixes "gsexp" '("gsexp-"))
-
-
-(provide 'ghub-autoloads)
-
-
-)
 (let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghostel-20260902.1753/ghostel-autoloads.el"))(load-true-file-name load-file-name))
 
 
@@ -7475,390 +7897,6 @@ disabled.
 
 
 (provide 'gcmh-autoloads)
-
-
-)
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/emacsql-20260601.1722/emacsql-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(autoload 'emacsql-show-last-sql "emacsql" "\
-Display the compiled SQL of the s-expression SQL expression before point.
-A prefix argument causes the SQL to be printed into the current buffer.
-
-(fn &optional PREFIX)" t)
-(register-definition-prefixes "emacsql" '("emacsql-"))
-
-
-
-(register-definition-prefixes "emacsql-compiler" '("emacsql-"))
-
-
-
-(register-definition-prefixes "emacsql-mysql" '("emacsql-mysql-"))
-
-
-
-(register-definition-prefixes "emacsql-pg" '("emacsql-pg-connection"))
-
-
-
-(register-definition-prefixes "emacsql-psql" '("emacsql-psql-"))
-
-
-
-(register-definition-prefixes "emacsql-sqlite" '("emacsql-"))
-
-
-
-(register-definition-prefixes "emacsql-sqlite-builtin" '("emacsql-sqlite-builtin-connection"))
-
-
-
-(register-definition-prefixes "emacsql-sqlite-module" '("emacsql-sqlite-module-connection"))
-
-
-(provide 'emacsql-autoloads)
-
-
-)
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/closql-20260601.1540/closql-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(register-definition-prefixes "closql" '("closql-" "eieio-"))
-
-
-(provide 'closql-autoloads)
-
-
-)
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/forge-20260901.1514/forge-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(defvar forge-add-default-bindings t
-"Whether to add Forge's bindings to various Magit keymaps.
-
-If you want to disable this, then you must set this to nil before
-`magit' is loaded.  If you do it before `forge' but after `magit'
-is loaded, then `magit-mode-map' ends up being modified anyway.")
-(with-eval-after-load 'magit-mode (when forge-add-default-bindings (keymap-set magit-mode-map "'" #'forge-dispatch) (keymap-set magit-mode-map "N" #'forge-dispatch) (keymap-set magit-mode-map "<remap> <magit-browse-thing>" #'forge-browse) (keymap-set magit-mode-map "<remap> <magit-copy-thing>" #'forge-copy-url-at-point-as-kill)))
-(with-eval-after-load 'magit-repos (when forge-add-default-bindings (keymap-set magit-repolist-mode-map "N" #'forge-dispatch)))
-(with-eval-after-load 'git-commit (when forge-add-default-bindings (keymap-set git-commit-mode-map "C-c C-v" #'forge-visit-topic)))
-(register-definition-prefixes "forge" '("forge-"))
-
-
-
-(register-definition-prefixes "forge-bitbucket" '("forge-bitbucket-repository"))
-
-
-
-(register-definition-prefixes "forge-client" '("forge--" "ghub--prepare-mutation"))
-
-
-
-(autoload 'forge-dispatch "forge-commands" nil t)
-(autoload 'forge-configure "forge-commands" nil t)
-(autoload 'forge-pull "forge-commands" nil t)
-(autoload 'forge-pull-notifications "forge-commands" nil t)
-(autoload 'forge-pull-topic "forge-commands" nil t)
-(autoload 'forge-pull-this-topic "forge-commands" nil t)
-(autoload 'forge-browse-discussions "forge-commands"
-"Visit the current repository's discussions using a browser." t)
-(autoload 'forge-browse-issues "forge-commands"
-"Visit the current repository's issues using a browser." t)
-(autoload 'forge-browse-pullreqs "forge-commands"
-"Visit the current repository's pull-requests using a browser." t)
-(autoload 'forge-browse-topic "forge-commands"
-"Read a TOPIC and visit it using a browser.
-By default only offer open topics but with a prefix argument
-also offer closed topics.
-
-(fn TOPIC)" t)
-(autoload 'forge-browse-discussion "forge-commands"
-"Read a DISCUSSION and visit it using a browser.
-By default only offer open discussions but with a prefix argument
-also offer closed issues.
-
-(fn DISCUSSION)" t)
-(autoload 'forge-browse-issue "forge-commands"
-"Read an ISSUE and visit it using a browser.
-By default only offer open issues but with a prefix argument
-also offer closed issues.
-
-(fn ISSUE)" t)
-(autoload 'forge-browse-pullreq "forge-commands"
-"Read a PULL-REQUEST and visit it using a browser.
-By default only offer open pull-requests but with a prefix
-argument also offer closed pull-requests.
-
-(fn PULL-REQUEST)" t)
-(autoload 'forge-browse-commit "forge-commands"
-"Read a COMMIT and visit it using a browser.
-
-(fn COMMIT)" t)
-(autoload 'forge-browse-branch "forge-commands"
-"Read a BRANCH and visit it using a browser.
-
-(fn BRANCH)" t)
-(autoload 'forge-browse-remote "forge-commands"
-"Read a REMOTE and visit it using a browser.
-
-(fn REMOTE)" t)
-(autoload 'forge-browse-repository "forge-commands"
-"Read a REPOSITORY and visit it using a browser.
-
-(fn REPOSITORY)" t)
-(autoload 'forge-browse-blob "forge-commands"
-"Visit a blob using a browser.
-
-When invoked from a blob- or file-visiting buffer, visit that blob
-without prompting.  If the region is active, try to jump to the marked
-line or lines, and highlight them in the browser.  To what extend that
-is possible depends on the forge.  When the region is not active just
-visit the blob, without trying to jump to the current line.  When
-jumping to a line, always use a commit hash as part of the URL.  From
-a file in the worktree with no active region, instead use the branch
-name as part of the URL, unless a prefix argument is used.
-
-When invoked from a Dired buffer, visit the blob at point without
-prompting. If a prefix argument is used, the commit hash is included
-in the URL.
-
-When invoked from any other buffer, prompt the user for a branch or
-commit, and for a file.
-
-(fn COMMIT FILE &optional LINE END FORCE-HASH)" t)
-(autoload 'forge-browse-this-topic "forge-commands" nil t)
-(autoload 'forge-browse-this-repository "forge-commands"
-"Visit the repository at point using a browser." t)
-(autoload 'forge-copy-url-at-point-as-kill "forge-commands"
-"Copy the url of thing at point or the thing visited in the current buffer." t)
-(autoload 'forge-browse "forge-commands"
-"Visit the thing at point using a browser." t)
-(autoload 'forge-visit-topic "forge-commands"
-"Read a TOPIC and visit it.
-By default only offer active topics for completion.  With a prefix
-argument offer all topics.  While completion is in progress, \\<forge-read-topic-minibuffer-map>\\[forge-read-topic-lift-limit] lifts
-the limitation to active topics.
-
-(fn TOPIC)" t)
-(autoload 'forge-visit-discussion "forge-commands"
-"Read a DISCUSSION and visit it.
-By default only offer active topics for completion.  With a prefix
-argument offer all topics.  While completion is in progress, \\<forge-read-topic-minibuffer-map>\\[forge-read-topic-lift-limit] lifts
-the limitation to active topics.
-
-(fn DISCUSSION)" t)
-(autoload 'forge-visit-issue "forge-commands"
-"Read an ISSUE and visit it.
-By default only offer active issues for completion.  With a prefix
-argument offer all topics.  While completion is in progress, \\<forge-read-topic-minibuffer-map>\\[forge-read-topic-lift-limit] lifts
-the limitation to active issues.
-
-(fn ISSUE)" t)
-(autoload 'forge-visit-pullreq "forge-commands"
-"Read a PULL-REQUEST and visit it.
-By default only offer active pull-requests for completion.  With a
-prefix argument offer all topics.  While completion is in progress,
-\\<forge-read-topic-minibuffer-map>\\[forge-read-topic-lift-limit] lifts the limitation to active pull-requests.
-
-(fn PULL-REQUEST)" t)
-(autoload 'forge-visit-topic-from-url "forge-commands"
-"Visit the topic specified by web URL.
-
-(fn URL)" t)
-(autoload 'forge-visit-this-topic "forge-commands"
-"Visit the topic at point.
-With prefix argument MENU, also show the topic menu.
-
-(fn &optional MENU)" t)
-(autoload 'forge-visit-this-repository "forge-commands"
-"Visit the repository at point." t)
-(autoload 'forge-branch-pullreq "forge-commands"
-"Create and configure a new branch from a pull-request.
-Please see the manual for more information.
-
-(fn PULLREQ)" t)
-(autoload 'forge-checkout-pullreq "forge-commands"
-"Create, configure and checkout a new branch from a pull-request.
-Please see the manual for more information.
-
-(fn PULLREQ)" t)
-(autoload 'forge-checkout-this-pullreq "forge-commands" nil t)
-(autoload 'forge-checkout-worktree "forge-commands"
-"Create, configure and checkout a new worktree from a pull-request.
-This is like `forge-checkout-pullreq', except that it also
-creates a new worktree.  Please see the manual for more
-information.
-
-(fn PATH PULLREQ)" t)
-(autoload 'forge-push-to-unnamed-pullreq "forge-commands" nil t)
-(autoload 'forge-fork "forge-commands"
-"Fork the current repository to FORK and add it as a REMOTE.
-
-If the fork already exists, then that isn't an error; the remote
-is added anyway.  Currently this only supports Github and Gitlab.
-
-With prefix argument ALL, fork all branches, not just the default
-branch.  On Gitlab it is not possible to fork only the default.
-
-(fn FORK REMOTE ALL)" t)
-(autoload 'forge-merge "forge-commands" nil t)
-(autoload 'forge-set-default-branch "forge-commands"
-"Change the default branch on the upstream remote and locally.
-Also update the upstream branches of local branches accordingly." t)
-(autoload 'forge-rename-default-branch "forge-commands"
-"Rename the default branch on the upstream remote and locally.
-Also update the upstream branches of local branches accordingly." t)
-(autoload 'forge-add-pullreq-refspec "forge-commands" nil t)
-(autoload 'forge-add-repository "forge-commands" nil t)
-(autoload 'forge-add-user-repositories "forge-commands"
-"Add all of USER's repositories from HOST to the database.
-This may take a while.  Only Github is supported at the moment.
-
-(fn HOST USER)" t)
-(autoload 'forge-add-organization-repositories "forge-commands"
-"Add all of ORGANIZATION's repositories from HOST to the database.
-This may take a while.  Only Github is supported at the moment.
-
-(fn HOST ORGANIZATION)" t)
-(autoload 'forge-remove-repository "forge-commands"
-"Remove a repository from the database.
-
-(fn REPOSITORY)" t)
-(autoload 'forge-remove-topic-locally "forge-commands"
-"Remove a topic from the local database only.
-
-When the region marks multiple topics, then offer to remove them all.
-
-The topic is not removed from the forge and, if it is later modified,
-then it will be added to the database again when fetching all topics.
-
-This is useful for users who only fetch individual topics and want to
-remove the topics they are no longer interested in.  This can also be
-used to remove topics locally, which have already been removed on the
-forge (the service).  Forge (the package) cannot automatically detect
-when that happens, because given how the APIs work, this would be too
-expensive.
-
-(fn TOPIC)" t)
-(autoload 'forge-reset-database "forge-commands"
-"Move the current database file to the trash.
-This is useful after the database scheme has changed, which will
-happen a few times while the forge functionality is still under
-heavy development." t)
-(register-definition-prefixes "forge-commands" '("forge-"))
-
-
-
-(register-definition-prefixes "forge-core" '("forge-"))
-
-
-
-(register-definition-prefixes "forge-db" '("forge-"))
-
-
-
-(register-definition-prefixes "forge-discussion" '("forge-"))
-
-
-
-(register-definition-prefixes "forge-forgejo" '("forge-forgejo-repository"))
-
-
-
-(register-definition-prefixes "forge-gitea" '("forge-gitea-repository"))
-
-
-
-(register-definition-prefixes "forge-github" '("forge-"))
-
-
-
-(register-definition-prefixes "forge-gitlab" '("forge-gitlab-repository"))
-
-
-
-(register-definition-prefixes "forge-gogs" '("forge-gogs-repository"))
-
-
-
-(register-definition-prefixes "forge-issue" '("forge-"))
-
-
-
-(autoload 'forge-list-notifications "forge-notify" nil t)
-(register-definition-prefixes "forge-notify" '("forge-"))
-
-
-
-(register-definition-prefixes "forge-post" '("forge-"))
-
-
-
-(register-definition-prefixes "forge-pullreq" '("forge-"))
-
-
-
-(register-definition-prefixes "forge-repo" '("forge-"))
-
-
-
-(autoload 'forge-repositories-menu "forge-repos" nil t)
-(autoload 'forge-list-repositories "forge-repos" nil t)
-(autoload 'forge-list-owned-repositories "forge-repos" nil t)
-(register-definition-prefixes "forge-repos" '("forge-"))
-
-
-
-(register-definition-prefixes "forge-revnote" '("forge-revnote"))
-
-
-
-(register-definition-prefixes "forge-semi" '("forge-"))
-
-
-
-(register-definition-prefixes "forge-tablist" '("forge--tab"))
-
-
-
-(autoload 'forge-topic-menu "forge-topic" nil t)
-(autoload 'forge-topic-state-menu "forge-topic" nil t)
-(autoload 'forge-topic-status-menu "forge-topic" nil t)
-(register-definition-prefixes "forge-topic" '("forge-"))
-
-
-
-(autoload 'forge-topics-menu "forge-topics" nil t)
-(autoload 'forge-list-topics "forge-topics" nil t)
-(autoload 'forge-list-discussions "forge-topics" nil t)
-(autoload 'forge-list-issues "forge-topics" nil t)
-(autoload 'forge-list-pullreqs "forge-topics" nil t)
-(autoload 'forge-list-global-topics "forge-topics" nil t)
-(autoload 'forge-list-global-issues "forge-topics" nil t)
-(autoload 'forge-list-global-pullreqs "forge-topics" nil t)
-(register-definition-prefixes "forge-topics" '("forge-"))
-
-
-(provide 'forge-autoloads)
 
 
 )
@@ -11521,14 +11559,15 @@ Limit searched to BOUND.
                     vertico treesit-auto treepy transient tomelr magit-section
                     taxy taxy-magit-section tablist svg-lib sudo-edit s dash f
                     shrink-path plz deflate plantuml-mode persist pdf-tools
-                    ox-hugo magit org orgit org-caldav orderless olivetti
-                    nyan-mode nerd-icons nerd-icons-dired nerd-icons-corfu
-                    nerd-icons-completion markdown-mode markdown-preview-mode
-                    marginalia ledger-mode gptel git-link ghub ghostel gcmh
-                    emacsql closql forge expand-region erc-hl-nicks engine-mode
-                    ement embark consult embark-consult elfeed elfeed-org
-                    doom-modeline dired-hacks-utils dired-subtree dired-narrow
-                    dape corfu chronometer cdlatex cape bbdb bbdb-vcard auctex)
+                    ox-hugo emacsql closql ghub magit markdown-mode forge org
+                    orgit orgit-forge org-caldav orderless olivetti nyan-mode
+                    nerd-icons nerd-icons-dired nerd-icons-corfu
+                    nerd-icons-completion markdown-preview-mode marginalia
+                    ledger-mode gptel git-link ghostel gcmh expand-region
+                    erc-hl-nicks engine-mode ement embark consult
+                    embark-consult elfeed elfeed-org doom-modeline
+                    dired-hacks-utils dired-subtree dired-narrow dape corfu
+                    chronometer cdlatex cape bbdb bbdb-vcard auctex)
         package-activated-list)))
 (progn
   (require 'info) (info-initialize)
@@ -11543,10 +11582,6 @@ Limit searched to BOUND.
                                  "elpa/embark-20260610.302")
                (file-name-concat package--quickstart-dir "elpa/ement-0.17")
                (file-name-concat package--quickstart-dir
-                                 "elpa/forge-20260901.1514")
-               (file-name-concat package--quickstart-dir
-                                 "elpa/ghub-20260902.1834")
-               (file-name-concat package--quickstart-dir
                                  "elpa/ledger-mode-20260727.518")
                (file-name-concat package--quickstart-dir
                                  "elpa/orderless-20260830.1156")
@@ -11554,7 +11589,11 @@ Limit searched to BOUND.
                                  "elpa/org-caldav-20260501.8")
                (file-name-concat package--quickstart-dir "elpa/org-9.8.10")
                (file-name-concat package--quickstart-dir
+                                 "elpa/forge-20260901.1514")
+               (file-name-concat package--quickstart-dir
                                  "elpa/magit-20260907.1411")
+               (file-name-concat package--quickstart-dir
+                                 "elpa/ghub-20260902.1834")
                (file-name-concat package--quickstart-dir "elpa/plz-0.9.1")
                (file-name-concat package--quickstart-dir
                                  "elpa/dash-20260221.1346")

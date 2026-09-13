@@ -1113,6 +1113,8 @@ PRs.
   (use-package orgit)
 
   (use-package forge :after magit :defer nil)
+
+  (use-package orgit-forge :after forge)
 #+end_src
 
 ** Git Link
@@ -1672,6 +1674,7 @@ asking.
   (setq smtpmail-stream-type 'ssl)
   (setq smtpmail-smtp-service 465)
   (setq mu4e-change-filenames-when-moving t)
+  (setq mu4e-trash-without-flag t)
 #+end_src
 
 SMTP server variables (kept separate so they're easy to point at an SSH

@@ -607,6 +607,8 @@ With prefix arg NEW, start an additional session instead."
 
 (use-package forge :after magit :defer nil)
 
+(use-package orgit-forge :after forge)
+
 (use-package git-link
   :bind (("C-c w l" . git-link)
          ("C-c w c" . git-link-commit)
@@ -919,6 +921,7 @@ With prefix arg NEW, start an additional session instead."
 (setq smtpmail-stream-type 'ssl)
 (setq smtpmail-smtp-service 465)
 (setq mu4e-change-filenames-when-moving t)
+(setq mu4e-trash-without-flag t)
 
 (setq dalvrosa/smtp-server "mail.alvarezrosa.com")
 (setq dalvrosa/smtp-port 465)
