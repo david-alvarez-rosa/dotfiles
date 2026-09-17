@@ -1650,15 +1650,6 @@ Set the mail fetching command.
   (setq mu4e-get-mail-command "~/.local/bin/mailsync")
 #+end_src
 
-Prefer plain text over enriched alternatives.
-
-#+begin_src elisp
-  (with-eval-after-load "mm-decode"
-    (add-to-list 'mm-discouraged-alternatives "text/html")
-    (add-to-list 'mm-discouraged-alternatives "text/richtext")
-    (add-to-list 'mm-discouraged-alternatives "multipart/related"))
-#+end_src
-
 ** Contexts for Multiple Accounts
 
 Use mu4e contexts for several accounts, picking the first without

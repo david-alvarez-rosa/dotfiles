@@ -907,11 +907,6 @@ With prefix arg NEW, start an additional session instead."
 
 (setq mu4e-get-mail-command "~/.local/bin/mailsync")
 
-(with-eval-after-load "mm-decode"
-  (add-to-list 'mm-discouraged-alternatives "text/html")
-  (add-to-list 'mm-discouraged-alternatives "text/richtext")
-  (add-to-list 'mm-discouraged-alternatives "multipart/related"))
-
 (setq mu4e-context-policy 'pick-first)
 (setq mu4e-compose-context-policy 'pick-first)
 (setq mu4e-sent-messages-behavior 'sent)
