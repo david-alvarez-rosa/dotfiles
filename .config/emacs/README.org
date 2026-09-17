@@ -1303,9 +1303,9 @@ Open the agenda with =C-c a=.
   (setq org-agenda-files '("~/docs/Agenda.org" "~/docs/Calendar.org" "~/dev/personal-website/Content.org"))
 #+end_src
 
-Custom block agenda: today, unscheduled NEXT actions, standalone, blog
-and work tasks and WAIT (plus a "Backlog" variant).  Press =w= / =d= to
-switch week/day span and =l= to toggle log mode.
+Custom block agenda: today, unscheduled NEXT actions, standalone,
+unwall, blog and work tasks and WAIT (plus a "Backlog" variant).  Press
+=w= / =d= to switch week/day span and =l= to toggle log mode.
 
 #+begin_src elisp
   (setq org-agenda-skip-deadline-if-done t)
@@ -1316,7 +1316,9 @@ switch week/day span and =l= to toggle log mode.
            ((agenda "" ((org-agenda-span 1)))
             (todo "NEXT" ((org-agenda-overriding-header "Next Actions")
                           (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
-            (tags-todo "TODO=\"TODO\"-work-blog-backlog" ((org-agenda-overriding-header "Standalone")
+            (tags-todo "TODO=\"TODO\"-work-blog-unwall-backlog" ((org-agenda-overriding-header "Standalone")
+                                                     (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
+            (tags-todo "TODO=\"TODO\"+unwall-backlog" ((org-agenda-overriding-header "Unwall")
                                                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
             (tags-todo "TODO=\"TODO\"+blog-backlog" ((org-agenda-overriding-header "Blog")
                                                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
@@ -1327,7 +1329,8 @@ switch week/day span and =l= to toggle log mode.
           ("b" "Backlog"
            ((agenda "" ((org-agenda-span 1)))
             (todo "NEXT" ((org-agenda-overriding-header "Next Actions")))
-            (tags-todo "TODO=\"TODO\"-work-blog-backlog" ((org-agenda-overriding-header "Standalone")))
+            (tags-todo "TODO=\"TODO\"-work-blog-unwall-backlog" ((org-agenda-overriding-header "Standalone")))
+            (tags-todo "TODO=\"TODO\"+unwall-backlog" ((org-agenda-overriding-header "Unwall")))
             (tags-todo "TODO=\"TODO\"+blog-backlog" ((org-agenda-overriding-header "Blog")))
             (tags-todo "TODO=\"TODO\"+work-backlog" ((org-agenda-overriding-header "Work")))
             (tags-todo "TODO=\"WAIT\"-backlog" ((org-agenda-overriding-header "Waiting")))
