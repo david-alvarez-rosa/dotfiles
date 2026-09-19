@@ -404,6 +404,7 @@
   (setq gptel-backend (gptel-make-anthropic "Claude" :stream t :key gptel-api-key))
   (setq gptel-model 'claude-sonnet-5)
   (setq gptel-default-mode 'org-mode)
+  (add-hook 'gptel-post-response-functions #'gptel-end-of-response)
   (setq gptel-system-prompt
         "You are a large language model living in Emacs.  Answer directly and concisely: no preamble, no summary, no unrequested caveats or alternatives.")
   :hook ((gptel-mode . visual-line-mode)
