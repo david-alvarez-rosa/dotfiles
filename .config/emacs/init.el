@@ -764,6 +764,7 @@ With prefix arg NEW, start an additional session instead."
         org-caldav-delete-org-entries 'always
         org-caldav-delete-calendar-entries 'always
         org-icalendar-timezone "Europe/Dublin")
+  (defvar org-caldav-show-sync-results)
   (defun dalvrosa/org-caldav-sync-quietly ()
     (let ((org-caldav-show-sync-results nil))
       (org-caldav-sync))
