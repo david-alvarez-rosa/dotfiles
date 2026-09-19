@@ -905,7 +905,7 @@ With prefix arg NEW, start an additional session instead."
                         (if (string-match-p "/Inbox" (or query ""))
                             'ascending 'descending))))
 
-(setq mu4e-get-mail-command "~/.local/bin/mailsync")
+(setq mu4e-get-mail-command "MAILSYNC_NO_INDEX=1 ~/.local/bin/mailsync")
 
 (setq mu4e-context-policy 'pick-first)
 (setq mu4e-compose-context-policy 'pick-first)
@@ -945,6 +945,13 @@ With prefix arg NEW, start an additional session instead."
 (defun dalvrosa/mu4e-update-mail-and-index ()
   (interactive)
   (mu4e-update-mail-and-index t))
+
+(defun dalvrosa/mu4e-index-soon (&optional tries)
+  "Index mail, waiting out an index already in progress."
+  (when (and (fboundp 'mu4e-running-p) (mu4e-running-p))
+    (if (and (bound-and-true-p mu4e--server-indexing) (< (or tries 0) 15))
+        (run-at-time 2 nil #'dalvrosa/mu4e-index-soon (1+ (or tries 0)))
+      (mu4e-update-index))))
 
 (with-eval-after-load 'mu4e
   (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)

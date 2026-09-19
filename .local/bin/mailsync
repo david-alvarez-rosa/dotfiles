@@ -7,4 +7,4 @@ case "${1:-}" in
 	*)  sync_one "$1" ;;
 esac
 
-emacsclient -e '(when (and (fboundp (quote mu4e-running-p)) (mu4e-running-p) (not (bound-and-true-p mu4e--server-indexing))) (mu4e-update-index))' >/dev/null 2>&1 || true
+[ -n "${MAILSYNC_NO_INDEX:-}" ] || emacsclient -e '(dalvrosa/mu4e-index-soon)' >/dev/null 2>&1 || true

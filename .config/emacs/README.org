@@ -1644,10 +1644,11 @@ Sort inbox searches ascending (oldest at top).
                               'ascending 'descending))))
 #+end_src
 
-Set the mail fetching command.
+Set the mail fetching command.  =MAILSYNC_NO_INDEX= stops the script
+from reindexing itself, since mu4e already does that when it exits.
 
 #+begin_src elisp
-  (setq mu4e-get-mail-command "~/.local/bin/mailsync")
+  (setq mu4e-get-mail-command "MAILSYNC_NO_INDEX=1 ~/.local/bin/mailsync")
 #+end_src
 
 ** Contexts for Multiple Accounts
@@ -1714,10 +1715,20 @@ No polling: =goimapnotify= pushes on IMAP IDLE.  Hide index messages and
 modeline numbering; mu4e's own =mu4e-headers-auto-update= refreshes the
 headers buffer after indexing, without pulling it into the current frame.
 
+=mailsync= calls =dalvrosa/mu4e-index-soon= after each sync, which waits
+out a running index rather than skipping it.
+
 #+begin_src elisp
   (defun dalvrosa/mu4e-update-mail-and-index ()
     (interactive)
     (mu4e-update-mail-and-index t))
+
+  (defun dalvrosa/mu4e-index-soon (&optional tries)
+    "Index mail, waiting out an index already in progress."
+    (when (and (fboundp 'mu4e-running-p) (mu4e-running-p))
+      (if (and (bound-and-true-p mu4e--server-indexing) (< (or tries 0) 15))
+          (run-at-time 2 nil #'dalvrosa/mu4e-index-soon (1+ (or tries 0)))
+        (mu4e-update-index))))
 
   (with-eval-after-load 'mu4e
     (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
