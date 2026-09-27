@@ -88,7 +88,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/llama-20260601.1455/llama-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/llama-20260909.859/llama-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -97,8 +97,8 @@ disabled.
 
 
 
-(autoload 'llama "llama" "\
-Expand to a `lambda' expression that wraps around FN and BODY.
+(autoload 'llama "llama"
+"Expand to a `lambda' expression that wraps around FN and BODY.
 
 This macro provides a compact way to write short `lambda' expressions.
 It expands to a `lambda' expression, which calls the function FN with
@@ -155,16 +155,16 @@ Consider enabling `llama-fontify-mode' to highlight `##' and its
 special arguments.
 
 (fn FN &rest BODY)" nil t)
-(defvar llama-fontify-mode nil "\
-Non-nil if Llama-Fontify mode is enabled.
+(defvar llama-fontify-mode nil
+"Non-nil if Llama-Fontify mode is enabled.
 See the `llama-fontify-mode' command
 for a description of this minor mode.
 Setting this variable directly does not take effect;
 either customize it (see the info node `Easy Customization')
 or call the function `llama-fontify-mode'.")
 (custom-autoload 'llama-fontify-mode "llama" nil)
-(autoload 'llama-fontify-mode "llama" "\
-In Emacs Lisp mode, highlight the `##' macro and its special arguments.
+(autoload 'llama-fontify-mode "llama"
+"In Emacs Lisp mode, highlight the `##' macro and its special arguments.
 
 This is a global minor mode.  If called interactively, toggle the
 `Llama-Fontify mode' mode.  If the prefix argument is positive, enable
@@ -188,7 +188,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/with-editor-20260901.1435/with-editor-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/with-editor-20260919.936/with-editor-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -205,7 +205,7 @@ The value is automatically generated to teach commands to use the
 current Emacs instance as \"the editor\".
 
 PROCESS is only intended for use by `eat-exec-hook'.  When invoked
-interactively, INTERACTIVE is non-nil, which supresses the call to
+interactively, INTERACTIVE is non-nil, which suppresses the call to
 \"clear\" (only relevant in `vterm-mode' and `eat-mode').
 
 This command can be used in `shell-mode', `term-mode', `eshell-mode',
@@ -216,7 +216,7 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
 "Like `with-editor-export-editor' but always set `$GIT_EDITOR'.
 
 PROCESS is only intended for use by `eat-exec-hook'.  When invoked
-interactively, INTERACTIVE is non-nil, which supresses the call to
+interactively, INTERACTIVE is non-nil, which suppresses the call to
 \"clear\".
 
 (fn &optional PROCESS INTERACTIVE)" t)
@@ -224,7 +224,7 @@ interactively, INTERACTIVE is non-nil, which supresses the call to
 "Like `with-editor-export-editor' but always set `$HG_EDITOR'.
 
 PROCESS is only intended for use by `eat-exec-hook'.  When invoked
-interactively, INTERACTIVE is non-nil, which supresses the call to
+interactively, INTERACTIVE is non-nil, which suppresses the call to
 \"clear\".
 
 (fn &optional PROCESS INTERACTIVE)" t)
@@ -437,7 +437,7 @@ Load serialized `vlf-occur' results from current buffer." t)
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/vertico-20260907.519/vertico-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/vertico-20260913.1525/vertico-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -832,7 +832,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/transient-20260901.1451/transient-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/transient-20260919.938/transient-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2155,7 +2155,7 @@ buffer and returned as a string in Org format." t)
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/emacsql-20260601.1722/emacsql-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/emacsql-20260920.2146/emacsql-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2164,8 +2164,8 @@ buffer and returned as a string in Org format." t)
 
 
 
-(autoload 'emacsql-show-last-sql "emacsql" "\
-Display the compiled SQL of the s-expression SQL expression before point.
+(autoload 'emacsql-show-last-sql "emacsql"
+"Display the compiled SQL of the s-expression SQL expression before point.
 A prefix argument causes the SQL to be printed into the current buffer.
 
 (fn &optional PREFIX)" t)
@@ -2257,7 +2257,7 @@ and call `auth-source-forget+'." t)
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-20260907.1411/magit-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-20260921.2144/magit-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -4529,7 +4529,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/forge-20260901.1514/forge-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/forge-20260919.1834/forge-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -4829,7 +4829,7 @@ heavy development." t)
 (autoload 'forge-topic-menu "forge-topic" nil t)
 (autoload 'forge-topic-state-menu "forge-topic" nil t)
 (autoload 'forge-topic-status-menu "forge-topic" nil t)
-(register-definition-prefixes "forge-topic" '("forge-"))
+(register-definition-prefixes "forge-topic" '("bug-reference--run-auto-setup" "forge-"))
 
 
 
@@ -6083,7 +6083,7 @@ Forge-Topic mode buffer for that topic.")
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/org-caldav-20260501.8/org-caldav-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/org-caldav-20260914.307/org-caldav-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6092,15 +6092,15 @@ Forge-Topic mode buffer for that topic.")
 
 
 
-(autoload 'org-caldav-sync "org-caldav" "\
-Sync Org with calendar." t)
-(autoload 'org-caldav-convert-ics-to-datetree "org-caldav" "\
-Convert ics content in current buffer to Org datetree format.
+(autoload 'org-caldav-sync "org-caldav"
+"Sync Org with calendar." t)
+(autoload 'org-caldav-convert-ics-to-datetree "org-caldav"
+"Convert ics content in current buffer to Org datetree format.
 Output is displayed in the buffer *org-caldav-convert-ics-to-datetree*." t)
-(autoload 'org-caldav-import-ics-buffer-to-org "org-caldav" "\
-Add ics content in current buffer to `org-caldav-inbox'." t)
-(autoload 'org-caldav-import-ics-to-org "org-caldav" "\
-Add ics content in PATH to `org-caldav-inbox'.
+(autoload 'org-caldav-import-ics-buffer-to-org "org-caldav"
+"Add ics content in current buffer to `org-caldav-inbox'." t)
+(autoload 'org-caldav-import-ics-to-org "org-caldav"
+"Add ics content in PATH to `org-caldav-inbox'.
 
 (fn PATH)" t)
 (register-definition-prefixes "org-caldav" '("org-caldav-"))
@@ -6110,7 +6110,7 @@ Add ics content in PATH to `org-caldav-inbox'.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orderless-20260830.1156/orderless-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orderless-20260909.1506/orderless-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6377,7 +6377,7 @@ and returns the icon.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/nerd-icons-completion-20260412.243/nerd-icons-completion-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/nerd-icons-completion-20260921.2012/nerd-icons-completion-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6386,18 +6386,18 @@ and returns the icon.
 
 
 
-(autoload 'nerd-icons-completion-marginalia-setup "nerd-icons-completion" "\
-Hook to `marginalia-mode-hook' to bind `nerd-icons-completion-mode' to it.")
-(defvar nerd-icons-completion-mode nil "\
-Non-nil if Nerd-Icons-Completion mode is enabled.
+(autoload 'nerd-icons-completion-marginalia-setup "nerd-icons-completion"
+"Hook to `marginalia-mode-hook' to bind `nerd-icons-completion-mode' to it.")
+(defvar nerd-icons-completion-mode nil
+"Non-nil if Nerd-Icons-Completion mode is enabled.
 See the `nerd-icons-completion-mode' command
 for a description of this minor mode.
 Setting this variable directly does not take effect;
 either customize it (see the info node `Easy Customization')
 or call the function `nerd-icons-completion-mode'.")
 (custom-autoload 'nerd-icons-completion-mode "nerd-icons-completion" nil)
-(autoload 'nerd-icons-completion-mode "nerd-icons-completion" "\
-Add icons to completion candidates.
+(autoload 'nerd-icons-completion-mode "nerd-icons-completion"
+"Add icons to completion candidates.
 
 This is a global minor mode.  If called interactively, toggle the
 `Nerd-Icons-Completion mode' mode.  If the prefix argument is positive,
@@ -6504,7 +6504,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ledger-mode-20260727.518/ledger-mode-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ledger-mode-20260922.356/ledger-mode-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6533,8 +6533,8 @@ disabled.
 
 
 
-(autoload 'ledger-flymake-enable "ledger-flymake" "\
-Enable `flymake-mode' in `ledger-mode' buffers.")
+(autoload 'ledger-flymake-enable "ledger-flymake"
+"Enable `flymake-mode' in `ledger-mode' buffers.")
 (register-definition-prefixes "ledger-flymake" '("ledger-"))
 
 
@@ -6551,10 +6551,14 @@ Enable `flymake-mode' in `ledger-mode' buffers.")
 
 
 
-(autoload 'ledger-mode "ledger-mode" "\
-A mode for editing ledger data files.
+(autoload 'ledger-mode "ledger-mode"
+"A mode for editing ledger data files.
 
-(fn)" t)
+In addition to any hooks its parent mode `text-mode' might have run, this mode
+runs the hook `ledger-mode-hook', as the final or penultimate step during
+initialization.
+
+\\{ledger-mode-map}" t)
 (add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
 (register-definition-prefixes "ledger-mode" '("ledger-"))
 
@@ -6611,7 +6615,7 @@ A mode for editing ledger data files.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/gptel-20260906.334/gptel-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/gptel-20260919.1615/gptel-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6636,6 +6640,8 @@ evaluate the variable `gptel-mode'.
 
 The mode's hook is called both when the mode is enabled and when it is
 disabled.
+
+\\{gptel-mode-map}
 
 (fn &optional ARG)" t)
 (autoload 'gptel-send "gptel"
@@ -7226,7 +7232,7 @@ CURL-ARGS, STREAM, KEY, REQUEST-PARAMS, HEADER, HOST, PROTOCOL,
 ENDPOINT and MODELS are all optional; for their meanings, see
 `gptel-make-openai'.
 
-(fn NAME &key CURL-ARGS STREAM KEY REQUEST-PARAMS (HEADER (lambda (_info) (when-let* ((key (gptel--get-api-key))) \\=`((\"Authorization\" \\=\\, (concat \"Bearer \" key)))))) (HOST \"api.deepseek.com\") (PROTOCOL \"https\") (ENDPOINT \"/v1/chat/completions\") (MODELS \\='((deepseek-v4-flash :capabilities (tool-use reasoning) :context-window 1000 :input-cost 0.14 :output-cost 0.28) (deepseek-v4-pro :capabilities (tool-use reasoning) :context-window 1000 :input-cost 0.435 :output-cost 0.87) (deepseek-v4-flash-vision-exp :capabilities (media tool-use reasoning url) :mime-types (\"image/jpeg\" \"image/png\" \"image/gif\" \"image/webp\") :context-window 1000 :input-cost 0.14 :output-cost 0.28))))")
+(fn NAME &key CURL-ARGS STREAM KEY REQUEST-PARAMS (HEADER (lambda (_info) (when-let* ((key (gptel--get-api-key))) \\=`((\"Authorization\" \\=\\, (concat \"Bearer \" key)))))) (HOST \"api.deepseek.com\") (PROTOCOL \"https\") (ENDPOINT \"/v1/chat/completions\") (MODELS \\='((deepseek-flash :capabilities (media tool-use reasoning url) :mime-types (\"image/jpeg\" \"image/png\" \"image/gif\" \"image/webp\") :context-window 1000 :input-cost 0.15 :output-cost 0.6) (deepseek-v4-pro :capabilities (tool-use reasoning) :context-window 1000 :input-cost 0.66 :output-cost 1.98) (deepseek-v4-flash :description \"DEPRECATED: Use deepseek-flash instead.\" :capabilities (tool-use reasoning) :context-window 1000 :input-cost 0.15 :output-cost 0.6) (deepseek-v4-flash-vision-exp :description \"DEPRECATED: Use deepseek-flash instead.\" :capabilities (media tool-use reasoning url) :mime-types (\"image/jpeg\" \"image/png\" \"image/gif\" \"image/webp\") :context-window 1000 :input-cost 0.15 :output-cost 0.6))))")
 (function-put 'gptel-make-deepseek 'lisp-indent-function 1)
 (autoload 'gptel-make-xai "gptel-openai-extras"
 "Register an xAI backend for gptel with NAME.
@@ -7452,7 +7458,7 @@ Defaults to \"origin\".
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghostel-20260902.1753/ghostel-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghostel-20260920.730/ghostel-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -7517,11 +7523,12 @@ recorded `command' or starting a shell.  Respawned buffers are plain
 `ghostel-exec' buffers; kind-specific setup (e.g. eshell's
 visual-command exit behavior) is not restored.
 When a reused shell's directory differs and `ghostel-bookmark-check-dir'
-is non-nil, a `cd' is typed into it; command buffers are left alone.
+is non-nil, a `cd' is typed into it, but only while the shell is idle
+(see `ghostel-bookmark--shell-idle-p'); command buffers are left alone.
 
 (fn BMK)")
  (autoload 'ghostel--bookmark-handler "ghostel-bookmark")
-(register-definition-prefixes "ghostel-bookmark" '("ghostel-bookmark-check-dir"))
+(register-definition-prefixes "ghostel-bookmark" '("ghostel-bookmark-"))
 
 
 
@@ -7745,8 +7752,8 @@ to the desktop file in plaintext.
 "Restore a ghostel terminal named BUFFER-NAME from desktop data MISC.
 MISC is (DIRECTORY IDENTITY) as saved by `ghostel-desktop-save-buffer'.
 Reuse a live buffer matching IDENTITY, else start a fresh shell in DIRECTORY
-under BUFFER-NAME -- skipping remote and missing directories and command
-identities, with a message.  Return the buffer, or nil when skipping.
+under BUFFER-NAME -- skipping remote directories and command identities,
+with a message.  Return the buffer, or nil when skipping.
 
 (fn FILE-NAME BUFFER-NAME MISC)")
 (register-definition-prefixes "ghostel-desktop" '("ghostel-desktop--"))
@@ -7848,6 +7855,10 @@ disabled.
 
 
 (register-definition-prefixes "ghostel-module-install" '("ghostel-"))
+
+
+
+(register-definition-prefixes "ghostel-org" '("ghostel-org-"))
 
 
 
@@ -8611,7 +8622,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/consult-20260906.2048/consult-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/consult-20260913.2232/consult-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9078,7 +9089,7 @@ FETCHER and ALIST arguments.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/elfeed-20260829.1230/elfeed-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/elfeed-20260919.1336/elfeed-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9272,7 +9283,7 @@ Hook up rmh-elfeed-org to read the `org-mode' configuration when elfeed is run."
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/doom-modeline-20260902.808/doom-modeline-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/doom-modeline-20260922.229/doom-modeline-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9332,7 +9343,7 @@ disabled.
 
 
 
-(register-definition-prefixes "doom-modeline-segments" '("doom-modeline-"))
+(register-definition-prefixes "doom-modeline-segments" '("doom-m"))
 
 
 (provide 'doom-modeline-autoloads)
@@ -9540,7 +9551,7 @@ See `dape-breakpoint-mode' for more information on Dape-Breakpoint mode.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/corfu-20260905.450/corfu-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/corfu-20260913.1527/corfu-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -11252,7 +11263,7 @@ Note: this function modifies the buffer!
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/auctex-14.1.2/auctex-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/auctex-14.2.0/auctex-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -11265,28 +11276,28 @@ Note: this function modifies the buffer!
 
 
 
-(autoload 'bib-cite-minor-mode "bib-cite" "\
-Toggle bib-cite mode.
+(autoload 'bib-cite-minor-mode "bib-cite"
+"Toggle bib-cite mode.
 When bib-cite mode is enabled, citations, labels and refs are highlighted
 when the mouse is over them.  Clicking on these highlights with [mouse-2]
 runs `bib-find', and [mouse-3] runs `bib-display'.
 
 (fn ARG)" t)
-(autoload 'turn-on-bib-cite "bib-cite" "\
-Unconditionally turn on Bib Cite mode.")
+(autoload 'turn-on-bib-cite "bib-cite"
+"Unconditionally turn on Bib Cite mode.")
 (register-definition-prefixes "bib-cite" '("LaTeX-find-label-hist-alist" "bib-" "create-alist-from-list" "member-cis" "psg-" "search-directory-tree"))
 
 
 
 (defalias 'context-mode #'ConTeXt-mode)
-(autoload 'ConTeXt-mode "context" "\
-Major mode in AUCTeX for editing ConTeXt files.
+(autoload 'ConTeXt-mode "context"
+"Major mode in AUCTeX for editing ConTeXt files.
 
 Entering `ConTeXt-mode' calls the value of `text-mode-hook',
 then the value of `TeX-mode-hook', and then the value
 of `ConTeXt-mode-hook'.
 
-(fn)" t)
+\\{ConTeXt-mode-map}" t)
 (register-definition-prefixes "context" '("ConTeXt-" "TeX-ConTeXt-sentinel" "context-guess-current-interface"))
 
 
@@ -11299,35 +11310,35 @@ of `ConTeXt-mode-hook'.
 
 
 
-(autoload 'font-latex-setup "font-latex" "\
-Setup this buffer for LaTeX font-lock.  Usually called from a hook.")
+(autoload 'font-latex-setup "font-latex"
+"Setup this buffer for LaTeX font-lock.  Usually called from a hook.")
 (register-definition-prefixes "font-latex" '("font-latex-"))
 
 
 
-(autoload 'BibTeX-auto-store "latex" "\
-This function should be called from `bibtex-mode-hook'.
+(autoload 'BibTeX-auto-store "latex"
+"This function should be called from `bibtex-mode-hook'.
 It will setup BibTeX to store keys in an auto file.")
 (add-to-list 'auto-mode-alist '("\\.drv\\'" . LaTeX-mode) t)
 (add-to-list 'auto-mode-alist '("\\.hva\\'" . LaTeX-mode))
  (if (eq (symbol-function 'LaTeX-mode) 'latex-mode)
     (defalias 'LaTeX-mode nil))
-(autoload 'LaTeX-mode "latex" "\
-Major mode in AUCTeX for editing LaTeX files.
+(autoload 'LaTeX-mode "latex"
+"Major mode in AUCTeX for editing LaTeX files.
 See info under AUCTeX for full documentation.
 
 Entering LaTeX mode calls the value of `text-mode-hook',
 then the value of `TeX-mode-hook', and then the value
 of `LaTeX-mode-hook'.
 
-(fn)" t)
+\\{LaTeX-mode-map}" t)
 (put 'LaTeX-mode 'auctex-function-definition (symbol-function 'LaTeX-mode))
-(autoload 'docTeX-mode "latex" "\
-Major mode in AUCTeX for editing .dtx files derived from `LaTeX-mode'.
+(autoload 'docTeX-mode "latex"
+"Major mode in AUCTeX for editing .dtx files derived from `LaTeX-mode'.
 Runs `LaTeX-mode', sets a few variables and
 runs the hooks in `docTeX-mode-hook'.
 
-(fn)" t)
+\\{docTeX-mode-map}" t)
 (register-definition-prefixes "latex" '("Bib" "LaTeX-" "TeX-" "docTeX-" "latex-math-mode"))
 
 
@@ -11336,16 +11347,16 @@ runs the hooks in `docTeX-mode-hook'.
 
 
 
-(autoload 'multi-prompt "multi-prompt" "\
-Completing prompt for a list of strings.
+(autoload 'multi-prompt "multi-prompt"
+"Completing prompt for a list of strings.
 The first argument SEPARATOR should be the string (of length 1) to
 separate the elements in the list.  The second argument UNIQUE should
 be non-nil, if each element must be unique.  The remaining elements
 are the arguments to `completing-read'.  See that.
 
 (fn SEPARATOR UNIQUE PROMPT TABLE &optional MP-PREDICATE REQUIRE-MATCH INITIAL HISTORY)")
-(autoload 'multi-prompt-key-value "multi-prompt" "\
-Read multiple strings, with completion and key=value support.
+(autoload 'multi-prompt-key-value "multi-prompt"
+"Read multiple strings, with completion and key=value support.
 PROMPT is a string to prompt with, usually ending with a colon
 and a space.
 
@@ -11368,38 +11379,38 @@ The return value is the string as entered in the minibuffer.
 
  (if (eq (symbol-function 'plain-TeX-mode) 'plain-tex-mode)
     (defalias 'plain-TeX-mode nil))
-(autoload 'plain-TeX-mode "plain-tex" "\
-Major mode in AUCTeX for editing plain TeX files.
+(autoload 'plain-TeX-mode "plain-tex"
+"Major mode in AUCTeX for editing plain TeX files.
 See info under AUCTeX for documentation.
 
 Entering `plain-TeX-mode' calls the value of `text-mode-hook',
 then the value of `TeX-mode-hook', and then the value
 of `plain-TeX-mode-hook'.
 
-(fn)" t)
+\\{plain-TeX-mode-map}" t)
 (put 'plain-TeX-mode 'auctex-function-definition (symbol-function 'plain-TeX-mode))
-(autoload 'AmSTeX-mode "plain-tex" "\
-Major mode in AUCTeX for editing AmSTeX files.
+(autoload 'AmSTeX-mode "plain-tex"
+"Major mode in AUCTeX for editing AmSTeX files.
 See info under AUCTeX for documentation.
 
 Entering `AmSTeX-mode' calls the value of `text-mode-hook', then
 the value of `TeX-mode-hook', `plain-TeX-mode-hook' and then the
 value of `AmSTeX-mode-hook'.
 
-(fn)" t)
+\\{AmSTeX-mode-map}" t)
 (defalias 'ams-tex-mode #'AmSTeX-mode)
 (register-definition-prefixes "plain-tex" '("AmSTeX-" "plain-TeX-"))
 
 
 
 (put 'preview-scale-function 'safe-local-variable (lambda (x) (and (numberp x) (<= 0.1 x 10))))
-(autoload 'desktop-buffer-preview "preview" "\
-Hook function for restoring persistent previews into a buffer.
+(autoload 'desktop-buffer-preview "preview"
+"Hook function for restoring persistent previews into a buffer.
 
 (fn FILE-NAME BUFFER-NAME MISC)")
 (add-to-list 'desktop-buffer-mode-handlers '(LaTeX-mode . desktop-buffer-preview))
-(autoload 'preview-install-styles "preview" "\
-Install the TeX style files into a permanent location DIR.
+(autoload 'preview-install-styles "preview"
+"Install the TeX style files into a permanent location DIR.
 This must be in the TeX search path.  If FORCE-OVERWRITE is greater
 than 1, files will get overwritten without query, if it is less
 than 1 or nil, the operation will fail.  The default of 1 for interactive
@@ -11410,18 +11421,18 @@ Similarly FORCE-SAVE can be used for saving
 files are no longer needed in the search path.
 
 (fn DIR &optional FORCE-OVERWRITE FORCE-SAVE)" t)
-(autoload 'LaTeX-preview-setup "preview" "\
-Hook function for embedding the preview package into AUCTeX.
+(autoload 'LaTeX-preview-setup "preview"
+"Hook function for embedding the preview package into AUCTeX.
 This is called by `LaTeX-mode-hook' and changes AUCTeX variables
 to add the preview functionality.")
-(autoload 'preview-report-bug "preview" "\
-Report a bug in the preview-latex package." t)
+(autoload 'preview-report-bug "preview"
+"Report a bug in the preview-latex package." t)
 (register-definition-prefixes "preview" '("TeX-" "desktop-buffer-preview-misc-data" "preview-"))
 
 
 
-(autoload 'TeX-tex-mode "tex" "\
-Call suitable AUCTeX major mode for editing TeX or LaTeX files.
+(autoload 'TeX-tex-mode "tex"
+"Call suitable AUCTeX major mode for editing TeX or LaTeX files.
 Tries to guess whether this file is for plain TeX or LaTeX.
 
 The algorithm is as follows:
@@ -11440,15 +11451,15 @@ other entries will enter `plain-TeX-mode'." t)
  (if (eq (symbol-function 'TeX-mode) 'tex-mode)
     (defalias 'TeX-mode nil))
 (put 'TeX-mode 'auctex-function-definition (symbol-function 'TeX-mode))
-(autoload 'TeX-auto-generate "tex" "\
-Generate style file for TEX and store it in AUTO.
+(autoload 'TeX-auto-generate "tex"
+"Generate style file for TEX and store it in AUTO.
 If TEX is a directory, generate style files for all files in the directory.
 
 (fn TEX AUTO)" t)
-(autoload 'TeX-auto-generate-global "tex" "\
-Create global auto directory for global TeX macro definitions." t)
-(autoload 'TeX-submit-bug-report "tex" "\
-Submit a bug report on AUCTeX via mail.
+(autoload 'TeX-auto-generate-global "tex"
+"Create global auto directory for global TeX macro definitions." t)
+(autoload 'TeX-submit-bug-report "tex"
+"Submit a bug report on AUCTeX via mail.
 
 Don't hesitate to report any problems or inaccurate documentation.
 
@@ -11459,16 +11470,16 @@ information about your AUCTeX version and AUCTeX configuration." t)
 
 
 
-(autoload 'TeX-install-toolbar "tex-bar" "\
-Install toolbar buttons for TeX mode." t)
-(autoload 'LaTeX-install-toolbar "tex-bar" "\
-Install toolbar buttons for LaTeX mode." t)
+(autoload 'TeX-install-toolbar "tex-bar"
+"Install toolbar buttons for TeX mode." t)
+(autoload 'LaTeX-install-toolbar "tex-bar"
+"Install toolbar buttons for LaTeX mode." t)
 (register-definition-prefixes "tex-bar" '("TeX-bar-"))
 
 
 
-(autoload 'TeX-fold-mode "tex-fold" "\
-Minor mode for hiding and revealing macros and environments.
+(autoload 'TeX-fold-mode "tex-fold"
+"Minor mode for hiding and revealing macros and environments.
 
 Called interactively, with no prefix argument, toggle the mode.
 With universal prefix ARG (or if ARG is nil) turn mode on.
@@ -11480,19 +11491,19 @@ With zero or negative ARG turn mode off.
 
 
 
-(autoload 'tex-font-setup "tex-font" "\
-Setup font lock support for TeX.")
+(autoload 'tex-font-setup "tex-font"
+"Setup font lock support for TeX.")
 (register-definition-prefixes "tex-font" '("tex-font-lock-"))
 
 
 
-(autoload 'Texinfo-mode "tex-info" "\
-Major mode in AUCTeX for editing Texinfo files.
+(autoload 'Texinfo-mode "tex-info"
+"Major mode in AUCTeX for editing Texinfo files.
 
 Entering Texinfo mode calls the value of `text-mode-hook' and then the
 value of `Texinfo-mode-hook'.
 
-(fn)" t)
+\\{Texinfo-mode-map}" t)
 (register-definition-prefixes "tex-info" '("Texinfo-" "texinfo-environment-regexp"))
 
 
@@ -11501,15 +11512,23 @@ value of `Texinfo-mode-hook'.
 
 
 
-(autoload 'japanese-plain-TeX-mode "tex-jp" "\
-Major mode in AUCTeX for editing Japanese plain TeX files.
+(autoload 'japanese-plain-TeX-mode "tex-jp"
+"Major mode in AUCTeX for editing Japanese plain TeX files.
 
-(fn)" t)
+In addition to any hooks its parent mode `plain-TeX-mode' might have run, this
+mode runs the hook `japanese-plain-TeX-mode-hook', as the final or penultimate
+step during initialization.
+
+\\{japanese-plain-TeX-mode-map}" t)
 (defalias 'japanese-plain-tex-mode #'japanese-plain-TeX-mode)
-(autoload 'japanese-LaTeX-mode "tex-jp" "\
-Major mode in AUCTeX for editing Japanese LaTeX files.
+(autoload 'japanese-LaTeX-mode "tex-jp"
+"Major mode in AUCTeX for editing Japanese LaTeX files.
 
-(fn)" t)
+In addition to any hooks its parent mode `LaTeX-mode' might have run, this mode
+runs the hook `japanese-LaTeX-mode-hook', as the final or penultimate step
+during initialization.
+
+\\{japanese-LaTeX-mode-map}" t)
 (defalias 'japanese-latex-mode #'japanese-LaTeX-mode)
 (register-definition-prefixes "tex-jp" '("TeX-japanese-process-" "japanese-"))
 
@@ -11528,14 +11547,14 @@ Major mode in AUCTeX for editing Japanese LaTeX files.
 
 
 
-(autoload 'texmathp "texmathp" "\
-Determine if point is inside (La)TeX math mode.
+(autoload 'texmathp "texmathp"
+"Determine if point is inside (La)TeX math mode.
 Returns t or nil.  Additional info is placed into `texmathp-why'.
 The functions assumes that you have (almost) syntactically correct (La)TeX in
 the buffer.
 See the variable `texmathp-tex-commands' about which commands are checked." t)
-(autoload 'texmathp-match-switch "texmathp" "\
-Search backward for any of the math switches.
+(autoload 'texmathp-match-switch "texmathp"
+"Search backward for any of the math switches.
 Limit searched to BOUND.
 
 (fn BOUND)")
@@ -11573,7 +11592,7 @@ Limit searched to BOUND.
   (require 'info) (info-initialize)
   (setq Info-directory-list
         (append
-         (list (file-name-concat package--quickstart-dir "elpa/auctex-14.1.2")
+         (list (file-name-concat package--quickstart-dir "elpa/auctex-14.2.0")
                (file-name-concat package--quickstart-dir
                                  "elpa/bbdb-vcard-20210325.2208")
                (file-name-concat package--quickstart-dir
@@ -11582,16 +11601,16 @@ Limit searched to BOUND.
                                  "elpa/embark-20260610.302")
                (file-name-concat package--quickstart-dir "elpa/ement-0.17")
                (file-name-concat package--quickstart-dir
-                                 "elpa/ledger-mode-20260727.518")
+                                 "elpa/ledger-mode-20260922.356")
                (file-name-concat package--quickstart-dir
-                                 "elpa/orderless-20260830.1156")
+                                 "elpa/orderless-20260909.1506")
                (file-name-concat package--quickstart-dir
-                                 "elpa/org-caldav-20260501.8")
+                                 "elpa/org-caldav-20260914.307")
                (file-name-concat package--quickstart-dir "elpa/org-9.8.10")
                (file-name-concat package--quickstart-dir
-                                 "elpa/forge-20260901.1514")
+                                 "elpa/forge-20260919.1834")
                (file-name-concat package--quickstart-dir
-                                 "elpa/magit-20260907.1411")
+                                 "elpa/magit-20260921.2144")
                (file-name-concat package--quickstart-dir
                                  "elpa/ghub-20260902.1834")
                (file-name-concat package--quickstart-dir "elpa/plz-0.9.1")
@@ -11603,11 +11622,11 @@ Limit searched to BOUND.
                (file-name-concat package--quickstart-dir
                                  "elpa/magit-section-20260901.1810")
                (file-name-concat package--quickstart-dir
-                                 "elpa/transient-20260901.1451")
+                                 "elpa/transient-20260919.938")
                (file-name-concat package--quickstart-dir
                                  "elpa/web-server-20210708.2242")
                (file-name-concat package--quickstart-dir
-                                 "elpa/with-editor-20260901.1435"))
+                                 "elpa/with-editor-20260919.936"))
          Info-directory-list)))
 
 ;; Local Variables:
