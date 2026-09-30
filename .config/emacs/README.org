@@ -198,11 +198,13 @@ store it following the XDG specification.
 Dired ("directory editor") is the Emacs file manager; make a buffer
 editable with =C-x C-q= to bulk-rename or change permissions as text.
 Show human readable sizes and group directories first, except when
-sorting by date.
+sorting by date.  Annotate images with Satty via =&=.
 
 #+begin_src elisp
   (setq-default dired-listing-switches "-alh --group-directories-first")
   (setq dired-auto-revert-buffer t)
+  (setq dired-guess-shell-alist-user
+        '(("\\.\\(png\\|jpe?g\\|webp\\)\\'" "satty -f")))
 
   (defun dalvrosa/dired-goto-top ()
     (goto-char (point-min))
@@ -1411,7 +1413,7 @@ Two-way CalDAV sync between =~/docs/Calendar.org= and Nextcloud.
         (org-caldav-sync))
       (when (org-caldav-sync-result-filter-errors)
         (org-caldav-display-sync-results)))
-    (run-with-timer 900 900 #'dalvrosa/org-caldav-sync-quietly))
+    (run-with-timer 900 900 #'run-with-idle-timer 30 nil #'dalvrosa/org-caldav-sync-quietly))
 #+end_src
 
 * Markup Languages
@@ -1713,12 +1715,14 @@ Custom bookmark for all inboxes.
 
 ** Update and Notification
 
-No polling: =goimapnotify= pushes on IMAP IDLE.  Hide index messages and
-modeline numbering; mu4e's own =mu4e-headers-auto-update= refreshes the
-headers buffer after indexing, without pulling it into the current frame.
+Push via =goimapnotify= on IMAP IDLE, with a 1-min =mbsync.timer=
+backstop.  Hide index messages and modeline numbering; mu4e's own
+=mu4e-headers-auto-update= refreshes the headers buffer after indexing,
+without pulling it into the current frame.
 
-=mailsync= calls =dalvrosa/mu4e-index-soon= after each sync, which waits
-out a running index rather than skipping it.
+=mailsync= calls =dalvrosa/mu4e-index-soon= only when mbsync changed the
+local side, waiting out a running index rather than skipping it.  Lazy
+check only rescans maildirs whose mtime changed.
 
 #+begin_src elisp
   (defun dalvrosa/mu4e-update-mail-and-index ()
@@ -1736,6 +1740,7 @@ out a running index rather than skipping it.
     (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
     (define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index))
 
+  (setq mu4e-index-lazy-check t)
   (setq mu4e-hide-index-messages t)
   (setq mu4e-modeline-support nil)
 #+end_src

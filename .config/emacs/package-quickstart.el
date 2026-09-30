@@ -88,7 +88,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/llama-20260909.859/llama-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/llama-20260925.1854/llama-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -188,7 +188,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/with-editor-20260919.936/with-editor-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/with-editor-20260925.1502/with-editor-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -832,7 +832,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/transient-20260919.938/transient-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/transient-20260926.1400/transient-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -925,7 +925,7 @@ See info node `(transient)Modifying Existing Transients'.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-section-20260901.1810/magit-section-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-section-20260926.1436/magit-section-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2155,7 +2155,7 @@ buffer and returned as a string in Org format." t)
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/emacsql-20260920.2146/emacsql-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/emacsql-20260925.1105/emacsql-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2204,7 +2204,7 @@ A prefix argument causes the SQL to be printed into the current buffer.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/closql-20260601.1540/closql-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/closql-20260925.1458/closql-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2220,7 +2220,7 @@ A prefix argument causes the SQL to be printed into the current buffer.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghub-20260902.1834/ghub-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghub-20260925.1500/ghub-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2257,7 +2257,7 @@ and call `auth-source-forget+'." t)
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-20260921.2144/magit-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-20260926.1436/magit-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -4529,7 +4529,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/forge-20260919.1834/forge-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/forge-20260926.1226/forge-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -5946,7 +5946,7 @@ Return PDF file's name.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orgit-20260731.2256/orgit-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orgit-20260926.1400/orgit-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -5956,47 +5956,47 @@ Return PDF file's name.
 
 
 (with-eval-after-load 'magit (keymap-set magit-mode-map "<remap> <org-store-link>" #'orgit-store-link))
-(autoload 'orgit-store-link "orgit" "\
-Like `org-store-link' but store links to all selected commits, if any.
+(autoload 'orgit-store-link "orgit"
+"Like `org-store-link' but store links to all selected commits, if any.
 
 (fn ARG)" t)
 (with-eval-after-load 'org (with-eval-after-load 'magit (org-link-set-parameters "orgit" :store #'orgit-status-store :follow #'orgit-status-open :export #'orgit-status-export :complete #'orgit-status-complete-link)))
-(autoload 'orgit-status-store "orgit" "\
-Store a link to a Magit-Status mode buffer.
+(autoload 'orgit-status-store "orgit"
+"Store a link to a Magit-Status mode buffer.
 When the region selects one or more commits, then do nothing.
 In that case `orgit-rev-store' stores one or more links instead.")
-(autoload 'orgit-status-open "orgit" "\
-
+(autoload 'orgit-status-open "orgit"
+"
 
 (fn REPO)")
-(autoload 'orgit-status-export "orgit" "\
-
+(autoload 'orgit-status-export "orgit"
+"
 
 (fn PATH DESC BACKEND INFO)")
-(autoload 'orgit-status-complete-link "orgit" "\
-
+(autoload 'orgit-status-complete-link "orgit"
+"
 
 (fn &optional ARG)")
 (with-eval-after-load 'org (with-eval-after-load 'magit (org-link-set-parameters "orgit-log" :store #'orgit-log-store :follow #'orgit-log-open :export #'orgit-log-export :complete #'orgit-log-complete-link)))
-(autoload 'orgit-log-store "orgit" "\
-Store a link to a Magit-Log mode buffer.
+(autoload 'orgit-log-store "orgit"
+"Store a link to a Magit-Log mode buffer.
 When the region selects one or more commits, then do nothing.
 In that case `orgit-rev-store' stores one or more links instead.")
-(autoload 'orgit-log-open "orgit" "\
-
+(autoload 'orgit-log-open "orgit"
+"
 
 (fn PATH)")
-(autoload 'orgit-log-export "orgit" "\
-
+(autoload 'orgit-log-export "orgit"
+"
 
 (fn PATH DESC BACKEND INFO)")
-(autoload 'orgit-log-complete-link "orgit" "\
-
+(autoload 'orgit-log-complete-link "orgit"
+"
 
 (fn &optional ARG)")
 (with-eval-after-load 'org (with-eval-after-load 'magit (org-link-set-parameters "orgit-rev" :store #'orgit-rev-store :follow #'orgit-rev-open :export #'orgit-rev-export :complete #'orgit-rev-complete-link)))
-(autoload 'orgit-rev-store "orgit" "\
-Store a link to a Magit-Revision mode buffer.
+(autoload 'orgit-rev-store "orgit"
+"Store a link to a Magit-Revision mode buffer.
 
 By default store an abbreviated revision hash.
 
@@ -6012,30 +6012,30 @@ stores a link itself, without calling this function.
 
 When the region selects one or more commits, e.g., in a log, then
 store links to the Magit-Revision mode buffers for these commits.")
-(autoload 'orgit-rev-open "orgit" "\
-
+(autoload 'orgit-rev-open "orgit"
+"
 
 (fn PATH)")
-(autoload 'orgit-rev-export "orgit" "\
-
+(autoload 'orgit-rev-export "orgit"
+"
 
 (fn PATH DESC BACKEND INFO)")
-(autoload 'orgit-rev-complete-link "orgit" "\
-
+(autoload 'orgit-rev-complete-link "orgit"
+"
 
 (fn &optional ARG)")
 (with-eval-after-load 'org (with-eval-after-load 'magit (org-link-set-parameters "orgit-blob" :store 'orgit-blob-store :follow 'orgit-blob-open :export 'orgit-blob-export :complete 'orgit-blob-complete-link)))
 (autoload 'orgit-blob-store "orgit")
-(autoload 'orgit-blob-open "orgit" "\
-
+(autoload 'orgit-blob-open "orgit"
+"
 
 (fn PATH)")
-(autoload 'orgit-blob-export "orgit" "\
-
+(autoload 'orgit-blob-export "orgit"
+"
 
 (fn PATH DESC BACKEND INFO)")
-(autoload 'orgit-blob-complete-link "orgit" "\
-
+(autoload 'orgit-blob-complete-link "orgit"
+"
 
 (fn &optional ARG)")
 (register-definition-prefixes "orgit" '("orgit-"))
@@ -6110,7 +6110,7 @@ Output is displayed in the buffer *org-caldav-convert-ics-to-datetree*." t)
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orderless-20260909.1506/orderless-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orderless-20260927.2344/orderless-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6459,7 +6459,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/marginalia-20260907.511/marginalia-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/marginalia-20260926.1228/marginalia-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6504,7 +6504,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ledger-mode-20260922.356/ledger-mode-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ledger-mode-20260928.205/ledger-mode-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6615,7 +6615,7 @@ initialization.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/gptel-20260919.1615/gptel-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/gptel-20260925.357/gptel-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6640,8 +6640,6 @@ evaluate the variable `gptel-mode'.
 
 The mode's hook is called both when the mode is enabled and when it is
 disabled.
-
-\\{gptel-mode-map}
 
 (fn &optional ARG)" t)
 (autoload 'gptel-send "gptel"
@@ -7223,7 +7221,7 @@ parameters.
 The remaining keyword arguments, including CURL-ARGS, are
 optional.  For their meanings see `gptel-make-openai'.
 
-(fn NAME &key CURL-ARGS STREAM KEY (HEADER (lambda (_info) (when-let* ((key (gptel--get-api-key))) \\=`((\"Authorization\" \\=\\, (concat \"Bearer \" key)))))) (HOST \"api.perplexity.ai\") (PROTOCOL \"https\") (MODELS \\='(sonar sonar-pro sonar-reasoning sonar-reasoning-pro sonar-deep-research)) (ENDPOINT \"/chat/completions\") REQUEST-PARAMS)")
+(fn NAME &key CURL-ARGS STREAM KEY (HEADER (lambda (_info) (when-let* ((key (gptel--get-api-key))) \\=`((\"Authorization\" \\=\\, (concat \"Bearer \" key)) (\"X-Pplx-Integration\" . \"gptel\"))))) (HOST \"api.perplexity.ai\") (PROTOCOL \"https\") (MODELS \\='(sonar sonar-pro sonar-reasoning sonar-reasoning-pro sonar-deep-research)) (ENDPOINT \"/chat/completions\") REQUEST-PARAMS)")
 (function-put 'gptel-make-perplexity 'lisp-indent-function 1)
 (autoload 'gptel-make-deepseek "gptel-openai-extras"
 "Register a DeepSeek backend for gptel with NAME.
@@ -7266,7 +7264,7 @@ The keyword arguments (CURL-ARGS, STREAM, REQUEST-PARAMS,
 HEADER, HOST, PROTOCOL, ENDPOINT and MODELS) are all optional;
 for their meanings, see `gptel-make-openai'.
 
-(fn NAME &key CURL-ARGS (STREAM t) REQUEST-PARAMS (HEADER #\\='gptel--openai-oauth-header) (HOST \"chatgpt.com\") (PROTOCOL \"https\") (ENDPOINT \"/backend-api/codex/responses\") (MODELS \\='(gpt-5.2 (gpt-5.3-codex :description \"Agentic coding model\" :capabilities (media tool-use json url responses-api) :mime-types (\"image/jpeg\" \"image/png\" \"image/gif\" \"image/webp\") :context-window 400 :input-cost 1.75 :output-cost 14 :cutoff-date \"2025-08\") (gpt-5.3-codex-spark :description \"Low-latency version of GPT-5.3-Codex, text only\" :capabilities (tool-use json responses-api) :context-window 128) gpt-5.4-mini gpt-5.4 gpt-5.5 gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-6-astra)))")
+(fn NAME &key CURL-ARGS (STREAM t) REQUEST-PARAMS (HEADER #\\='gptel--openai-oauth-header) (HOST \"chatgpt.com\") (PROTOCOL \"https\") (ENDPOINT \"/backend-api/codex/responses\") (MODELS \\='(gpt-5.5 gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-6-astra)))")
 (function-put 'gptel-make-openai-oauth 'lisp-indent-function 1)
 (register-definition-prefixes "gptel-openai-oauth" '("gptel-"))
 
@@ -7458,7 +7456,7 @@ Defaults to \"origin\".
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghostel-20260920.730/ghostel-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghostel-20260927.1848/ghostel-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -8622,7 +8620,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/consult-20260913.2232/consult-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/consult-20260926.910/consult-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9089,7 +9087,7 @@ FETCHER and ALIST arguments.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/elfeed-20260919.1336/elfeed-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/elfeed-20260926.1226/elfeed-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9283,7 +9281,7 @@ Hook up rmh-elfeed-org to read the `org-mode' configuration when elfeed is run."
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/doom-modeline-20260922.229/doom-modeline-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/doom-modeline-20260926.1647/doom-modeline-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9946,7 +9944,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/cape-20260905.500/cape-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/cape-20260927.2347/cape-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -11601,18 +11599,18 @@ Limit searched to BOUND.
                                  "elpa/embark-20260610.302")
                (file-name-concat package--quickstart-dir "elpa/ement-0.17")
                (file-name-concat package--quickstart-dir
-                                 "elpa/ledger-mode-20260922.356")
+                                 "elpa/ledger-mode-20260928.205")
                (file-name-concat package--quickstart-dir
-                                 "elpa/orderless-20260909.1506")
+                                 "elpa/orderless-20260927.2344")
                (file-name-concat package--quickstart-dir
                                  "elpa/org-caldav-20260914.307")
                (file-name-concat package--quickstart-dir "elpa/org-9.8.10")
                (file-name-concat package--quickstart-dir
-                                 "elpa/forge-20260919.1834")
+                                 "elpa/forge-20260926.1226")
                (file-name-concat package--quickstart-dir
-                                 "elpa/magit-20260921.2144")
+                                 "elpa/magit-20260926.1436")
                (file-name-concat package--quickstart-dir
-                                 "elpa/ghub-20260902.1834")
+                                 "elpa/ghub-20260925.1500")
                (file-name-concat package--quickstart-dir "elpa/plz-0.9.1")
                (file-name-concat package--quickstart-dir
                                  "elpa/dash-20260221.1346")
@@ -11620,13 +11618,13 @@ Limit searched to BOUND.
                                  "elpa/taxy-magit-section-0.14.3")
                (file-name-concat package--quickstart-dir "elpa/taxy-0.10.2")
                (file-name-concat package--quickstart-dir
-                                 "elpa/magit-section-20260901.1810")
+                                 "elpa/magit-section-20260926.1436")
                (file-name-concat package--quickstart-dir
-                                 "elpa/transient-20260919.938")
+                                 "elpa/transient-20260926.1400")
                (file-name-concat package--quickstart-dir
                                  "elpa/web-server-20210708.2242")
                (file-name-concat package--quickstart-dir
-                                 "elpa/with-editor-20260919.936"))
+                                 "elpa/with-editor-20260925.1502"))
          Info-directory-list)))
 
 ;; Local Variables:

@@ -3,7 +3,7 @@ Description=Periodic mail sync (backstop for missed IDLE notifications)
 
 [Timer]
 OnBootSec=30s
-OnUnitActiveSec=2min
+OnUnitActiveSec=1min
 AccuracySec=1s
 
 [Install]

@@ -58,6 +58,8 @@
 
 (setq-default dired-listing-switches "-alh --group-directories-first")
 (setq dired-auto-revert-buffer t)
+(setq dired-guess-shell-alist-user
+      '(("\\.\\(png\\|jpe?g\\|webp\\)\\'" "satty -f")))
 
 (defun dalvrosa/dired-goto-top ()
   (goto-char (point-min))
@@ -771,7 +773,7 @@ With prefix arg NEW, start an additional session instead."
       (org-caldav-sync))
     (when (org-caldav-sync-result-filter-errors)
       (org-caldav-display-sync-results)))
-  (run-with-timer 900 900 #'dalvrosa/org-caldav-sync-quietly))
+  (run-with-timer 900 900 #'run-with-idle-timer 30 nil #'dalvrosa/org-caldav-sync-quietly))
 
 (use-package markdown-mode)
 
@@ -959,6 +961,7 @@ With prefix arg NEW, start an additional session instead."
   (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
   (define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index))
 
+(setq mu4e-index-lazy-check t)
 (setq mu4e-hide-index-messages t)
 (setq mu4e-modeline-support nil)
 
