@@ -1029,6 +1029,7 @@ With prefix arg NEW, start an additional session instead."
 
 (setq message-citation-line-function 'message-insert-formatted-citation-line)
 (setq message-citation-line-format "On %a %d %b %Y at %R, %N wrote:")
+(setq message-cite-reply-position 'above)
 (setq message-kill-buffer-on-exit t)
 
 (setq mu4e-attachment-dir "~/tmp")

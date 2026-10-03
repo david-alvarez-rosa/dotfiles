@@ -1836,6 +1836,7 @@ after sending.
 
   (setq message-citation-line-function 'message-insert-formatted-citation-line)
   (setq message-citation-line-format "On %a %d %b %Y at %R, %N wrote:")
+  (setq message-cite-reply-position 'above)
   (setq message-kill-buffer-on-exit t)
 #+end_src
 
