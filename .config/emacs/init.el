@@ -961,7 +961,25 @@ With prefix arg NEW, start an additional session instead."
   (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
   (define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index))
 
-(setq mu4e-index-lazy-check t)
+(setq mu4e-headers-auto-update nil)
+
+(defun dalvrosa/mu4e-headers-refresh (&rest _)
+  "Rerun the headers search when visible and without pending marks."
+  (when-let* ((buf (mu4e-get-headers-buffer))
+              (win (get-buffer-window buf t)))
+    (with-selected-window win
+      (when (zerop (mu4e-mark-marks-num))
+        (let ((mu4e--search-background t))
+          (mu4e-search-rerun))))))
+
+(with-eval-after-load 'mu4e
+  (add-hook 'mu4e-index-updated-hook #'dalvrosa/mu4e-headers-refresh)
+  (add-hook 'mu4e-headers-mode-hook
+            (lambda ()
+              (add-hook 'window-buffer-change-functions
+                        #'dalvrosa/mu4e-headers-refresh nil t))))
+
+(setq mu4e-index-lazy-check nil)
 (setq mu4e-hide-index-messages t)
 (setq mu4e-modeline-support nil)
 
