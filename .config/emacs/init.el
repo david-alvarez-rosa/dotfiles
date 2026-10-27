@@ -1048,6 +1048,17 @@ With prefix arg NEW, start an additional session instead."
 (setq message-citation-line-function 'message-insert-formatted-citation-line)
 (setq message-citation-line-format "On %a %d %b %Y at %R, %N wrote:")
 (setq message-cite-reply-position 'above)
+
+(defun dalvrosa/mu4e-signature-above-citation ()
+  (save-excursion
+    (when (and (eq mu4e-compose-type 'reply) (message-goto-signature))
+      (forward-line -1)
+      (let ((sig (delete-and-extract-region (point) (point-max))))
+        (message-goto-body)
+        (insert "\n" sig "\n")))))
+
+(add-hook 'mu4e-compose-mode-hook #'dalvrosa/mu4e-signature-above-citation)
+
 (setq message-kill-buffer-on-exit t)
 
 (setq mu4e-attachment-dir "~/tmp")
