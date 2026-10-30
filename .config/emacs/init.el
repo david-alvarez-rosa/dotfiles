@@ -404,7 +404,7 @@
          ("RET" . dalvrosa/gptel-send)))
   :config
   (setq gptel-backend (gptel-make-anthropic "Claude" :stream t :key gptel-api-key))
-  (setq gptel-model 'claude-sonnet-5)
+  (setq gptel-model 'claude-haiku-5-5)
   (setq gptel-default-mode 'org-mode)
   (add-hook 'gptel-post-response-functions #'gptel-end-of-response)
   (setq gptel-system-prompt
