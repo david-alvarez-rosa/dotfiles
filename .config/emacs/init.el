@@ -419,6 +419,11 @@
 (setq vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
 (setq tramp-verbose 1)
 
+(with-eval-after-load 'project
+  (define-advice project-try-vc (:around (fn dir) allow-remote)
+    (let ((vc-ignore-dir-regexp locate-dominating-stop-dir-regexp))
+      (funcall fn dir))))
+
 (setq custom-safe-themes t)
 
 (defun dalvrosa/set-background-alpha ()
@@ -525,6 +530,13 @@
   (setq ghostel-query-before-killing nil)
   (setq ghostel-max-scrollback (* 10 1024 1024))
   (add-to-list 'ghostel-eval-cmds '("man" man))
+  (connection-local-set-profile-variables
+   'dalvrosa/direct-async '((tramp-direct-async-process . t)))
+  (define-advice ghostel--spawn-via-emacs (:around (fn &rest args) direct-async)
+    (let ((connection-local-criteria-alist
+           (cons '((:application tramp) dalvrosa/direct-async)
+                 connection-local-criteria-alist)))
+      (apply fn args)))
   (add-hook 'ghostel-mode-hook
             (lambda () (setq-local global-hl-line-mode nil)))
   :bind (("C-c t" . ghostel)
@@ -542,12 +554,17 @@ With prefix arg NEW, start an additional session instead."
   (interactive "P")
   (require 'ghostel)
   (let* ((default-directory (project-root (project-current t)))
-         (name (project-prefixed-buffer-name "claude"))
-         (buffer (and (not new) (get-buffer name)))
-         (ghostel-shell (list "claude" "--dangerously-skip-permissions")))
-    (if buffer
+         (host (file-remote-p default-directory 'host))
+         (name (project-prefixed-buffer-name (if host (concat "claude@" host) "claude")))
+         (buffer (and (not new) (get-buffer name))))
+    (cond
+     (buffer (pop-to-buffer-same-window buffer))
+     ((file-remote-p default-directory)
+      (let ((buffer (generate-new-buffer name)))
         (pop-to-buffer-same-window buffer)
-      (ghostel-create name '((display-buffer-same-window))))))
+        (ghostel-exec buffer "sh" '("-c" "exec ~/.local/bin/claude --dangerously-skip-permissions"))))
+     (t (let ((ghostel-shell (list "claude" "--dangerously-skip-permissions")))
+          (ghostel-create name '((display-buffer-same-window))))))))
 
 (with-eval-after-load 'project
   (add-to-list 'project-switch-commands '(consult-project-buffer "Find buffer") t)
