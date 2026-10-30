@@ -46,7 +46,7 @@ initialization.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/cond-let-20260901.1107/cond-let-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/cond-let-20261001.1537/cond-let-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -88,7 +88,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/llama-20260925.1854/llama-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/llama-20261001.1538/llama-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -188,7 +188,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/with-editor-20260925.1502/with-editor-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/with-editor-20261029.2155/with-editor-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -206,10 +206,10 @@ current Emacs instance as \"the editor\".
 
 PROCESS is only intended for use by `eat-exec-hook'.  When invoked
 interactively, INTERACTIVE is non-nil, which suppresses the call to
-\"clear\" (only relevant in `vterm-mode' and `eat-mode').
+\"clear\" (only relevant in `vterm-mode', `eat-mode', and `ghostel-mode').
 
 This command can be used in `shell-mode', `term-mode', `eshell-mode',
-`vterm-mode' and `eat-mode'.
+`vterm-mode', `eat-mode' and `ghostel-mode'.
 
 (fn &optional (ENVVAR \"EDITOR\") PROCESS INTERACTIVE)" t)
 (autoload 'with-editor-export-git-editor "with-editor"
@@ -832,7 +832,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/transient-20260926.1400/transient-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/transient-20261024.2032/transient-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -925,7 +925,7 @@ See info node `(transient)Modifying Existing Transients'.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-section-20260926.1436/magit-section-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-section-20261028.453/magit-section-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2155,7 +2155,7 @@ buffer and returned as a string in Org format." t)
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/emacsql-20260925.1105/emacsql-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/emacsql-20261001.1544/emacsql-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2204,7 +2204,7 @@ A prefix argument causes the SQL to be printed into the current buffer.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/closql-20260925.1458/closql-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/closql-20261021.848/closql-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2220,7 +2220,7 @@ A prefix argument causes the SQL to be printed into the current buffer.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghub-20260925.1500/ghub-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghub-20261021.1627/ghub-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2257,7 +2257,7 @@ and call `auth-source-forget+'." t)
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-20260926.1436/magit-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-20261029.2116/magit-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -3846,8 +3846,12 @@ refspec.
 (autoload 'magit-list-repositories "magit-repos"
 "Display a list of repositories.
 
-Use the option `magit-repository-directories' to control which
-repositories are displayed." t)
+Use option `magit-repository-directories' to control which repositories
+are displayed.  Use \".dir-locals.el\" to specify a different set of
+repositories to be listed, when invoked from below a certain directory.
+With a prefix argument, always display the global list.
+
+(fn &optional FORCE-GLOBAL)" t)
 (register-definition-prefixes "magit-repos" '("magit-"))
 
 
@@ -4462,7 +4466,7 @@ Interactively, use `magit-read-worktree-directory-function'.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/markdown-mode-20260827.909/markdown-mode-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/markdown-mode-20261022.55/markdown-mode-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -4529,7 +4533,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/forge-20260926.1226/forge-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/forge-20261028.1427/forge-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -4545,7 +4549,7 @@ If you want to disable this, then you must set this to nil before
 `magit' is loaded.  If you do it before `forge' but after `magit'
 is loaded, then `magit-mode-map' ends up being modified anyway.")
 (with-eval-after-load 'magit-mode (when forge-add-default-bindings (keymap-set magit-mode-map "'" #'forge-dispatch) (keymap-set magit-mode-map "N" #'forge-dispatch) (keymap-set magit-mode-map "<remap> <magit-browse-thing>" #'forge-browse) (keymap-set magit-mode-map "<remap> <magit-copy-thing>" #'forge-copy-url-at-point-as-kill)))
-(with-eval-after-load 'magit-repos (when forge-add-default-bindings (keymap-set magit-repolist-mode-map "N" #'forge-dispatch)))
+(with-eval-after-load 'magit-repos (when forge-add-default-bindings (keymap-set magit-repolist-mode-map "N" #'forge-dispatch) (keymap-set magit-repolist-mode-map "C-c C-o" #'forge-browse)))
 (with-eval-after-load 'git-commit (when forge-add-default-bindings (keymap-set git-commit-mode-map "C-c C-v" #'forge-visit-topic)))
 (register-definition-prefixes "forge" '("forge-"))
 
@@ -4624,7 +4628,7 @@ a file in the worktree with no active region, instead use the branch
 name as part of the URL, unless a prefix argument is used.
 
 When invoked from a Dired buffer, visit the blob at point without
-prompting. If a prefix argument is used, the commit hash is included
+prompting.  If a prefix argument is used, the commit hash is included
 in the URL.
 
 When invoked from any other buffer, prompt the user for a branch or
@@ -5946,7 +5950,7 @@ Return PDF file's name.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orgit-20260926.1400/orgit-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orgit-20261001.1639/orgit-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6045,7 +6049,7 @@ store links to the Magit-Revision mode buffers for these commits.")
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orgit-forge-20260731.2256/orgit-forge-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orgit-forge-20261001.1639/orgit-forge-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6110,7 +6114,7 @@ Output is displayed in the buffer *org-caldav-convert-ics-to-datetree*." t)
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orderless-20260927.2344/orderless-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orderless-20261013.1927/orderless-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6242,7 +6246,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/nerd-icons-20260823.17/nerd-icons-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/nerd-icons-20261011.1410/nerd-icons-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6459,7 +6463,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/marginalia-20260926.1228/marginalia-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/marginalia-20261010.1524/marginalia-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6615,7 +6619,7 @@ initialization.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/gptel-20260925.357/gptel-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/gptel-20261018.848/gptel-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6640,6 +6644,8 @@ evaluate the variable `gptel-mode'.
 
 The mode's hook is called both when the mode is enabled and when it is
 disabled.
+
+\\{gptel-mode-map}
 
 (fn &optional ARG)" t)
 (autoload 'gptel-send "gptel"
@@ -7247,7 +7253,7 @@ The remaining keyword arguments (CURL-ARGS, REQUEST-PARAMS,
 HEADER, HOST, PROTOCOL, ENDPOINT and MODELS) are optional; for
 their meanings see `gptel-make-openai'.
 
-(fn NAME &key CURL-ARGS STREAM KEY REQUEST-PARAMS (HEADER (lambda (_info) (when-let* ((key (gptel--get-api-key))) \\=`((\"Authorization\" \\=\\, (concat \"Bearer \" key)))))) (HOST \"api.x.ai\") (PROTOCOL \"https\") (ENDPOINT \"/v1/chat/completions\") (MODELS \\='((grok-4.5 :description \"Most advanced flagship model, leading in agentic tool calling and instruction following capabilities.\" :capabilities (tool-use json media reasoning) :mime-types (\"image/jpeg\" \"image/png\" \"image/gif\" \"image/webp\") :context-window 500 :input-cost 2 :output-cost 6) (grok-4.3 :description \"Advanced flagship model, leading in agentic tool calling and instruction following capabilities.\" :capabilities (tool-use json media reasoning) :mime-types (\"image/jpeg\" \"image/png\" \"image/gif\" \"image/webp\") :context-window 1000 :input-cost 1.25 :output-cost 2.5) (grok-build-0.1 :description \"xAI\\='s fast coding model trained specifically for agentic coding. Currently in early access.\" :capabilities (tool-use json media reasoning) :mime-types (\"image/jpeg\" \"image/png\" \"image/gif\" \"image/webp\") :context-window 256 :input-cost 1 :output-cost 2))))")
+(fn NAME &key CURL-ARGS STREAM KEY REQUEST-PARAMS (HEADER (lambda (_info) (when-let* ((key (gptel--get-api-key))) \\=`((\"Authorization\" \\=\\, (concat \"Bearer \" key)))))) (HOST \"api.x.ai\") (PROTOCOL \"https\") (ENDPOINT \"/v1/chat/completions\") (MODELS \\='((grok-4.7 :description \"Frontier model for coding, agentic tasks, and knowledge work. The most capable Grok model.\" :capabilities (tool-use json media reasoning) :mime-types (\"image/jpeg\" \"image/png\") :context-window 500 :input-cost 2 :output-cost 6) (grok-4.6 :description \"Previous frontier model for coding, agentic tasks, and knowledge work.\" :capabilities (tool-use json media reasoning) :mime-types (\"image/jpeg\" \"image/png\") :context-window 500 :input-cost 2 :output-cost 6) (grok-4.5 :description \"Coding model for agentic software, engineering, and workflow tasks.\" :capabilities (tool-use json media reasoning) :mime-types (\"image/jpeg\" \"image/png\" \"image/gif\" \"image/webp\") :context-window 500 :input-cost 2 :output-cost 6) (grok-4.3 :description \"Fast, lower-cost model with strong tool calling and instruction following. 1M context.\" :capabilities (tool-use json media reasoning) :mime-types (\"image/jpeg\" \"image/png\" \"image/gif\" \"image/webp\") :context-window 1000 :input-cost 1.25 :output-cost 2.5) (grok-4.20 :description \"Fast agentic model with strict prompt adherence.\" :capabilities (tool-use json media reasoning) :mime-types (\"image/jpeg\" \"image/png\") :context-window 1000 :input-cost 1.25 :output-cost 2.5) (grok-4.20-non-reasoning :description \"Non-reasoning variant of Grok 4.20, optimized for speed and prompt adherence.\" :capabilities (tool-use json media) :mime-types (\"image/jpeg\" \"image/png\") :context-window 1000 :input-cost 1.25 :output-cost 2.5) (grok-4.20-multi-agent :description \"Multi-agent variant of Grok 4.20; agents collaborate in parallel on deep research.\" :capabilities (tool-use json media reasoning) :mime-types (\"image/jpeg\" \"image/png\") :context-window 1000 :input-cost 1.25 :output-cost 2.5) (grok-build-0.1 :description \"Coding model for agentic software, engineering, and workflow tasks. 256k context.\" :capabilities (tool-use json media reasoning) :mime-types (\"image/jpeg\" \"image/png\" \"image/gif\" \"image/webp\") :context-window 256 :input-cost 1 :output-cost 2))))")
 (function-put 'gptel-make-xai 'lisp-indent-function 1)
 (register-definition-prefixes "gptel-openai-extras" '("gptel--p"))
 
@@ -7264,7 +7270,7 @@ The keyword arguments (CURL-ARGS, STREAM, REQUEST-PARAMS,
 HEADER, HOST, PROTOCOL, ENDPOINT and MODELS) are all optional;
 for their meanings, see `gptel-make-openai'.
 
-(fn NAME &key CURL-ARGS (STREAM t) REQUEST-PARAMS (HEADER #\\='gptel--openai-oauth-header) (HOST \"chatgpt.com\") (PROTOCOL \"https\") (ENDPOINT \"/backend-api/codex/responses\") (MODELS \\='(gpt-5.5 gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-6-astra)))")
+(fn NAME &key CURL-ARGS (STREAM t) REQUEST-PARAMS (HEADER #\\='gptel--openai-oauth-header) (HOST \"chatgpt.com\") (PROTOCOL \"https\") (ENDPOINT \"/backend-api/codex/responses\") (MODELS \\='(gpt-5.5 gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-6-astra gpt-6-sol gpt-6-luna gpt-6.1-sol)))")
 (function-put 'gptel-make-openai-oauth 'lisp-indent-function 1)
 (register-definition-prefixes "gptel-openai-oauth" '("gptel-"))
 
@@ -7456,7 +7462,7 @@ Defaults to \"origin\".
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghostel-20260927.1848/ghostel-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghostel-20261029.1738/ghostel-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -7474,33 +7480,15 @@ The name of the buffer is determined by the value of `ghostel-buffer-name'.
 Returns the buffer.
 
 (fn &optional ARG)" t)
-(autoload 'ghostel-project "ghostel"
-"Start a new Ghostel terminal in the current project's root.
-The buffer name is prefixed with the project name; remote (TRAMP) projects also
-carry the remote host, to distinguish equally named local and remote projects.
-If a buffer already exists for this project, switch to it.
-Otherwise create a new Ghostel buffer.  ARG is passed through to
-`ghostel' and accepts the same universal argument conventions.
-To add this to `project-switch-commands':
-  (add-to-list \\='project-switch-commands \\='(ghostel-project \"Ghostel\") t)
-Returns the buffer.
-
-(fn &optional ARG)" t)
+(autoload 'ghostel-new "ghostel"
+"Create a new Ghostel terminal, like \\[universal-argument] `ghostel'.
+Returns the buffer." t)
 (autoload 'ghostel-next "ghostel"
 "Switch to the next ghostel buffer (sorted by name, wraps around)." t)
 (autoload 'ghostel-previous "ghostel"
 "Switch to the previous ghostel buffer (sorted by name, wraps around)." t)
-(autoload 'ghostel-project-next "ghostel"
-"Switch to the next ghostel buffer in the current project (wraps around).
-Project membership is determined by `ghostel-project-buffer-scope'." t)
-(autoload 'ghostel-project-previous "ghostel"
-"Switch to the previous ghostel buffer in the current project (wraps around).
-Project membership is determined by `ghostel-project-buffer-scope'." t)
 (autoload 'ghostel-list-buffers "ghostel"
 "Pick a ghostel buffer to switch to via `read-buffer'." t)
-(autoload 'ghostel-project-list-buffers "ghostel"
-"Pick a ghostel buffer in the current project via `read-buffer'.
-Project membership is determined by `ghostel-project-buffer-scope'." t)
 (register-definition-prefixes "ghostel" '("ghostel-"))
 
 
@@ -7815,9 +7803,9 @@ disabled.
 
 When enabled, ghostel forwards committed text from Lisp input methods
 that insert directly into the buffer, and defers redraws and insert
-forwarding while a composition is in flight.  Enable it for any Emacs
-Lisp input method (Hangul, Quail-based Japanese/Chinese, ...).  A
-typical setup is:
+forwarding while a composition is in flight.  Required for Hangul and
+other input methods that are not Quail-based; optional for Quail.
+A typical setup is:
 
   (add-hook ='ghostel-mode-hook #='ghostel-ime-mode)
 
@@ -7860,7 +7848,124 @@ disabled.
 
 
 
+(autoload 'ghostel-project "ghostel-project"
+"Start a new Ghostel terminal in the current project's root.
+The buffer name is prefixed with the project name; remote (TRAMP) projects also
+carry the remote host, to distinguish equally named local and remote projects.
+If a buffer already exists for this project, switch to it.
+Otherwise create a new Ghostel buffer.  ARG is passed through to
+`ghostel' and accepts the same universal argument conventions.
+To add this to `project-switch-commands':
+  (add-to-list \\='project-switch-commands \\='(ghostel-project \"Ghostel\") t)
+Returns the buffer.
+
+(fn &optional ARG)" t)
+(autoload 'ghostel-project-new "ghostel-project"
+"Create a new Ghostel terminal in the current project's root.
+Like \\[universal-argument] `ghostel-project'.  Returns the buffer." t)
+(autoload 'ghostel-project-buffer-list "ghostel-project"
+"Return ghostel buffers belonging to the current project, sorted by name.
+Scoping is controlled by `ghostel-project-buffer-scope'.
+Prompts to choose a project when there is none.
+
+Buffers whose `default-directory' is remote are skipped in the
+`default-directory' scope branch; querying `project-current' against a TRAMP
+path would walk the remote filesystem synchronously on every cycle.")
+(autoload 'ghostel-project-next "ghostel-project"
+"Switch to the next ghostel buffer in the current project (wraps around).
+Project membership is determined by `ghostel-project-buffer-scope'." t)
+(autoload 'ghostel-project-previous "ghostel-project"
+"Switch to the previous ghostel buffer in the current project (wraps around).
+Project membership is determined by `ghostel-project-buffer-scope'." t)
+(autoload 'ghostel-project-list-buffers "ghostel-project"
+"Pick a ghostel buffer in the current project via `read-buffer'.
+Project membership is determined by `ghostel-project-buffer-scope'." t)
+(register-definition-prefixes "ghostel-project" '("ghostel-"))
+
+
+
 (register-definition-prefixes "ghostel-shell" '("ghostel-"))
+
+
+
+(autoload 'ghostel-shell-command "ghostel-shell-command"
+"Run shell COMMAND in a ghostel terminal, like `async-shell-command'.
+
+COMMAND goes to `shell-file-name' via `shell-command-switch', the remote
+host's for a TRAMP `default-directory'.  The buffer, BUFFER-NAME or
+`ghostel-shell-command-buffer-name', is kept after COMMAND exits.
+When it is still running a command, `async-shell-command-buffer' decides
+whether to kill that one, use a new buffer, or rename the old one.
+Returns the buffer.
+
+(fn COMMAND &optional BUFFER-NAME)" t)
+(defvar ghostel-shell-command-global-mode nil
+"Non-nil if Ghostel-Shell-Command-Global mode is enabled.
+See the `ghostel-shell-command-global-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `ghostel-shell-command-global-mode'.")
+(custom-autoload 'ghostel-shell-command-global-mode "ghostel-shell-command" nil)
+(autoload 'ghostel-shell-command-global-mode "ghostel-shell-command"
+"Run every asynchronous `shell-command' in a ghostel terminal.
+
+Advises `shell-command', so \\[async-shell-command], Dired's `&',
+`project-async-shell-command' and Lisp callers are all covered.
+
+This is a global minor mode.  If called interactively, toggle the
+`Ghostel-Shell-Command-Global mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='ghostel-shell-command-global-mode)'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "ghostel-shell-command" '("ghostel-shell-command-"))
+
+
+
+(defvar ghostel-status-indicator-mode nil
+"Non-nil if Ghostel-Status-Indicator mode is enabled.
+See the `ghostel-status-indicator-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `ghostel-status-indicator-mode'.")
+(custom-autoload 'ghostel-status-indicator-mode "ghostel-status" nil)
+(autoload 'ghostel-status-indicator-mode "ghostel-status"
+"Count terminals by program status in every mode line.
+
+One label per distinct terminal label among the states in
+`ghostel-status-indicator-states', as in the terminal's own mode
+line, with the number of terminals showing it; hovering names them.
+A click runs `ghostel-status-next'.  Hidden while nothing counts.
+
+This is a global minor mode.  If called interactively, toggle the
+`Ghostel-Status-Indicator mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='ghostel-status-indicator-mode)'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+(fn &optional ARG)" t)
+(register-definition-prefixes "ghostel-status" '("ghostel-"))
 
 
 (provide 'ghostel-autoloads)
@@ -8620,7 +8725,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/consult-20260926.910/consult-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/consult-20261004.957/consult-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9087,7 +9192,7 @@ FETCHER and ALIST arguments.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/elfeed-20260926.1226/elfeed-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/elfeed-20261010.1010/elfeed-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9281,7 +9386,7 @@ Hook up rmh-elfeed-org to read the `org-mode' configuration when elfeed is run."
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/doom-modeline-20260926.1647/doom-modeline-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/doom-modeline-20261029.818/doom-modeline-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9489,7 +9594,7 @@ expression against the file name." t)
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/dape-0.27.1/dape-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/dape-0.28.0/dape-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9499,8 +9604,8 @@ expression against the file name." t)
 
 
 (put 'dape-command 'safe-local-variable #'listp)
-(autoload 'dape "dape" "\
-Start debugging session with selected configuration.
+(autoload 'dape "dape"
+"Start debugging session with selected configuration.
 When called interactively, the command prompts for a alist KEY from
 `dape-configs', followed by additional property-value pairs.  These
 pairs override the properties in the plist associated with the key
@@ -9519,16 +9624,19 @@ For more information see `dape-configs'.
 
 (fn CONFIG &optional SKIP-COMPILE)" t)
 (put 'dape-breakpoint-global-mode 'globalized-minor-mode t)
-(defvar dape-breakpoint-global-mode nil "\
-Non-nil if Dape-Breakpoint-Global mode is enabled.
+(defvar dape-breakpoint-global-mode nil
+"Non-nil if Dape-Breakpoint-Global mode is enabled.
 See the `dape-breakpoint-global-mode' command
 for a description of this minor mode.
 Setting this variable directly does not take effect;
 either customize it (see the info node `Easy Customization')
 or call the function `dape-breakpoint-global-mode'.")
 (custom-autoload 'dape-breakpoint-global-mode "dape" nil)
-(autoload 'dape-breakpoint-global-mode "dape" "\
-Toggle Dape-Breakpoint mode in all buffers.
+(autoload 'dape-breakpoint-global-mode "dape"
+"Toggle Dape-Breakpoint mode in many buffers.
+Specifically, Dape-Breakpoint mode is enabled in all buffers where
+`turn-on-dape-breakpoint-mode' would do it.
+
 With prefix ARG, enable Dape-Breakpoint-Global mode if ARG is positive;
 otherwise, disable it.
 
@@ -9536,12 +9644,10 @@ If called from Lisp, toggle the mode if ARG is `toggle'.
 Enable the mode if ARG is nil, omitted, or is a positive number.
 Disable the mode if ARG is a negative number.
 
-Dape-Breakpoint mode is enabled in all buffers where
-`turn-on-dape-breakpoint-mode' would do it.
-
 See `dape-breakpoint-mode' for more information on Dape-Breakpoint mode.
 
 (fn &optional ARG)" t)
+(defvar dape-global-map (let ((map (make-sparse-keymap))) (define-key map "d" #'dape) (define-key map "p" #'dape-pause) (define-key map "c" #'dape-continue) (define-key map "n" #'dape-next) (define-key map "s" #'dape-step-in) (define-key map "o" #'dape-step-out) (define-key map "r" #'dape-restart) (define-key map "f" #'dape-restart-frame) (define-key map "u" #'dape-until) (define-key map "i" #'dape-info) (define-key map "R" #'dape-repl) (define-key map "m" #'dape-memory) (define-key map "M" #'dape-disassemble) (define-key map "l" #'dape-breakpoint-log) (define-key map "e" #'dape-breakpoint-expression) (define-key map "h" #'dape-breakpoint-hits) (define-key map "F" #'dape-breakpoint-function) (define-key map "b" #'dape-breakpoint-toggle) (define-key map "B" #'dape-breakpoint-remove-all) (define-key map "t" #'dape-select-thread) (define-key map "T" #'dape-select-session) (define-key map "S" #'dape-select-stack) (define-key map ">" #'dape-stack-select-down) (define-key map "<" #'dape-stack-select-up) (define-key map "x" #'dape-evaluate-expression) (define-key map "w" #'dape-watch-dwim) (define-key map "D" #'dape-disconnect-quit) (define-key map "K" #'dape-kill) (define-key map "q" #'dape-quit) map))
 (register-definition-prefixes "dape" '("dape-" "turn-on-dape-breakpoint-mode"))
 
 
@@ -9549,7 +9655,7 @@ See `dape-breakpoint-mode' for more information on Dape-Breakpoint mode.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/corfu-20260913.1527/corfu-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/corfu-20261014.1751/corfu-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -11601,16 +11707,16 @@ Limit searched to BOUND.
                (file-name-concat package--quickstart-dir
                                  "elpa/ledger-mode-20260928.205")
                (file-name-concat package--quickstart-dir
-                                 "elpa/orderless-20260927.2344")
+                                 "elpa/orderless-20261013.1927")
                (file-name-concat package--quickstart-dir
                                  "elpa/org-caldav-20260914.307")
                (file-name-concat package--quickstart-dir "elpa/org-9.8.10")
                (file-name-concat package--quickstart-dir
-                                 "elpa/forge-20260926.1226")
+                                 "elpa/forge-20261028.1427")
                (file-name-concat package--quickstart-dir
-                                 "elpa/magit-20260926.1436")
+                                 "elpa/magit-20261029.2116")
                (file-name-concat package--quickstart-dir
-                                 "elpa/ghub-20260925.1500")
+                                 "elpa/ghub-20261021.1627")
                (file-name-concat package--quickstart-dir "elpa/plz-0.9.1")
                (file-name-concat package--quickstart-dir
                                  "elpa/dash-20260221.1346")
@@ -11618,13 +11724,13 @@ Limit searched to BOUND.
                                  "elpa/taxy-magit-section-0.14.3")
                (file-name-concat package--quickstart-dir "elpa/taxy-0.10.2")
                (file-name-concat package--quickstart-dir
-                                 "elpa/magit-section-20260926.1436")
+                                 "elpa/magit-section-20261028.453")
                (file-name-concat package--quickstart-dir
-                                 "elpa/transient-20260926.1400")
+                                 "elpa/transient-20261024.2032")
                (file-name-concat package--quickstart-dir
                                  "elpa/web-server-20210708.2242")
                (file-name-concat package--quickstart-dir
-                                 "elpa/with-editor-20260925.1502"))
+                                 "elpa/with-editor-20261029.2155"))
          Info-directory-list)))
 
 ;; Local Variables:
