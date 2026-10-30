@@ -4,29 +4,53 @@ set -eux
 
 cd ~/tmp
 
-plot () {
+report () {
     ledger -f ~/docs/Finances.ledger reg $1 --monthly --collapse \
            --format "%(date)\t%(quantity($3))\n" \
             | tail -n12 > $2.tsv
+}
 
-    gnuplot <<GP
-set terminal pngcairo
-set output '$2.png'
-set title '$2'
+report '^Assets ^Liabilities' NetWorth display_total
+report '( ^Assets or ^Liabilities ) and not ( Willis or Nederlanden )' Liquid display_total
+report ^Income Income -display_amount
+report ^Expenses Expenses display_amount
+report ^Equity:Profit Profit -display_amount
+report '^Income ^Expenses' Savings -display_amount
+
+gnuplot <<'GP'
+set terminal pngcairo size 1280,960
+set output 'LedgerReport.png'
+stats 'NetWorth.tsv' using (W = $2) nooutput
+stats 'Liquid.tsv' using (L = $2) nooutput
+stats 'Income.tsv' using 2 name 'I' nooutput
+stats 'Expenses.tsv' using 2 name 'E' nooutput
+stats 'Profit.tsv' using 2 name 'P' nooutput
+stats 'Savings.tsv' using 2 name 'S' nooutput
 set grid
 set xdata time
 set timefmt '%Y/%m/%d'
 set format x '%b'
-plot '$2.tsv' using 1:2 with linespoints notitle
+set format y '%.0s%c'
+set autoscale xfix
+set xzeroaxis lt -1
+set style fill solid 0.5
+set multiplot layout 2,2
+unset key
+
+set title sprintf('Net worth (%.0fk / %.0fk)', W / 1000, L / 1000)
+plot 'NetWorth.tsv' using 1:2 with linespoints, 'Liquid.tsv' using 1:2 with linespoints
+
+set title sprintf('Profit (%.1fk)', P_mean / 1000)
+plot 'Profit.tsv' using 1:2 with boxes, P_mean dt 2
+
+set title sprintf('Income / Expenses (%.1fk / %.1fk)', I_mean / 1000, E_mean / 1000)
+plot 'Income.tsv' using 1:2 with boxes, 'Expenses.tsv' using 1:(-$2) with boxes, \
+     I_mean lc 1 dt 2, -E_mean lc 2 dt 2
+
+set title sprintf('Savings (%.1fk)', S_mean / 1000)
+plot 'Savings.tsv' using 1:2 with boxes, S_mean dt 2
+
+unset multiplot
 GP
-}
-
-plot '^Assets ^Liabilities' 'NetWorth' 'display_total'
-plot '^Equity:Profit' 'Profit' '-display_amount'
-plot '^Income' 'Income' '-display_amount'
-plot '^Expenses' 'Expenses' 'display_amount'
-
-magick montage NetWorth.png Profit.png Income.png Expenses.png \
-       -tile 2x2 -geometry +10+10 LedgerReport.png
 
 feh LedgerReport.png
