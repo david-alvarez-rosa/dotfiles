@@ -17,3 +17,21 @@ type = "carddav"
 url = "https://cloud.alvarezrosa.com/remote.php/dav/addressbooks/users/david/"
 username = "david"
 password.fetch = ["command", "sh", "-c", "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep cloud.alvarezrosa.com | awk '{print $NF}'"]
+
+[pair calendars]
+a = "calendars_local"
+b = "calendars_remote"
+collections = ["personal"]
+conflict_resolution = "b wins"
+metadata = ["displayname"]
+
+[storage calendars_local]
+type = "filesystem"
+path = "~/.local/share/calendars/"
+fileext = ".ics"
+
+[storage calendars_remote]
+type = "caldav"
+url = "https://cloud.alvarezrosa.com/remote.php/dav/calendars/david/"
+username = "david"
+password.fetch = ["command", "sh", "-c", "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep cloud.alvarezrosa.com | awk '{print $NF}'"]

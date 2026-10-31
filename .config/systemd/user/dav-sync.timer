@@ -1,9 +1,9 @@
 [Unit]
-Description=Periodic Nextcloud contacts sync
+Description=Periodic Nextcloud contacts and calendar sync
 
 [Timer]
 OnBootSec=2min
-OnUnitActiveSec=1h
+OnUnitActiveSec=15min
 Persistent=true
 
 [Install]

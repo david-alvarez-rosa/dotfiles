@@ -12,7 +12,7 @@
                   ledger-mode magit marginalia markdown-mode
                   markdown-preview-mode nerd-icons nerd-icons-completion
                   nerd-icons-corfu nerd-icons-dired nyan-mode olivetti
-                  orderless org-caldav orgit orgit-forge ox-hugo pdf-tools
+                  orderless orgit orgit-forge ox-hugo pdf-tools
                   plantuml-mode sudo-edit treesit-auto vertico vlf yaml-mode))
  '(safe-local-variable-values
    '((project-current-directory . t)

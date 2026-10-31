@@ -665,10 +665,7 @@ With prefix arg NEW, start an additional session instead."
          "* %?" :empty-lines 1)
         ("b" "Blog Post" entry
          (file "~/dev/personal-website/Content.org")
-         "* TODO [#B] %?" :empty-lines 1 :prepend t)
-        ("e" "Event" entry
-         (file "~/docs/Calendar.org")
-         "* %?\n%^T" :empty-lines 1)))
+         "* TODO [#B] %?" :empty-lines 1 :prepend t)))
 
 (use-package mu4e-org
   :ensure nil
@@ -773,24 +770,6 @@ With prefix arg NEW, start an additional session instead."
 
 (setq org-archive-location "::* Archived Items")
 (setq org-archive-tag "archive")
-
-(use-package org-caldav
-  :init
-  (setq org-caldav-url "https://cloud.alvarezrosa.com/remote.php/dav/calendars/david"
-        org-caldav-calendar-id "personal"
-        org-caldav-inbox "~/docs/Calendar.org"
-        org-caldav-files nil
-        org-caldav-save-directory "~/.local/state/emacs/org-caldav/"
-        org-caldav-delete-org-entries 'always
-        org-caldav-delete-calendar-entries 'always
-        org-icalendar-timezone "Europe/Dublin")
-  (defvar org-caldav-show-sync-results)
-  (defun dalvrosa/org-caldav-sync-quietly ()
-    (let ((org-caldav-show-sync-results nil))
-      (org-caldav-sync))
-    (when (org-caldav-sync-result-filter-errors)
-      (org-caldav-display-sync-results)))
-  (run-with-timer 900 900 #'run-with-idle-timer 30 nil #'dalvrosa/org-caldav-sync-quietly))
 
 (use-package markdown-mode)
 
@@ -1095,13 +1074,18 @@ With prefix arg NEW, start an additional session instead."
   (setq gnus-dired-mail-mode 'mu4e-user-agent))
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
+(defun dalvrosa/calendar-accept (data)
+  (unless (eq (cadr data) 'declined)
+    (let ((file (make-temp-file "invite" nil ".ics")))
+      (mm-save-part-to-file (car data) file)
+      (make-process :name "dav-sync" :buffer " *dav-sync*"
+                    :command (list "sh" "-c" "dav-sync --accept \"$1\"; rm -f \"$1\"" "sh" file)))))
+
 (with-eval-after-load 'mu4e
   (require 'mu4e-icalendar)
   (mu4e-icalendar-setup)
   (setq mu4e-icalendar-trash-after-reply t)
-  (setq gnus-icalendar-org-capture-file "~/docs/Calendar.org")
-  (setq gnus-icalendar-org-capture-headline '("Invitations"))
-  (gnus-icalendar-org-setup))
+  (advice-add 'mu4e-icalendar-reply :after #'dalvrosa/calendar-accept))
 
 (with-eval-after-load 'mm-decode
   (advice-add 'mm-handle-filename :before-while

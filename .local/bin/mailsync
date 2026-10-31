@@ -5,8 +5,10 @@ sync_one() { flock "${XDG_RUNTIME_DIR:-/tmp}/mbsync-$1.lock" mbsync -c ~/.config
 out=$(sync_one "${1:-personal}")
 printf '%s\n' "$out"
 
-[ -n "${MAILSYNC_NO_INDEX:-}" ] && exit 0
 case $out in
-	*"Near: +0 *0 #0 -0"*) ;;
-	*) emacsclient -e '(dalvrosa/mu4e-index-soon)' >/dev/null 2>&1 || true ;;
+	*"Near: +0 *0 #0 -0"*) exit 0 ;;
 esac
+
+systemctl --user start --no-block dav-sync.service || true
+[ -n "${MAILSYNC_NO_INDEX:-}" ] && exit 0
+emacsclient -e '(dalvrosa/mu4e-index-soon)' >/dev/null 2>&1 || true

@@ -1,0 +1,55 @@
+#!/usr/bin/env -S uv run --quiet --script
+# /// script
+# dependencies = ["icalendar", "recurring-ical-events"]
+# ///
+from datetime import date, datetime, time, timedelta
+from pathlib import Path
+
+import recurring_ical_events
+from icalendar import Calendar
+
+CALENDAR = Path.home() / ".local/share/calendars/personal"
+ORG = Path.home() / "docs/Calendar.org"
+HEADER = """#+title: Calendar
+#+author: David Álvarez Rosa
+#+email: david@alvarezrosa.com
+#+description: Generated from Nextcloud by calendar-org, do not edit
+"""
+
+
+def local(dt):
+    return dt.astimezone() if isinstance(dt, datetime) else dt
+
+
+def org(start, end):
+    if not isinstance(start, datetime):
+        last = end - timedelta(days=1) if end else start
+        return f"<{start:%Y-%m-%d %a}>" + (f"--<{last:%Y-%m-%d %a}>" if last > start else "")
+    if not end or end == start:
+        return f"<{start:%Y-%m-%d %a %H:%M}>"
+    if end.date() == start.date():
+        return f"<{start:%Y-%m-%d %a %H:%M}-{end:%H:%M}>"
+    return f"<{start:%Y-%m-%d %a %H:%M}>--<{end:%Y-%m-%d %a %H:%M}>"
+
+
+def entries():
+    today = date.today()
+    for path in CALENDAR.glob("*.ics"):
+        cal = Calendar.from_ical(path.read_bytes())
+        for event in recurring_ical_events.of(cal).between(today - timedelta(days=90), today + timedelta(days=365)):
+            if str(event.get("STATUS", "")).upper() == "CANCELLED":
+                continue
+            start = local(event["DTSTART"].dt)
+            end = local(event["DTEND"].dt) if "DTEND" in event else None
+            key = start if isinstance(start, datetime) else datetime.combine(start, time()).astimezone()
+            summary = " ".join(str(event.get("SUMMARY", "(no title)")).split())
+            location = " ".join(str(event.get("LOCATION", "")).split())
+            body = f"* {summary}\n"
+            if location:
+                body += f":PROPERTIES:\n:LOCATION: {location}\n:END:\n"
+            yield key, body + org(start, end) + "\n"
+
+
+text = HEADER + "".join("\n" + body for _, body in sorted(entries()))
+if not ORG.exists() or ORG.read_text() != text:
+    ORG.write_text(text)

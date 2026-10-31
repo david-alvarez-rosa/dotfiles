@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+set -eux
+
+exec 9>"${XDG_RUNTIME_DIR:-/tmp}/dav-sync.lock"
+flock 9
+
+contacts() { find ~/.local/share/contacts -type f -printf '%T@ %p\n' | sort | cksum; }
+
+before=$(contacts)
+vdirsyncer sync
+changed=$(calendar-import "$@")
+[ -z "$changed" ] || vdirsyncer sync calendars
+calendar-org
+[ "$(contacts)" = "$before" ] || emacsclient --eval "(if (fboundp 'dalvrosa/contacts-refresh) (dalvrosa/contacts-refresh))" || true

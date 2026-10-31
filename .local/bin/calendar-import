@@ -1,0 +1,121 @@
+#!/usr/bin/env -S uv run --quiet --script
+# /// script
+# dependencies = ["icalendar"]
+# ///
+import email
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+from icalendar import Calendar
+
+CALENDAR = Path.home() / ".local/share/calendars/personal"
+MAIL = Path.home() / ".local/share/mail"
+DAYS = 30
+
+
+def utc(dt):
+    if isinstance(dt, datetime):
+        return dt.astimezone(timezone.utc) if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
+def rid(event):
+    value = event.get("RECURRENCE-ID")
+    return utc(value.dt) if value else None
+
+
+def stamp(event):
+    value = event.get("DTSTAMP")
+    return utc(value.dt) if value else datetime.min.replace(tzinfo=timezone.utc)
+
+
+def exdates(event):
+    value = event.get("EXDATE", [])
+    return {utc(d.dt) for lst in (value if isinstance(value, list) else [value]) for d in lst.dts}
+
+
+def stored():
+    paths = {}
+    for path in CALENDAR.glob("*.ics"):
+        for event in Calendar.from_ical(path.read_bytes()).walk("VEVENT"):
+            paths[str(event["UID"])] = path
+    return paths
+
+
+def recent():
+    cutoff = time.time() - DAYS * 86400
+    return [p for p in MAIL.glob("*/*/*/*") if p.is_file() and p.stat().st_mtime > cutoff]
+
+
+def invites(path):
+    data = path.read_bytes()
+    if path.suffix == ".ics":
+        parts = [data]
+    elif b"text/calendar" in data:
+        msg = email.message_from_bytes(data)
+        parts = [p.get_payload(decode=True) for p in msg.walk() if p.get_content_type() == "text/calendar"]
+    else:
+        parts = []
+    for part in parts:
+        try:
+            yield Calendar.from_ical(part)
+        except ValueError:
+            pass
+
+
+def merge(itip, paths, accept):
+    method = str(itip.get("METHOD", "")).upper()
+    incoming = itip.walk("VEVENT")
+    if method not in ("REQUEST", "CANCEL") or not incoming:
+        return
+    uid = str(incoming[0]["UID"])
+    path = paths.get(uid)
+    if path:
+        cal = Calendar.from_ical(path.read_bytes())
+    elif method == "REQUEST" and accept:
+        path = paths[uid] = CALENDAR / (uid.replace("/", "_") + ".ics")
+        cal = Calendar()
+        cal.add("PRODID", "-//calendar-import//EN")
+        cal.add("VERSION", "2.0")
+    else:
+        return
+    before = cal.to_ical()
+
+    for event in incoming:
+        current = next((e for e in cal.walk("VEVENT") if rid(e) == rid(event)), None)
+        if current and stamp(current) >= stamp(event):
+            continue
+        if current:
+            cal.subcomponents.remove(current)
+        if method == "REQUEST":
+            cal.add_component(event)
+        elif rid(event) is None:
+            path.unlink(missing_ok=True)
+            del paths[uid]
+            return
+        else:
+            master = next((e for e in cal.walk("VEVENT") if rid(e) is None), None)
+            if master and rid(event) not in exdates(master):
+                master.add("EXDATE", event["RECURRENCE-ID"].dt)
+
+    if cal.to_ical() != before:
+        tzids = {str(tz["TZID"]) for tz in cal.walk("VTIMEZONE")}
+        for tz in itip.walk("VTIMEZONE"):
+            if str(tz["TZID"]) not in tzids:
+                cal.subcomponents.insert(0, tz)
+        path.write_bytes(cal.to_ical())
+        print(uid)
+
+
+def main():
+    accept = sys.argv[1:2] == ["--accept"]
+    files = [Path(a) for a in sys.argv[1 + accept:]] or recent()
+    paths = stored()
+    for itip in sorted((c for f in files for c in invites(f)),
+                       key=lambda c: max(map(stamp, c.walk("VEVENT")), default=datetime.min.replace(tzinfo=timezone.utc))):
+        merge(itip, paths, accept)
+
+
+main()

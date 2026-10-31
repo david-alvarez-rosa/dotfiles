@@ -1,0 +1,10 @@
+[Unit]
+Description=Sync Nextcloud contacts and calendar
+
+[Service]
+Type=oneshot
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin
+Nice=19
+CPUSchedulingPolicy=idle
+IOSchedulingClass=idle
+ExecStart=%h/.local/bin/dav-sync
