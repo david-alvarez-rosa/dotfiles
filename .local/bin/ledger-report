@@ -17,9 +17,8 @@ report ^Expenses Expenses display_amount
 report ^Equity:Profit Profit -display_amount
 report '^Income ^Expenses' Savings -display_amount
 
-gnuplot <<'GP'
+gnuplot -e "set output '$HOME/docs/Finances.png'" - <<'GP'
 set terminal pngcairo size 1280,960
-set output 'LedgerReport.png'
 stats 'NetWorth.tsv' using (W = $2) nooutput
 stats 'Liquid.tsv' using (L = $2) nooutput
 stats 'Income.tsv' using 2 name 'I' nooutput
@@ -53,4 +52,4 @@ plot 'Savings.tsv' using 1:2 with boxes, S_mean dt 2
 unset multiplot
 GP
 
-feh LedgerReport.png
+feh ~/docs/Finances.png
