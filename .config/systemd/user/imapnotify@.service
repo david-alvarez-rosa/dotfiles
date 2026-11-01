@@ -4,9 +4,9 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/usr/bin/goimapnotify -conf %h/.config/imapnotify/%i.yaml
+ExecStart=/usr/bin/goimapnotify -wait 0 -conf %h/.config/imapnotify/%i.yaml
 Restart=always
-RestartSec=30
+RestartSec=5
 
 [Install]
 WantedBy=default.target

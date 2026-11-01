@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-sync_one() { flock "${XDG_RUNTIME_DIR:-/tmp}/mbsync-$1.lock" mbsync -c ~/.config/isync/mbsyncrc "$1"; }
+sync_one() { flock "${XDG_RUNTIME_DIR:-/tmp}/mbsync-${1%%:*}.lock" mbsync -c ~/.config/isync/mbsyncrc "$1"; }
 
 out=$(sync_one "${1:-personal}")
 printf '%s\n' "$out"

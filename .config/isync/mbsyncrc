@@ -3,9 +3,12 @@ Host mail.alvarezrosa.com
 User david@alvarezrosa.com
 PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep alvarezrosa.com | awk '{print $8}'"
 TLSType IMAPS
+DisableExtension COMPRESS=DEFLATE
 
 IMAPStore personal-remote
 Account   Personal
+UseNamespace no
+PathDelimiter .
 
 MaildirStore personal-local
 Path ~/.local/share/mail/Personal/

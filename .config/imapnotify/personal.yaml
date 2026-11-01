@@ -12,4 +12,6 @@ boxes:
   - Junk
   - Sent
   - Trash
-onNewMail: "/home/david/.local/bin/mailsync personal"
+onNewMail: "/home/david/.local/bin/mailsync personal:%s"
+onChangedMail: "/home/david/.local/bin/mailsync personal:%s"
+onDeletedMail: "/home/david/.local/bin/mailsync personal:%s"

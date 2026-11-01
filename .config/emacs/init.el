@@ -946,11 +946,10 @@ With prefix arg NEW, start an additional session instead."
   (interactive)
   (mu4e-update-mail-and-index t))
 
-(defun dalvrosa/mu4e-index-soon (&optional tries)
-  "Index mail, waiting out an index already in progress."
+(defun dalvrosa/mu4e-index-soon ()
+  "Index mail; the mu server queues it behind a running index."
   (when (and (fboundp 'mu4e-running-p) (mu4e-running-p))
-    (if (and (bound-and-true-p mu4e--server-indexing) (< (or tries 0) 15))
-        (run-at-time 2 nil #'dalvrosa/mu4e-index-soon (1+ (or tries 0)))
+    (let ((inhibit-message t))
       (mu4e-update-index))))
 
 (with-eval-after-load 'mu4e
