@@ -1110,10 +1110,12 @@ Spaces beat tabs: width 2, insert spaces on =TAB=.
 
 ** Trailing Whitespace
 
-Delete trailing whitespace when saving.
+Delete trailing whitespace when saving, except in mail buffers (it would strip the space from the "-- " signature separator).
 
 #+begin_src elisp
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (add-hook 'before-save-hook
+            (lambda () (unless (derived-mode-p 'message-mode)
+                         (delete-trailing-whitespace))))
 #+end_src
 
 ** Magit

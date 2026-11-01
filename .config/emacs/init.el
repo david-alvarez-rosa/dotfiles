@@ -617,7 +617,9 @@ With prefix arg NEW, start an additional session instead."
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook
+          (lambda () (unless (derived-mode-p 'message-mode)
+                       (delete-trailing-whitespace))))
 
 (use-package magit
   :bind ("C-c g" . 'magit-status)
