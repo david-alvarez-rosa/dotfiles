@@ -415,14 +415,17 @@
 (setq tramp-default-method "ssh")
 (setq tramp-allow-unsafe-temporary-files t)
 (setq tramp-use-connection-share nil)
-(setq remote-file-name-inhibit-cache nil)
-(setq vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
+(setq tramp-histfile-override t)
+(setq tramp-ssh-setenv-term " -o SetEnv=\"TERM=dumb\"")
 (setq tramp-verbose 1)
+(setq remote-file-name-inhibit-cache 10)
+(setq remote-file-name-inhibit-locks t)
+(setq remote-file-name-inhibit-auto-save-visited t)
+(setq backup-enable-predicate
+      (lambda (name) (and (normal-backup-enable-predicate name) (not (file-remote-p name)))))
+(setq vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
 
-(with-eval-after-load 'project
-  (define-advice project-try-vc (:around (fn dir) allow-remote)
-    (let ((vc-ignore-dir-regexp locate-dominating-stop-dir-regexp))
-      (funcall fn dir))))
+(load (locate-user-emacs-file "dalvrosa-tramp") nil t)
 
 (setq custom-safe-themes t)
 
@@ -530,13 +533,7 @@
   (setq ghostel-query-before-killing nil)
   (setq ghostel-max-scrollback (* 10 1024 1024))
   (add-to-list 'ghostel-eval-cmds '("man" man))
-  (connection-local-set-profile-variables
-   'dalvrosa/direct-async '((tramp-direct-async-process . t)))
-  (define-advice ghostel--spawn-via-emacs (:around (fn &rest args) direct-async)
-    (let ((connection-local-criteria-alist
-           (cons '((:application tramp) dalvrosa/direct-async)
-                 connection-local-criteria-alist)))
-      (apply fn args)))
+  (setf (alist-get "ssh" ghostel-tramp-shells nil nil #'equal) '("zsh"))
   (add-hook 'ghostel-mode-hook
             (lambda () (setq-local global-hl-line-mode nil)))
   :bind (("C-c t" . ghostel)
@@ -585,6 +582,11 @@ With prefix arg NEW, start an additional session instead."
   (setq eglot-autoshutdown t)
   (setf (alist-get '(python-mode python-ts-mode) eglot-server-programs nil nil #'equal)
         '("ty" "server"))
+  (dolist (entry '(((c-mode c-ts-mode c++-mode c++-ts-mode) "clangd")
+                   (((js-mode :language-id "javascript") (js-ts-mode :language-id "javascript")
+                     (typescript-ts-mode :language-id "typescript") (tsx-ts-mode :language-id "typescriptreact"))
+                    "typescript-language-server" "--stdio")))
+    (push entry eglot-server-programs))
   :hook ((c++-ts-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
          (java-ts-mode . eglot-ensure)
