@@ -188,7 +188,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/with-editor-20261029.2155/with-editor-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/with-editor-20261101.1104/with-editor-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -832,7 +832,7 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/transient-20261024.2032/transient-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/transient-20261101.1108/transient-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2204,7 +2204,7 @@ A prefix argument causes the SQL to be printed into the current buffer.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/closql-20261021.848/closql-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/closql-20261101.1112/closql-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2220,7 +2220,7 @@ A prefix argument causes the SQL to be printed into the current buffer.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghub-20261021.1627/ghub-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghub-20261101.1118/ghub-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -2257,7 +2257,7 @@ and call `auth-source-forget+'." t)
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-20261029.2116/magit-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/magit-20261101.2154/magit-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6087,33 +6087,6 @@ Forge-Topic mode buffer for that topic.")
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/org-caldav-20260914.307/org-caldav-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(autoload 'org-caldav-sync "org-caldav"
-"Sync Org with calendar." t)
-(autoload 'org-caldav-convert-ics-to-datetree "org-caldav"
-"Convert ics content in current buffer to Org datetree format.
-Output is displayed in the buffer *org-caldav-convert-ics-to-datetree*." t)
-(autoload 'org-caldav-import-ics-buffer-to-org "org-caldav"
-"Add ics content in current buffer to `org-caldav-inbox'." t)
-(autoload 'org-caldav-import-ics-to-org "org-caldav"
-"Add ics content in PATH to `org-caldav-inbox'.
-
-(fn PATH)" t)
-(register-definition-prefixes "org-caldav" '("org-caldav-"))
-
-
-(provide 'org-caldav-autoloads)
-
-
-)
 (let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/orderless-20261013.1927/orderless-autoloads.el"))(load-true-file-name load-file-name))
 
 
@@ -6619,7 +6592,7 @@ initialization.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/gptel-20261018.848/gptel-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/gptel-20261101.218/gptel-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -6644,8 +6617,6 @@ evaluate the variable `gptel-mode'.
 
 The mode's hook is called both when the mode is enabled and when it is
 disabled.
-
-\\{gptel-mode-map}
 
 (fn &optional ARG)" t)
 (autoload 'gptel-send "gptel"
@@ -7270,7 +7241,7 @@ The keyword arguments (CURL-ARGS, STREAM, REQUEST-PARAMS,
 HEADER, HOST, PROTOCOL, ENDPOINT and MODELS) are all optional;
 for their meanings, see `gptel-make-openai'.
 
-(fn NAME &key CURL-ARGS (STREAM t) REQUEST-PARAMS (HEADER #\\='gptel--openai-oauth-header) (HOST \"chatgpt.com\") (PROTOCOL \"https\") (ENDPOINT \"/backend-api/codex/responses\") (MODELS \\='(gpt-5.5 gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-6-astra gpt-6-sol gpt-6-luna gpt-6.1-sol)))")
+(fn NAME &key CURL-ARGS (STREAM t) REQUEST-PARAMS (HEADER #\\='gptel--openai-oauth-header) (HOST \"chatgpt.com\") (PROTOCOL \"https\") (ENDPOINT \"/backend-api/codex/responses\") (MODELS \\='(gpt-5.5 gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-6-astra gpt-6-sol gpt-6-luna gpt-6.1-sol gpt-6.1-terra)))")
 (function-put 'gptel-make-openai-oauth 'lisp-indent-function 1)
 (register-definition-prefixes "gptel-openai-oauth" '("gptel-"))
 
@@ -7462,7 +7433,7 @@ Defaults to \"origin\".
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghostel-20261029.1738/ghostel-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/ghostel-20261102.1326/ghostel-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9386,7 +9357,7 @@ Hook up rmh-elfeed-org to read the `org-mode' configuration when elfeed is run."
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/doom-modeline-20261029.818/doom-modeline-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/doom-modeline-20261103.1357/doom-modeline-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -9655,7 +9626,7 @@ See `dape-breakpoint-mode' for more information on Dape-Breakpoint mode.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/corfu-20261014.1751/corfu-autoloads.el"))(load-true-file-name load-file-name))
+(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/corfu-20261101.1614/corfu-autoloads.el"))(load-true-file-name load-file-name))
 
 
 
@@ -11683,14 +11654,13 @@ Limit searched to BOUND.
                     taxy taxy-magit-section tablist svg-lib sudo-edit s dash f
                     shrink-path plz deflate plantuml-mode persist pdf-tools
                     ox-hugo emacsql closql ghub magit markdown-mode forge org
-                    orgit orgit-forge org-caldav orderless olivetti nyan-mode
-                    nerd-icons nerd-icons-dired nerd-icons-corfu
-                    nerd-icons-completion markdown-preview-mode marginalia
-                    ledger-mode gptel git-link ghostel gcmh expand-region
-                    erc-hl-nicks engine-mode ement embark consult
-                    embark-consult elfeed elfeed-org doom-modeline
-                    dired-hacks-utils dired-subtree dired-narrow dape corfu
-                    chronometer cdlatex cape bbdb bbdb-vcard auctex)
+                    orgit orgit-forge orderless olivetti nyan-mode nerd-icons
+                    nerd-icons-dired nerd-icons-corfu nerd-icons-completion
+                    markdown-preview-mode marginalia ledger-mode gptel git-link
+                    ghostel gcmh expand-region erc-hl-nicks engine-mode ement
+                    embark consult embark-consult elfeed elfeed-org
+                    doom-modeline dired-hacks-utils dired-subtree dired-narrow
+                    dape corfu chronometer cdlatex cape bbdb bbdb-vcard auctex)
         package-activated-list)))
 (progn
   (require 'info) (info-initialize)
@@ -11708,15 +11678,13 @@ Limit searched to BOUND.
                                  "elpa/ledger-mode-20260928.205")
                (file-name-concat package--quickstart-dir
                                  "elpa/orderless-20261013.1927")
-               (file-name-concat package--quickstart-dir
-                                 "elpa/org-caldav-20260914.307")
                (file-name-concat package--quickstart-dir "elpa/org-9.8.10")
                (file-name-concat package--quickstart-dir
                                  "elpa/forge-20261028.1427")
                (file-name-concat package--quickstart-dir
-                                 "elpa/magit-20261029.2116")
+                                 "elpa/magit-20261101.2154")
                (file-name-concat package--quickstart-dir
-                                 "elpa/ghub-20261021.1627")
+                                 "elpa/ghub-20261101.1118")
                (file-name-concat package--quickstart-dir "elpa/plz-0.9.1")
                (file-name-concat package--quickstart-dir
                                  "elpa/dash-20260221.1346")
@@ -11726,11 +11694,11 @@ Limit searched to BOUND.
                (file-name-concat package--quickstart-dir
                                  "elpa/magit-section-20261028.453")
                (file-name-concat package--quickstart-dir
-                                 "elpa/transient-20261024.2032")
+                                 "elpa/transient-20261101.1108")
                (file-name-concat package--quickstart-dir
                                  "elpa/web-server-20210708.2242")
                (file-name-concat package--quickstart-dir
-                                 "elpa/with-editor-20261029.2155"))
+                                 "elpa/with-editor-20261101.1104"))
          Info-directory-list)))
 
 ;; Local Variables:
