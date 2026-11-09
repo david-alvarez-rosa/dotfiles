@@ -425,8 +425,6 @@
       (lambda (name) (and (normal-backup-enable-predicate name) (not (file-remote-p name)))))
 (setq vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
 
-(load (locate-user-emacs-file "dalvrosa-tramp") nil t)
-
 (setq custom-safe-themes t)
 
 (defun dalvrosa/set-background-alpha ()
@@ -551,29 +549,33 @@ With prefix arg NEW, start an additional session instead."
   (interactive "P")
   (require 'ghostel)
   (let* ((default-directory (project-root (project-current t)))
-         (host (file-remote-p default-directory 'host))
-         (name (project-prefixed-buffer-name (if host (concat "claude@" host) "claude")))
+         (name (project-prefixed-buffer-name "claude"))
          (buffer (and (not new) (get-buffer name))))
-    (cond
-     (buffer (pop-to-buffer-same-window buffer))
-     ((file-remote-p default-directory)
-      (let ((buffer (generate-new-buffer name)))
+    (if buffer
         (pop-to-buffer-same-window buffer)
-        (ghostel-exec buffer "sh" '("-c" "exec ~/.local/bin/claude --dangerously-skip-permissions"))))
-     (t (let ((ghostel-shell (list "claude" "--dangerously-skip-permissions")))
-          (ghostel-create name '((display-buffer-same-window))))))))
+      (let ((ghostel-shell (list "claude" "--dangerously-skip-permissions")))
+        (ghostel-create name '((display-buffer-same-window)))))))
 
 (with-eval-after-load 'project
   (add-to-list 'project-switch-commands '(consult-project-buffer "Find buffer") t)
   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
   (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
   (add-to-list 'project-switch-commands '(dalvrosa/ghostel-project-claude "Claude") t)
+  (add-to-list 'project-switch-commands '(errand-agents "Errand") t)
+  (add-to-list 'project-switch-commands '(errand-review "Review") t)
   (keymap-set project-prefix-map "b" 'consult-project-buffer)
   (keymap-set project-prefix-map "g" 'magit-project-status)
   (keymap-set project-prefix-map "s" 'project-find-regexp)
   (keymap-set project-prefix-map "h" 'dalvrosa/ghostel-project-claude)
   (keymap-set project-prefix-map "j" 'ghostel-project-list-buffers)
-  (keymap-set project-prefix-map "v" 'ghostel-project))
+  (keymap-set project-prefix-map "v" 'ghostel-project)
+  (keymap-set project-prefix-map "a" 'errand-agents)
+  (keymap-set project-prefix-map "R" 'errand-review))
+
+(use-package errand
+  :ensure nil
+  :load-path "~/dev/errand"
+  :commands (errand-agents errand-review))
 
 (use-package eglot
   :ensure nil
