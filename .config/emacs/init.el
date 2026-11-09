@@ -356,6 +356,9 @@
 (setq ispell-dictionary "en_US")
 
 (add-hook 'text-mode-hook 'flyspell-mode)
+(with-eval-after-load 'flyspell
+  (keymap-unset flyspell-mode-map "C-." t)
+  (keymap-unset flyspell-mode-map "C-;" t))
 ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 (defun dalvrosa/flyspell-cycle ()
@@ -382,6 +385,7 @@
 (setq confirm-kill-processes nil)
 
 (use-package engine-mode
+  :defer 1
   :config
   (defengine DuckDuckGo
     "https://duckduckgo.com/?q=%s&t=h_"
@@ -423,7 +427,6 @@
 (setq remote-file-name-inhibit-auto-save-visited t)
 (setq backup-enable-predicate
       (lambda (name) (and (normal-backup-enable-predicate name) (not (file-remote-p name)))))
-(setq vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
 
 (setq custom-safe-themes t)
 
@@ -452,6 +455,7 @@
 
 (use-package nerd-icons-corfu
   :after corfu
+  :demand t
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
@@ -608,11 +612,10 @@ With prefix arg NEW, start an additional session instead."
   :commands eglot)
 
 (use-package dape
-  :hook
-  (kill-emacs . dape-breakpoint-save)
-  (after-init . dape-breakpoint-load)
   :config
-  (setq dape-inlay-hints nil))
+  (setq dape-inlay-hints nil)
+  (dape-breakpoint-load)
+  (add-hook 'kill-emacs-hook #'dape-breakpoint-save))
 
 (run-with-idle-timer 0.1 nil #'repeat-mode)
 
@@ -1089,7 +1092,6 @@ With prefix arg NEW, start an additional session instead."
 (with-eval-after-load 'mu4e
   (require 'mu4e-icalendar)
   (mu4e-icalendar-setup)
-  (setq mu4e-icalendar-trash-after-reply t)
   (advice-add 'mu4e-icalendar-reply :after #'dalvrosa/calendar-accept))
 
 (with-eval-after-load 'mm-decode
@@ -1146,7 +1148,7 @@ With prefix arg NEW, start an additional session instead."
 
 (use-package ement
   :config
-  (setq ement-save-sessions t)
+  (setopt ement-save-sessions t)
   (setq ement-notify-notification-predicates nil)
   (setq ement-room-send-read-receipts nil))
 
