@@ -545,20 +545,18 @@ With prefix arg NEW, start an additional session instead."
   (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
   (add-to-list 'project-switch-commands '(dalvrosa/ghostel-project-claude "Claude") t)
   (add-to-list 'project-switch-commands '(errand-agents "Errand") t)
-  (add-to-list 'project-switch-commands '(errand-review "Review") t)
   (keymap-set project-prefix-map "b" 'consult-project-buffer)
   (keymap-set project-prefix-map "g" 'magit-project-status)
   (keymap-set project-prefix-map "s" 'project-find-regexp)
   (keymap-set project-prefix-map "h" 'dalvrosa/ghostel-project-claude)
   (keymap-set project-prefix-map "j" 'ghostel-project-list-buffers)
   (keymap-set project-prefix-map "v" 'ghostel-project)
-  (keymap-set project-prefix-map "a" 'errand-agents)
-  (keymap-set project-prefix-map "R" 'errand-review))
+  (keymap-set project-prefix-map "a" 'errand-agents))
 
 (use-package errand
   :ensure nil
   :load-path "~/dev/errand"
-  :commands (errand-agents errand-review))
+  :commands errand-agents)
 
 (use-package eglot
   :ensure nil
