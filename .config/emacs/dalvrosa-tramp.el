@@ -9,7 +9,6 @@
 (defvar project-files-relative-names)
 
 (advice-add 'tramp-remote-acl-p :override #'ignore)
-(advice-add 'tramp-remote-selinux-p :override #'ignore)
 (define-advice tramp-handle-lock-file (:before-while (&rest _) inhibited)
   (not remote-file-name-inhibit-locks))
 
@@ -160,7 +159,6 @@
   (with-memoization (alist-get (cons (file-remote-p default-directory) cmd)
                                dalvrosa/lookahead-cache nil nil #'equal)
     (apply fn cmd)))
-(setq consult-fd-args '("fd" "--full-path --color=never"))
 
 (defvar dalvrosa/tramp-ls nil)
 (defvar dalvrosa/tramp-ff-memo nil)
@@ -194,8 +192,9 @@
        v (concat "{\n" (mapconcat (lambda (k) (funcall run (car k))) keys "")
                  (format "t=$(tramp_readlink_file_truename %s | sed 1d)\n" q)
                  (funcall run "tramp_stat_file_attributes \"$t\"")
-                 (format "s=$(%s -c %%s %s 2>%s); ! test -d %s && test \"$s\" -gt 0 -a \"$s\" -le %d 2>%s || s=0; echo tramp_ff $s\n"
-                         (tramp-get-remote-stat v) q null q (or large-file-warning-threshold most-positive-fixnum) null)
+                 (format "s=$(%s -c %%s %s 2>%s); ! test -d %s && test \"$s\" -gt 0 -a \"$(%s -c %%s \"$t\" 2>%s)\" -le %d 2>%s || s=0; echo tramp_ff $s\n"
+                         (tramp-get-remote-stat v) q null q (tramp-get-remote-stat v) null
+                         (or large-file-warning-threshold most-positive-fixnum) null)
                  (format "if test $s -gt 0; then if test $s -gt %d; then %s 2>%s; else %s 2>%s; fi; echo tramp_exit_status $?; fi\n}"
                          n (format (tramp-get-inline-coding v "remote-encoding" (1+ n)) "\"$t\"") null
                          (format (tramp-get-inline-coding v "remote-encoding" 0) "\"$t\"") null)))
@@ -1005,7 +1004,7 @@ for v in P1 P2 TAG NTAG W1 W2 W3 W4 W5 W6; do eval \"echo $v=\\$$v\"; done; echo
     (when wgit (setq dalvrosa/magit-1rtt--wgit nil))
     (cond
      ((and ok wgit) (dalvrosa/magit-1rtt--fold s fn vec key exit))
-     ((not (and ok (or git (string-match-p "\\`\\(test -[a-z] \\|tramp_stat_file_attributes \\|tramp_readlink_file_truename \\)" cmd))
+     ((not (and ok (or git (string-match-p "\\`\\(test -[a-z] \\|tramp_stat_file_attributes\\(?:_with_selinux\\)? \\|tramp_readlink_file_truename \\)" cmd))
                 (or git (not (string-search "\n" cmd))) (length< cmd 3000)))
       (funcall fn vec cmd sub err exit))
      (t
@@ -1323,6 +1322,7 @@ for v in P1 P2 TAG NTAG W1 W2 W3 W4 W5 W6; do eval \"echo $v=\\$$v\"; done; echo
            (dalvrosa/tramp-setup--s proc (tramp-get-connection-property vec "dalvrosa-setup-plan"))))
       (funcall fn proc vec)
       (ignore-errors
+        (tramp-remote-selinux-p vec)
         (tramp-get-inline-coding vec "remote-encoding" (1+ (or tramp-inline-compress-start-size 0)))
         (when (tramp-get-remote-readlink vec)
           (tramp-maybe-send-script vec tramp-readlink-file-truename "tramp_readlink_file_truename"))
@@ -1359,6 +1359,7 @@ for v in P1 P2 TAG NTAG W1 W2 W3 W4 W5 W6; do eval \"echo $v=\\$$v\"; done; echo
 (define-advice tramp-maybe-send-script (:before (vec &rest _) dalvrosa/open-first)
   (unless (process-live-p (tramp-get-connection-process vec))
     (tramp-maybe-open-connection vec)))
+(advice-add 'tramp-remote-selinux-p :before #'tramp-maybe-send-script@dalvrosa/open-first)
 
 (defun dalvrosa/tramp-fnac-prop ()
   (format "file-name-all-completions-%s" tramp-fnac-add-trailing-slash))
