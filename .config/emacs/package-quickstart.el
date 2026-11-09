@@ -3,33 +3,6 @@
 
 (setq package--quickstart-dir
       (file-name-directory (expand-file-name load-file-name)))
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/yaml-mode-20260830.2340/yaml-mode-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(let ((loads (get 'yaml 'custom-loads))) (if (member '"yaml-mode" loads) nil (put 'yaml 'custom-loads (cons '"yaml-mode" loads)) (put 'languages 'custom-loads (cons 'yaml (get 'languages 'custom-loads)))))
-(autoload 'yaml-mode "yaml-mode"
-"Simple mode to edit YAML.
-
-In addition to any hooks its parent mode `text-mode' might have run, this mode
-runs the hook `yaml-mode-hook', as the final or penultimate step during
-initialization.
-
-\\{yaml-mode-map}" t)
-(add-to-list 'auto-mode-alist '("\\.\\(e?ya?\\|ra\\)ml\\'" . yaml-mode))
-(add-to-list 'magic-mode-alist '("^%YAML\\s-+[0-9]+\\.[0-9]+\\(\\s-+#\\|\\s-*$\\)" . yaml-mode))
-(register-definition-prefixes "yaml-mode" '("yaml-"))
-
-
-(provide 'yaml-mode-autoloads)
-
-
-)
 (let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/yaml-20260605.834/yaml-autoloads.el"))(load-true-file-name load-file-name))
 
 
@@ -800,22 +773,6 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/treesit-auto-20260831.1012/treesit-auto-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(register-definition-prefixes "treesit-auto" '("global-treesit-auto-mode" "treesit-auto-"))
-
-
-(provide 'treesit-auto-autoloads)
-
-
-)
 (let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/treepy-20260531.1144/treepy-autoloads.el"))(load-true-file-name load-file-name))
 
 
@@ -1069,62 +1026,6 @@ disabled.
 
 
 (provide 'svg-lib-autoloads)
-
-
-)
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/sudo-edit-20220801.1317/sudo-edit-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(autoload 'sudo-edit-set-header "sudo-edit" "\
-*Display a warning in header line of the current buffer.
-This function is suitable to add to `find-file-hook' and `dired-file-hook'.")
-(defvar sudo-edit-indicator-mode nil "\
-Non-nil if Sudo-Edit-Indicator mode is enabled.
-See the `sudo-edit-indicator-mode' command
-for a description of this minor mode.
-Setting this variable directly does not take effect;
-either customize it (see the info node `Easy Customization')
-or call the function `sudo-edit-indicator-mode'.")
-(custom-autoload 'sudo-edit-indicator-mode "sudo-edit" nil)
-(autoload 'sudo-edit-indicator-mode "sudo-edit" "\
-Indicates editing as root by displaying a message in the header line.
-
-This is a global minor mode.  If called interactively, toggle the
-`Sudo-Edit-Indicator mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
-
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
-mode if ARG is nil, omitted, or is a positive number.  Disable the mode
-if ARG is a negative number.
-
-To check whether the minor mode is enabled in the current buffer,
-evaluate `(default-value \\='sudo-edit-indicator-mode)'.
-
-The mode's hook is called both when the mode is enabled and when it is
-disabled.
-
-(fn &optional ARG)" t)
-(autoload 'sudo-edit "sudo-edit" "\
-Edit currently visited file as another user, by default `sudo-edit-user'.
-
-With a prefix ARG prompt for a file to visit.  Will also prompt
-for a file to visit if current buffer is not visiting a file.
-
-(fn &optional ARG)" t)
-(autoload 'sudo-edit-find-file "sudo-edit" "\
-Edit FILENAME as another user, by default `sudo-edit-user'.
-
-(fn FILENAME)" t)
-(register-definition-prefixes "sudo-edit" '("sudo-edit-"))
-
-
-(provide 'sudo-edit-autoloads)
 
 
 )
@@ -11649,18 +11550,18 @@ Limit searched to BOUND.
 (setq package-activated-list
       (delete-dups
        (append
-        '(yaml-mode yaml cond-let llama with-editor websocket web-server vlf
-                    vertico treesit-auto treepy transient tomelr magit-section
-                    taxy taxy-magit-section tablist svg-lib sudo-edit s dash f
-                    shrink-path plz deflate plantuml-mode persist pdf-tools
-                    ox-hugo emacsql closql ghub magit markdown-mode forge org
-                    orgit orgit-forge orderless olivetti nyan-mode nerd-icons
-                    nerd-icons-dired nerd-icons-corfu nerd-icons-completion
-                    markdown-preview-mode marginalia ledger-mode gptel git-link
-                    ghostel gcmh expand-region erc-hl-nicks engine-mode ement
-                    embark consult embark-consult elfeed elfeed-org
-                    doom-modeline dired-hacks-utils dired-subtree dired-narrow
-                    dape corfu chronometer cdlatex cape bbdb bbdb-vcard auctex)
+        '(yaml cond-let llama with-editor websocket web-server vlf vertico
+               treepy transient tomelr magit-section taxy taxy-magit-section
+               tablist svg-lib s dash f shrink-path plz deflate plantuml-mode
+               persist pdf-tools ox-hugo emacsql closql ghub magit
+               markdown-mode forge org orgit orgit-forge orderless olivetti
+               nyan-mode nerd-icons nerd-icons-dired nerd-icons-corfu
+               nerd-icons-completion markdown-preview-mode marginalia
+               ledger-mode gptel git-link ghostel gcmh expand-region
+               erc-hl-nicks engine-mode ement embark consult embark-consult
+               elfeed elfeed-org doom-modeline dired-hacks-utils dired-subtree
+               dired-narrow dape corfu chronometer cdlatex cape bbdb bbdb-vcard
+               auctex)
         package-activated-list)))
 (progn
   (require 'info) (info-initialize)

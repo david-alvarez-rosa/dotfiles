@@ -513,7 +513,6 @@ Insert and highlight matching parentheses, braces and quotes.
 
 #+begin_src elisp
   (electric-pair-mode t)
-  (show-paren-mode 1)
 #+end_src
 
 ** HTML Renderer
@@ -590,8 +589,6 @@ Consult provides search and navigation commands built on
 
     :init
     (setq consult-narrow-key "<")
-
-    (setq orderless-component-separator 'orderless-escapable-split-on-space)
     :config
     (consult-customize
      consult-theme :preview-key '(:debounce 0.2 any)
@@ -619,7 +616,6 @@ Corfu enhances in-buffer completion with a popup at point.
     (setq corfu-auto-delay 0.1)
     (corfu-popupinfo-mode 1)
     (corfu-history-mode 1)
-    (add-to-list 'savehist-additional-variables 'corfu-history)
     (setq text-mode-ispell-word-completion nil)
     :hook (org-mode . (lambda () (setq-local corfu-auto nil))))
 #+end_src
@@ -724,7 +720,7 @@ Cycle flyspell English, Spanish and off with =C-c s= (repeatable with
 Open or re-open files with =sudo=.
 
 #+begin_src elisp
-  (use-package sudo-edit :bind (("C-c S" . sudo-edit)))
+  (keymap-global-set "C-c S" #'tramp-revert-buffer-with-sudo)
 #+end_src
 
 ** Chronometer
@@ -797,9 +793,7 @@ Remote work over SSH with the local GUI.
   (setq tramp-allow-unsafe-temporary-files t)
   (setq tramp-use-connection-share nil)
   (setq tramp-histfile-override t)
-  (setq tramp-ssh-setenv-term " -o SetEnv=\"TERM=dumb\"")
   (setq tramp-verbose 1)
-  (setq remote-file-name-inhibit-cache 10)
   (setq remote-file-name-inhibit-locks t)
   (setq remote-file-name-inhibit-auto-save-visited t)
   (setq backup-enable-predicate
@@ -815,8 +809,6 @@ with =C-c d=.  Give the frame 90% background transparency in dark mode
 only (=alpha-background= leaves text fully opaque).
 
 #+begin_src elisp
-  (setq custom-safe-themes t)
-
   (defun dalvrosa/set-background-alpha ()
     (let ((alpha (if (eq (car custom-enabled-themes) 'modus-vivendi) 90 100)))
       (dolist (frame (frame-list))
@@ -866,7 +858,6 @@ Doom Modeline with a column number, plus nyan cat.
   (use-package doom-modeline
     :init (run-with-idle-timer 0.05 nil #'doom-modeline-mode)
     :config
-    (setq display-time-default-load-average nil)
     (setq doom-modeline-buffer-encoding nil)
     (setq doom-modeline-height 28)
     (setq column-number-mode t)
@@ -891,12 +882,8 @@ Disable the mouse interface and startup screen, and highlight the
 current line in graphical Emacs.
 
 #+begin_src elisp
-  (tool-bar-mode 0)
-  (menu-bar-mode 0)
-  (scroll-bar-mode 0)
   (tooltip-mode 0)
-  (setq inhibit-splash-screen t)
-  (setq inhibit-startup-message t)
+  (setq inhibit-startup-screen t)
 
   (when window-system (global-hl-line-mode t))
 #+end_src
@@ -922,13 +909,7 @@ Use the =*-ts-modes= automatically and prompt to install missing
 grammars.
 
 #+begin_src elisp
-  (use-package treesit-auto
-    :defer 0.2
-    :custom
-    (treesit-auto-install 'prompt)
-    :config
-    (treesit-auto-add-to-auto-mode-alist 'all)
-    (global-treesit-auto-mode))
+  (run-with-idle-timer 0.2 nil (lambda () (setopt treesit-enabled-modes t)))
 #+end_src
 
 ** Ripgrep
@@ -937,12 +918,6 @@ Prefer =ripgrep= for xref searches.
 
 #+begin_src elisp
   (setq xref-search-program 'ripgrep)
-#+end_src
-
-** Documentation
-
-#+begin_src elisp
-   (global-eldoc-mode)
 #+end_src
 
 ** Flymake
@@ -1055,9 +1030,7 @@ the project's dashboard and =C-x p R= reviews their branches in Magit.
 
 ** Language Server Protocol
 
-LSP support with built-in Eglot, under the =C-c l= prefix.  Plain
-server commands skip probing every remote PATH entry, and remote xref
-results avoid a file read or stat per hit.
+LSP support with built-in Eglot, under the =C-c l= prefix.
 
 #+begin_src elisp
   (use-package eglot
@@ -1185,23 +1158,6 @@ ANSI colors in the compilation window, auto-scroll, save without asking.
   (setq compilation-ask-about-save nil)
 #+end_src
 
-** CMake
-
-Use tree-sitter CMake mode; =CMakeLists.txt= needs an explicit entry.
-
-#+begin_src elisp
-  (add-to-list 'auto-mode-alist
-               '("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode))
-#+end_src
-
-** PHP
-
-Use the built-in tree-sitter mode.
-
-#+begin_src elisp
-  (add-to-list 'auto-mode-alist '("\\.php\\'" . php-ts-mode))
-#+end_src
-
 ** Log Files
 
 VLF views/edits very large files in batches.
@@ -1249,14 +1205,6 @@ Capture with =C-c c=: tasks under the "Refile" heading, notes in
           ("b" "Blog Post" entry
            (file "~/dev/personal-website/Content.org")
            "* TODO [#B] %?" :empty-lines 1 :prepend t)))
-#+end_src
-
-Enable email (or link) capture with =mu4e=.
-
-#+begin_src elisp
-  (use-package mu4e-org
-    :ensure nil
-    :after mu4e)
 #+end_src
 
 Store a link with =C-c L= and jump to the clocked task with =C-c j=.
@@ -1521,16 +1469,6 @@ CDLaTeX speeds up editing LaTeX documents.
     :hook (LaTeX-mode . turn-on-cdlatex))
 #+end_src
 
-** RefTeX
-
-Automates labels, references, citations and the index: =C-c == ToC,
-=C-c (= label, =C-c )= reference, =C-c [= cite, =C-c /= index.
-
-#+begin_src elisp
-  (setq reftex-plug-into-AUCTeX t)
-  (setq reftex-toc-split-windows-fraction 0.2)
-#+end_src
-
 ** LaTeX Compilation
 
 Compile with SyncTeX, save without asking and refresh the PDF
@@ -1564,12 +1502,6 @@ Ledger is a command-line double-entry accounting system.
 
 #+begin_src elisp
   (use-package ledger-mode)
-#+end_src
-
-** YAML
-
-#+begin_src elisp
-  (use-package yaml-mode)
 #+end_src
 
 * PDF Viewer
@@ -1774,27 +1706,6 @@ local side; the mu server queues it behind any running index.
 #+end_src
 
 ** Directory Client
-
-EUDC is a common interface to directory servers, here backed by BBDB.
-Expand a name to an email address inline with =M-TAB= while composing.
-
-#+begin_src elisp
-  (use-package eudc
-    :ensure nil
-    :after (ldap bbdb org-msg)
-    :init (require 'eudc)
-    (require 'eudcb-bbdb)
-    :bind (:map message-mode-map
-                ("<M-tab>" . eudc-expand-inline)
-                :map org-msg-edit-mode-map
-                ("<M-tab>" . eudc-expand-inline))
-    :config
-    (eudc-bbdb-set-server "localhost")
-    (setq eudc-server-hotlist
-          '(("localhost" . bbdb)))
-    (bind-key "<M-tab>" 'eudc-expand-inline org-msg-edit-mode-map)
-    (setq eudc-inline-expansion-servers 'hotlist))
-#+end_src
 
 BBDB is a contact database integrated with the mail readers;
 =bbdb-vcard= imports/exports vCards.  Loaded by the idle preloader.

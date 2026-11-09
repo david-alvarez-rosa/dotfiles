@@ -240,7 +240,6 @@
 (put 'scroll-left 'disabled nil)
 
 (electric-pair-mode t)
-(show-paren-mode 1)
 
 (setq shr-use-fonts nil)
 (setq shr-width 72)
@@ -298,8 +297,6 @@
 
   :init
   (setq consult-narrow-key "<")
-
-  (setq orderless-component-separator 'orderless-escapable-split-on-space)
   :config
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
@@ -319,7 +316,6 @@
   (setq corfu-auto-delay 0.1)
   (corfu-popupinfo-mode 1)
   (corfu-history-mode 1)
-  (add-to-list 'savehist-additional-variables 'corfu-history)
   (setq text-mode-ispell-word-completion nil)
   :hook (org-mode . (lambda () (setq-local corfu-auto nil))))
 
@@ -378,7 +374,7 @@
 (defvar-keymap dalvrosa/flyspell-cycle-repeat-map "s" #'dalvrosa/flyspell-cycle)
 (put 'dalvrosa/flyspell-cycle 'repeat-map 'dalvrosa/flyspell-cycle-repeat-map)
 
-(use-package sudo-edit :bind (("C-c S" . sudo-edit)))
+(keymap-global-set "C-c S" #'tramp-revert-buffer-with-sudo)
 
 (use-package chronometer)
 
@@ -420,15 +416,11 @@
 (setq tramp-allow-unsafe-temporary-files t)
 (setq tramp-use-connection-share nil)
 (setq tramp-histfile-override t)
-(setq tramp-ssh-setenv-term " -o SetEnv=\"TERM=dumb\"")
 (setq tramp-verbose 1)
-(setq remote-file-name-inhibit-cache 10)
 (setq remote-file-name-inhibit-locks t)
 (setq remote-file-name-inhibit-auto-save-visited t)
 (setq backup-enable-predicate
       (lambda (name) (and (normal-backup-enable-predicate name) (not (file-remote-p name)))))
-
-(setq custom-safe-themes t)
 
 (defun dalvrosa/set-background-alpha ()
   (let ((alpha (if (eq (car custom-enabled-themes) 'modus-vivendi) 90 100)))
@@ -466,7 +458,6 @@
 (use-package doom-modeline
   :init (run-with-idle-timer 0.05 nil #'doom-modeline-mode)
   :config
-  (setq display-time-default-load-average nil)
   (setq doom-modeline-buffer-encoding nil)
   (setq doom-modeline-height 28)
   (setq column-number-mode t)
@@ -478,12 +469,8 @@
 
 (set-face-attribute 'default nil :font "monospace" :height 90)
 
-(tool-bar-mode 0)
-(menu-bar-mode 0)
-(scroll-bar-mode 0)
 (tooltip-mode 0)
-(setq inhibit-splash-screen t)
-(setq inhibit-startup-message t)
+(setq inhibit-startup-screen t)
 
 (when window-system (global-hl-line-mode t))
 
@@ -493,17 +480,9 @@
   (setq olivetti-style 'fancy)
   :bind ("C-c o" . 'olivetti-mode))
 
-(use-package treesit-auto
-  :defer 0.2
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
+(run-with-idle-timer 0.2 nil (lambda () (setopt treesit-enabled-modes t)))
 
 (setq xref-search-program 'ripgrep)
-
-(global-eldoc-mode)
 
 (use-package flymake
   :ensure nil
@@ -650,11 +629,6 @@ With prefix arg NEW, start an additional session instead."
 (setq compilation-scroll-output t)
 (setq compilation-ask-about-save nil)
 
-(add-to-list 'auto-mode-alist
-             '("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode))
-
-(add-to-list 'auto-mode-alist '("\\.php\\'" . php-ts-mode))
-
 (use-package vlf)
 
 (setq org-modules '(ol-doi ol-bbdb ol-bibtex ol-docview ol-eww
@@ -675,10 +649,6 @@ With prefix arg NEW, start an additional session instead."
         ("b" "Blog Post" entry
          (file "~/dev/personal-website/Content.org")
          "* TODO [#B] %?" :empty-lines 1 :prepend t)))
-
-(use-package mu4e-org
-  :ensure nil
-  :after mu4e)
 
 (global-set-key (kbd "C-c L") 'org-store-link)
 (global-set-key (kbd "C-c j") 'org-clock-goto)
@@ -843,9 +813,6 @@ With prefix arg NEW, start an additional session instead."
 (use-package cdlatex
   :hook (LaTeX-mode . turn-on-cdlatex))
 
-(setq reftex-plug-into-AUCTeX t)
-(setq reftex-toc-split-windows-fraction 0.2)
-
 (setq TeX-command-extra-options "-synctex=1")
 (setq TeX-save-query nil)
 (add-hook 'TeX-after-compilation-finished-functions
@@ -859,8 +826,6 @@ With prefix arg NEW, start an additional session instead."
 (setq bibtex-autokey-year-title-separator ":")
 
 (use-package ledger-mode)
-
-(use-package yaml-mode)
 
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
@@ -988,22 +953,6 @@ With prefix arg NEW, start an additional session instead."
 (setq mu4e-index-lazy-check nil)
 (setq mu4e-hide-index-messages t)
 (setq mu4e-modeline-support nil)
-
-(use-package eudc
-  :ensure nil
-  :after (ldap bbdb org-msg)
-  :init (require 'eudc)
-  (require 'eudcb-bbdb)
-  :bind (:map message-mode-map
-              ("<M-tab>" . eudc-expand-inline)
-              :map org-msg-edit-mode-map
-              ("<M-tab>" . eudc-expand-inline))
-  :config
-  (eudc-bbdb-set-server "localhost")
-  (setq eudc-server-hotlist
-        '(("localhost" . bbdb)))
-  (bind-key "<M-tab>" 'eudc-expand-inline org-msg-edit-mode-map)
-  (setq eudc-inline-expansion-servers 'hotlist))
 
 (use-package bbdb
   :custom (bbdb-file "~/.local/state/emacs/bbdb")
