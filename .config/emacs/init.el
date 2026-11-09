@@ -668,9 +668,7 @@ With prefix arg NEW, start an additional session instead."
          (shell . t)
          (plantuml . t))))
 
-(setq org-confirm-babel-evaluate
-      (lambda (_lang _body)
-        (not (string-prefix-p (expand-file-name "~/docs/") (or buffer-file-name "")))))
+(setq org-confirm-babel-evaluate nil)
 (setq org-plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar")
 
 (use-package ox-hugo :after ox)
@@ -813,7 +811,7 @@ With prefix arg NEW, start an additional session instead."
 (use-package cdlatex
   :hook (LaTeX-mode . turn-on-cdlatex))
 
-(setq TeX-command-extra-options "-synctex=1")
+(setq TeX-command-extra-options "-shell-escape -synctex=1")
 (setq TeX-save-query nil)
 (add-hook 'TeX-after-compilation-finished-functions
           #'TeX-revert-document-buffer)

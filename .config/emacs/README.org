@@ -1248,9 +1248,7 @@ the languages I actually use (each costs load time; C is the worst).
            (shell . t)
            (plantuml . t))))
 
-  (setq org-confirm-babel-evaluate
-        (lambda (_lang _body)
-          (not (string-prefix-p (expand-file-name "~/docs/") (or buffer-file-name "")))))
+  (setq org-confirm-babel-evaluate nil)
   (setq org-plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar")
 #+end_src
 
@@ -1471,12 +1469,11 @@ CDLaTeX speeds up editing LaTeX documents.
 
 ** LaTeX Compilation
 
-Compile with SyncTeX, save without asking and refresh the PDF
-afterwards.  Enable =-shell-escape= per document (PGF/TikZ, Minted) with
-a file-local =TeX-command-extra-options=.
+Always compile with =-shell-escape= (needed for PGF/TikZ and Minted),
+save without asking and refresh the PDF afterwards.
 
 #+begin_src elisp
-  (setq TeX-command-extra-options "-synctex=1")
+  (setq TeX-command-extra-options "-shell-escape -synctex=1")
   (setq TeX-save-query nil)
   (add-hook 'TeX-after-compilation-finished-functions
             #'TeX-revert-document-buffer)
