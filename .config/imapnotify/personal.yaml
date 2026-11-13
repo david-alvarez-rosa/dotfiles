@@ -1,17 +1,34 @@
-host: mail.alvarezrosa.com
-port: 993
-tls: true
-tlsOptions:
-  rejectUnauthorized: true
-username: david@alvarezrosa.com
-passwordCmd: "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $8}'"
-boxes:
-  - INBOX
-  - Archive
-  - Drafts
-  - Junk
-  - Sent
-  - Trash
-onNewMail: "/home/david/.local/bin/mailsync personal:%s"
-onChangedMail: "/home/david/.local/bin/mailsync personal:%s"
-onDeletedMail: "/home/david/.local/bin/mailsync personal:%s"
+configurations:
+  - host: mail.alvarezrosa.com
+    port: 993
+    tls: true
+    tlsOptions:
+      rejectUnauthorized: true
+    username: david@alvarezrosa.com
+    passwordCMD: "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $8}'"
+    wait: 0
+    boxes:
+      - mailbox: INBOX
+        onNewMail: /home/david/.local/bin/mailsync personal:INBOX
+        onChangedMail: /home/david/.local/bin/mailsync personal:INBOX
+        onDeletedMail: /home/david/.local/bin/mailsync personal:INBOX
+      - mailbox: Archive
+        onNewMail: /home/david/.local/bin/mailsync personal:Archive
+        onChangedMail: /home/david/.local/bin/mailsync personal:Archive
+        onDeletedMail: /home/david/.local/bin/mailsync personal:Archive
+      - mailbox: Drafts
+        onNewMail: /home/david/.local/bin/mailsync personal:Drafts
+        onChangedMail: /home/david/.local/bin/mailsync personal:Drafts
+        onDeletedMail: /home/david/.local/bin/mailsync personal:Drafts
+      - mailbox: Junk
+        onNewMail: /home/david/.local/bin/mailsync personal:Junk
+        onChangedMail: /home/david/.local/bin/mailsync personal:Junk
+        onDeletedMail: /home/david/.local/bin/mailsync personal:Junk
+      - mailbox: Sent
+        onNewMail: /home/david/.local/bin/mailsync personal:Sent
+        onChangedMail: /home/david/.local/bin/mailsync personal:Sent
+        onDeletedMail: /home/david/.local/bin/mailsync personal:Sent
+      - mailbox: Trash
+        onNewMail: /home/david/.local/bin/mailsync personal:Trash
+        onChangedMail: /home/david/.local/bin/mailsync personal:Trash
+        onDeletedMail: /home/david/.local/bin/mailsync personal:Trash
