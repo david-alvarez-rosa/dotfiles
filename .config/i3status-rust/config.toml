@@ -1,22 +1,28 @@
 [theme]
 theme = "native"
 [theme.overrides]
-separator = " "
-warning_fg = "#E88939"
-critical_fg = "#f9555f"
+separator = ""
 
 [icons]
-icons = "awesome4"
+icons = "none"
 [icons.overrides]
-update = ""
+update = "<span font_family='monospace'></span> "
+cpu = "<span font_family='monospace'></span> "
+volume = "<span font_family='monospace'></span> "
+volume_muted = "<span font_family='monospace'></span>"
+bat = ["<span font_family='FontAwesome'></span>", "<span font_family='FontAwesome'></span>", "<span font_family='FontAwesome'></span>", "<span font_family='FontAwesome'></span>", "<span font_family='FontAwesome'></span>"]
+bat_charging = "<span font_family='FontAwesome'></span>"
+bat_not_available = "<span font_family='FontAwesome'></span>"
+net_wireless = "<span font_family='FontAwesome'></span>"
+time = "<span font_family='FontAwesome'></span>"
 
 [[block]]
 block = "packages"
 package_manager = ["pacman"]
 interval = 21600
-format = " $icon $pacman updates "
-format_singular = " $icon 1 update "
-format_up_to_date = " $icon up to date "
+format = " $icon <span color='white'>$pacman updates</span> "
+format_singular = " $icon <span color='white'>1 update</span> "
+format_up_to_date = " $icon <span color='white'>up to date</span> "
 theme_overrides = { idle_fg = "#1793D1", info_fg = "#1793D1", good_fg = "#1793D1" }
 [[block.click]]
 button = "left"
@@ -25,56 +31,57 @@ cmd = "notify-send 'Available updates' \"$(checkupdates --nocolor | cut -d' ' -f
 [[block]]
 block = "custom"
 command = "ip -o link | grep -q tun && echo up || echo down"
-format = "  $text "
+format = " <span font_family='FontAwesome'></span> $text "
 interval = 30
-theme_overrides = { idle_fg = "#589df6", info_fg = "#589df6", good_fg = "#589df6" }
+theme_overrides = { idle_fg = "#589df6" }
 
 [[block]]
-block = "disk_space"
-path = "~"
+block = "custom"
+command = "df -h -P -l $HOME | awk 'END {print $4}'"
+format = " <span font_family='FontAwesome' font_size='10pt'></span> $text "
 interval = 3600
-format = " $icon $available "
-theme_overrides = { idle_fg = "#21b089", info_fg = "#21b089", good_fg = "#21b089" }
+theme_overrides = { idle_fg = "#21b089" }
 
 [[block]]
-block = "disk_space"
-path = "/"
-interval = 3600
-format = "  $total "
-theme_overrides = { idle_fg = "#f9555f", info_fg = "#f9555f", good_fg = "#f9555f" }
+block = "custom"
+command = "df -h -P -l / | awk 'END {print $2}'"
+format = " <span font_family='FontAwesome'></span> $text "
+interval = "once"
+theme_overrides = { idle_fg = "#f9555f" }
 
 [[block]]
-block = "temperature"
-chip = "thinkpad-isa-*"
-inputs = ["CPU"]
+block = "custom"
+command = "sensors | awk '/CPU: /{sub(/^\\+/, \"\", $2); print $2}'"
+format = " <span font_family='FontAwesome'></span> $text "
 interval = 30
-format = " $icon $max "
-theme_overrides = { idle_fg = "#E88939", info_fg = "#E88939", good_fg = "#E88939" }
+theme_overrides = { idle_fg = "#E88939" }
 
 [[block]]
 block = "cpu"
 interval = 10
 format = " $icon $utilization "
-theme_overrides = { idle_fg = "#589df6", info_fg = "#589df6", good_fg = "#589df6" }
+theme_overrides = { idle_fg = "#589df6", info_fg = "#589df6", good_fg = "#589df6", warning_fg = "#589df6", critical_fg = "#589df6" }
 
 [[block]]
-block = "memory"
+block = "custom"
+command = "awk '/MemAvailable/ {printf \"%.1fG\\n\", $2/1024/1024 + 8}' /proc/meminfo"
+format = " <span font_family='FontAwesome'></span> $text "
 interval = 10
-format = " $icon $mem_avail.eng(prefix:Gi) "
-theme_overrides = { idle_fg = "#21b089", info_fg = "#21b089", good_fg = "#21b089" }
+theme_overrides = { idle_fg = "#21b089" }
 
 [[block]]
 block = "sound"
 format = " $icon {$volume|MUTE} "
-theme_overrides = { idle_fg = "#f9555f", info_fg = "#f9555f", good_fg = "#f9555f" }
+theme_overrides = { idle_fg = "#f9555f", info_fg = "#f9555f", good_fg = "#f9555f", warning_fg = "#f9555f" }
 
 [[block]]
 block = "battery"
 interval = 30
 format = " $icon $percentage "
 full_format = " $icon $percentage "
+charging_format = " $icon $percentage "
 not_charging_format = " $icon $percentage "
-theme_overrides = { idle_fg = "#E88939", info_fg = "#E88939", good_fg = "#E88939" }
+theme_overrides = { idle_fg = "#E88939", info_fg = "#E88939", good_fg = "#E88939", warning_fg = "#E88939", critical_fg = "#E88939" }
 [[block.click]]
 button = "left"
 cmd = "notify-send 'Battery information' \"$(upower --battery | grep -E 'state|time to|energy|percentage|capacity')\""
@@ -91,18 +98,18 @@ theme_overrides = { idle_fg = "#589df6", info_fg = "#589df6", good_fg = "#589df6
 block = "time"
 interval = 20
 format = " $icon $timestamp.datetime(f:'%H:%M') "
-theme_overrides = { idle_fg = "#21b089", info_fg = "#21b089", good_fg = "#21b089" }
+theme_overrides = { idle_fg = "#21b089" }
 
 [[block]]
 block = "time"
 interval = 300
-format = " ^icon_calendar $timestamp.datetime(f:'%A %d') "
-theme_overrides = { idle_fg = "#f9555f", info_fg = "#f9555f", good_fg = "#f9555f" }
+format = " <span font_family='FontAwesome'></span> $timestamp.datetime(f:'%A %d') "
+theme_overrides = { idle_fg = "#f9555f" }
 
 [[block]]
 block = "keyboard_layout"
 format = "$layout"
-theme_overrides = { idle_fg = "#9b59b6", info_fg = "#9b59b6", good_fg = "#9b59b6" }
+theme_overrides = { idle_fg = "#9b59b6" }
 [block.mappings]
-"es (N/A)" = "  ES "
+"es (N/A)" = " <span rise='1024' font_family='FontAwesome'></span> ES "
 "us (N/A)" = ""

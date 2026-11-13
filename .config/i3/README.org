@@ -232,7 +232,7 @@ Small sticky window in the bottom-right corner, for videos.
 * Status bar
 #+begin_src conf
   bar {
-      font pango:DejaVu Sans Mono, FontAwesome, Symbols Nerd Font Mono 9
+      font pango:DejaVu Sans Mono 9
       status_command i3status-rs
       height 31
       position top
