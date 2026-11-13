@@ -52,7 +52,6 @@ PACMAN_PACKAGES="
   pipewire-pulse
   plantuml
   poppler-glib
-  restic
   ripgrep
   rofi
   starship
