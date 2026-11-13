@@ -1,12 +1,7 @@
 ;;; -*- lexical-binding: t; -*-
 
-;; Collect garbage when idle, so the ~170ms pause never lands mid-keystroke
 (add-hook 'emacs-startup-hook
-          (lambda ()
-            (require 'gcmh)
-            (setq gcmh-idle-delay 'auto
-                  gcmh-high-cons-threshold (* 256 1024 1024))
-            (gcmh-mode 1)))
+          (lambda () (setq gc-cons-threshold (* 64 1024 1024))))
 
 ;; Single VC backend inscreases booting speed
 (setq vc-handled-backends '(Git))
@@ -365,17 +360,15 @@
 (defvar-keymap dalvrosa/flyspell-cycle-repeat-map "s" #'dalvrosa/flyspell-cycle)
 (put 'dalvrosa/flyspell-cycle 'repeat-map 'dalvrosa/flyspell-cycle-repeat-map)
 
-(use-package chronometer)
-
 (setq confirm-kill-processes nil)
 
-(use-package engine-mode
-  :defer 1
-  :config
-  (defengine DuckDuckGo
-    "https://duckduckgo.com/?q=%s&t=h_"
-    :keybinding "d")
-  (engine-mode t))
+(defun dalvrosa/duckduckgo (query)
+  (interactive
+   (list (if (use-region-p)
+             (buffer-substring-no-properties (region-beginning) (region-end))
+           (read-string "DuckDuckGo: "))))
+  (browse-url (concat "https://duckduckgo.com/?q=" (url-hexify-string query))))
+(keymap-global-set "C-x / d" #'dalvrosa/duckduckgo)
 
 (defun dalvrosa/new-gpt-chat ()
   (interactive)

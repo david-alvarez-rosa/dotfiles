@@ -70,20 +70,13 @@ packages.
   (setq native-comp-async-report-warnings-errors nil)
 #+end_src
 
-Keep garbage collection out of the way during normal use: =gcmh= holds
-the threshold high while typing and collects once Emacs goes idle, so
-the pause never lands mid-keystroke.
+Restore a sane garbage collection threshold after startup.
 
 #+begin_src elisp
   ;;; -*- lexical-binding: t; -*-
 
-  ;; Collect garbage when idle, so the ~170ms pause never lands mid-keystroke
   (add-hook 'emacs-startup-hook
-            (lambda ()
-              (require 'gcmh)
-              (setq gcmh-idle-delay 'auto
-                    gcmh-high-cons-threshold (* 256 1024 1024))
-              (gcmh-mode 1)))
+            (lambda () (setq gc-cons-threshold (* 64 1024 1024))))
 
   ;; Single VC backend inscreases booting speed
   (setq vc-handled-backends '(Git))
@@ -706,14 +699,6 @@ Cycle flyspell English, Spanish and off with =C-c s= (repeatable with
   (put 'dalvrosa/flyspell-cycle 'repeat-map 'dalvrosa/flyspell-cycle-repeat-map)
 #+end_src
 
-** Chronometer
-
-Simple timer, launched with =M-x chronometer=.
-
-#+begin_src elisp
-  (use-package chronometer)
-#+end_src
-
 ** Kill Confirmation
 
 Don't ask when killing buffers with live processes.
@@ -722,18 +707,18 @@ Don't ask when killing buffers with live processes.
   (setq confirm-kill-processes nil)
 #+end_src
 
-** Engine Mode
+** Web Search
 
-Query web search engines from Emacs (=C-x / d= for DuckDuckGo).
+Search DuckDuckGo for the region or a prompted query with =C-x / d=.
 
 #+begin_src elisp
-  (use-package engine-mode
-    :defer 1
-    :config
-    (defengine DuckDuckGo
-      "https://duckduckgo.com/?q=%s&t=h_"
-      :keybinding "d")
-    (engine-mode t))
+  (defun dalvrosa/duckduckgo (query)
+    (interactive
+     (list (if (use-region-p)
+               (buffer-substring-no-properties (region-beginning) (region-end))
+             (read-string "DuckDuckGo: "))))
+    (browse-url (concat "https://duckduckgo.com/?q=" (url-hexify-string query))))
+  (keymap-global-set "C-x / d" #'dalvrosa/duckduckgo)
 #+end_src
 
 ** LLM Integration

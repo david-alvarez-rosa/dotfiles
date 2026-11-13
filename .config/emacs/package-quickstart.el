@@ -7844,48 +7844,6 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/gcmh-20201116.2251/gcmh-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(defvar gcmh-mode nil
-"Non-nil if GCMH mode is enabled.
-See the `gcmh-mode' command
-for a description of this minor mode.
-Setting this variable directly does not take effect;
-either customize it (see the info node `Easy Customization')
-or call the function `gcmh-mode'.")
-(custom-autoload 'gcmh-mode "gcmh" nil)
-(autoload 'gcmh-mode "gcmh"
-"Minor mode to tweak Garbage Collection strategy.
-
-This is a global minor mode.  If called interactively, toggle the `GCMH
-mode' mode.  If the prefix argument is positive, enable the mode, and if
-it is zero or negative, disable the mode.
-
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
-mode if ARG is nil, omitted, or is a positive number.  Disable the mode
-if ARG is a negative number.
-
-To check whether the minor mode is enabled in the current buffer,
-evaluate `(default-value \\='gcmh-mode)'.
-
-The mode's hook is called both when the mode is enabled and when it is
-disabled.
-
-(fn &optional ARG)" t)
-(register-definition-prefixes "gcmh" '("gcmh-"))
-
-
-(provide 'gcmh-autoloads)
-
-
-)
 (let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/expand-region-20241217.1840/expand-region-autoloads.el"))(load-true-file-name load-file-name))
 
 
@@ -8093,91 +8051,6 @@ Retrieves a list of usernames from the server and highlights them")
 
 
 (provide 'erc-hl-nicks-autoloads)
-
-
-)
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/engine-mode-20240906.453/engine-mode-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(defvar engine-mode nil "\
-Non-nil if Engine mode is enabled.
-See the `engine-mode' command
-for a description of this minor mode.")
-(custom-autoload 'engine-mode "engine-mode" nil)
-(autoload 'engine-mode "engine-mode" "\
-Minor mode for defining and querying search engines through Emacs.
-
-\\{engine-mode-map}
-
-This is a global minor mode.  If called interactively, toggle the
-`Engine mode' mode.  If the prefix argument is positive, enable the
-mode, and if it is zero or negative, disable the mode.
-
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
-mode if ARG is nil, omitted, or is a positive number.  Disable the mode
-if ARG is a negative number.
-
-To check whether the minor mode is enabled in the current buffer,
-evaluate `(default-value \\='engine-mode)'.
-
-The mode's hook is called both when the mode is enabled and when it is
-disabled.
-
-(fn &optional ARG)" t)
-(autoload 'defengine "engine-mode" "\
-Define a custom engine ENGINE-NAME searching SEARCH-ENGINE-URL.
-
-ENGINE-NAME is a symbol naming the engine.
-
-SEARCH-ENGINE-URL is the url to be queried, with a \"%s\"
-standing in for the search term.
-
-The optional keyword argument DOCSTRING assigns a docstring to
-the generated function. A reasonably sensible docstring will be
-generated if a custom one isn't provided.
-
-The optional keyword argument BROWSER assigns the browser
-function to be used when opening the URL.
-
-The optional keyword argument TERM-TRANSFORMATION-HOOK is a
-function that will be applied to the search term before it's
-substituted into SEARCH-ENGINE-URL. For example, if we wanted to
-always upcase our search terms, we might use:
-
-(defengine duckduckgo
-  \"https://duckduckgo.com/?q=%s\"
-  :term-transformation-hook upcase)
-
-In this case, searching for \"foobar\" will hit the url
-\"https://duckduckgo.com/?q=FOOBAR\".
-
-The optional keyword argument KEYBINDING is a string describing
-the key to bind the new function.
-
-Keybindings are in `engine-mode-map', so they're prefixed.
-
-For example, to search Wikipedia, use:
-
-  (defengine wikipedia
-    \"https://www.wikipedia.org/search-redirect.php?search=%s\"
-    :keybinding \"w\"
-    :docstring \"Search Wikipedia!\")
-
-Hitting \"C-x / w\" will be bound to the newly-defined
-`engine/search-wikipedia' function.
-
-(fn ENGINE-NAME SEARCH-ENGINE-URL &key KEYBINDING DOCSTRING (BROWSER \\='engine/browser-function) (TERM-TRANSFORMATION-HOOK \\='identity))" nil t)
-(function-put 'defengine 'lisp-indent-function 1)
-(register-definition-prefixes "engine-mode" '("engine"))
-
-
-(provide 'engine-mode-autoloads)
 
 
 )
@@ -9767,30 +9640,6 @@ disabled.
 
 
 (provide 'corfu-autoloads)
-
-
-)
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/chronometer-20190304.1528/chronometer-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(autoload 'chronometer "chronometer" "\
-A [not so] simple chronometer.
-
-Use this function to start, it will automatically start from zero
-and will keep incrementing every second. Use the following
-commands to interact with it:
-
-\\{chronometer-mode-map}" t)
-(register-definition-prefixes "chronometer" '("chronometer-"))
-
-
-(provide 'chronometer-autoloads)
 
 
 )
@@ -11557,11 +11406,10 @@ Limit searched to BOUND.
                markdown-mode forge org orgit orgit-forge orderless olivetti
                nyan-mode nerd-icons nerd-icons-dired nerd-icons-corfu
                nerd-icons-completion markdown-preview-mode marginalia
-               ledger-mode gptel git-link ghostel gcmh expand-region
-               erc-hl-nicks engine-mode ement embark consult embark-consult
-               elfeed elfeed-org doom-modeline dired-hacks-utils dired-subtree
-               dired-narrow dape corfu chronometer cdlatex cape bbdb bbdb-vcard
-               auctex)
+               ledger-mode gptel git-link ghostel expand-region erc-hl-nicks
+               ement embark consult embark-consult elfeed elfeed-org
+               doom-modeline dired-hacks-utils dired-subtree dired-narrow dape
+               corfu cdlatex cape bbdb bbdb-vcard auctex)
         package-activated-list)))
 (progn
   (require 'info) (info-initialize)
