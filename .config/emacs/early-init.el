@@ -16,3 +16,6 @@
 
 (setq package-quickstart t)
 (setq native-comp-async-report-warnings-errors nil)
+(setq load-prefer-newer t)
+
+(push '(font . "monospace-9") default-frame-alist)

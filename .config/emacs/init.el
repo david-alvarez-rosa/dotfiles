@@ -13,7 +13,12 @@
 (with-eval-after-load 'package
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
   (setopt package-native-compile t))
-(setq use-package-always-defer t)
+(eval-and-compile (setq use-package-always-defer t))
+
+(add-hook 'org-babel-post-tangle-hook
+          (lambda ()
+            (when (equal (buffer-file-name) (locate-user-emacs-file "init.el"))
+              (byte-compile-file (buffer-file-name)))))
 
 (defvar dalvrosa/preload-queue
   '(;; Org, bottom-up, then Babel and the exporters
@@ -421,6 +426,13 @@
 (setq backup-enable-predicate
       (lambda (name) (and (normal-backup-enable-predicate name) (not (file-remote-p name)))))
 
+(let ((src (expand-file-name "themes/modus-themes.el" data-directory))
+      (elc (locate-user-emacs-file "modus-themes.elc")))
+  (when (file-newer-than-file-p src elc)
+    (let ((byte-compile-dest-file-function (lambda (_) elc)))
+      (byte-compile-file src)))
+  (load elc nil t))
+
 (defun dalvrosa/set-background-alpha ()
   (let ((alpha (if (eq (car custom-enabled-themes) 'modus-vivendi) 90 100)))
     (dolist (frame (frame-list))
@@ -439,16 +451,16 @@
 (use-package nerd-icons)
 
 (use-package nerd-icons-completion
-  :after marginalia
   :init
-  (nerd-icons-completion-mode)
-  (nerd-icons-completion-marginalia-setup))
+  (run-with-idle-timer 0.05 nil
+                       (lambda ()
+                         (nerd-icons-completion-mode)
+                         (nerd-icons-completion-marginalia-setup))))
 
 (use-package nerd-icons-corfu
-  :after corfu
-  :demand t
-  :config
-  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+  :init
+  (with-eval-after-load 'corfu
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)))
 
 (use-package nerd-icons-dired
   :hook
@@ -467,8 +479,6 @@
   :after doom-modeline
   :init (nyan-mode))
 
-(set-face-attribute 'default nil :font "monospace" :height 90)
-
 (tooltip-mode 0)
 (setq inhibit-startup-screen t)
 
@@ -486,7 +496,9 @@
 
 (use-package flymake
   :ensure nil
-  :hook (prog-mode . flymake-mode)
+  :hook (prog-mode . (lambda ()
+                       (unless (derived-mode-p 'lisp-interaction-mode)
+                         (flymake-mode))))
   :bind (:map flymake-mode-map
               ("C-c ! n" . flymake-goto-next-error)
               ("C-c ! p" . flymake-goto-prev-error)
