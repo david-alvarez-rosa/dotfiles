@@ -270,82 +270,6 @@ else like the former.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/websocket-20260301.157/websocket-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(register-definition-prefixes "websocket" '("websocket-"))
-
-
-(provide 'websocket-autoloads)
-
-
-)
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/web-server-20210708.2242/web-server-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(autoload 'ws-start "web-server" "\
-Start a server using HANDLERS and return the server object.
-
-HANDLERS may be a single function (which is then called on every
-request) or a list of conses of the form (MATCHER . FUNCTION),
-where the FUNCTION associated with the first successful MATCHER
-is called.  Handler functions are called with two arguments, the
-process and the request object.
-
-A MATCHER may be either a function (in which case it is called on
-the request object) or a cons cell of the form (KEYWORD . STRING)
-in which case STRING is matched against the value of the header
-specified by KEYWORD.
-
-Any supplied NETWORK-ARGS are assumed to be keyword arguments for
-`make-network-process' to which they are passed directly.
-
-For example, the following starts a simple hello-world server on
-port 8080.
-
-  (ws-start
-   (lambda (request)
-     (with-slots (process headers) request
-       (process-send-string process
-        \"HTTP/1.1 200 OK\\r\\nContent-Type: text/plain\\r\\n\\r\\nhello world\")))
-   8080)
-
-Equivalently, the following starts an identical server using a
-function MATCH and the `ws-response-header' convenience
-function.
-
-  (ws-start
-   `(((lambda (_) t) .
-      (lambda (request)
-        (with-slots ((proc process)) request
-          (ws-response-header proc 200 '(\"Content-Type\" . \"text/plain\"))
-          (process-send-string proc \"hello world\")))))
-   8080)
-
-(fn HANDLERS PORT &optional LOG-BUFFER &rest NETWORK-ARGS)")
-(register-definition-prefixes "web-server" '("ws-"))
-
-
-
-(register-definition-prefixes "web-server-status-codes" '("ws-status-codes"))
-
-
-(provide 'web-server-autoloads)
-
-
-)
 (let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/vlf-1.7.2/vlf-autoloads.el"))(load-true-file-name load-file-name))
 
 
@@ -6299,44 +6223,6 @@ disabled.
 
 
 )
-(let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/markdown-preview-mode-20230707.803/markdown-preview-mode-autoloads.el"))(load-true-file-name load-file-name))
-
-
-
-(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))
-
-
-
-
-(autoload 'markdown-preview-open-browser "markdown-preview-mode" "\
-Open the `markdown-preview' in the browser." t)
-(autoload 'markdown-preview-cleanup "markdown-preview-mode" "\
-Cleanup `markdown-preview' mode." t)
-(autoload 'markdown-preview-mode "markdown-preview-mode" "\
-Markdown preview mode.
-
-This is a minor mode.  If called interactively, toggle the
-`Markdown-Preview mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
-
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
-mode if ARG is nil, omitted, or is a positive number.  Disable the mode
-if ARG is a negative number.
-
-To check whether the minor mode is enabled in the current buffer,
-evaluate the variable `markdown-preview-mode'.
-
-The mode's hook is called both when the mode is enabled and when it is
-disabled.
-
-(fn &optional ARG)" t)
-(register-definition-prefixes "markdown-preview-mode" '("markdown-preview-"))
-
-
-(provide 'markdown-preview-mode-autoloads)
-
-
-)
 (let* ((load-file-name (file-name-concat package--quickstart-dir "elpa/marginalia-20261010.1524/marginalia-autoloads.el"))(load-true-file-name load-file-name))
 
 
@@ -11399,17 +11285,16 @@ Limit searched to BOUND.
 (setq package-activated-list
       (delete-dups
        (append
-        '(yaml cond-let llama with-editor websocket web-server vlf vertico
-               treepy transient tomelr magit-section taxy taxy-magit-section
-               tablist svg-lib s dash f shrink-path plz deflate plantuml-mode
-               persist pdf-tools ox-hugo emacsql closql ghub magit
-               markdown-mode forge org orgit orgit-forge orderless olivetti
-               nyan-mode nerd-icons nerd-icons-dired nerd-icons-corfu
-               nerd-icons-completion markdown-preview-mode marginalia
-               ledger-mode gptel git-link ghostel expand-region erc-hl-nicks
-               ement embark consult embark-consult elfeed elfeed-org
-               doom-modeline dired-hacks-utils dired-subtree dired-narrow dape
-               corfu cdlatex cape bbdb bbdb-vcard auctex)
+        '(yaml cond-let llama with-editor vlf vertico treepy transient tomelr
+               magit-section taxy taxy-magit-section tablist svg-lib s dash f
+               shrink-path plz deflate plantuml-mode persist pdf-tools ox-hugo
+               emacsql closql ghub magit markdown-mode forge org orgit
+               orgit-forge orderless olivetti nyan-mode nerd-icons
+               nerd-icons-dired nerd-icons-corfu nerd-icons-completion
+               marginalia ledger-mode gptel git-link ghostel expand-region
+               erc-hl-nicks ement embark consult embark-consult elfeed
+               elfeed-org doom-modeline dired-hacks-utils dired-subtree
+               dired-narrow dape corfu cdlatex cape bbdb bbdb-vcard auctex)
         package-activated-list)))
 (progn
   (require 'info) (info-initialize)
@@ -11444,8 +11329,6 @@ Limit searched to BOUND.
                                  "elpa/magit-section-20261028.453")
                (file-name-concat package--quickstart-dir
                                  "elpa/transient-20261101.1108")
-               (file-name-concat package--quickstart-dir
-                                 "elpa/web-server-20210708.2242")
                (file-name-concat package--quickstart-dir
                                  "elpa/with-editor-20261101.1104"))
          Info-directory-list)))

@@ -9,8 +9,8 @@
             dired-subtree doom-modeline elfeed elfeed-org embark
             embark-consult ement erc-hl-nicks expand-region forge ghostel
             git-link gptel ledger-mode magit marginalia markdown-mode
-            markdown-preview-mode nerd-icons
-            nerd-icons-completion nerd-icons-corfu nerd-icons-dired nyan-mode
+            nerd-icons nerd-icons-completion nerd-icons-corfu
+            nerd-icons-dired nyan-mode
             olivetti orderless orgit orgit-forge ox-hugo pdf-tools
             plantuml-mode vertico vlf))
  '(safe-local-variable-values

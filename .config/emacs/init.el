@@ -643,7 +643,7 @@ With prefix arg NEW, start an additional session instead."
          (plantuml . t))))
 
 (setq org-confirm-babel-evaluate nil)
-(setq org-plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar")
+(setq org-plantuml-exec-mode 'plantuml)
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 (use-package ox-hugo :after ox :demand t)
@@ -723,43 +723,10 @@ With prefix arg NEW, start an additional session instead."
 
 (use-package markdown-mode)
 
-(use-package markdown-preview-mode
-  :config
-  (setq markdown-preview-stylesheets
-        (list "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.9.0/github-markdown.min.css"
-              "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" "
-  <style>
-   .markdown-body {
-     box-sizing: border-box;
-     min-width: 200px;
-     max-width: 980px;
-     margin: 0 auto;
-     padding: 45px;
-   }
-
-   @media (max-width: 767px) {
-     .markdown-body {
-       padding: 15px;
-     }
-   }
-  </style>
-"))
-  (setq markdown-preview-javascript
-        (list "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" "
-  <script>
-   $(document).on('mdContentChange', function() {
-     $('pre code').each(function(i, block) {
-       hljs.highlightBlock(block);
-     });
-   });
-  </script>
-")))
-
 (use-package plantuml-mode
   :mode ("\\.puml\\'" . plantuml-mode)
   :config
-  (setq plantuml-default-exec-mode 'jar)
-  (setq plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar"))
+  (setq plantuml-default-exec-mode 'executable))
 
 (use-package auctex
   :after latex
