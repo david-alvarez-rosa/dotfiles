@@ -594,7 +594,7 @@ With prefix arg NEW, start an additional session instead."
 
 (use-package forge :after magit :defer nil)
 
-(use-package orgit-forge :after forge)
+(use-package orgit-forge :after forge :demand t)
 
 (use-package git-link
   :bind (("C-c w l" . git-link)

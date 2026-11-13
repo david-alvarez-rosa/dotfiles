@@ -930,7 +930,7 @@ Delete trailing whitespace on save, except in mail (it breaks the
 
   (use-package forge :after magit :defer nil)
 
-  (use-package orgit-forge :after forge)
+  (use-package orgit-forge :after forge :demand t)
 #+end_src
 
 ** Git Link
