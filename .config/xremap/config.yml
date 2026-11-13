@@ -1,6 +1,15 @@
 modmap:
+  - name: Super held
+    mode: super
+    remap:
+      Super_L:
+        release: { set_mode: default }
+      Tab: Tab
+
   - name: Global
     remap:
+      Super_L:
+        press: { set_mode: super }
       CapsLock:
         held: Ctrl_R
         alone: Esc
