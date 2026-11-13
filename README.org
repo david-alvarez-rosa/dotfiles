@@ -17,7 +17,7 @@ across work and personal machines.
 - Firefox :: Web browsing.
 - mpv :: Lightweight media player.
 - isync :: Email synchronization.
-- xbindkeys / xremap :: Key remapping.
+- xremap :: Key remapping.
 
 #+html: <br />
 

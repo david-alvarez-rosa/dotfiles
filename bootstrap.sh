@@ -60,7 +60,6 @@ PACMAN_PACKAGES="
   vim
   which
   wireplumber
-  xbindkeys
   xclip
   xdotool
   xorg-server

@@ -1,6 +1,5 @@
 xremap ~/.config/xremap/config.yml &
 sleep 2 && setxkbmap -layout us,es -option compose:ralt && xset r rate 275 60 &
-xbindkeys -f ~/.config/xbindkeys/config
 unclutter --timeout 2 --ignore-scrolling &
 xrdb -merge ~/.config/X11/Xresources
 ~/.local/bin/keepassxc-tpm-unlock &
