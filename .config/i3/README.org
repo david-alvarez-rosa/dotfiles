@@ -104,6 +104,11 @@ Toggle between light and dark mode.
   bindsym $mod+d exec --no-startup-id dark-mode-toggle
 #+end_src
 
+Toggle keyboard layout between US and Spanish.
+#+begin_src conf
+  bindsym $mod+space exec --no-startup-id "setxkbmap -query | grep -qE 'layout:[[:space:]]*es' && setxkbmap -layout us,es -option '' -option compose:ralt || setxkbmap -layout es,us -option '' -option compose:ralt; pkill -RTMIN+2 i3blocks"
+#+end_src
+
 Volume, microphone, brightness, touchpad, zoom and music keys.
 #+begin_src conf
   bindsym XF86AudioRaiseVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+12)/5*5));wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;wpctl set-mute @DEFAULT_AUDIO_SINK@ 0;pkill -RTMIN+1 i3blocks"
@@ -228,16 +233,16 @@ Customize splitting direction for windows.
   bindsym $mod+h split horizontal
 #+end_src
 
-*** Window floating
-Set key for the toggle between tiling/floating.
-#+begin_src conf
-  bindsym $mod+Shift+t floating toggle
-#+end_src
-
 *** Window tabbed
 Set key for the toggle between tiling/tabbed (stack).
 #+begin_src conf
   bindsym $mod+s layout toggle tabbed split
+#+end_src
+
+*** Window floating
+Set key for the toggle between tiling/floating.
+#+begin_src conf
+  bindsym $mod+Shift+t floating toggle
 #+end_src
 
 *** Window sticky
