@@ -11,18 +11,18 @@ across work and personal machines.
 
 - Emacs :: Editor, terminal, email, agenda, calendar, notes, PDFs,
   images, file manager, RSS/Atom feeds, IRC, and LLM integration.
-- i3 Window Manager :: Tiling window management with custom i3-blocks
-  and dunst notifications.
-- Zsh :: With oh-my-zsh and starship prompt.
+- i3 :: Tiling window manager with i3status-rust bar and dunst.
+- Zsh :: oh-my-zsh and starship prompt.
 - Firefox :: Web browsing.
-- mpv :: Lightweight media player.
+- mpv :: Media player.
 - isync :: Email synchronization.
+- darkman :: Light/dark mode switching.
 - xremap :: Key remapping.
 
 #+html: <br />
 
-On a fresh Arch Linux machine, optionally export your GPG key
-(KeePassXC) to =~/gpg-key.asc=, then run
+On a fresh Arch Linux machine (optionally with the GPG key exported to
+=~/gpg-key.asc=), run
 
 #+begin_src sh
   curl -fsSL https://raw.githubusercontent.com/david-alvarez-rosa/dotfiles/main/bootstrap.sh | sh
