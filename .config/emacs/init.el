@@ -61,14 +61,15 @@
   (while (and (not (eobp)) (not (dired-move-to-filename)))
     (forward-line 1)))
 
-(defun dalvrosa/dired-fix-group-directories ()
+(defun dalvrosa/dired-sort-toggle ()
   (setq dired-actual-switches
-        (if (string-match-p "\\(^\\| \\)-[[:alpha:]]*t" dired-actual-switches)
-            "-alh -t"
-          "-alh --group-directories-first"))
+        (if (string-match-p dired-sort-by-date-regexp dired-actual-switches)
+            dired-listing-switches
+          "-alh -t"))
+  (dired-sort-set-mode-line)
   (revert-buffer)
   (dalvrosa/dired-goto-top))
-(advice-add 'dired-sort-toggle :after #'dalvrosa/dired-fix-group-directories)
+(advice-add 'dired-sort-toggle :override #'dalvrosa/dired-sort-toggle)
 
 (use-package dired-narrow
   :after dired
@@ -690,10 +691,10 @@ With prefix arg NEW, start an additional session instead."
   `org-agenda-block-separator' characters)."
   (when org-agenda-compact-blocks
     (user-error "Cannot delete empty compact blocks"))
-  (setq buffer-read-only nil)
   (save-excursion
     (goto-char (point-min))
-    (let* ((blank-line-re "^\\s-*$")
+    (let* ((inhibit-read-only t)
+           (blank-line-re "^\\s-*$")
            (content-line-count (if (looking-at-p blank-line-re) 0 1))
            (start-pos (point))
            (block-re (format "%c\\{10,\\}" org-agenda-block-separator)))
@@ -713,8 +714,7 @@ With prefix arg NEW, start an additional session instead."
       ;; The above strategy can leave a separator line at the beginning
       ;; of the buffer.
       (when (looking-at-p block-re)
-        (delete-region (point) (1+ (line-end-position))))))
-  (setq buffer-read-only t))
+        (delete-region (point) (1+ (line-end-position)))))))
 
 (add-hook 'org-agenda-finalize-hook #'dalvrosa/org-agenda-delete-empty-blocks)
 
