@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env sh
+set -eux
 
-# Backup $HOME (except cache) to drive mounted in /mnt/Drive using rsync. Based
-# on https://wiki.archlinux.org/title/Rsync#As_a_backup_utility
+export RESTIC_REPOSITORY=/mnt/Drive/restic
+export RESTIC_PASSWORD_COMMAND="sh -c \"gpg --no-tty -qd $HOME/.local/share/authinfo.gpg | awk '/^machine restic /{print \$NF}'\""
 
-DATE=$(date -I)
-
-rsync -a -b -v --delete --exclude .cache --backup-dir=/mnt/Drive/Backups/$DATE /home/david/ /mnt/Drive/Backup
+restic backup --exclude "$HOME/.cache" "$HOME"
+restic forget --prune --keep-daily 7 --keep-weekly 4 --keep-monthly 12
+restic check
