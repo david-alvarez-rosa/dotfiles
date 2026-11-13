@@ -24,7 +24,7 @@ keymap:
 
   - name: Emacs
     application:
-      not: [Emacs, Alacritty, qutebrowser, Qemu-system-x86_64]
+      not: [Emacs, Alacritty, Qemu-system-x86_64]
     remap:
       C-s: C-f
       C-b: { with_mark: left }

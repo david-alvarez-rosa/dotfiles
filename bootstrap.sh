@@ -48,7 +48,6 @@ PACMAN_PACKAGES="
   pipewire-pulse
   plantuml
   poppler-glib
-  qutebrowser
   ripgrep
   rsync
   starship

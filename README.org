@@ -14,7 +14,7 @@ across work and personal machines.
 - i3 Window Manager :: Tiling window management with custom i3-blocks
   and dunst notifications.
 - Zsh :: With oh-my-zsh and starship prompt.
-- Qutebrowser :: Minimal, keyboard-driven web browsing.
+- Firefox :: Web browsing.
 - mpv :: Lightweight media player.
 - isync :: Email synchronization.
 - xbindkeys / xremap :: Key remapping.
