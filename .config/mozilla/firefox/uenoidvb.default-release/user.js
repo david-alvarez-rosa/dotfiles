@@ -39,8 +39,8 @@ user_pref("gfx.x11-egl.force-enabled", true);
 user_pref("media.eme.enabled", true);
 user_pref("media.hardware-video-decoding.force-enabled", true);
 
-user_pref("network.dns.disablePrefetch", true);
-user_pref("network.http.speculative-parallel-limit", 0);
-user_pref("network.prefetch-next", false);
+user_pref("network.http.pacing.requests.enabled", false);
+user_pref("network.http.speculative-parallel-limit", 20);
+user_pref("network.prefetch-next", true);
 user_pref("privacy.clearOnShutdown_v2.formdata", true);
 user_pref("privacy.globalprivacycontrol.enabled", true);
