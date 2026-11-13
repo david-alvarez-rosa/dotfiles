@@ -551,7 +551,7 @@ With prefix arg NEW, start an additional session instead."
   (keymap-set project-prefix-map "h" 'dalvrosa/ghostel-project-claude)
   (keymap-set project-prefix-map "j" 'ghostel-project-list-buffers)
   (keymap-set project-prefix-map "v" 'ghostel-project)
-  (keymap-set project-prefix-map "a" 'errand-agents))
+  (keymap-set project-prefix-map "e" 'errand-agents))
 
 (use-package errand
   :ensure nil

@@ -1013,10 +1013,10 @@ prefix argument to either starts an additional one.
     (keymap-set project-prefix-map "h" 'dalvrosa/ghostel-project-claude)
     (keymap-set project-prefix-map "j" 'ghostel-project-list-buffers)
     (keymap-set project-prefix-map "v" 'ghostel-project)
-    (keymap-set project-prefix-map "a" 'errand-agents))
+    (keymap-set project-prefix-map "e" 'errand-agents))
 #+end_src
 
-Errands: Claude Code sessions delegated to the homelab.  =C-x p a= opens
+Errands: Claude Code sessions delegated to the homelab.  =C-x p e= opens
 the project's dashboard.
 
 #+begin_src elisp
