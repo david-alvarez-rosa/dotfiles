@@ -10,14 +10,12 @@ plugins=(
 fpath+=$ZSH_CUSTOM/plugins/zsh-completions/src
 export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 ZSH_DISABLE_COMPFIX="true"
-DISABLE_UNTRACKED_FILES_DIRTY="true"
+zstyle ':omz:update' mode disabled
 HYPHEN_INSENSITIVE="true"
 source $ZSH/oh-my-zsh.sh
 
 eval "$(starship init zsh)"
 
-bindkey "\e[A" history-beginning-search-backward
-bindkey "\e[B" history-beginning-search-forward
 bindkey "\C-p" history-beginning-search-backward
 bindkey "\C-n" history-beginning-search-forward
 

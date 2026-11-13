@@ -6,8 +6,6 @@ export CC=clang
 export CXX=clang++
 
 # Language
-export LC_CTYPE="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
 export LANG="en_US.UTF-8"
 
 # XDG
@@ -18,7 +16,6 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export ZDOTDIR="$XDG_CONFIG_HOME"/zsh
 export LESSHISTFILE=-
 export HISTFILE="$XDG_DATA_HOME"/shell/history
-export INPUTRC="$XDG_CONFIG_HOME"/shell/inputrc
 export UNISON="$XDG_CONFIG_HOME"/unison
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR"/ssh-agent.socket
@@ -54,4 +51,3 @@ export BROWSER="firefox"
 
 # Path
 export PATH="$PATH:$HOME/.local/bin"
-export MANPATH="/usr/local/man:$MANPATH"
