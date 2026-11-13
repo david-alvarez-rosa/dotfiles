@@ -10,4 +10,4 @@ image/gif=feh.desktop
 application/xhtml+xml=firefox.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
 x-scheme-handler/mailto=emacs-mailto.desktop
-application/pdf=emacsclient-pdf.desktop
+application/pdf=emacsclient.desktop
