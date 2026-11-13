@@ -19,6 +19,6 @@ esac
 out=$(wpctl get-volume "$SINK")
 vol=$(echo "$out" | awk '{printf "%d", $2 * 100}')
 case "$out" in
-  *MUTED*) printf "<span font_family='monospace'>\357\200\246</span> MUTE\n" ;;
-  *) printf "<span font_family='monospace'>\357\200\250</span>  %d%%\n" "$vol" ;;
+  *MUTED*) printf "<span font_family='Hack Nerd Font Propo'>\357\200\246</span> MUTE\n" ;;
+  *) printf "<span font_family='Hack Nerd Font Propo'>\357\200\250</span> %d%%\n" "$vol" ;;
 esac

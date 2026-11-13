@@ -6,7 +6,7 @@ esac
 
 number=$(checkupdates --nocolor 2>/dev/null | wc -l)
 
-printf "<span font_family='monospace'>\357\214\203</span>  "
+printf "<span font_family='Hack Nerd Font Propo'>\357\214\203</span> "
 printf "<span color='white'>"
 if [ "$number" -eq 0 ]; then
   printf "up to date"
