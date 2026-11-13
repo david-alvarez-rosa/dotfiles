@@ -7,7 +7,6 @@
     "pr": "",
     "sessionUrl": false
   },
-  "includeCoAuthoredBy": false,
   "model": "opus",
   "hooks": {
     "PreToolUse": [
