@@ -49,6 +49,7 @@ PACMAN_PACKAGES="
   networkmanager
   nextcloud-client
   openssh
+  otf-font-awesome
   pacman-contrib
   picom
   pipewire-alsa
@@ -124,6 +125,8 @@ systemctl --user enable commit-docs.timer dav-sync.timer lid-mute.service goimap
 
 mkdir -p ~/.local/share/mail
 mu init --maildir=~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=davids@alvarezrosa.com
+
+uv tool install ty
 
 sudo chsh -s "$(which zsh)" "$USER"
 
