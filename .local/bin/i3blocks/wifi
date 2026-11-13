@@ -10,4 +10,4 @@ if [ ! -d "/sys/class/net/$INTERFACE/wireless" ] ||
     exit
 fi
 
-awk -v i="$INTERFACE" '$0 ~ i { print int($3 * 100 / 70) "%" }' /proc/net/wireless
+nmcli -t -f IN-USE,SIGNAL dev wifi list ifname "$INTERFACE" --rescan no | awk -F: '$1 == "*" { print $2 "%" }'
