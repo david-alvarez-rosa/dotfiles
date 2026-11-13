@@ -31,8 +31,8 @@ PACMAN_PACKAGES="
   hunspell-en_us
   hunspell-es_es
   i3-wm
+  i3blocks
   i3lock
-  i3status-rust
   imagemagick
   inter-font
   isync
@@ -59,6 +59,7 @@ PACMAN_PACKAGES="
   rofi
   satty
   starship
+  sysstat
   texlive
   tlp
   tpm2-tools

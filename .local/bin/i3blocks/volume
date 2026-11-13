@@ -1,0 +1,24 @@
+#!/bin/sh
+
+SINK="@DEFAULT_AUDIO_SINK@"
+STEP="${1:-10}"
+
+case $BLOCK_BUTTON in
+  1|3)
+    if wpctl get-volume "$SINK" | grep -q MUTED; then
+      wpctl set-mute "$SINK" 0
+    else
+      wpctl set-volume "$SINK" 0
+      wpctl set-mute "$SINK" 1
+    fi
+    ;;
+  4) wpctl set-volume "$SINK" "${STEP}%+" ;;
+  5) wpctl set-volume "$SINK" "${STEP}%-" ;;
+esac
+
+out=$(wpctl get-volume "$SINK")
+vol=$(echo "$out" | awk '{printf "%d", $2 * 100}')
+case "$out" in
+  *MUTED*) printf "<span font_family='monospace'>\357\200\246</span> MUTE\n" ;;
+  *) printf "<span font_family='monospace'>\357\200\250</span>  %d%%\n" "$vol" ;;
+esac

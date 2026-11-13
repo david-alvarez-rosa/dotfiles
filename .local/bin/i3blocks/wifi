@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+INTERFACE="${BLOCK_INSTANCE:-wlan0}"
+
+printf "<span font_family='FontAwesome'></span> "
+
+if [ ! -d "/sys/class/net/$INTERFACE/wireless" ] ||
+   [ "$(cat "/sys/class/net/$INTERFACE/operstate")" = down ]; then
+    echo "Off"
+    exit
+fi
+
+nmcli -t -f IN-USE,SIGNAL dev wifi list ifname "$INTERFACE" --rescan no | awk -F: '$1 == "*" { print $2 "%" }'
