@@ -11,7 +11,8 @@
 (setq vc-handled-backends '(Git))
 
 (with-eval-after-load 'package
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/")))
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+  (setopt package-native-compile t))
 (setq use-package-always-defer t)
 
 (defvar dalvrosa/preload-queue
@@ -98,6 +99,8 @@
 
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
+(with-eval-after-load 'autorevert
+  (setopt auto-revert-avoid-polling t))
 (run-with-idle-timer 0.1 nil #'global-auto-revert-mode)
 
 (setq split-width-threshold 210)
@@ -221,6 +224,7 @@
 
 (setq scroll-conservatively 101)
 (setq scroll-preserve-screen-position t)
+(setq fast-but-imprecise-scrolling t)
 
 (define-key global-map (kbd "M-n") 'forward-paragraph)
 (define-key global-map (kbd "M-p") 'backward-paragraph)
@@ -229,6 +233,14 @@
 
 (put 'set-goal-column 'disabled nil)
 (put 'scroll-left 'disabled nil)
+
+(setq read-process-output-max (* 1024 1024))
+(setq inhibit-compacting-font-caches t)
+(setq redisplay-skip-fontification-on-input t)
+(setq auto-mode-case-fold nil)
+(setq-default bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+(run-with-idle-timer 0.1 nil #'global-so-long-mode)
 
 (electric-pair-mode t)
 
@@ -549,6 +561,7 @@ With prefix arg NEW, start an additional session instead."
   :config
   (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
   (setq eglot-autoshutdown t)
+  (setq eglot-events-buffer-config '(:size 0 :format full))
   (setf (alist-get '(python-mode python-ts-mode) eglot-server-programs nil nil #'equal)
         '("ty" "server"))
   :hook ((c++-ts-mode . eglot-ensure)

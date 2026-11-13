@@ -76,7 +76,8 @@ keep startup fast.
 
 #+begin_src elisp
   (with-eval-after-load 'package
-    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/")))
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+    (setopt package-native-compile t))
   (setq use-package-always-defer t)
 #+end_src
 
@@ -220,6 +221,8 @@ Keep backups, autosaves and lock files in the temp directory.
 #+begin_src elisp
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil)
+  (with-eval-after-load 'autorevert
+    (setopt auto-revert-avoid-polling t))
   (run-with-idle-timer 0.1 nil #'global-auto-revert-mode)
 #+end_src
 
@@ -397,6 +400,7 @@ Let i3 focus/move commands cross Emacs windows (see [[https://sqrtminusone.xyz/p
 #+begin_src elisp
   (setq scroll-conservatively 101)
   (setq scroll-preserve-screen-position t)
+  (setq fast-but-imprecise-scrolling t)
 #+end_src
 
 #+begin_src elisp
@@ -409,6 +413,21 @@ Let i3 focus/move commands cross Emacs windows (see [[https://sqrtminusone.xyz/p
 #+begin_src elisp
   (put 'set-goal-column 'disabled nil)
   (put 'scroll-left 'disabled nil)
+#+end_src
+
+** Performance
+
+Bigger process reads (LSP, terminal, Git), left-to-right text only,
+and =so-long= for minified files.
+
+#+begin_src elisp
+  (setq read-process-output-max (* 1024 1024))
+  (setq inhibit-compacting-font-caches t)
+  (setq redisplay-skip-fontification-on-input t)
+  (setq auto-mode-case-fold nil)
+  (setq-default bidi-paragraph-direction 'left-to-right)
+  (setq bidi-inhibit-bpa t)
+  (run-with-idle-timer 0.1 nil #'global-so-long-mode)
 #+end_src
 
 ** Character Pairs
@@ -860,6 +879,7 @@ Eglot under =C-c l=.
     :config
     (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
     (setq eglot-autoshutdown t)
+    (setq eglot-events-buffer-config '(:size 0 :format full))
     (setf (alist-get '(python-mode python-ts-mode) eglot-server-programs nil nil #'equal)
           '("ty" "server"))
     :hook ((c++-ts-mode . eglot-ensure)
