@@ -27,7 +27,7 @@ set $ws10 "10. Executing"
 
 exec emacs
 exec firefox
-assign [class="firefox"] $ws2
+exec --no-startup-id sh -c 'until i3-msg [class=firefox] move container to workspace $ws2; do sleep 0.5; done'
 
 exec --no-startup-id sh -c 'until ssh-add -l >/dev/null 2>&1; do sleep 0.5; done; nextcloud --background'
 

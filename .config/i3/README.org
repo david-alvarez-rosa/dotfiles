@@ -65,7 +65,7 @@ Auto start Emacs on workspace 1 and Firefox on workspace 2.
 #+begin_src conf
   exec emacs
   exec firefox
-  assign [class="firefox"] $ws2
+  exec --no-startup-id sh -c 'until i3-msg [class=firefox] move container to workspace $ws2; do sleep 0.5; done'
 #+end_src
 
 Start the Nextcloud client in the background, once KeePassXC has unlocked the
