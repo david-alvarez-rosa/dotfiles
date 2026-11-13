@@ -18,8 +18,7 @@ mailbox pair; multiple replicas of a mailbox can be maintained.
 The =authinfo.gpg= file should be properly configured and encrypted with, at
 least, the following information.
 #+begin_src conf :tangle no
-  machine mail.alvarezrosa.com login david port 587 password "***pass***"
-  machine smtp.yandex.com login david.alvarez.rosa port 587 password "***pass***"
+  machine mail.alvarezrosa.com login david@alvarezrosa.com port 465 password "***pass***"
 #+end_src
 
 After the first sync of emails, the =mu= database must be started. It is useful
@@ -36,7 +35,7 @@ Configuration for my personal email account.
   IMAPAccount Personal
   Host mail.alvarezrosa.com
   User david@alvarezrosa.com
-  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep alvarezrosa.com | awk '{print $8}'"
+  PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $8}'"
   TLSType IMAPS
   DisableExtension COMPRESS=DEFLATE
 

@@ -1,7 +1,7 @@
 IMAPAccount Personal
 Host mail.alvarezrosa.com
 User david@alvarezrosa.com
-PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep alvarezrosa.com | awk '{print $8}'"
+PassCmd "gpg --no-tty -qd ~/.local/share/authinfo.gpg | grep mail.alvarezrosa.com | awk '{print $8}'"
 TLSType IMAPS
 DisableExtension COMPRESS=DEFLATE
 
