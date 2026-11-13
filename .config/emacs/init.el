@@ -185,14 +185,7 @@
             (turn-on-auto-fill)
             (setq fill-column 72)))
 
-(defun dalvrosa/unfill-paragraph (&optional region)
-  "Takes a multi-line paragraph and makes it into a single line of text."
-  (interactive (progn (barf-if-buffer-read-only) '(t)))
-  (let ((fill-column (point-max))
-        ;; This would override `fill-column' if it's an integer.
-        (emacs-lisp-docstring-fill-column t))
-    (fill-paragraph nil region)))
-(define-key global-map (kbd "M-Q") 'dalvrosa/unfill-paragraph)
+(keymap-global-set "M-Q" #'unfill-paragraph)
 
 (defun dalvrosa/unfill-paragraph-and-kill (beg end)
   "Save the current region to the kill ring after unfilling it."
@@ -202,9 +195,7 @@
     (with-temp-buffer
       (funcall mode)
       (yank)
-      (let ((fill-column (point-max))
-            (emacs-lisp-docstring-fill-column t))
-        (fill-region (point-min) (point-max)))
+      (unfill-paragraph nil (point-min) (point-max))
       (kill-region (point-min) (point-max)))))
 (define-key global-map (kbd "M-W") 'dalvrosa/unfill-paragraph-and-kill)
 
@@ -373,8 +364,6 @@
 (global-set-key (kbd "C-c s") #'dalvrosa/flyspell-cycle)
 (defvar-keymap dalvrosa/flyspell-cycle-repeat-map "s" #'dalvrosa/flyspell-cycle)
 (put 'dalvrosa/flyspell-cycle 'repeat-map 'dalvrosa/flyspell-cycle-repeat-map)
-
-(keymap-global-set "C-c S" #'tramp-revert-buffer-with-sudo)
 
 (use-package chronometer)
 
