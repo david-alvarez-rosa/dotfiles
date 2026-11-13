@@ -6,27 +6,19 @@
 #+PROPERTY: header-args :tangle config
 
 
-i3 is a tiling window manager, completely written from scratch. The target
-platforms are GNU/Linux and BSD operating systems, the code is Free and Open
-Source Software (FOSS) under the BSD license. i3 is primarily targeted at
-advanced users and developers. This is my personal configuration, primarily
-based on the principles of minimalism (simplicity is the key for success). All
-key bindings are set following the holy Emacs philosophy.
+Minimal i3 configuration with Emacs-style key bindings.
 
 * Theme
-Set default font (for window title).
 #+begin_src conf
   font pango:monospace 11
 #+end_src
 
-Set initial inner and outer gaps and window border
 #+begin_src conf
   gaps inner 4
   gaps outer 2
   default_border pixel 1
 #+end_src
 
-Use a uniform dark border on every side.
 #+begin_src conf
   #                       border  backgr. text    indicator child
   client.focused          #555555 #555555 #ffffff #555555   #555555
@@ -36,17 +28,14 @@ Use a uniform dark border on every side.
 #+end_src
 
 * Functionality
-Set modifier key to Super (Windows key).
 #+begin_src conf
   set $mod Mod4
 #+end_src
 
-Disable focus wrapping (I have always found this feature annoying).
 #+begin_src conf
   focus_wrapping no
 #+end_src
 
-Set workspace names.
 #+begin_src conf
   set $ws1 "1. Emacs"
   set $ws2 "2. Browser"
@@ -61,55 +50,49 @@ Set workspace names.
 #+end_src
 
 * Auto Start
-Auto start Emacs on workspace 1 and Firefox on workspace 2.
+Emacs on workspace 1, Firefox on 2.
 #+begin_src conf
   exec emacs
   exec firefox
   exec --no-startup-id sh -c 'until i3-msg [class=firefox] move container to workspace $ws2; do sleep 0.5; done'
 #+end_src
 
-Start the Nextcloud client in the background, once KeePassXC has unlocked the
-keychain it reads its token from (waits until the SSH key is loaded).
+Nextcloud waits for KeePassXC to unlock (SSH key loaded).
 #+begin_src conf
   exec --no-startup-id sh -c 'until ssh-add -l >/dev/null 2>&1; do sleep 0.5; done; nextcloud --background'
 #+end_src
 
-Lock the screen with =i3lock= before sleep/suspend. =xss-lock= holds a sleep
-inhibitor until the screen is locked.
+Lock before suspend.
 #+begin_src conf
   exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -i ~/media/wallpaper.png -u
 #+end_src
 
-Set the wallpaper.
 #+begin_src conf
   exec_always --no-startup-id feh --no-fehbg --bg-fill ~/media/wallpaper.png
 #+end_src
 
 * Key bindings
 ** Apps
-Open a terminal
 #+begin_src conf
   bindsym $mod+Return exec emacsclient -c
   bindsym $mod+Shift+Return exec emacsclient -c -e "(ghostel t)"
 #+end_src
 
-Application launcher and manual screen lock.
 #+begin_src conf
   bindsym $mod+r exec --no-startup-id rofi -show drun
   bindsym $mod+l exec --no-startup-id i3lock -i ~/media/wallpaper.png -u
 #+end_src
 
-Toggle between light and dark mode.
 #+begin_src conf
   bindsym $mod+d exec --no-startup-id darkman toggle
 #+end_src
 
-Toggle keyboard layout between US and Spanish.
+US/Spanish layout toggle.
 #+begin_src conf
   bindsym $mod+space exec --no-startup-id "setxkbmap -query | grep -qE 'layout:[[:space:]]*es' && setxkbmap -layout us,es -option '' -option compose:ralt || setxkbmap -layout es,us -option '' -option compose:ralt"
 #+end_src
 
-Volume, microphone, brightness, touchpad, zoom and music keys.
+Media, brightness, touchpad and zoom keys.
 #+begin_src conf
   bindsym XF86AudioRaiseVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+12)/5*5));wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;wpctl set-mute @DEFAULT_AUDIO_SINK@ 0"
   bindsym Control+XF86AudioRaiseVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+7)/5*5));wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;wpctl set-mute @DEFAULT_AUDIO_SINK@ 0"
@@ -134,7 +117,6 @@ Screenshots to =~/tmp= and the clipboard.
 #+end_src
 
 ** Workspaces
-Switching to a workspace.
 #+begin_src conf
   bindsym $mod+1 workspace $ws1
   bindsym $mod+2 workspace $ws2
@@ -148,7 +130,6 @@ Switching to a workspace.
   bindsym $mod+0 workspace $ws10
 #+end_src
 
-Moving a container/window to a workspace.
 #+begin_src conf
   bindsym $mod+Shift+1 move container to workspace $ws1
   bindsym $mod+Shift+2 move container to workspace $ws2
@@ -162,33 +143,27 @@ Moving a container/window to a workspace.
   bindsym $mod+Shift+0 move container to workspace $ws10
 #+end_src
 
-Switching between the last two used workspaces.
+Keycode 49 is the grave key.
 #+begin_src conf
   bindcode $mod+49 workspace back_and_forth
 #+end_src
 
 *** Default Workspaces
-Open =mpv= in a window video for multitasking.
 #+begin_src conf
   for_window [class="mpv"] floating enable, sticky enable, resize set 25 ppt 25 ppt, move position 75 ppt 75 ppt, move left 5 px, move up 5 px
 #+end_src
 
-Open KeePassXC password manager =keepassxc= as floating
 #+begin_src conf
   for_window [class="KeePassXC"] floating enable
 #+end_src
 
 ** Windows
-Key bindings related to windows (inside a workspace).
-
-Killing current window.
 #+begin_src conf
   bindsym $mod+q kill
 #+end_src
 
 *** Window focus
-Set key bindings for changing window focus (following the holy Emacs "bfnp"
-moving set).
+Emacs =bfnp= keys.
 #+begin_src conf
   bindsym $mod+b exec emacs-i3-integration focus left
   bindsym $mod+n exec emacs-i3-integration focus down
@@ -196,14 +171,12 @@ moving set).
   bindsym $mod+f exec emacs-i3-integration focus right
 #+end_src
 
-Change focus between tiling/floating windows.
 #+begin_src conf
   bindsym $mod+t focus mode_toggle
 #+end_src
 
 *** Window moving
-Set key bindings for moving windows around with same commands as window focus,
-but with =Shift= modifier.
+Same keys with =Shift=.
 #+begin_src conf
   bindsym $mod+Shift+b exec emacs-i3-integration move left 20px
   bindsym $mod+Shift+n exec emacs-i3-integration move down 20px
@@ -211,14 +184,12 @@ but with =Shift= modifier.
   bindsym $mod+Shift+f exec emacs-i3-integration move right 20px
 #+end_src
 
-Use $mod+Mouse for moving floating windows.
 #+begin_src conf
   floating_modifier $mod
 #+end_src
 
 *** Window resize
-Set key bindings for window resizing with same commands as window focus, but
-with =Control= modifier.
+Same keys with =Control=.
   #+begin_src conf
   bindsym $mod+Control+f exec --no-startup-id "~/.local/bin/i3resize right"
   bindsym $mod+Control+p exec --no-startup-id "~/.local/bin/i3resize up"
@@ -227,46 +198,38 @@ with =Control= modifier.
   #+end_src
 
 *** Window splitting
-Customize splitting direction for windows.
 #+begin_src conf
   bindsym $mod+v split vertical
   bindsym $mod+h split horizontal
 #+end_src
 
 *** Window tabbed
-Set key for the toggle between tiling/tabbed (stack).
 #+begin_src conf
   bindsym $mod+s layout toggle tabbed split
 #+end_src
 
 *** Window floating
-Set key for the toggle between tiling/floating.
 #+begin_src conf
   bindsym $mod+Shift+t floating toggle
 #+end_src
 
 *** Window sticky
-Binding for sticky window toggle.
 #+begin_src conf
   bindsym $mod+Shift+s sticky toggle
 #+end_src
 
 *** Window fullscreen
-Binding for toggling window fullscreen.
 #+begin_src conf
   bindsym $mod+o fullscreen toggle
 #+end_src
 
 *** Window video multitasking
-The following creates a small floating sticky window in the bottom right of the
-screen. Very useful for multitasking while watching a video (not recommended
-for productivity, though).
+Small sticky window in the bottom-right corner, for videos.
 #+begin_src conf
   bindsym $mod+Shift+v floating toggle; [con_id=__focused__ floating] sticky enable, resize set 25 ppt 25 ppt, move position 75 ppt 75 ppt, move left 5 px, move up 5 px
 #+end_src
 
 * Status bar
-Status bar configuration.
 #+begin_src conf
   bar {
       font pango:DejaVu Sans Mono, FontAwesome, Symbols Nerd Font Mono 9
