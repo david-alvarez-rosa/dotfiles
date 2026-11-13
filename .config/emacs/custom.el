@@ -7,7 +7,7 @@
  '(package-selected-packages
    '(auctex bbdb bbdb-vcard cape cdlatex consult corfu dape dired-narrow
             dired-subtree doom-modeline elfeed elfeed-org embark
-            embark-consult ement erc-hl-nicks expand-region forge ghostel
+            embark-consult ement erc-hl-nicks expand-region forge gcmh ghostel
             git-link gptel ledger-mode magit marginalia markdown-mode
             nerd-icons nerd-icons-completion nerd-icons-corfu
             nerd-icons-dired nyan-mode

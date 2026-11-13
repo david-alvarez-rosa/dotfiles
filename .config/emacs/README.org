@@ -34,7 +34,7 @@ my definitions with =dalvrosa/=.  Main entry points:
 
 Startup optimizations in =early-init.el=: defer garbage collection and
 file handlers, hide UI elements before the first frame, and use the
-package quickstart.
+package quickstart.  After startup, =gcmh= collects garbage while idle.
 
 #+begin_src elisp :tangle early-init.el
   ;;; -*- lexical-binding: t; -*-
@@ -61,7 +61,11 @@ package quickstart.
   ;;; -*- lexical-binding: t; -*-
 
   (add-hook 'emacs-startup-hook
-            (lambda () (setq gc-cons-threshold (* 64 1024 1024))))
+            (lambda ()
+              (require 'gcmh)
+              (setq gcmh-idle-delay 'auto
+                    gcmh-high-cons-threshold (* 256 1024 1024))
+              (gcmh-mode 1)))
 
   ;; Single VC backend inscreases booting speed
   (setq vc-handled-backends '(Git))

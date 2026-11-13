@@ -1,7 +1,11 @@
 ;;; -*- lexical-binding: t; -*-
 
 (add-hook 'emacs-startup-hook
-          (lambda () (setq gc-cons-threshold (* 64 1024 1024))))
+          (lambda ()
+            (require 'gcmh)
+            (setq gcmh-idle-delay 'auto
+                  gcmh-high-cons-threshold (* 256 1024 1024))
+            (gcmh-mode 1)))
 
 ;; Single VC backend inscreases booting speed
 (setq vc-handled-backends '(Git))
