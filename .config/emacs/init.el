@@ -427,7 +427,7 @@
     (dolist (frame (frame-list))
       (set-frame-parameter frame 'alpha-background alpha))
     (setf (alist-get 'alpha-background default-frame-alist) alpha)))
-(add-hook 'modus-themes-post-load-hook #'dalvrosa/set-background-alpha)
+(add-hook 'modus-themes-after-load-theme-hook #'dalvrosa/set-background-alpha)
 
 (if (string-match-p "prefer-dark"
                     (shell-command-to-string
@@ -460,8 +460,9 @@
   :config
   (setq doom-modeline-buffer-encoding nil)
   (setq doom-modeline-height 28)
-  (setq column-number-mode t)
   (setq doom-modeline-buffer-file-name-style 'relative-from-project))
+
+(column-number-mode 1)
 
 (use-package nyan-mode
   :after doom-modeline
@@ -655,7 +656,7 @@ With prefix arg NEW, start an additional session instead."
       '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)")))
 (setq org-log-into-drawer t)
 
-(setq org-lowest-priority ?D)
+(setq org-priority-lowest ?D)
 
 (with-eval-after-load 'org
       (org-babel-do-load-languages
@@ -797,7 +798,6 @@ With prefix arg NEW, start an additional session instead."
   (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
   (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
   ;; Enable electric behavior.
-  (setq TeX-electric-math t)
   (setq TeX-electric-sub-and-superscript t)
   ;; I want \items indented.
   (setq LaTeX-item-indent 0)
@@ -899,7 +899,6 @@ With prefix arg NEW, start an additional session instead."
                              (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
              :vars `(
                      (message-signature-file . "~/docs/Signature.txt")
-                     (mu4e-inbox-folder . "/Personal/Inbox")
                      (mu4e-sent-folder . "/Personal/Sent")
                      (mu4e-drafts-folder . "/Personal/Drafts")
                      (mu4e-trash-folder . "/Personal/Trash")
@@ -1038,12 +1037,8 @@ With prefix arg NEW, start an additional session instead."
 
 (with-eval-after-load 'mu4e
   (require 'mu4e-icalendar)
-  (mu4e-icalendar-setup)
+  (gnus-icalendar-setup)
   (advice-add 'mu4e-icalendar-reply :after #'dalvrosa/calendar-accept))
-
-(with-eval-after-load 'mm-decode
-  (advice-add 'mm-handle-filename :before-while
-              (lambda (handle) (bufferp (car-safe handle)))))
 
 (use-package elfeed
   :bind (("C-c f" . 'elfeed)

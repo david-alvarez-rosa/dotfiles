@@ -814,7 +814,7 @@ only (=alpha-background= leaves text fully opaque).
       (dolist (frame (frame-list))
         (set-frame-parameter frame 'alpha-background alpha))
       (setf (alist-get 'alpha-background default-frame-alist) alpha)))
-  (add-hook 'modus-themes-post-load-hook #'dalvrosa/set-background-alpha)
+  (add-hook 'modus-themes-after-load-theme-hook #'dalvrosa/set-background-alpha)
 
   (if (string-match-p "prefer-dark"
                       (shell-command-to-string
@@ -860,8 +860,9 @@ Doom Modeline with a column number, plus nyan cat.
     :config
     (setq doom-modeline-buffer-encoding nil)
     (setq doom-modeline-height 28)
-    (setq column-number-mode t)
     (setq doom-modeline-buffer-file-name-style 'relative-from-project))
+
+  (column-number-mode 1)
 
   (use-package nyan-mode
     :after doom-modeline
@@ -1228,7 +1229,7 @@ changes into a drawer.
 Allow priorities from A to D.
 
 #+begin_src elisp
-  (setq org-lowest-priority ?D)
+  (setq org-priority-lowest ?D)
 #+end_src
 
 ** Code Evaluation
@@ -1448,7 +1449,6 @@ AUCTeX is the best framework for writing LaTeX.  Most-used commands:
     (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
     (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
     ;; Enable electric behavior.
-    (setq TeX-electric-math t)
     (setq TeX-electric-sub-and-superscript t)
     ;; I want \items indented.
     (setq LaTeX-item-indent 0)
@@ -1632,7 +1632,6 @@ The actual context accounts.
                                (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
                :vars `(
                        (message-signature-file . "~/docs/Signature.txt")
-                       (mu4e-inbox-folder . "/Personal/Inbox")
                        (mu4e-sent-folder . "/Personal/Sent")
                        (mu4e-drafts-folder . "/Personal/Drafts")
                        (mu4e-trash-folder . "/Personal/Trash")
@@ -1827,19 +1826,8 @@ Reply to iCalendar emails; accepting adds the event to Nextcloud.
 
   (with-eval-after-load 'mu4e
     (require 'mu4e-icalendar)
-    (mu4e-icalendar-setup)
+    (gnus-icalendar-setup)
     (advice-add 'mu4e-icalendar-reply :after #'dalvrosa/calendar-accept))
-#+end_src
-
-Work around a mu4e bug: =mu4e--view-add-mime-icons= calls
-=mm-handle-filename= on the =gnus-data= of every button, but for the
-iCalendar reply buttons that is =(handle status event)=, not a MIME
-handle.  Something without a buffer has no filename.
-
-#+begin_src elisp
-  (with-eval-after-load 'mm-decode
-    (advice-add 'mm-handle-filename :before-while
-                (lambda (handle) (bufferp (car-safe handle)))))
 #+end_src
 
 * Web Feed Reader
