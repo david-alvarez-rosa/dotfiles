@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+z=0000000000000000000000000000000000000000
+while read -r _ lsha _ rsha; do
+    [ "$lsha" = "$z" ] && continue
+    if [ "$rsha" = "$z" ]; then
+        set -- "$lsha" --not --remotes
+    else
+        set -- "$rsha..$lsha"
+    fi
+    git log --format=%B "$@" | grep -qiE 'co-authored-by:.*(claude|anthropic)|generated with.*claude|^claude-session:|claude\.ai/code/session' || continue
+    echo "pre-push: Attribution blocked" >&2
+    exit 1
+done
+
+exit 0

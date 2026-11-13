@@ -2,19 +2,8 @@
   name = David Álvarez Rosa
   email = david@alvarezrosa.com
   signingkey = D84726EC15C55C1E
-[credential]
-  helper = store
-[core]
-  editor = vim
-[color]
-  diff = auto
-  status = auto
-  branch = auto
-  interactive = auto
-  pager = true
-  ui = auto
 [alias]
-  hist = log --graph --oneline --decorate --color
+  hist = log --graph --oneline
   st = status
 [commit]
   gpgsign = true
@@ -22,7 +11,12 @@
 	autoSetupRemote = true
 [init]
 	defaultBranch = main
-	templateDir = /home/david/.config/git/template
+[hook "no-attribution-msg"]
+	command = ~/.config/git/hooks/commit-msg
+	event = commit-msg
+[hook "no-attribution-push"]
+	command = ~/.config/git/hooks/pre-push
+	event = pre-push
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
