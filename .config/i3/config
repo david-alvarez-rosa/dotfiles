@@ -66,8 +66,7 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 
 bindcode $mod+49 workspace back_and_forth
 
-for_window [class="mpv"] floating enable; exec --no-startup-id ~/.local/bin/bottomright
-for_window [class="mpv"] sticky enable
+for_window [class="mpv"] floating enable, sticky enable, resize set 25 ppt 25 ppt, move position 75 ppt 75 ppt, move left 5 px, move up 5 px
 
 for_window [class="KeePassXC"] floating enable
 
@@ -102,7 +101,7 @@ bindsym $mod+Shift+s sticky toggle
 
 bindsym $mod+o fullscreen toggle
 
-bindsym $mod+Shift+v floating toggle; exec --no-startup-id ~/.local/bin/bottomright; sticky enable
+bindsym $mod+Shift+v floating toggle; [con_id=__focused__ floating] sticky enable, resize set 25 ppt 25 ppt, move position 75 ppt 75 ppt, move left 5 px, move up 5 px
 
 bar {
     font pango:DejaVu Sans Mono 9
