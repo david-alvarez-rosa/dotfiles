@@ -62,14 +62,12 @@ PACMAN_PACKAGES="
   which
   wireplumber
   xbindkeys
-  xcape
   xclip
   xdotool
   xorg-server
   xorg-setxkbmap
   xorg-xinit
   xorg-xinput
-  xorg-xmodmap
   xorg-xrandr
   xorg-xrdb
   xorg-xset
