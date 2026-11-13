@@ -811,7 +811,9 @@ With prefix arg NEW, start an additional session instead."
 
 (use-package mu4e
   :ensure nil
-  :config (setq mail-user-agent 'mu4e-user-agent)
+  :config
+  (setq mail-user-agent 'mu4e-user-agent)
+  (setq message-mail-user-agent 'mu4e-user-agent)
   :bind ("C-c e" . dalvrosa/mu4e-inbox))
 
 (defun dalvrosa/mu4e-inbox ()
@@ -986,19 +988,7 @@ With prefix arg NEW, start an additional session instead."
 
 (setq mu4e-attachment-dir "~/tmp")
 
-(with-eval-after-load 'dired
-  (require 'gnus-dired)
-  (defun gnus-dired-mail-buffers ()
-    "Return a list of active message buffers."
-    (let (buffers)
-      (save-current-buffer
-        (dolist (buffer (buffer-list t))
-          (set-buffer buffer)
-          (when (and (derived-mode-p 'message-mode)
-                     (null message-sent-message-via))
-            (push (buffer-name buffer) buffers))))
-      (nreverse buffers)))
-  (setq gnus-dired-mail-mode 'mu4e-user-agent))
+(setq gnus-dired-mail-mode 'message-user-agent)
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
 (defun dalvrosa/calendar-accept (data)
