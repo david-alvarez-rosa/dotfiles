@@ -6,10 +6,10 @@ separator = ""
 [icons]
 icons = "none"
 [icons.overrides]
-update = "<span font_family='monospace'></span> "
-cpu = "<span font_family='monospace'></span> "
-volume = "<span font_family='monospace'></span> "
-volume_muted = "<span font_family='monospace'></span>"
+update = "<span font_family='Hack Nerd Font Propo'></span>"
+cpu = "<span font_family='Hack Nerd Font Propo'></span>"
+volume = "<span font_family='Hack Nerd Font Propo'></span>"
+volume_muted = "<span font_family='Hack Nerd Font Propo'></span>"
 bat = ["<span font_family='FontAwesome'></span>", "<span font_family='FontAwesome'></span>", "<span font_family='FontAwesome'></span>", "<span font_family='FontAwesome'></span>", "<span font_family='FontAwesome'></span>"]
 bat_charging = "<span font_family='FontAwesome'></span>"
 bat_not_available = "<span font_family='FontAwesome'></span>"
