@@ -49,7 +49,6 @@ PACMAN_PACKAGES="
   networkmanager
   nextcloud-client
   openssh
-  otf-font-awesome
   pacman-contrib
   picom
   pipewire-alsa
