@@ -15,12 +15,12 @@ signal=3
 color=#589df6
 
 [home]
-command=printf "<span font_family='FontAwesome' font_size='10pt'></span> " && df -h -P -l $HOME | awk '{print $4}' | tail -1
+command=printf "<span font_family='FontAwesome' font_size='10pt'></span> " && df -H -P -l $HOME | awk '{print $4}' | tail -1
 interval=3600
 color=#21b089
 
 [root]
-command=printf "<span font_family='FontAwesome'></span> " && df -h -P -l / | awk '{print $2}' | tail -1
+command=printf "<span font_family='FontAwesome'></span> " && df -H -P -l / | awk '{print $2}' | tail -1
 interval=once
 color=#f9555f
 
