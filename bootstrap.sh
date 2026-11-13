@@ -36,15 +36,18 @@ PACMAN_PACKAGES="
   imagemagick
   inter-font
   isync
+  jq
   keepassxc
   ledger
   libnotify
   lm_sensors
   maim
+  man-db
   mpc
   mpv
   neovim
   networkmanager
+  nextcloud-client
   openssh
   pacman-contrib
   picom
@@ -54,17 +57,22 @@ PACMAN_PACKAGES="
   poppler-glib
   ripgrep
   rofi
+  satty
   starship
+  texlive
   tlp
+  tpm2-tools
   ttf-dejavu
   ttf-hack-nerd
   unclutter
   upower
+  uv
   vdirsyncer
   vim
   which
   wireplumber
   xclip
+  xdg-desktop-portal-gtk
   xdotool
   xorg-server
   xorg-setxkbmap
@@ -112,7 +120,7 @@ if [ -f ~/gpg-key.asc ]; then
 fi
 
 sudo systemctl enable NetworkManager.service tlp.service
-systemctl --user enable keepassxc.service commit-docs.timer goimapnotify@personal.service darkman.service systemd-tmpfiles-setup.service
+systemctl --user enable commit-docs.timer dav-sync.timer lid-mute.service goimapnotify@personal.service darkman.service systemd-tmpfiles-setup.service
 
 mkdir -p ~/.local/share/mail
 mu init --maildir=~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=davids@alvarezrosa.com
