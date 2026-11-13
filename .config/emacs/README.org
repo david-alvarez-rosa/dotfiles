@@ -6,48 +6,35 @@
 #+property: header-args :tangle init.el
 
 GNU Emacs is a free (as in /freedom/) +operating system+ text
-editor--without a doubt the best multi-purpose program ever written.
-Not a bloated editor but an Elisp interpreter: a container for
-"do-one-thing-and-do-it-well" packages.  I'm a member of the Church of
-Emacs, pursuing sainthood mainly through org-mode.
+editor--an Elisp interpreter hosting "do-one-thing-and-do-it-well"
+packages.  I'm a member of the Church of Emacs, pursuing sainthood
+mainly through Org mode.
 
 * Preamble
 
 ** Installation
 
-This configuration is literate: prose and code live in this file.  Open
-it and press =C-c C-v C-t= (~org-babel-tangle~) to extract the source
-blocks into =init.el=, then evaluate the bootstrap block under [[*Loading and Package Management][Loading
-and Package Management]] once to install the packages.  Take it as
-inspiration rather than using it as is.
+Tangle with =C-c C-v C-t= to produce =early-init.el= and =init.el=,
+then evaluate the bootstrap block under [[*Loading and Package Management][Loading and Package Management]]
+once.  Take it as inspiration rather than using it as is.
 
 ** About this Configuration
 
-Principles: prefer built-in features over (M)ELPA packages, bind
-user-defined commands under the =C-c= prefix, stay minimalist yet
-powerful.  Startup takes about 0.276 seconds (check with
-~emacs-init-time~).  My own functions and variables are prefixed with
-=dalvrosa/= to avoid conflicts.
-
-Main entry points:
+Prefer built-ins over packages, bind my commands under =C-c=, prefix
+my definitions with =dalvrosa/=.  Main entry points:
 - =C-c a= Org agenda and =C-c c= Org capture.
 - =C-c e= email (mu4e), =C-c f= web feeds (Elfeed), =C-c i= IRC
   (ERC), =C-c x= Matrix/WhatsApp (ement).
 - =C-c g= Git (Magit), =C-c t= terminal (ghostel), =C-c h= LLM chat
   (gptel).
 - =C-c d= toggle light/dark theme, =C-c s= cycle spell checking.
-- =C-c k= kill all buffers except current and =*scratch*= ("restart"
-  the session without closing Emacs).
+- =C-c k= kill all buffers except current and =*scratch*=.
 
 * Loading and Package Management
 
-Emacs loads =early-init.el= before the package system and initial frame,
-making it the place for startup optimizations: defer garbage collection,
-skip special file handlers while loading, disable UI elements before
-they are drawn and enable the package quickstart (a concatenated
-autoloads file, refreshed on install/remove) and mute
-native-compilation warnings, which only ever come from third-party
-packages.
+Startup optimizations in =early-init.el=: defer garbage collection and
+file handlers, hide UI elements before the first frame, and use the
+package quickstart.
 
 #+begin_src elisp :tangle early-init.el
   ;;; -*- lexical-binding: t; -*-
@@ -70,8 +57,6 @@ packages.
   (setq native-comp-async-report-warnings-errors nil)
 #+end_src
 
-Restore a sane garbage collection threshold after startup.
-
 #+begin_src elisp
   ;;; -*- lexical-binding: t; -*-
 
@@ -82,10 +67,8 @@ Restore a sane garbage collection threshold after startup.
   (setq vc-handled-backends '(Git))
 #+end_src
 
-Add MELPA and defer package loading.  Since the quickstart file handles
-activation, =package.el= is autoloaded only the first time a package is
-installed or upgraded.  ~use-package-always-ensure~ is intentionally
-*off*: checking every package on every start would slow daily launches.
+Add MELPA and defer packages; ~use-package-always-ensure~ stays off to
+keep startup fast.
 
 #+begin_src elisp
   (with-eval-after-load 'package
@@ -93,10 +76,7 @@ installed or upgraded.  ~use-package-always-ensure~ is intentionally
   (setq use-package-always-defer t)
 #+end_src
 
-On a new machine, evaluate this once (e.g. from =*scratch*=) to install
-every declared package.  It is not tangled on purpose, and
-system-provided packages (e.g. mu4e) are marked =:ensure nil= so they
-are skipped.
+Bootstrap a new machine (not tangled).
 
 #+begin_src elisp :tangle no
   (package-refresh-contents)
@@ -107,11 +87,8 @@ are skipped.
 
 ** Idle Preloading
 
-Deferring keeps startup fast but moves the cost to first use.  Preload
-heavy libraries one at a time while Emacs sits idle so they are ready
-when needed; steps are small and run on sub-second pauses, draining
-within the first minute.  A separate thread would not help: Elisp
-threads share one global lock, so a load blocks input either way.
+Load heavy libraries one at a time while idle, so first use is
+instant.
 
 #+begin_src elisp
   (defvar dalvrosa/preload-queue
@@ -143,11 +120,7 @@ threads share one global lock, so a load blocks input either way.
 
 * General Configuration
 
-Configuration for built-in Emacs features.
-
 ** Personal Information
-
-Name and mail address (the latter is overridden by =mu4e= contexts).
 
 #+begin_src elisp
   (setq user-full-name "David Álvarez Rosa")
@@ -155,8 +128,6 @@ Name and mail address (the latter is overridden by =mu4e= contexts).
 #+end_src
 
 ** Server Mode
-
-Start the Emacs server so all =emacsclient= calls reach this instance.
 
 #+begin_src elisp
   (run-with-idle-timer 0.1 nil
@@ -169,9 +140,6 @@ Start the Emacs server so all =emacsclient= calls reach this instance.
 
 ** Custom File
 
-Keep custom-set variables outside version control so machine-specific
-config stays local.
-
 #+begin_src elisp
   (setq custom-file "~/.config/emacs/custom.el")
   (load custom-file t)
@@ -179,9 +147,7 @@ config stays local.
 
 ** Authentication File
 
-The auth-source library supplies user names and passwords (for email and
-IRC).  Entries look like =machine X login Y password Z port P=;
-store it following the XDG specification.
+Credentials for mail, IRC and Matrix.
 
 #+begin_src elisp
   (setq auth-sources '("~/.local/share/authinfo.gpg"))
@@ -189,10 +155,8 @@ store it following the XDG specification.
 
 ** Dired
 
-Dired ("directory editor") is the Emacs file manager; make a buffer
-editable with =C-x C-q= to bulk-rename or change permissions as text.
-Show human readable sizes and group directories first, except when
-sorting by date.  Annotate images with Satty via =&=.
+Group directories first, except when sorting by date.  Annotate images
+with Satty via =&=.
 
 #+begin_src elisp
   (setq-default dired-listing-switches "-alh --group-directories-first")
@@ -216,8 +180,7 @@ sorting by date.  Annotate images with Satty via =&=.
   (advice-add 'dired-sort-toggle :override #'dalvrosa/dired-sort-toggle)
 #+end_src
 
-Live filtering with =/= (fuzzy match, =g= reverts) and subdirectory
-expansion in place with =<tab>=.
+Filter with =/= and expand subdirectories with =<tab>=.
 
 #+begin_src elisp
   (use-package dired-narrow
@@ -237,8 +200,7 @@ expansion in place with =<tab>=.
 
 ** Backups and Lock Files
 
-Keep backups, autosaves and lock files in the temp directory--slightly
-dangerous, but I version-control everything important.
+Keep backups, autosaves and lock files in the temp directory.
 
 #+begin_src elisp
   (setq backup-directory-alist
@@ -251,8 +213,6 @@ dangerous, but I version-control everything important.
 
 ** Auto Revert
 
-Reload buffers instantly when files change on disk.
-
 #+begin_src elisp
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil)
@@ -261,24 +221,15 @@ Reload buffers instantly when files change on disk.
 
 ** Buffer Management
 
-Raise the automatic window-splitting threshold.
-
 #+begin_src elisp
   (setq split-width-threshold 210)
 #+end_src
-
-Ibuffer replaces BufferMenu and operates on buffers like Dired does on
-files.  Start it in expert mode and kill the current buffer without
-asking.
 
 #+begin_src elisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (setq ibuffer-expert t)
   (global-set-key (kbd "C-x k") 'kill-current-buffer)
 #+end_src
-
-Enable narrowing commands (=C-x n n= region, =C-x n d= defun,
-=C-x n w= widen), disabled by default to not confuse newbies.
 
 #+begin_src elisp
   (put 'narrow-to-region 'disabled nil)
@@ -287,8 +238,6 @@ Enable narrowing commands (=C-x n n= region, =C-x n d= defun,
 #+end_src
 
 ** Window Management
-
-Split and follow when creating new windows.
 
 #+begin_src elisp
   (defun dalvrosa/split-and-follow-horizontally ()
@@ -306,9 +255,6 @@ Split and follow when creating new windows.
   (global-set-key (kbd "C-x 3") 'dalvrosa/split-and-follow-vertically)
 #+end_src
 
-Kill buffer *and* window with =C-x C-k=, and kill all buffers except
-the current one and =*scratch*= with =C-c k=.
-
 #+begin_src elisp
   (global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
 
@@ -321,15 +267,11 @@ the current one and =*scratch*= with =C-c k=.
   (global-set-key (kbd "C-c k") 'dalvrosa/kill-all-other-buffers)
 #+end_src
 
-Winner mode undoes/redoes window configuration changes.
-
 #+begin_src elisp
   (run-with-idle-timer 0.1 nil #'winner-mode)
 #+end_src
 
-Integration with i3wm, so focus/move commands cross seamlessly between
-Emacs windows and i3 windows (see
-[[https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/][this post]]).
+Let i3 focus/move commands cross Emacs windows (see [[https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/][this post]]).
 
 #+begin_src elisp
   (global-set-key (kbd "M-o") 'other-window)
@@ -378,8 +320,6 @@ Emacs windows and i3 windows (see
 
 ** Auto Fill Mode
 
-Stick to at most 80 characters and fill paragraphs with =M-q=.
-
 #+begin_src elisp
   (setq-default fill-column 79)
   (add-hook 'text-mode-hook
@@ -388,14 +328,11 @@ Stick to at most 80 characters and fill paragraphs with =M-q=.
               (setq fill-column 72)))
 #+end_src
 
-Unfill with =M-Q= (the inverse of =M-q=).
-
 #+begin_src elisp
   (keymap-global-set "M-Q" #'unfill-paragraph)
 #+end_src
 
-Kill region after unfilling with =M-W= (handy for pasting outside
-Emacs).
+=M-W= copies the region unfilled, for pasting outside Emacs.
 
 #+begin_src elisp
   (defun dalvrosa/unfill-paragraph-and-kill (beg end)
@@ -413,8 +350,6 @@ Emacs).
 
 ** Indentation
 
-Easier keys inside =indent-rigidly= (=C-x TAB=).
-
 #+begin_src elisp
   (define-key indent-rigidly-map "<" 'indent-rigidly-left)
   (define-key indent-rigidly-map "b" 'indent-rigidly-left)
@@ -426,15 +361,11 @@ Easier keys inside =indent-rigidly= (=C-x TAB=).
 
 ** Subword Mode
 
-Don't treat camelCase strings as a single word.
-
 #+begin_src elisp
   (global-subword-mode 1)
 #+end_src
 
 ** y/n Prompts
-
-Shorter and faster than yes/no.
 
 #+begin_src elisp
   (setq use-short-answers t)
@@ -442,22 +373,15 @@ Shorter and faster than yes/no.
 
 ** Region Selection
 
-Don't use shift to mark, and let typed text replace the active region.
-
 #+begin_src elisp
   (setq shift-select-mode nil)
   (delete-selection-mode 1)
 #+end_src
 
-Expand the region by semantic units with ~C-=~ (contract with
-~C-- C-=~).
-
 #+begin_src elisp
   (use-package expand-region
     :bind ("C-=" . 'er/expand-region))
 #+end_src
-
-Enable upcasing (=C-x C-u=) and downcasing (=C-x C-l=) the region.
 
 #+begin_src elisp
   (put 'upcase-region 'disabled nil)
@@ -466,16 +390,10 @@ Enable upcasing (=C-x C-u=) and downcasing (=C-x C-l=) the region.
 
 ** Scrolling
 
-Disable automatic re-centering, and keep point's screen position when
-scrolling by full screens.
-
 #+begin_src elisp
   (setq scroll-conservatively 101)
   (setq scroll-preserve-screen-position t)
 #+end_src
-
-Paragraph motion with =M-n= / =M-p=, scroll without moving the cursor
-line with =C-M-n= / =C-M-p=.
 
 #+begin_src elisp
   (define-key global-map (kbd "M-n") 'forward-paragraph)
@@ -484,9 +402,6 @@ line with =C-M-n= / =C-M-p=.
   (global-set-key (kbd "C-M-p") 'scroll-down-line)
 #+end_src
 
-Enable some disabled commands: =C-x C-n= sets a goal column (cancel
-with =C-u C-x C-n=) and =C-c <= scrolls left.
-
 #+begin_src elisp
   (put 'set-goal-column 'disabled nil)
   (put 'scroll-left 'disabled nil)
@@ -494,15 +409,11 @@ with =C-u C-x C-n=) and =C-c <= scrolls left.
 
 ** Character Pairs
 
-Insert and highlight matching parentheses, braces and quotes.
-
 #+begin_src elisp
   (electric-pair-mode t)
 #+end_src
 
 ** HTML Renderer
-
-Render shr HTML as plain text filled to 72 characters.
 
 #+begin_src elisp
   (setq shr-use-fonts nil)
@@ -511,9 +422,8 @@ Render shr HTML as plain text filled to 72 characters.
 
 ** Completion Interface
 
-After Helm, then Ivy/Counsel/Swiper, I settled on Vertico, Consult and
-Corfu.  Vertico is a minimalistic vertical completion UI on top of the
-default completion system.
+Vertico, Consult, Corfu, Orderless, Marginalia, Cape and Embark (=C-.=
+act, =C-;= default action).
 
 #+begin_src elisp
   (use-package vertico
@@ -523,9 +433,6 @@ default completion system.
                 ("M-DEL" . vertico-directory-delete-word))
     :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 #+end_src
-
-Consult provides search and navigation commands built on
-~completing-read~.
 
 #+begin_src elisp
   (use-package consult
@@ -584,13 +491,9 @@ Consult provides search and navigation commands built on
      :preview-key "M-."))
 #+end_src
 
-Save mini-buffer history.
-
 #+begin_src elisp
   (savehist-mode)
 #+end_src
-
-Corfu enhances in-buffer completion with a popup at point.
 
 #+begin_src elisp
   (use-package corfu
@@ -605,8 +508,6 @@ Corfu enhances in-buffer completion with a popup at point.
     :hook (org-mode . (lambda () (setq-local corfu-auto nil))))
 #+end_src
 
-Orderless matches space-separated components in any order.
-
 #+begin_src elisp
   (use-package orderless
     :init
@@ -615,15 +516,11 @@ Orderless matches space-separated components in any order.
           completion-category-overrides '((file (styles . (partial-completion))))))
 #+end_src
 
-Marginalia annotates completion candidates.
-
 #+begin_src elisp
   (use-package marginalia
     :init
     (marginalia-mode))
 #+end_src
-
-Cape provides Completion At Point Extensions for Corfu.
 
 #+begin_src elisp
   (use-package cape
@@ -632,9 +529,6 @@ Cape provides Completion At Point Extensions for Corfu.
     (add-hook 'completion-at-point-functions #'cape-file)
     (add-hook 'completion-at-point-functions #'cape-tex))
 #+end_src
-
-Embark acts on the thing at point or current candidate with =C-.=, or
-runs the default action with =C-;=.
 
 #+begin_src elisp
   (use-package embark
@@ -647,9 +541,6 @@ runs the default action with =C-;=.
     (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 
-Display available keybindings in a popup based on the prefix entered
-(built-in since Emacs 30).
-
 #+begin_src elisp
   (use-package which-key
     :ensure nil
@@ -658,17 +549,13 @@ Display available keybindings in a popup based on the prefix entered
 
 ** Spell Checking
 
-Spell check with Hunspell
-(=pacman -S hunspell hunspell-en_us hunspell-es_es=), defaulting to
-English.  The main command is =M-$= (=digit= replaces, =SPC= skips, =r=
-custom replace, =a= accept for the session, =i= add to dictionary).
+Hunspell (=pacman -S hunspell hunspell-en_us hunspell-es_es=), checked
+on the fly in text modes.  =C-c s= cycles English, Spanish and off.
 
 #+begin_src elisp
   (setq ispell-program-name "hunspell")
   (setq ispell-dictionary "en_US")
 #+end_src
-
-Enable on-the-fly checking in text modes.
 
 #+begin_src elisp
   (add-hook 'text-mode-hook 'flyspell-mode)
@@ -677,9 +564,6 @@ Enable on-the-fly checking in text modes.
     (keymap-unset flyspell-mode-map "C-;" t))
   ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 #+end_src
-
-Cycle flyspell English, Spanish and off with =C-c s= (repeatable with
-=s=).
 
 #+begin_src elisp
   (defun dalvrosa/flyspell-cycle ()
@@ -702,15 +586,13 @@ Cycle flyspell English, Spanish and off with =C-c s= (repeatable with
 
 ** Kill Confirmation
 
-Don't ask when killing buffers with live processes.
-
 #+begin_src elisp
   (setq confirm-kill-processes nil)
 #+end_src
 
 ** Web Search
 
-Search DuckDuckGo for the region or a prompted query with =C-x / d=.
+DuckDuckGo with =C-x / d=.
 
 #+begin_src elisp
   (defun dalvrosa/duckduckgo (query)
@@ -724,8 +606,7 @@ Search DuckDuckGo for the region or a prompted query with =C-x / d=.
 
 ** LLM Integration
 
-[[https://github.com/karthink/gptel][gptel]] is a simple LLM chat
-client, available uniformly in any buffer (=C-c h=).
+[[https://github.com/karthink/gptel][gptel]] chat with =C-c h=.
 
 #+begin_src elisp
   (defun dalvrosa/new-gpt-chat ()
@@ -755,8 +636,6 @@ client, available uniformly in any buffer (=C-c h=).
 
 ** TRAMP
 
-Remote work over SSH with the local GUI.
-
 #+begin_src elisp
   (setq tramp-default-method "ssh")
   (setq tramp-allow-unsafe-temporary-files t)
@@ -773,9 +652,8 @@ Remote work over SSH with the local GUI.
 
 ** Theme
 
-Protesilaos Stavrou's high-contrast Modus themes, toggling light/dark
-with =C-c d=.  Give the frame 90% background transparency in dark mode
-only (=alpha-background= leaves text fully opaque).
+Modus themes following the desktop color scheme, toggled with =C-c d=.
+Dark mode gets a slightly translucent background.
 
 #+begin_src elisp
   (defun dalvrosa/set-background-alpha ()
@@ -796,8 +674,7 @@ only (=alpha-background= leaves text fully opaque).
 
 ** Icons
 
-Add nerd-icons here and there (install once with
-=M-x nerd-icons-install-fonts=).
+Install fonts once with =M-x nerd-icons-install-fonts=.
 
 #+begin_src elisp
   (use-package nerd-icons)
@@ -821,8 +698,6 @@ Add nerd-icons here and there (install once with
 
 ** Modeline
 
-Doom Modeline with a column number, plus nyan cat.
-
 #+begin_src elisp
   (use-package doom-modeline
     :init (run-with-idle-timer 0.05 nil #'doom-modeline-mode)
@@ -840,16 +715,11 @@ Doom Modeline with a column number, plus nyan cat.
 
 ** Font
 
-Set the default font (currently Hack).
-
 #+begin_src elisp
   (set-face-attribute 'default nil :font "monospace" :height 90)
 #+end_src
 
 ** Basic Interface Settings
-
-Disable the mouse interface and startup screen, and highlight the
-current line in graphical Emacs.
 
 #+begin_src elisp
   (tooltip-mode 0)
@@ -860,8 +730,7 @@ current line in graphical Emacs.
 
 ** Distraction Free Mode
 
-Olivetti centers the text body by resizing margins.  Toggle with
-=C-c o=; shrink/expand with =C-c {= / =C-c }=.
+Olivetti with =C-c o=.
 
 #+begin_src elisp
   (use-package olivetti
@@ -875,24 +744,17 @@ Olivetti centers the text body by resizing margins.  Toggle with
 
 ** Tree Sitter
 
-Use the =*-ts-modes= automatically and prompt to install missing
-grammars.
-
 #+begin_src elisp
   (run-with-idle-timer 0.2 nil (lambda () (setopt treesit-enabled-modes t)))
 #+end_src
 
 ** Ripgrep
 
-Prefer =ripgrep= for xref searches.
-
 #+begin_src elisp
   (setq xref-search-program 'ripgrep)
 #+end_src
 
 ** Flymake
-
-On-the-fly syntax checking, with diagnostics under the =C-c != prefix.
 
 #+begin_src elisp
   (use-package flymake
@@ -906,16 +768,8 @@ On-the-fly syntax checking, with diagnostics under the =C-c != prefix.
 
 ** Terminal Emulator
 
-ghostel is a fast terminal emulator based on libghostty-vt (compiled
-Zig), the engine behind Ghostty.  Launch with =C-c t= (=C-u= for a new
-session) or =C-x p v= inside a project.  The native module is
-downloaded on first use into =ghostel/=, outside the package tree so
-upgrades don't drop it.
-
-Shell integration (directory tracking, prompt navigation with
-=C-c M-p= / =C-c M-n=, and the palette following the theme) is injected
-into zsh automatically, so no shell configuration is needed.  Buffer
-renaming from the terminal title is off to keep project buffer names.
+ghostel (libghostty-vt) with =C-c t=.  The native module lives in
+=ghostel/= so package upgrades keep it.
 
 #+begin_src elisp
   (defun dalvrosa/ghostel-yank-output ()
@@ -951,9 +805,8 @@ renaming from the terminal title is off to keep project buffer names.
                       (let (ghostel-readonly-fast-exit) (ghostel-readonly-copy))))))
 #+end_src
 
-Project integration: =C-x p v= opens a terminal at the project root,
-=C-x p h= a Claude Code session and =C-x p j= picks among them.  A
-prefix argument to either starts an additional one.
+In projects: =C-x p v= terminal, =C-x p h= Claude Code, =C-x p j=
+pick one; a prefix argument starts another.
 
 #+begin_src elisp
   (defun dalvrosa/ghostel-project-claude (&optional new)
@@ -984,8 +837,7 @@ prefix argument to either starts an additional one.
     (keymap-set project-prefix-map "e" 'errand-agents))
 #+end_src
 
-Errands: Claude Code sessions delegated to the homelab.  =C-x p e= opens
-the project's dashboard.
+Claude Code sessions delegated to the homelab (=C-x p e=).
 
 #+begin_src elisp
   (use-package errand
@@ -996,7 +848,7 @@ the project's dashboard.
 
 ** Language Server Protocol
 
-LSP support with built-in Eglot, under the =C-c l= prefix.
+Eglot under =C-c l=.
 
 #+begin_src elisp
   (use-package eglot
@@ -1027,8 +879,6 @@ LSP support with built-in Eglot, under the =C-c l= prefix.
 
 ** Debug Adapter Protocol
 
-Dape is the debugging counterpart of LSP.
-
 #+begin_src elisp
   (use-package dape
     :config
@@ -1041,15 +891,11 @@ Dape is the debugging counterpart of LSP.
 
 ** Line Numbers
 
-Display line numbers in programming modes.
-
 #+begin_src elisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+end_src
 
 ** Tabs vs Spaces
-
-Spaces beat tabs: width 2, insert spaces on =TAB=.
 
 #+begin_src elisp
   (setq-default tab-width 2)
@@ -1058,7 +904,8 @@ Spaces beat tabs: width 2, insert spaces on =TAB=.
 
 ** Trailing Whitespace
 
-Delete trailing whitespace when saving, except in mail buffers (it would strip the space from the "-- " signature separator).
+Delete trailing whitespace on save, except in mail (it breaks the
+"-- " signature separator).
 
 #+begin_src elisp
   (add-hook 'before-save-hook
@@ -1068,17 +915,11 @@ Delete trailing whitespace when saving, except in mail buffers (it would strip t
 
 ** Magit
 
-Magit is a complete text-based interface to Git where every bit of
-visible information is actionable.
-
 #+begin_src elisp
   (use-package magit
     :bind ("C-c g" . 'magit-status)
     :custom (magit-save-repository-buffers 'dontask))
 #+end_src
-
-Link to Magit buffers from Org, and Forge for GitHub/GitLab issues and
-PRs.
 
 #+begin_src elisp
   (use-package orgit)
@@ -1090,9 +931,6 @@ PRs.
 
 ** Git Link
 
-Create URLs for files and commits (added to the kill ring): =C-c w l=
-location, =C-c w c= commit at point, =C-c w h= homepage.
-
 #+begin_src elisp
   (use-package git-link
     :bind (("C-c w l" . git-link)
@@ -1102,16 +940,12 @@ location, =C-c w c= commit at point, =C-c w h= homepage.
 
 ** Ediff
 
-Merge differences without a separate frame, splitting horizontally.
-
 #+begin_src elisp
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
 ** Compilation
-
-ANSI colors in the compilation window, auto-scroll, save without asking.
 
 #+begin_src elisp
   (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
@@ -1121,18 +955,13 @@ ANSI colors in the compilation window, auto-scroll, save without asking.
 
 ** Log Files
 
-VLF views/edits very large files in batches.
-
 #+begin_src elisp
   (use-package vlf)
 #+end_src
 
 * Org Mode
 
-Notes, to-do lists, planning, authoring and literate programming in
-plain text--I use it to organize my life.  Trim the default
-~org-modules~ to the link handlers I actually use (ol-gnus alone pulls
-in most of Gnus, ~250ms of the first Org load).
+Trim ~org-modules~ (ol-gnus alone pulls in most of Gnus).
 
 #+begin_src elisp
   (setq org-modules '(ol-doi ol-bbdb ol-bibtex ol-docview ol-eww
@@ -1141,16 +970,11 @@ in most of Gnus, ~250ms of the first Org load).
 
 ** Speed Commands
 
-Single-letter commands at the start of a headline: =n/p=, =b/f=, =l/r=.
-
 #+begin_src elisp
   (setq org-use-speed-commands t)
 #+end_src
 
 ** Capture Templates
-
-Capture with =C-c c=: tasks under the "Refile" heading, notes in
-=Notes.org=, blog ideas in my website's =Content.org=.
 
 #+begin_src elisp
   (setq org-default-notes-file "~/docs/Agenda.org")
@@ -1168,17 +992,12 @@ Capture with =C-c c=: tasks under the "Refile" heading, notes in
            "* TODO [#B] %?" :empty-lines 1 :prepend t)))
 #+end_src
 
-Store a link with =C-c L= and jump to the clocked task with =C-c j=.
-
 #+begin_src elisp
   (global-set-key (kbd "C-c L") 'org-store-link)
   (global-set-key (kbd "C-c j") 'org-clock-goto)
 #+end_src
 
 ** State Keywords
-
-TODO, WAIT (blocked), NEXT (on-going), DONE and CANCELLED, logging state
-changes into a drawer.
 
 #+begin_src elisp
   (setq org-todo-keywords
@@ -1188,16 +1007,13 @@ changes into a drawer.
 
 ** Priorities
 
-Allow priorities from A to D.
-
 #+begin_src elisp
   (setq org-priority-lowest ?D)
 #+end_src
 
 ** Code Evaluation
 
-Evaluate code blocks with =C-c C-c= without confirmation; only enable
-the languages I actually use (each costs load time; C is the worst).
+Only load the languages I use (each costs load time).
 
 #+begin_src elisp
   (with-eval-after-load 'org
@@ -1215,17 +1031,12 @@ the languages I actually use (each costs load time; C is the worst).
 
 ** Export
 
-Add Markdown and Hugo export backends.
-
 #+begin_src elisp
   (setq org-export-backends '(ascii html icalendar latex md odt))
   (use-package ox-hugo :after ox :demand t)
 #+end_src
 
 ** Interface
-
-Restore windows after quitting the agenda, allow alphabetical lists,
-start in indent mode and show only headings on first visit.
 
 #+begin_src elisp
   (setq org-agenda-restore-windows-after-quit t)
@@ -1236,16 +1047,12 @@ start in indent mode and show only headings on first visit.
 
 ** Agenda
 
-Open the agenda with =C-c a=.
-
 #+begin_src elisp
   (global-set-key (kbd "C-c a") 'org-agenda)
   (setq org-agenda-files '("~/docs/Agenda.org" "~/docs/Calendar.org" "~/dev/personal-website/Content.org"))
 #+end_src
 
-Custom block agenda: today, unscheduled NEXT actions, standalone,
-unwall, blog and work tasks and WAIT (plus a "Backlog" variant).  Press
-=w= / =d= to switch week/day span and =l= to toggle log mode.
+Block agenda by area, plus a "Backlog" variant.
 
 #+begin_src elisp
   (setq org-agenda-skip-deadline-if-done t)
@@ -1271,9 +1078,6 @@ unwall, blog and work tasks and WAIT (plus a "Backlog" variant).  Press
                           (tags-todo "+backlog" ((org-agenda-overriding-header "Backlog")))))))
 #+end_src
 
-Show all item types in log mode, warn 7 days ahead, bury the agenda with
-=q= and show it in the current window.
-
 #+begin_src elisp
   (setq org-agenda-log-mode-items '(closed clock state))
   (setq org-deadline-warning-days 7)
@@ -1281,7 +1085,7 @@ Show all item types in log mode, warn 7 days ahead, bury the agenda with
   (setq org-agenda-window-setup 'current-window)
 #+end_src
 
-Hide empty blocks in the custom agenda (code from the [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266.html][emacs mail list]]).
+Hide empty agenda blocks (from the [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-06/msg00266.html][mailing list]]).
 
 #+begin_src elisp
   (defun dalvrosa/org-agenda-delete-empty-blocks ()
@@ -1321,8 +1125,6 @@ Hide empty blocks in the custom agenda (code from the [[https://lists.gnu.org/ar
 
 ** Archive
 
-Archive within the same file under an "Archived Items" heading.
-
 #+begin_src elisp
   (setq org-archive-location "::* Archived Items")
   (setq org-archive-tag "archive")
@@ -1336,8 +1138,7 @@ Archive within the same file under an "Archived Items" heading.
 
 ** Markdown Mode
 
-Major mode for editing Markdown; preview with
-~markdown-live-preview-mode~ (=C-c C-c l=).
+Preview with =C-c C-c l=.
 
 #+begin_src elisp
   (use-package markdown-mode)
@@ -1354,12 +1155,7 @@ Major mode for editing Markdown; preview with
 
 ** TeX/LaTeX
 
-AUCTeX is the best framework for writing LaTeX.  Most-used commands:
-- =C-c C-e= environment, =C-c C-m= macro, =C-c C-s= section.
-- =C-c C-f C-*= font specifiers (e.g. =C-c C-f C-b= for bold).
-- =C-c ]= close environment, =C-M-a= / =C-M-e= move to begin/end,
-  =C-c .= mark it.
-- =` *= math symbols (e.g. =` a= inserts =\alpha=).
+AUCTeX with CDLaTeX, viewing PDFs in PDF Tools.
 
 #+begin_src elisp
   (use-package auctex
@@ -1380,8 +1176,6 @@ AUCTeX is the best framework for writing LaTeX.  Most-used commands:
            ("C-x M-k" . 'TeX-clean)))
 #+end_src
 
-CDLaTeX speeds up editing LaTeX documents.
-
 #+begin_src elisp
   (use-package cdlatex
     :hook (LaTeX-mode . turn-on-cdlatex))
@@ -1389,8 +1183,7 @@ CDLaTeX speeds up editing LaTeX documents.
 
 ** LaTeX Compilation
 
-Always compile with =-shell-escape= (needed for PGF/TikZ and Minted),
-save without asking and refresh the PDF afterwards.
+=-shell-escape= is needed for TikZ and Minted.
 
 #+begin_src elisp
   (setq TeX-command-extra-options "-shell-escape")
@@ -1400,9 +1193,6 @@ save without asking and refresh the PDF afterwards.
 #+end_src
 
 ** BibTeX
-
-For =.bib= files: =C-c C-c= cleans an entry, =C-c C-f= inserts a
-field.
 
 #+begin_src elisp
   (setq bibtex-align-at-equal-sign t)
@@ -1415,18 +1205,14 @@ field.
 
 ** Ledger
 
-Ledger is a command-line double-entry accounting system.
-
 #+begin_src elisp
   (use-package ledger-mode)
 #+end_src
 
 * PDF Viewer
 
-PDF Tools replaces DocView, rendering pages on demand.  Fall back to
-Isearch here, since ~consult-line~ would search the PDF source.  Other
-commands: slices (=s m=, =s b=, =s r=), annotations under =C-c C-a=,
-metadata with =I=, occur with =M-s o=.
+PDF Tools, with Isearch since ~consult-line~ would search the PDF
+source.
 
 #+begin_src elisp
   (use-package pdf-tools
@@ -1439,9 +1225,8 @@ metadata with =I=, occur with =M-s o=.
 
 * Email Management
 
-Email within Emacs with =mu4e=.  Not on ELPA: it ships with the =mu=
-system package, plus isync/mbsync for syncing--see my
-[[file:~/.config/isync/README.org][isync configuration]].
+mu4e (from the =mu= system package) for all mail, including =mailto:=
+links; syncing is in my [[file:~/.config/isync/README.org][isync configuration]].
 
 #+begin_src elisp
   (use-package mu4e
@@ -1452,9 +1237,7 @@ system package, plus isync/mbsync for syncing--see my
     :bind ("C-c e" . dalvrosa/mu4e-inbox))
 #+end_src
 
-Opening email with =C-c e= jumps to All Inboxes and kicks off a
-background sync (run from the ~mu4e--start~ callback so they wait for
-the server on first launch).
+=C-c e= opens All Inboxes and syncs in the background.
 
 #+begin_src elisp
   (defun dalvrosa/mu4e-inbox ()
@@ -1469,8 +1252,7 @@ the server on first launch).
        (dalvrosa/mu4e-update-mail-and-index))))
 #+end_src
 
-Customize the headers view (no list column), dropping to sender and
-subject in narrow windows.
+Show only sender and subject in narrow windows.
 
 #+begin_src elisp
   (defvar dalvrosa/mu4e-headers-fields-wide
@@ -1494,8 +1276,6 @@ subject in narrow windows.
                         dalvrosa/mu4e-headers-fields-wide)))))
 #+end_src
 
-Display the mu4e buffer in the same window (don't force full-screen).
-
 #+begin_src elisp
   (with-eval-after-load 'mu4e
   (add-to-list 'display-buffer-alist
@@ -1503,7 +1283,7 @@ Display the mu4e buffer in the same window (don't force full-screen).
                  display-buffer-same-window)))
 #+end_src
 
-Sort inbox searches ascending (oldest at top).
+Oldest first in inboxes.
 
 #+begin_src elisp
   (add-hook 'mu4e-search-hook
@@ -1513,17 +1293,13 @@ Sort inbox searches ascending (oldest at top).
                               'ascending 'descending))))
 #+end_src
 
-Set the mail fetching command.  =MAILSYNC_NO_INDEX= stops the script
-from reindexing itself, since mu4e already does that when it exits.
+mu4e indexes after fetching, so =mailsync= doesn't.
 
 #+begin_src elisp
   (setq mu4e-get-mail-command "MAILSYNC_NO_INDEX=1 ~/.local/bin/mailsync")
 #+end_src
 
 ** Contexts for Multiple Accounts
-
-Use mu4e contexts for several accounts, picking the first without
-asking.
 
 #+begin_src elisp
   (setq mu4e-context-policy 'pick-first)
@@ -1533,9 +1309,8 @@ asking.
   (setq mu4e-trash-without-flag t)
 #+end_src
 
-The actual context accounts.  When port 465 is blocked, point the SMTP
-variables at an SSH tunnel
-(=ssh -NTfL 1465:localhost:465 root@alvarezrosa.com=).
+If port 465 is blocked, tunnel it:
+=ssh -NTfL 1465:localhost:465 root@alvarezrosa.com=.
 
 #+begin_src elisp
   (with-eval-after-load 'mu4e
@@ -1558,8 +1333,6 @@ variables at an SSH tunnel
 
 ** Bookmarks
 
-Custom bookmark for all inboxes.
-
 #+begin_src elisp
   (with-eval-after-load 'mu4e
     (add-to-list 'mu4e-bookmarks
@@ -1570,11 +1343,8 @@ Custom bookmark for all inboxes.
 
 ** Update and Notification
 
-Push via =goimapnotify= on IMAP IDLE.  Hide index messages and modeline
-numbering.
-
-=mailsync= calls =dalvrosa/mu4e-index-soon= only when mbsync changed the
-local side; the mu server queues it behind any running index.
+=goimapnotify= runs =mailsync=, which calls =dalvrosa/mu4e-index-soon=
+when something changed.
 
 #+begin_src elisp
   (defun dalvrosa/mu4e-update-mail-and-index ()
@@ -1615,11 +1385,8 @@ local side; the mu server queues it behind any running index.
 
 ** Directory Client
 
-BBDB is a contact database integrated with the mail readers;
-=bbdb-vcard= imports/exports vCards.  Loaded by the idle preloader.
-Contacts live in Nextcloud; =vdirsyncer= mirrors them to a local vCard
-directory and =dalvrosa/contacts-refresh= rebuilds BBDB from it (driven
-by the =dav-sync= systemd timer).  BBDB is a read-only cache here.
+BBDB is a read-only cache of Nextcloud contacts, rebuilt from the
+=vdirsyncer= mirror by the =dav-sync= timer.
 
 #+begin_src elisp
   (use-package bbdb
@@ -1643,9 +1410,7 @@ by the =dav-sync= systemd timer).  BBDB is a read-only cache here.
     :after bbdb)
 #+end_src
 
-A static =completion-at-point= source so address-book contacts complete
-inline in mu4e recipient headers, alongside mu4e's own completion.  It
-reads BBDB in memory, so it never blocks.
+Complete BBDB contacts in recipient headers.
 
 #+begin_src elisp
   (defun dalvrosa/bbdb-mail-candidates ()
@@ -1673,8 +1438,7 @@ reads BBDB in memory, so it never blocks.
 
 ** Composition/Sending
 
-Send through smtpmail, with a custom citation line, signature above
-the quoted text in replies, killing the buffer after sending.
+Signature above the quoted text in replies.
 
 #+begin_src elisp
   (with-eval-after-load 'mu4e
@@ -1700,14 +1464,11 @@ the quoted text in replies, killing the buffer after sending.
 
 ** Attachment Management
 
-Download attachments to =~/tmp=.
-
 #+begin_src elisp
   (setq mu4e-attachment-dir "~/tmp")
 #+end_src
 
-Attach files from Dired: mark them and press =C-c RET C-a= (in the
-composition buffer plain =C-c C-a= works fine).
+Attach marked files from Dired with =C-c RET C-a=.
 
 #+begin_src elisp
   (setq gnus-dired-mail-mode 'message-user-agent)
@@ -1716,7 +1477,7 @@ composition buffer plain =C-c C-a= works fine).
 
 ** Meetings
 
-Reply to iCalendar emails; accepting adds the event to Nextcloud.
+Accepted invitations go to Nextcloud.
 
 #+begin_src elisp
   (defun dalvrosa/calendar-accept (data)
@@ -1734,7 +1495,7 @@ Reply to iCalendar emails; accepting adds the event to Nextcloud.
 
 * Web Feed Reader
 
-Elfeed is a web feed reader for Atom and RSS, bound to =C-c f=.
+Elfeed with =C-c f=; =v= plays in mpv, =i= ignores.
 
 #+begin_src elisp
   (use-package elfeed
@@ -1747,16 +1508,12 @@ Elfeed is a web feed reader for Atom and RSS, bound to =C-c f=.
                   elfeed-search-title-max-width 100))
 #+end_src
 
-Manage subscriptions from an org file.
-
 #+begin_src elisp
   (use-package elfeed-org
     :after elfeed
     :init (elfeed-org)
     :config (setq rmh-elfeed-org-files (list "~/docs/Subscriptions.org")))
 #+end_src
-
-Open video entries with mpv by pressing =v=.
 
 #+begin_src elisp
   (defun dalvrosa/elfeed-play-with-mpv ()
@@ -1765,9 +1522,6 @@ Open video entries with mpv by pressing =v=.
       (start-process "elfeed-mpv" nil "mpv" "--ytdl-format=[height<=720]" url))
     (elfeed-search-untag-unread))
 #+end_src
-
-Ignore the current entry by tagging it =no= (excluded by the default
-filter).
 
 #+begin_src elisp
   (defun dalvrosa/elfeed-ignore ()
@@ -1780,10 +1534,7 @@ filter).
 
 * Internet Relay Chat (IRC)
 
-Built-in ERC client with TLS, bound to =C-c i=.  I connect to a personal
-ZNC bouncer on my VPS, with credentials in the [[*Authentication File][authentication file]] and
-an SSH tunnel to bypass the port 6697 block (=ssh -NTfL
-6697:localhost:6697 root@alvarezrosa.com=).  Find me in libera.chat as
+ERC with =C-c i=, through my ZNC bouncer.  Find me on Libera.Chat as
 =dalvrosa=.
 
 #+begin_src elisp
@@ -1796,16 +1547,11 @@ an SSH tunnel to bypass the port 6697 block (=ssh -NTfL
   (setq erc-hide-list '("JOIN" "PART" "QUIT"))
 #+end_src
 
-Kill buffers automatically after quitting the server or parting a
-channel.
-
 #+begin_src elisp
   (setq erc-kill-buffer-on-part t)
   (setq erc-kill-queries-on-quit t)
   (setq erc-kill-server-buffer-on-quit t)
 #+end_src
-
-Minor display tweaks.
 
 #+begin_src elisp
   (setq erc-fill-function 'erc-fill-static)
@@ -1813,15 +1559,10 @@ Minor display tweaks.
   (setq erc-rename-buffers t)
 #+end_src
 
-Show unread messages in the modeline and cycle through them with
-=C-c C-SPC= from any mode.
-
 #+begin_src elisp
   (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
   (setq erc-track-exclude-server-buffer t)
 #+end_src
-
-Auto colorize nicknames.
 
 #+begin_src elisp
   (use-package erc-hl-nicks)
@@ -1829,10 +1570,8 @@ Auto colorize nicknames.
 
 * Matrix
 
-Ement.el for Matrix, bound to =C-c x= (matri/x/), used mainly for WhatsApp through
-a bridge on my homeserver.  The helper pops to the room list, connecting first
-if needed by reusing a saved session or, on first login, the password from the
-[[*Authentication File][authentication file]] by user ID.
+Ement with =C-c x=, mainly for WhatsApp through a bridge on my
+homeserver.
 
 #+begin_src elisp
   (use-package ement
