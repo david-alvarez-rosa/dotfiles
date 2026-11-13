@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -eux
 
 sync_one() { flock "${XDG_RUNTIME_DIR:-/tmp}/mbsync-${1%%:*}.lock" mbsync -c ~/.config/isync/mbsyncrc "$1"; }
 

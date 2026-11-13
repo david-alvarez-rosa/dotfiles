@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
+set -eux
 
 emacsclient --no-wait --eval "(browse-url-mail \"$1\")"
