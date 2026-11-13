@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
+set -eux
 
-cp /etc/hosts.full /etc/hosts
+hblock -q -O - | sudo tee /etc/hosts >/dev/null

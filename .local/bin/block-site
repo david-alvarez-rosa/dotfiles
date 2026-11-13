@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
+set -eux
 
-DOMAIN="$1"
-if ! grep -q "$DOMAIN" /etc/hosts.full; then
-  echo "127.0.0.1 $DOMAIN" >> /etc/hosts.full
-  echo "127.0.0.1 www.$DOMAIN" >> /etc/hosts.full
-fi
-
+printf '%s\nwww.%s\n' "$1" "$1" >> "${XDG_CONFIG_HOME:-$HOME/.config}/hblock/deny.list"
 block-hosts
