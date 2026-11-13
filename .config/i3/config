@@ -39,7 +39,7 @@ bindsym $mod+Return exec emacsclient -c
 bindsym $mod+Shift+Return exec emacsclient -c -e "(ghostel t)"
 bindsym $mod+r exec --no-startup-id rofi -show drun
 bindsym $mod+l exec --no-startup-id i3lock -i ~/media/wallpaper.png -u
-bindsym $mod+d exec --no-startup-id dark-mode-toggle
+bindsym $mod+d exec --no-startup-id darkman toggle
 bindsym $mod+space exec --no-startup-id "setxkbmap -query | grep -qE 'layout:[[:space:]]*es' && setxkbmap -layout us,es -option '' -option compose:ralt || setxkbmap -layout es,us -option '' -option compose:ralt"
 
 bindsym XF86AudioRaiseVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+12)/5*5));wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;wpctl set-mute @DEFAULT_AUDIO_SINK@ 0"

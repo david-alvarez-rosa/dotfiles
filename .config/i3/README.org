@@ -101,7 +101,7 @@ Application launcher and manual screen lock.
 
 Toggle between light and dark mode.
 #+begin_src conf
-  bindsym $mod+d exec --no-startup-id dark-mode-toggle
+  bindsym $mod+d exec --no-startup-id darkman toggle
 #+end_src
 
 Toggle keyboard layout between US and Spanish.
