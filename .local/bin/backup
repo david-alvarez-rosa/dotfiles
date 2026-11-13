@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eux
 
-export RESTIC_REPOSITORY=/mnt/Drive/restic
+export RESTIC_REPOSITORY=/mnt/drive/restic
 export RESTIC_PASSWORD_COMMAND="sh -c \"gpg --no-tty -qd $HOME/.local/share/authinfo.gpg | awk '/^machine restic /{print \$NF}'\""
 
 restic backup --exclude "$HOME/.cache" "$HOME"
