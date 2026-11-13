@@ -25,12 +25,9 @@ set $ws8 "8. Browser"
 set $ws9 "9. Terminal"
 set $ws10 "10. Executing"
 
-exec --no-startup-id env XDG_CURRENT_DESKTOP=i3 /usr/lib/xdg-desktop-portal-gtk
-exec --no-startup-id env XDG_CURRENT_DESKTOP=i3 /usr/lib/xdg-desktop-portal -r
-
-exec --no-startup-id i3-msg "exec emacs"
-exec --no-startup-id i3-msg "exec firefox"
-exec --no-startup-id "sh -c 'until i3-msg [class=firefox] move container to workspace 2. Browser; do sleep 0.5; done'"
+exec emacs
+exec firefox
+assign [class="firefox"] $ws2
 
 exec --no-startup-id sh -c 'until ssh-add -l >/dev/null 2>&1; do sleep 0.5; done; nextcloud --background'
 

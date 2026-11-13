@@ -61,19 +61,11 @@ Set workspace names.
 #+end_src
 
 * Auto Start
-Start =xdg-desktop-portal= (before Firefox) so apps follow the system
-light/dark color scheme.
+Auto start Emacs on workspace 1 and Firefox on workspace 2.
 #+begin_src conf
-  exec --no-startup-id env XDG_CURRENT_DESKTOP=i3 /usr/lib/xdg-desktop-portal-gtk
-  exec --no-startup-id env XDG_CURRENT_DESKTOP=i3 /usr/lib/xdg-desktop-portal -r
-#+end_src
-
-Auto start Emacs on workspace 1 and Firefox on workspace 2 (retrying until
-its window appears).
-#+begin_src conf
-  exec --no-startup-id i3-msg "exec emacs"
-  exec --no-startup-id i3-msg "exec firefox"
-  exec --no-startup-id "sh -c 'until i3-msg [class=firefox] move container to workspace 2. Browser; do sleep 0.5; done'"
+  exec emacs
+  exec firefox
+  assign [class="firefox"] $ws2
 #+end_src
 
 Start the Nextcloud client in the background, once KeePassXC has unlocked the

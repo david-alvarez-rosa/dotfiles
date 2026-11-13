@@ -6,5 +6,5 @@ xrdb -merge ~/.config/X11/Xresources
 ~/.local/bin/keepassxc-tpm-unlock &
 dunst &
 picom &
-systemctl --user import-environment DISPLAY XAUTHORITY
+dbus-update-activation-environment --systemd DISPLAY XAUTHORITY XDG_CURRENT_DESKTOP=i3
 exec i3
