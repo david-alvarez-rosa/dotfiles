@@ -32,6 +32,7 @@ exec --no-startup-id sh -c 'until i3-msg [class=firefox] move container to works
 exec --no-startup-id sh -c 'until ssh-add -l >/dev/null 2>&1; do sleep 0.5; done; nextcloud --background'
 
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -i ~/media/wallpaper.png -u
+exec --no-startup-id sh -c 'udevadm monitor --udev --subsystem-match=power_supply | while read -r _; do pkill -RTMIN+4 i3blocks; done'
 
 exec_always --no-startup-id feh --no-fehbg --bg-fill ~/media/wallpaper.png
 

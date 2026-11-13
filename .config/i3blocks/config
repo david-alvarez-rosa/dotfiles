@@ -46,6 +46,7 @@ color=#f9555f
 
 [battery]
 interval=30
+signal=4
 color=#E88939
 
 [wifi]
