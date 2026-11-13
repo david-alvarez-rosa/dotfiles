@@ -64,7 +64,7 @@ theme_overrides = { idle_fg = "#589df6", info_fg = "#589df6", good_fg = "#589df6
 
 [[block]]
 block = "custom"
-command = "awk '/MemAvailable/ {printf \"%.1fG\\n\", $2/1024/1024 + 8}' /proc/meminfo"
+command = "awk '/MemAvailable|SwapFree/ {s += $2} END {printf \"%.1fG\\n\", s/1024/1024}' /proc/meminfo"
 format = " <span font_family='FontAwesome'></span> $text "
 interval = 10
 theme_overrides = { idle_fg = "#21b089" }
