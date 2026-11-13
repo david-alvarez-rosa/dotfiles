@@ -40,13 +40,13 @@ bindsym $mod+Shift+Return exec emacsclient -c -e "(ghostel t)"
 bindsym $mod+r exec --no-startup-id rofi -show drun
 bindsym $mod+l exec --no-startup-id i3lock -i ~/media/wallpaper.png -u
 bindsym $mod+d exec --no-startup-id dark-mode-toggle
-bindsym $mod+space exec --no-startup-id "setxkbmap -query | grep -qE 'layout:[[:space:]]*es' && setxkbmap -layout us,es -option '' -option compose:ralt || setxkbmap -layout es,us -option '' -option compose:ralt; pkill -RTMIN+2 i3blocks"
+bindsym $mod+space exec --no-startup-id "setxkbmap -query | grep -qE 'layout:[[:space:]]*es' && setxkbmap -layout us,es -option '' -option compose:ralt || setxkbmap -layout es,us -option '' -option compose:ralt"
 
-bindsym XF86AudioRaiseVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+12)/5*5));wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;wpctl set-mute @DEFAULT_AUDIO_SINK@ 0;pkill -RTMIN+1 i3blocks"
-bindsym Control+XF86AudioRaiseVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+7)/5*5));wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;wpctl set-mute @DEFAULT_AUDIO_SINK@ 0;pkill -RTMIN+1 i3blocks"
-bindsym XF86AudioLowerVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v-8)/5*5));[ $n -lt 0 ]&&n=0;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;pkill -RTMIN+1 i3blocks"
-bindsym Control+XF86AudioLowerVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v-3)/5*5));[ $n -lt 0 ]&&n=0;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;pkill -RTMIN+1 i3blocks"
-bindsym XF86AudioMute exec --no-startup-id "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0; wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+1 i3blocks"
+bindsym XF86AudioRaiseVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+12)/5*5));wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;wpctl set-mute @DEFAULT_AUDIO_SINK@ 0"
+bindsym Control+XF86AudioRaiseVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v+7)/5*5));wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%;wpctl set-mute @DEFAULT_AUDIO_SINK@ 0"
+bindsym XF86AudioLowerVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v-8)/5*5));[ $n -lt 0 ]&&n=0;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%"
+bindsym Control+XF86AudioLowerVolume exec --no-startup-id "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@|awk '{print int($2*100)}');n=$(((v-3)/5*5));[ $n -lt 0 ]&&n=0;wpctl set-volume @DEFAULT_AUDIO_SINK@ $n%"
+bindsym XF86AudioMute exec --no-startup-id "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0; wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
 bindsym XF86AudioMicMute exec --no-startup-id "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
 bindsym XF86MonBrightnessUp exec --no-startup-id "v=$(brightnessctl -m|cut -d, -f4|tr -d %);if [ $v -lt 1 ];then n=1;elif [ $v -lt 10 ];then n=10;elif [ $v -lt 20 ];then n=20;else n=$((v/20*20+20));[ $n -gt 100 ]&&n=100;fi;brightnessctl -q set $n%"
 bindsym XF86MonBrightnessDown exec --no-startup-id "v=$(brightnessctl -m|cut -d, -f4|tr -d %);if [ $v -le 1 ];then n=0;elif [ $v -le 10 ];then n=1;elif [ $v -le 20 ];then n=10;else n=$(((v+19)/20*20-20));fi;brightnessctl -q set $n%"
@@ -122,8 +122,8 @@ bindsym $mod+o fullscreen toggle
 bindsym $mod+Shift+v floating toggle; [con_id=__focused__ floating] sticky enable, resize set 25 ppt 25 ppt, move position 75 ppt 75 ppt, move left 5 px, move up 5 px
 
 bar {
-    font pango:DejaVu Sans Mono 9
-    status_command i3blocks
+    font pango:DejaVu Sans Mono, FontAwesome, Symbols Nerd Font Mono 9
+    status_command i3status-rs
     height 31
     position top
     mode dock
