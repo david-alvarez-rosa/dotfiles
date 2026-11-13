@@ -7,17 +7,19 @@ trap 'sudo rm -f /etc/sudoers.d/bootstrap' EXIT
 
 PACMAN_PACKAGES="
   acpi
+  alacritty
+  brightnessctl
+  clang
   cloudflared
-  rofi
+  cmake
+  darkman
   dunst
   emacs
+  fakeroot
   fd
   feh
   firefox
-  alacritty
-  cmake
   gcc
-  clang
   git
   git-crypt
   git-lfs
@@ -25,18 +27,19 @@ PACMAN_PACKAGES="
   gnuplot
   goimapnotify
   graphviz
+  hblock
   hunspell-en_us
   hunspell-es_es
   i3-wm
-  i3blocks
   i3lock
-  picom
+  i3status-rust
   imagemagick
   inter-font
   isync
   keepassxc
   ledger
   libnotify
+  lm_sensors
   maim
   mpc
   mpv
@@ -44,19 +47,21 @@ PACMAN_PACKAGES="
   networkmanager
   openssh
   pacman-contrib
+  picom
   pipewire-alsa
   pipewire-pulse
   plantuml
   poppler-glib
+  restic
   ripgrep
-  rsync
+  rofi
   starship
-  sysstat
   tlp
   ttf-dejavu
   ttf-hack-nerd
   unclutter
   upower
+  vdirsyncer
   vim
   which
   wireplumber
@@ -71,10 +76,12 @@ PACMAN_PACKAGES="
   xorg-xset
   xss-lock
   yt-dlp
-  zsh"
+  zsh
+  zsh-autosuggestions
+  zsh-completions
+  zsh-syntax-highlighting"
 
 AUR_PACKAGES="
-  acpilight
   mu
   xremap-x11-bin"
 
@@ -106,7 +113,7 @@ if [ -f ~/gpg-key.asc ]; then
 fi
 
 sudo systemctl enable NetworkManager.service tlp.service
-systemctl --user enable keepassxc.service commit-docs.timer imapnotify@personal.service systemd-tmpfiles-setup.service
+systemctl --user enable keepassxc.service commit-docs.timer goimapnotify@personal.service darkman.service systemd-tmpfiles-setup.service
 
 mkdir -p ~/.local/share/mail
 mu init --maildir=~/.local/share/mail --my-address=david@alvarezrosa.com --my-address=davids@alvarezrosa.com
