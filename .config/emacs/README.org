@@ -122,10 +122,10 @@ threads share one global lock, so a load blocks input either way.
 
 #+begin_src elisp
   (defvar dalvrosa/preload-queue
-    '(;; Org, bottom-up; `org' also pulls in Babel and the exporters
+    '(;; Org, bottom-up, then Babel and the exporters
       calendar find-func format-spec org-macs org-compat org-faces
       org-entities org-list org-pcomplete org-src org-footnote org-macro
-      ob org org-agenda agenda-files org-capture
+      ob org org-agenda agenda-files org-capture ox
       ;; Magit, with Forge and its database
       dash transient with-editor magit forge
       ispell flyspell
@@ -955,8 +955,6 @@ renaming from the terminal title is off to keep project buffer names.
     (setq ghostel-max-scrollback (* 10 1024 1024))
     (add-to-list 'ghostel-eval-cmds '("man" man))
     (setf (alist-get "ssh" ghostel-tramp-shells nil nil #'equal) '("zsh"))
-    (add-hook 'ghostel-mode-hook
-              (lambda () (setq-local global-hl-line-mode nil)))
     :bind (("C-c t" . ghostel)
            :map ghostel-semi-char-mode-map
            ("C-q" . ghostel-send-next-key)
@@ -1022,11 +1020,6 @@ LSP support with built-in Eglot, under the =C-c l= prefix.
     (setq eglot-autoshutdown t)
     (setf (alist-get '(python-mode python-ts-mode) eglot-server-programs nil nil #'equal)
           '("ty" "server"))
-    (dolist (entry '(((c-mode c-ts-mode c++-mode c++-ts-mode) "clangd")
-                     (((js-mode :language-id "javascript") (js-ts-mode :language-id "javascript")
-                       (typescript-ts-mode :language-id "typescript") (tsx-ts-mode :language-id "typescriptreact"))
-                      "typescript-language-server" "--stdio")))
-      (push entry eglot-server-programs))
     :hook ((c++-ts-mode . eglot-ensure)
            (c-ts-mode . eglot-ensure)
            (java-ts-mode . eglot-ensure)
@@ -1239,11 +1232,8 @@ the languages I actually use (each costs load time; C is the worst).
 Add Markdown and Hugo export backends.
 
 #+begin_src elisp
-  (use-package ox-hugo :after ox)
-
-  (with-eval-after-load 'org
-    (require 'ox-hugo nil t)
-    (require 'ox-md nil t))
+  (setq org-export-backends '(ascii html icalendar latex md odt))
+  (use-package ox-hugo :after ox :demand t)
 #+end_src
 
 ** Interface
@@ -1454,7 +1444,7 @@ Always compile with =-shell-escape= (needed for PGF/TikZ and Minted),
 save without asking and refresh the PDF afterwards.
 
 #+begin_src elisp
-  (setq TeX-command-extra-options "-shell-escape -synctex=1")
+  (setq TeX-command-extra-options "-shell-escape")
   (setq TeX-save-query nil)
   (add-hook 'TeX-after-compilation-finished-functions
             #'TeX-revert-document-buffer)
@@ -1587,23 +1577,14 @@ asking.
 #+begin_src elisp
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-compose-context-policy 'pick-first)
-  (setq mu4e-sent-messages-behavior 'sent)
   (setq smtpmail-stream-type 'ssl)
-  (setq smtpmail-smtp-service 465)
   (setq mu4e-change-filenames-when-moving t)
   (setq mu4e-trash-without-flag t)
 #+end_src
 
-SMTP server variables (kept separate so they're easy to point at an SSH
-tunnel when port 465 is blocked,
-e.g. =ssh -NTfL 1465:localhost:465 root@alvarezrosa.com=).
-
-#+begin_src elisp
-  (setq dalvrosa/smtp-server "mail.alvarezrosa.com")
-  (setq dalvrosa/smtp-port 465)
-#+end_src
-
-The actual context accounts.
+The actual context accounts.  When port 465 is blocked, point the SMTP
+variables at an SSH tunnel
+(=ssh -NTfL 1465:localhost:465 root@alvarezrosa.com=).
 
 #+begin_src elisp
   (with-eval-after-load 'mu4e
@@ -1613,15 +1594,15 @@ The actual context accounts.
                :match-func (lambda (msg)
                              (when msg
                                (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
-               :vars `(
+               :vars '(
                        (message-signature-file . "~/docs/Signature.txt")
                        (mu4e-sent-folder . "/Personal/Sent")
                        (mu4e-drafts-folder . "/Personal/Drafts")
                        (mu4e-trash-folder . "/Personal/Trash")
                        (mu4e-refile-folder . "/Personal/Archive")
                        (user-mail-address . "david@alvarezrosa.com")
-                       (smtpmail-smtp-service . ,dalvrosa/smtp-port)
-                       (smtpmail-smtp-server . ,dalvrosa/smtp-server))))))
+                       (smtpmail-smtp-server . "mail.alvarezrosa.com")
+                       (smtpmail-smtp-service . 465))))))
 #+end_src
 
 ** Bookmarks
@@ -1677,7 +1658,6 @@ local side; the mu server queues it behind any running index.
                 (add-hook 'window-buffer-change-functions
                           #'dalvrosa/mu4e-headers-refresh nil t))))
 
-  (setq mu4e-index-lazy-check nil)
   (setq mu4e-hide-index-messages t)
   (setq mu4e-modeline-support nil)
 #+end_src

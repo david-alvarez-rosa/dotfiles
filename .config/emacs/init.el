@@ -16,10 +16,10 @@
 (setq use-package-always-defer t)
 
 (defvar dalvrosa/preload-queue
-  '(;; Org, bottom-up; `org' also pulls in Babel and the exporters
+  '(;; Org, bottom-up, then Babel and the exporters
     calendar find-func format-spec org-macs org-compat org-faces
     org-entities org-list org-pcomplete org-src org-footnote org-macro
-    ob org org-agenda agenda-files org-capture
+    ob org org-agenda agenda-files org-capture ox
     ;; Magit, with Forge and its database
     dash transient with-editor magit forge
     ispell flyspell
@@ -505,8 +505,6 @@
   (setq ghostel-max-scrollback (* 10 1024 1024))
   (add-to-list 'ghostel-eval-cmds '("man" man))
   (setf (alist-get "ssh" ghostel-tramp-shells nil nil #'equal) '("zsh"))
-  (add-hook 'ghostel-mode-hook
-            (lambda () (setq-local global-hl-line-mode nil)))
   :bind (("C-c t" . ghostel)
          :map ghostel-semi-char-mode-map
          ("C-q" . ghostel-send-next-key)
@@ -555,11 +553,6 @@ With prefix arg NEW, start an additional session instead."
   (setq eglot-autoshutdown t)
   (setf (alist-get '(python-mode python-ts-mode) eglot-server-programs nil nil #'equal)
         '("ty" "server"))
-  (dolist (entry '(((c-mode c-ts-mode c++-mode c++-ts-mode) "clangd")
-                   (((js-mode :language-id "javascript") (js-ts-mode :language-id "javascript")
-                     (typescript-ts-mode :language-id "typescript") (tsx-ts-mode :language-id "typescriptreact"))
-                    "typescript-language-server" "--stdio")))
-    (push entry eglot-server-programs))
   :hook ((c++-ts-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
          (java-ts-mode . eglot-ensure)
@@ -659,11 +652,8 @@ With prefix arg NEW, start an additional session instead."
 (setq org-confirm-babel-evaluate nil)
 (setq org-plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar")
 
-(use-package ox-hugo :after ox)
-
-(with-eval-after-load 'org
-  (require 'ox-hugo nil t)
-  (require 'ox-md nil t))
+(setq org-export-backends '(ascii html icalendar latex md odt))
+(use-package ox-hugo :after ox :demand t)
 
 (setq org-agenda-restore-windows-after-quit t)
 (setq org-list-allow-alphabetical t)
@@ -798,7 +788,7 @@ With prefix arg NEW, start an additional session instead."
 (use-package cdlatex
   :hook (LaTeX-mode . turn-on-cdlatex))
 
-(setq TeX-command-extra-options "-shell-escape -synctex=1")
+(setq TeX-command-extra-options "-shell-escape")
 (setq TeX-save-query nil)
 (add-hook 'TeX-after-compilation-finished-functions
           #'TeX-revert-document-buffer)
@@ -870,14 +860,9 @@ With prefix arg NEW, start an additional session instead."
 
 (setq mu4e-context-policy 'pick-first)
 (setq mu4e-compose-context-policy 'pick-first)
-(setq mu4e-sent-messages-behavior 'sent)
 (setq smtpmail-stream-type 'ssl)
-(setq smtpmail-smtp-service 465)
 (setq mu4e-change-filenames-when-moving t)
 (setq mu4e-trash-without-flag t)
-
-(setq dalvrosa/smtp-server "mail.alvarezrosa.com")
-(setq dalvrosa/smtp-port 465)
 
 (with-eval-after-load 'mu4e
   (setq mu4e-contexts
@@ -886,15 +871,15 @@ With prefix arg NEW, start an additional session instead."
              :match-func (lambda (msg)
                            (when msg
                              (string-match-p "^/Personal" (mu4e-message-field msg :maildir))))
-             :vars `(
+             :vars '(
                      (message-signature-file . "~/docs/Signature.txt")
                      (mu4e-sent-folder . "/Personal/Sent")
                      (mu4e-drafts-folder . "/Personal/Drafts")
                      (mu4e-trash-folder . "/Personal/Trash")
                      (mu4e-refile-folder . "/Personal/Archive")
                      (user-mail-address . "david@alvarezrosa.com")
-                     (smtpmail-smtp-service . ,dalvrosa/smtp-port)
-                     (smtpmail-smtp-server . ,dalvrosa/smtp-server))))))
+                     (smtpmail-smtp-server . "mail.alvarezrosa.com")
+                     (smtpmail-smtp-service . 465))))))
 
 (with-eval-after-load 'mu4e
   (add-to-list 'mu4e-bookmarks
@@ -934,7 +919,6 @@ With prefix arg NEW, start an additional session instead."
               (add-hook 'window-buffer-change-functions
                         #'dalvrosa/mu4e-headers-refresh nil t))))
 
-(setq mu4e-index-lazy-check nil)
 (setq mu4e-hide-index-messages t)
 (setq mu4e-modeline-support nil)
 
