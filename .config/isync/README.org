@@ -6,31 +6,18 @@
 #+PROPERTY: header-args :tangle mbsyncrc
 
 
-Isync is a command line application to synchronize mailboxes; it supports
-Maildir and IMAP4 mailboxes. New messages, message deletions and flag changes
-can be propagated both ways.
-
-Synchronization is based on unique message identifiers (UIDs), so no
-identification conflicts can occur (as opposed to some other mail
-synchronizers). Synchronization state is kept in one local text file per
-mailbox pair; multiple replicas of a mailbox can be maintained.
-
-The =authinfo.gpg= file should be properly configured and encrypted with, at
-least, the following information.
+Two-way IMAP/Maildir sync for mu4e.  Needs this line in
+=~/.local/share/authinfo.gpg=:
 #+begin_src conf :tangle no
   machine mail.alvarezrosa.com login david@alvarezrosa.com port 465 password "***pass***"
 #+end_src
 
-After the first sync of emails, the =mu= database must be started. It is useful
-to specify personal email addresses (e.g., for not replying to yourself in a
-"Reply All").
+After the first sync, initialize mu:
 #+begin_src conf :tangle no
   mu init -m ~/.local/share/mail --my-address=david@alvarezrosa.com
 #+end_src
 
-
 * Personal
-Configuration for my personal email account.
 #+begin_src conf
   IMAPAccount Personal
   Host mail.alvarezrosa.com
