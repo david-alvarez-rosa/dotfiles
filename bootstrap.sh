@@ -64,6 +64,7 @@ PACMAN_PACKAGES="
   tpm2-tools
   ttf-dejavu
   ttf-hack-nerd
+  ttf-nerd-fonts-symbols-mono
   unclutter
   upower
   uv
