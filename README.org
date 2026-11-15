@@ -11,7 +11,7 @@ across work and personal machines.
 
 - Emacs :: Editor, terminal, email, agenda, calendar, notes, PDFs,
   images, file manager, RSS/Atom feeds, IRC, and LLM integration.
-- i3 :: Tiling window manager with i3status-rust bar and dunst.
+- i3 :: Tiling window manager with i3blocks bar and dunst.
 - Zsh :: oh-my-zsh and starship prompt.
 - Firefox :: Web browsing.
 - mpv :: Media player.
