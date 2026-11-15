@@ -86,6 +86,7 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 bindcode $mod+49 workspace back_and_forth
 
 for_window [class="mpv"] floating enable, sticky enable, resize set 25 ppt 25 ppt, move position 75 ppt 75 ppt, move left 5 px, move up 5 px
+for_window [title="^Picture-in-Picture$"] floating enable, sticky enable, resize set 25 ppt 25 ppt, move position 75 ppt 75 ppt, move left 5 px, move up 5 px
 
 for_window [class="KeePassXC"] floating enable
 

@@ -151,6 +151,7 @@ Keycode 49 is the grave key.
 *** Default Workspaces
 #+begin_src conf
   for_window [class="mpv"] floating enable, sticky enable, resize set 25 ppt 25 ppt, move position 75 ppt 75 ppt, move left 5 px, move up 5 px
+  for_window [title="^Picture-in-Picture$"] floating enable, sticky enable, resize set 25 ppt 25 ppt, move position 75 ppt 75 ppt, move left 5 px, move up 5 px
 #+end_src
 
 #+begin_src conf
