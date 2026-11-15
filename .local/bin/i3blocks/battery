@@ -31,6 +31,16 @@ case $BLOCK_BUTTON in
     1|2|3) notifyBatteryInfo ;;
 esac
 
+flag="$XDG_RUNTIME_DIR/battery-low"
+if [ "$state" = "Discharging" ] && [ "$percentage" -le 10 ]; then
+    if [ ! -e "$flag" ]; then
+        notify-send -u critical "Battery low" "$percentage% remaining"
+        touch "$flag"
+    fi
+else
+    rm -f "$flag"
+fi
+
 if [ "$state" = "Discharging" ]; then
     if   [ "$percentage" -lt 20 ]; then icon=''
     elif [ "$percentage" -lt 40 ]; then icon=''
