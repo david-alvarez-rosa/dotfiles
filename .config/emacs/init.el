@@ -470,7 +470,12 @@
   :init (run-with-idle-timer 0.05 nil #'doom-modeline-mode)
   :config
   (setq doom-modeline-buffer-encoding nil)
-  (setq doom-modeline-height 28)
+  (defun dalvrosa/doom-modeline-height (&rest _)
+    (setq doom-modeline-height (round (* 14 (frame-char-height)) 9))
+    (doom-modeline-refresh-bars))
+  (dalvrosa/doom-modeline-height)
+  (advice-add 'dynamic-setting-handle-config-changed-event
+              :after #'dalvrosa/doom-modeline-height)
   (setq doom-modeline-buffer-file-name-style 'relative-from-project))
 
 (column-number-mode 1)

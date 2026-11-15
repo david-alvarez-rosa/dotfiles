@@ -4,11 +4,11 @@ set -eux
 conf="${XDG_RUNTIME_DIR:-/tmp}/xsettingsd.conf"
 dpi=$(xrdb -query | awk '/^Xft.dpi:/ {print $2}')
 
-if [ "${dpi:-120}" -gt 120 ]; then
-  dpi=120
-else
-  dpi=160
-fi
+case "${dpi:-120}:${1:-next}" in
+  120:next | 240:prev) dpi=160 ;;
+  160:next | 120:prev) dpi=240 ;;
+  *) dpi=120 ;;
+esac
 
 echo "Xft.dpi: $dpi" | xrdb -merge
 echo "Xft/DPI $((dpi * 1024))" > "$conf"

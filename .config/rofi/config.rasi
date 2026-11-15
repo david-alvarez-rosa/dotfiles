@@ -1,7 +1,7 @@
 configuration {
     modi:       "drun";
     show-icons: false;
-    font:       "DejaVu Sans Mono 11";
+    font:       "DejaVu Sans Mono 9";
 }
 
 * {
@@ -12,8 +12,7 @@ configuration {
 window {
     location: center;
     anchor:   center;
-    y-offset: -260px;
-    width:    460px;
+    width:    97.4mm;
     border:   0;
     border-radius: 0;
     padding:  0;
@@ -21,13 +20,13 @@ window {
 }
 
 mainbox {
-    padding: 8px;
+    padding: 1.7mm;
     children: [ inputbar, listview ];
     background-color: #222222;
 }
 
 inputbar {
-    padding: 4px 0px 8px 0px;
+    padding: 0.85mm 0 1.7mm 0;
     background-color: #222222;
     text-color: #ffffff;
 }
@@ -50,7 +49,7 @@ listview {
 }
 
 element {
-    padding: 4px;
+    padding: 0.85mm;
     background-color: #222222;
     text-color: #ffffff;
 }
