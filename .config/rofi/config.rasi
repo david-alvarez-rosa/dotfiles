@@ -1,7 +1,7 @@
 configuration {
     modi:       "drun";
     show-icons: false;
-    font:       "DejaVu Sans Mono 9";
+    font:       "monospace 9";
 }
 
 * {
