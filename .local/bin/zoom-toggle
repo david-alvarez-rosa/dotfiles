@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+set -eux
+
+conf="${XDG_RUNTIME_DIR:-/tmp}/xsettingsd.conf"
+dpi=$(xrdb -query | awk '/^Xft.dpi:/ {print $2}')
+
+if [ "${dpi:-120}" -gt 120 ]; then
+  dpi=120
+else
+  dpi=160
+fi
+
+echo "Xft.dpi: $dpi" | xrdb -merge
+echo "Xft/DPI $((dpi * 1024))" > "$conf"
+pkill -x xsettingsd || true
+setsid -f xsettingsd -c "$conf" >/dev/null 2>&1
+i3-msg restart
