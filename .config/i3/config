@@ -124,9 +124,8 @@ bindsym $mod+o fullscreen toggle
 
 bindsym $mod+Shift+v floating toggle; [con_id=__focused__ floating] sticky enable, resize set 25 ppt 25 ppt, move position 75 ppt 75 ppt, move left 5 px, move up 5 px
 
-set_from_resource $bar_font i3wm.bar_font pango:monospace 9
 bar {
-    font $bar_font
+    font pango:monospace 9
     status_command i3blocks
     padding 1px 0 2px 0
     position top

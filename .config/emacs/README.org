@@ -766,19 +766,6 @@ Install fonts once with =M-x nerd-icons-install-fonts=.
   (push '(font . "monospace-9") default-frame-alist)
 #+end_src
 
-One step larger at 1.33x zoom.
-#+begin_src elisp
-  (defun dalvrosa/zoom-font (&rest _)
-    (set-face-attribute
-     'default nil :height
-     (if (string-match-p "^Xft\\.dpi:\t160$" (shell-command-to-string "xrdb -query"))
-         95
-       90)))
-  (dalvrosa/zoom-font)
-  (advice-add 'dynamic-setting-handle-config-changed-event
-              :after #'dalvrosa/zoom-font '((depth . 100)))
-#+end_src
-
 ** Basic Interface Settings
 
 #+begin_src elisp

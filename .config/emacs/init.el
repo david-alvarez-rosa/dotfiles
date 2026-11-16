@@ -484,16 +484,6 @@
   :after doom-modeline
   :init (nyan-mode))
 
-(defun dalvrosa/zoom-font (&rest _)
-  (set-face-attribute
-   'default nil :height
-   (if (string-match-p "^Xft\\.dpi:\t160$" (shell-command-to-string "xrdb -query"))
-       95
-     90)))
-(dalvrosa/zoom-font)
-(advice-add 'dynamic-setting-handle-config-changed-event
-            :after #'dalvrosa/zoom-font '((depth . 100)))
-
 (tooltip-mode 0)
 (setq inhibit-startup-screen t)
 
