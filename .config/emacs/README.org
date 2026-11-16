@@ -842,6 +842,7 @@ ghostel (libghostty-vt) with =C-c t=.  The native module lives in
     (setq ghostel-buffer-name-function nil)
     (setq ghostel-query-before-killing nil)
     (setq ghostel-max-scrollback (* 10 1024 1024))
+    (setq ghostel-timer-delay 0.005)
     (add-to-list 'ghostel-eval-cmds '("man" man))
     (setf (alist-get "ssh" ghostel-tramp-shells nil nil #'equal) '("zsh"))
     :bind (("C-c t" . ghostel)
