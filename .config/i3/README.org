@@ -233,8 +233,9 @@ Small sticky window in the bottom-right corner, for videos.
 
 * Status bar
 #+begin_src conf
+  set_from_resource $bar_font i3wm.bar_font pango:monospace 9
   bar {
-      font pango:monospace 9
+      font $bar_font
       status_command i3blocks
       padding 1px 0 2px 0
       position top

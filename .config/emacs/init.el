@@ -471,7 +471,7 @@
   :config
   (setq doom-modeline-buffer-encoding nil)
   (defun dalvrosa/doom-modeline-height (&rest _)
-    (setq doom-modeline-height (round (* 14 (frame-char-height)) 9))
+    (setq doom-modeline-height (round (* 13 (frame-char-height)) 9))
     (doom-modeline-refresh-bars))
   (dalvrosa/doom-modeline-height)
   (advice-add 'dynamic-setting-handle-config-changed-event
@@ -483,6 +483,16 @@
 (use-package nyan-mode
   :after doom-modeline
   :init (nyan-mode))
+
+(defun dalvrosa/zoom-font (&rest _)
+  (set-face-attribute
+   'default nil :height
+   (if (string-match-p "^Xft\\.dpi:\t160$" (shell-command-to-string "xrdb -query"))
+       95
+     90)))
+(dalvrosa/zoom-font)
+(advice-add 'dynamic-setting-handle-config-changed-event
+            :after #'dalvrosa/zoom-font '((depth . 100)))
 
 (tooltip-mode 0)
 (setq inhibit-startup-screen t)

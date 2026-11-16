@@ -5,12 +5,16 @@ conf="${XDG_RUNTIME_DIR:-/tmp}/xsettingsd.conf"
 dpi=$(xrdb -query | awk '/^Xft.dpi:/ {print $2}')
 
 case "${dpi:-120}:${1:-next}" in
+  *:[0-9]*) dpi=$1 ;;
   120:next | 240:prev) dpi=160 ;;
   160:next | 120:prev) dpi=240 ;;
   *) dpi=120 ;;
 esac
 
-echo "Xft.dpi: $dpi" | xrdb -merge
+size=9
+[ "$dpi" != 160 ] || size=9.45
+
+printf 'Xft.dpi: %s\ni3wm.bar_font: pango:monospace %s\n' "$dpi" "$size" | xrdb -merge
 echo "Xft/DPI $((dpi * 1024))" > "$conf"
 pkill -x xsettingsd || true
 setsid -f xsettingsd -c "$conf" >/dev/null 2>&1
