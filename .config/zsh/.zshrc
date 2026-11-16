@@ -1,7 +1,7 @@
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1="$ " && return
 
 export ZSH=$XDG_DATA_HOME/oh-my-zsh
-plugins=(git)
+plugins=()
 export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 ZSH_DISABLE_COMPFIX="true"
 zstyle ':omz:update' mode disabled
