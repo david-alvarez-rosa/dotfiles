@@ -7,7 +7,7 @@
     "pr": "",
     "sessionUrl": false
   },
-  "model": "opus",
+  "model": "fable",
   "hooks": {
     "PreToolUse": [
       {
