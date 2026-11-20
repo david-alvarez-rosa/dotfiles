@@ -20,15 +20,27 @@ once.  Take it as inspiration rather than using it as is.
 
 ** About this Configuration
 
-Prefer built-ins over packages, bind my commands under =C-c=, prefix
-my definitions with =dalvrosa/=.  Main entry points:
-- =C-c a= Org agenda and =C-c c= Org capture.
-- =C-c e= email (mu4e), =C-c f= web feeds (Elfeed), =C-c i= IRC
-  (ERC), =C-c x= Matrix/WhatsApp (ement).
-- =C-c g= Git (Magit), =C-c t= terminal (ghostel), =C-c h= LLM chat
-  (gptel).
-- =C-c d= toggle light/dark theme, =C-c s= cycle spell checking.
-- =C-c k= kill all buffers except current and =*scratch*=.
+Prefer built-ins over packages, prefix my definitions with
+=dalvrosa/=.
+
+Key conventions: =C-c <letter>= launches or toggles, with a prefix
+only for a group (=C-c w= web, =C-c l= Eglot); =C-x p= reuses the
+global letter for the same tool; shifted Meta is a variant of the
+unshifted command.  Bind with =keymap-set= or =:bind=.
+
+| Keys                       | Commands                                                        |
+|----------------------------+-----------------------------------------------------------------|
+| =C-c a c j L=              | Org agenda, capture, clock goto, store link                     |
+| =C-c e f i x=              | mu4e, Elfeed, ERC, ement                                        |
+| =C-c g t h q=              | Magit, ghostel, gptel, throwaway Claude Code                    |
+| =C-c d o s=                | theme toggle, Olivetti, spell-check cycle                       |
+| =C-c k m=                  | kill other buffers, man                                         |
+| =C-c w l c h d=            | git-link, commit, homepage, DuckDuckGo                          |
+| =C-x p g h t j e b s=      | Magit, Claude Code, ghostel, its buffers, errand, buffers, grep |
+| =C-x k=, =C-x K=           | kill buffer, kill buffer and window                             |
+| =M-n M-p=, =M-N M-P=       | paragraph motion, scroll by line                                |
+| =M-Q=, =M-W=               | unfill paragraph, unfill and kill                               |
+| =M-o=, =C-==, =C-.=, =C-;= | other window, expand region, Embark act, Embark dwim            |
 
 * Loading and Package Management
 
@@ -202,7 +214,7 @@ Filter with =/= and expand subdirectories with =<tab>=.
   (use-package dired-narrow
     :after dired
     :bind (:map dired-mode-map
-                ("/" . 'dired-narrow-fuzzy)))
+                ("/" . dired-narrow-fuzzy)))
 
   (use-package dired-subtree
     :after dired
@@ -244,9 +256,9 @@ Keep backups, autosaves and lock files in the temp directory.
 #+end_src
 
 #+begin_src elisp
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (keymap-global-set "C-x C-b" 'ibuffer)
   (setq ibuffer-expert t)
-  (global-set-key (kbd "C-x k") 'kill-current-buffer)
+  (keymap-global-set "C-x k" 'kill-current-buffer)
 #+end_src
 
 #+begin_src elisp
@@ -263,18 +275,18 @@ Keep backups, autosaves and lock files in the temp directory.
     (split-window-below)
     (balance-windows)
     (other-window 1))
-  (global-set-key (kbd "C-x 2") 'dalvrosa/split-and-follow-horizontally)
+  (keymap-global-set "C-x 2" 'dalvrosa/split-and-follow-horizontally)
 
   (defun dalvrosa/split-and-follow-vertically ()
     (interactive)
     (split-window-right)
     (balance-windows)
     (other-window 1))
-  (global-set-key (kbd "C-x 3") 'dalvrosa/split-and-follow-vertically)
+  (keymap-global-set "C-x 3" 'dalvrosa/split-and-follow-vertically)
 #+end_src
 
 #+begin_src elisp
-  (global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
+  (keymap-global-set "C-x K" 'kill-buffer-and-window)
 
   (defun dalvrosa/kill-all-other-buffers ()
     "Kill all buffers except current and *scratch*."
@@ -282,7 +294,7 @@ Keep backups, autosaves and lock files in the temp directory.
     (delete-other-windows)
     (let ((scratch (get-buffer "*scratch*")))
       (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list))))))
-  (global-set-key (kbd "C-c k") 'dalvrosa/kill-all-other-buffers)
+  (keymap-global-set "C-c k" 'dalvrosa/kill-all-other-buffers)
 #+end_src
 
 #+begin_src elisp
@@ -292,7 +304,7 @@ Keep backups, autosaves and lock files in the temp directory.
 Let i3 focus/move commands cross Emacs windows (see [[https://sqrtminusone.xyz/posts/2021-10-04-emacs-i3/][this post]]).
 
 #+begin_src elisp
-  (global-set-key (kbd "M-o") 'other-window)
+  (keymap-global-set "M-o" 'other-window)
 
   (setq frame-title-format '("" "%b - GNU Emacs at " system-name))
 
@@ -363,18 +375,18 @@ Let i3 focus/move commands cross Emacs windows (see [[https://sqrtminusone.xyz/p
         (yank)
         (unfill-paragraph nil (point-min) (point-max))
         (kill-region (point-min) (point-max)))))
-  (define-key global-map (kbd "M-W") 'dalvrosa/unfill-paragraph-and-kill)
+  (keymap-global-set "M-W" 'dalvrosa/unfill-paragraph-and-kill)
 #+end_src
 
 ** Indentation
 
 #+begin_src elisp
-  (define-key indent-rigidly-map "<" 'indent-rigidly-left)
-  (define-key indent-rigidly-map "b" 'indent-rigidly-left)
-  (define-key indent-rigidly-map ">" 'indent-rigidly-right)
-  (define-key indent-rigidly-map "f" 'indent-rigidly-right)
-  (define-key indent-rigidly-map "B" 'indent-rigidly-left-to-tab-stop)
-  (define-key indent-rigidly-map "F" 'indent-rigidly-right-to-tab-stop)
+  (keymap-set indent-rigidly-map "<" 'indent-rigidly-left)
+  (keymap-set indent-rigidly-map "b" 'indent-rigidly-left)
+  (keymap-set indent-rigidly-map ">" 'indent-rigidly-right)
+  (keymap-set indent-rigidly-map "f" 'indent-rigidly-right)
+  (keymap-set indent-rigidly-map "B" 'indent-rigidly-left-to-tab-stop)
+  (keymap-set indent-rigidly-map "F" 'indent-rigidly-right-to-tab-stop)
 #+end_src
 
 ** Subword Mode
@@ -398,7 +410,7 @@ Let i3 focus/move commands cross Emacs windows (see [[https://sqrtminusone.xyz/p
 
 #+begin_src elisp
   (use-package expand-region
-    :bind ("C-=" . 'er/expand-region))
+    :bind ("C-=" . er/expand-region))
 #+end_src
 
 #+begin_src elisp
@@ -415,10 +427,10 @@ Let i3 focus/move commands cross Emacs windows (see [[https://sqrtminusone.xyz/p
 #+end_src
 
 #+begin_src elisp
-  (define-key global-map (kbd "M-n") 'forward-paragraph)
-  (define-key global-map (kbd "M-p") 'backward-paragraph)
-  (global-set-key (kbd "C-M-n") 'scroll-up-line)
-  (global-set-key (kbd "C-M-p") 'scroll-down-line)
+  (keymap-global-set "M-n" 'forward-paragraph)
+  (keymap-global-set "M-p" 'backward-paragraph)
+  (keymap-global-set "M-N" 'scroll-up-line)
+  (keymap-global-set "M-P" 'scroll-down-line)
 #+end_src
 
 #+begin_src elisp
@@ -613,7 +625,7 @@ on the fly in text modes.  =C-c s= cycles English, Spanish and off.
      ((string= (or ispell-local-dictionary ispell-dictionary) "es_ES")
       (flyspell-mode -1))))
 
-  (global-set-key (kbd "C-c s") #'dalvrosa/flyspell-cycle)
+  (keymap-global-set "C-c s" #'dalvrosa/flyspell-cycle)
   (defvar-keymap dalvrosa/flyspell-cycle-repeat-map "s" #'dalvrosa/flyspell-cycle)
   (put 'dalvrosa/flyspell-cycle 'repeat-map 'dalvrosa/flyspell-cycle-repeat-map)
 #+end_src
@@ -626,7 +638,7 @@ on the fly in text modes.  =C-c s= cycles English, Spanish and off.
 
 ** Web Search
 
-DuckDuckGo with =C-x / d=.
+DuckDuckGo with =C-c w d=.
 
 #+begin_src elisp
   (defun dalvrosa/duckduckgo (query)
@@ -635,7 +647,7 @@ DuckDuckGo with =C-x / d=.
                (buffer-substring-no-properties (region-beginning) (region-end))
              (read-string "DuckDuckGo: "))))
     (browse-url (concat "https://duckduckgo.com/?q=" (url-hexify-string query))))
-  (keymap-global-set "C-x / d" #'dalvrosa/duckduckgo)
+  (keymap-global-set "C-c w d" #'dalvrosa/duckduckgo)
 #+end_src
 
 ** LLM Integration
@@ -711,7 +723,7 @@ Dark mode gets a slightly translucent background.  The bundled
       (load-theme 'modus-vivendi)
     (load-theme 'modus-operandi))
   (dalvrosa/set-background-alpha)
-  (global-set-key (kbd "C-c d") 'modus-themes-toggle)
+  (keymap-global-set "C-c d" 'modus-themes-toggle)
 #+end_src
 
 ** Icons
@@ -784,7 +796,7 @@ Olivetti with =C-c o=.
     :config
     (setq-default olivetti-body-width (+ fill-column 10))
     (setq olivetti-style 'fancy)
-    :bind ("C-c o" . 'olivetti-mode))
+    :bind ("C-c o" . olivetti-mode))
 #+end_src
 
 * Programming Configuration
@@ -855,7 +867,7 @@ ghostel (libghostty-vt) with =C-c t=.  The native module lives in
                       (let (ghostel-readonly-fast-exit) (ghostel-readonly-copy))))))
 #+end_src
 
-In projects: =C-x p v= terminal, =C-x p h= Claude Code, =C-x p j=
+In projects: =C-x p t= terminal, =C-x p h= Claude Code, =C-x p j=
 pick one; a prefix argument starts another.
 
 #+begin_src elisp
@@ -883,8 +895,23 @@ pick one; a prefix argument starts another.
     (keymap-set project-prefix-map "s" 'project-find-regexp)
     (keymap-set project-prefix-map "h" 'dalvrosa/ghostel-project-claude)
     (keymap-set project-prefix-map "j" 'ghostel-project-list-buffers)
-    (keymap-set project-prefix-map "v" 'ghostel-project)
+    (keymap-set project-prefix-map "t" 'ghostel-project)
     (keymap-set project-prefix-map "e" 'errand-agents))
+#+end_src
+
+Throwaway Claude Code chat with =C-c q=, in a fresh =~/tmp= directory.
+
+#+begin_src elisp
+  (defun dalvrosa/claude-scratch ()
+    (interactive)
+    (require 'ghostel)
+    (let ((default-directory
+           (file-name-as-directory
+            (make-temp-file (expand-file-name "~/tmp/claude-") t)))
+          (ghostel-shell (list "claude" "--dangerously-skip-permissions")))
+      (ghostel-create "*claude-scratch*" '((display-buffer-same-window)))))
+
+  (keymap-global-set "C-c q" 'dalvrosa/claude-scratch)
 #+end_src
 
 Claude Code sessions delegated to the homelab (=C-x p e=).
@@ -968,7 +995,7 @@ Delete trailing whitespace on save, except in mail (it breaks the
 
 #+begin_src elisp
   (use-package magit
-    :bind ("C-c g" . 'magit-status)
+    :bind ("C-c g" . magit-status)
     :custom (magit-save-repository-buffers 'dontask))
 #+end_src
 
@@ -1029,7 +1056,7 @@ Trim ~org-modules~ (ol-gnus alone pulls in most of Gnus).
 
 #+begin_src elisp
   (setq org-default-notes-file "~/docs/Agenda.org")
-  (define-key global-map (kbd "C-c c") 'org-capture)
+  (keymap-global-set "C-c c" 'org-capture)
 
   (setq org-capture-templates
         '(("t" "Task" entry
@@ -1044,8 +1071,8 @@ Trim ~org-modules~ (ol-gnus alone pulls in most of Gnus).
 #+end_src
 
 #+begin_src elisp
-  (global-set-key (kbd "C-c L") 'org-store-link)
-  (global-set-key (kbd "C-c j") 'org-clock-goto)
+  (keymap-global-set "C-c L" 'org-store-link)
+  (keymap-global-set "C-c j" 'org-clock-goto)
 #+end_src
 
 ** State Keywords
@@ -1099,7 +1126,7 @@ Only load the languages I use (each costs load time).
 ** Agenda
 
 #+begin_src elisp
-  (global-set-key (kbd "C-c a") 'org-agenda)
+  (keymap-global-set "C-c a" 'org-agenda)
   (setq org-agenda-files '("~/docs/Agenda.org" "~/docs/Calendar.org" "~/dev/personal-website/Content.org"))
 #+end_src
 
@@ -1224,7 +1251,7 @@ AUCTeX with CDLaTeX, viewing PDFs in PDF Tools.
     :bind (
            :map LaTeX-mode-map
            ;; Command for cleaning auxiliary files
-           ("C-x M-k" . 'TeX-clean)))
+           ("C-x M-k" . TeX-clean)))
 #+end_src
 
 #+begin_src elisp
@@ -1271,7 +1298,7 @@ source.
     :config
     (pdf-tools-install)
     :bind (:map pdf-view-mode-map
-                ("C-s" . 'isearch-forward)))
+                ("C-s" . isearch-forward)))
 #+end_src
 
 * Email Management
@@ -1409,8 +1436,8 @@ when something changed.
         (mu4e-update-index))))
 
   (with-eval-after-load 'mu4e
-    (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
-    (define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index))
+    (keymap-set mu4e-main-mode-map "U" 'dalvrosa/mu4e-update-mail-and-index)
+    (keymap-set mu4e-update-minor-mode-map "C-c C-u" 'dalvrosa/mu4e-update-mail-and-index))
 
   (setq mu4e-headers-auto-update nil)
 
@@ -1550,9 +1577,9 @@ Elfeed with =C-c f=; =v= plays in mpv, =i= ignores.
 
 #+begin_src elisp
   (use-package elfeed
-    :bind (("C-c f" . 'elfeed)
-           :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)
-                                        ("i" . 'dalvrosa/elfeed-ignore)))
+    :bind (("C-c f" . elfeed)
+           :map elfeed-search-mode-map (("v" . dalvrosa/elfeed-play-with-mpv)
+                                        ("i" . dalvrosa/elfeed-ignore)))
     :init (setq elfeed-search-filter "@1-week-ago -no ")
     :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
                   elfeed-search-sort-order 'ascending
@@ -1589,7 +1616,7 @@ ERC with =C-c i=, through my ZNC bouncer.  Find me on Libera.Chat as
 =dalvrosa=.
 
 #+begin_src elisp
-  (global-set-key (kbd "C-c i") 'erc-tls)
+  (keymap-global-set "C-c i" 'erc-tls)
 
   (setq erc-server "irc.alvarezrosa.com")
   (setq erc-nick "dalvrosa")
@@ -1647,7 +1674,7 @@ homeserver.
                     :host "matrix.alvarezrosa.com"
                     :user "@david:matrix.alvarezrosa.com")))))
 
-  (global-set-key (kbd "C-c x") 'dalvrosa/ement-connect)
+  (keymap-global-set "C-c x" 'dalvrosa/ement-connect)
 #+end_src
 
 * Useful Resources

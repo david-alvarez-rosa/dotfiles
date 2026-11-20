@@ -84,7 +84,7 @@
 (use-package dired-narrow
   :after dired
   :bind (:map dired-mode-map
-              ("/" . 'dired-narrow-fuzzy)))
+              ("/" . dired-narrow-fuzzy)))
 
 (use-package dired-subtree
   :after dired
@@ -110,9 +110,9 @@
 
 (setq split-width-threshold 210)
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(keymap-global-set "C-x C-b" 'ibuffer)
 (setq ibuffer-expert t)
-(global-set-key (kbd "C-x k") 'kill-current-buffer)
+(keymap-global-set "C-x k" 'kill-current-buffer)
 
 (put 'narrow-to-region 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
@@ -123,16 +123,16 @@
   (split-window-below)
   (balance-windows)
   (other-window 1))
-(global-set-key (kbd "C-x 2") 'dalvrosa/split-and-follow-horizontally)
+(keymap-global-set "C-x 2" 'dalvrosa/split-and-follow-horizontally)
 
 (defun dalvrosa/split-and-follow-vertically ()
   (interactive)
   (split-window-right)
   (balance-windows)
   (other-window 1))
-(global-set-key (kbd "C-x 3") 'dalvrosa/split-and-follow-vertically)
+(keymap-global-set "C-x 3" 'dalvrosa/split-and-follow-vertically)
 
-(global-set-key (kbd "C-x C-k") 'kill-buffer-and-window)
+(keymap-global-set "C-x K" 'kill-buffer-and-window)
 
 (defun dalvrosa/kill-all-other-buffers ()
   "Kill all buffers except current and *scratch*."
@@ -140,11 +140,11 @@
   (delete-other-windows)
   (let ((scratch (get-buffer "*scratch*")))
     (mapc 'kill-buffer (delq scratch (delq (current-buffer) (buffer-list))))))
-(global-set-key (kbd "C-c k") 'dalvrosa/kill-all-other-buffers)
+(keymap-global-set "C-c k" 'dalvrosa/kill-all-other-buffers)
 
 (run-with-idle-timer 0.1 nil #'winner-mode)
 
-(global-set-key (kbd "M-o") 'other-window)
+(keymap-global-set "M-o" 'other-window)
 
 (setq frame-title-format '("" "%b - GNU Emacs at " system-name))
 
@@ -205,14 +205,14 @@
       (yank)
       (unfill-paragraph nil (point-min) (point-max))
       (kill-region (point-min) (point-max)))))
-(define-key global-map (kbd "M-W") 'dalvrosa/unfill-paragraph-and-kill)
+(keymap-global-set "M-W" 'dalvrosa/unfill-paragraph-and-kill)
 
-(define-key indent-rigidly-map "<" 'indent-rigidly-left)
-(define-key indent-rigidly-map "b" 'indent-rigidly-left)
-(define-key indent-rigidly-map ">" 'indent-rigidly-right)
-(define-key indent-rigidly-map "f" 'indent-rigidly-right)
-(define-key indent-rigidly-map "B" 'indent-rigidly-left-to-tab-stop)
-(define-key indent-rigidly-map "F" 'indent-rigidly-right-to-tab-stop)
+(keymap-set indent-rigidly-map "<" 'indent-rigidly-left)
+(keymap-set indent-rigidly-map "b" 'indent-rigidly-left)
+(keymap-set indent-rigidly-map ">" 'indent-rigidly-right)
+(keymap-set indent-rigidly-map "f" 'indent-rigidly-right)
+(keymap-set indent-rigidly-map "B" 'indent-rigidly-left-to-tab-stop)
+(keymap-set indent-rigidly-map "F" 'indent-rigidly-right-to-tab-stop)
 
 (global-subword-mode 1)
 
@@ -222,7 +222,7 @@
 (delete-selection-mode 1)
 
 (use-package expand-region
-  :bind ("C-=" . 'er/expand-region))
+  :bind ("C-=" . er/expand-region))
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
@@ -231,10 +231,10 @@
 (setq scroll-preserve-screen-position t)
 (setq fast-but-imprecise-scrolling t)
 
-(define-key global-map (kbd "M-n") 'forward-paragraph)
-(define-key global-map (kbd "M-p") 'backward-paragraph)
-(global-set-key (kbd "C-M-n") 'scroll-up-line)
-(global-set-key (kbd "C-M-p") 'scroll-down-line)
+(keymap-global-set "M-n" 'forward-paragraph)
+(keymap-global-set "M-p" 'backward-paragraph)
+(keymap-global-set "M-N" 'scroll-up-line)
+(keymap-global-set "M-P" 'scroll-down-line)
 
 (put 'set-goal-column 'disabled nil)
 (put 'scroll-left 'disabled nil)
@@ -378,7 +378,7 @@
    ((string= (or ispell-local-dictionary ispell-dictionary) "es_ES")
     (flyspell-mode -1))))
 
-(global-set-key (kbd "C-c s") #'dalvrosa/flyspell-cycle)
+(keymap-global-set "C-c s" #'dalvrosa/flyspell-cycle)
 (defvar-keymap dalvrosa/flyspell-cycle-repeat-map "s" #'dalvrosa/flyspell-cycle)
 (put 'dalvrosa/flyspell-cycle 'repeat-map 'dalvrosa/flyspell-cycle-repeat-map)
 
@@ -390,7 +390,7 @@
              (buffer-substring-no-properties (region-beginning) (region-end))
            (read-string "DuckDuckGo: "))))
   (browse-url (concat "https://duckduckgo.com/?q=" (url-hexify-string query))))
-(keymap-global-set "C-x / d" #'dalvrosa/duckduckgo)
+(keymap-global-set "C-c w d" #'dalvrosa/duckduckgo)
 
 (defun dalvrosa/new-gpt-chat ()
   (interactive)
@@ -446,7 +446,7 @@
     (load-theme 'modus-vivendi)
   (load-theme 'modus-operandi))
 (dalvrosa/set-background-alpha)
-(global-set-key (kbd "C-c d") 'modus-themes-toggle)
+(keymap-global-set "C-c d" 'modus-themes-toggle)
 
 (use-package nerd-icons)
 
@@ -493,7 +493,7 @@
   :config
   (setq-default olivetti-body-width (+ fill-column 10))
   (setq olivetti-style 'fancy)
-  :bind ("C-c o" . 'olivetti-mode))
+  :bind ("C-c o" . olivetti-mode))
 
 (run-with-idle-timer 0.2 nil (lambda () (setopt treesit-enabled-modes t)))
 
@@ -566,8 +566,19 @@ With prefix arg NEW, start an additional session instead."
   (keymap-set project-prefix-map "s" 'project-find-regexp)
   (keymap-set project-prefix-map "h" 'dalvrosa/ghostel-project-claude)
   (keymap-set project-prefix-map "j" 'ghostel-project-list-buffers)
-  (keymap-set project-prefix-map "v" 'ghostel-project)
+  (keymap-set project-prefix-map "t" 'ghostel-project)
   (keymap-set project-prefix-map "e" 'errand-agents))
+
+(defun dalvrosa/claude-scratch ()
+  (interactive)
+  (require 'ghostel)
+  (let ((default-directory
+         (file-name-as-directory
+          (make-temp-file (expand-file-name "~/tmp/claude-") t)))
+        (ghostel-shell (list "claude" "--dangerously-skip-permissions")))
+    (ghostel-create "*claude-scratch*" '((display-buffer-same-window)))))
+
+(keymap-global-set "C-c q" 'dalvrosa/claude-scratch)
 
 (use-package errand
   :ensure nil
@@ -618,7 +629,7 @@ With prefix arg NEW, start an additional session instead."
                        (delete-trailing-whitespace))))
 
 (use-package magit
-  :bind ("C-c g" . 'magit-status)
+  :bind ("C-c g" . magit-status)
   :custom (magit-save-repository-buffers 'dontask))
 
 (use-package orgit)
@@ -647,7 +658,7 @@ With prefix arg NEW, start an additional session instead."
 (setq org-use-speed-commands t)
 
 (setq org-default-notes-file "~/docs/Agenda.org")
-(define-key global-map (kbd "C-c c") 'org-capture)
+(keymap-global-set "C-c c" 'org-capture)
 
 (setq org-capture-templates
       '(("t" "Task" entry
@@ -660,8 +671,8 @@ With prefix arg NEW, start an additional session instead."
          (file "~/dev/personal-website/Content.org")
          "* TODO [#B] %?" :empty-lines 1 :prepend t)))
 
-(global-set-key (kbd "C-c L") 'org-store-link)
-(global-set-key (kbd "C-c j") 'org-clock-goto)
+(keymap-global-set "C-c L" 'org-store-link)
+(keymap-global-set "C-c j" 'org-clock-goto)
 
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAIT(w)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)")))
@@ -689,7 +700,7 @@ With prefix arg NEW, start an additional session instead."
 (setq org-startup-indented t)
 (setq org-startup-folded 'content)
 
-(global-set-key (kbd "C-c a") 'org-agenda)
+(keymap-global-set "C-c a" 'org-agenda)
 (setq org-agenda-files '("~/docs/Agenda.org" "~/docs/Calendar.org" "~/dev/personal-website/Content.org"))
 
 (setq org-agenda-skip-deadline-if-done t)
@@ -778,7 +789,7 @@ With prefix arg NEW, start an additional session instead."
   :bind (
          :map LaTeX-mode-map
          ;; Command for cleaning auxiliary files
-         ("C-x M-k" . 'TeX-clean)))
+         ("C-x M-k" . TeX-clean)))
 
 (use-package cdlatex
   :hook (LaTeX-mode . turn-on-cdlatex))
@@ -802,7 +813,7 @@ With prefix arg NEW, start an additional session instead."
   :config
   (pdf-tools-install)
   :bind (:map pdf-view-mode-map
-              ("C-s" . 'isearch-forward)))
+              ("C-s" . isearch-forward)))
 
 (use-package mu4e
   :ensure nil
@@ -895,8 +906,8 @@ With prefix arg NEW, start an additional session instead."
       (mu4e-update-index))))
 
 (with-eval-after-load 'mu4e
-  (define-key mu4e-main-mode-map (kbd "U") 'dalvrosa/mu4e-update-mail-and-index)
-  (define-key mu4e-update-minor-mode-map (kbd "C-c C-u") 'dalvrosa/mu4e-update-mail-and-index))
+  (keymap-set mu4e-main-mode-map "U" 'dalvrosa/mu4e-update-mail-and-index)
+  (keymap-set mu4e-update-minor-mode-map "C-c C-u" 'dalvrosa/mu4e-update-mail-and-index))
 
 (setq mu4e-headers-auto-update nil)
 
@@ -999,9 +1010,9 @@ With prefix arg NEW, start an additional session instead."
   (advice-add 'mu4e-icalendar-reply :after #'dalvrosa/calendar-accept))
 
 (use-package elfeed
-  :bind (("C-c f" . 'elfeed)
-         :map elfeed-search-mode-map (("v" . 'dalvrosa/elfeed-play-with-mpv)
-                                      ("i" . 'dalvrosa/elfeed-ignore)))
+  :bind (("C-c f" . elfeed)
+         :map elfeed-search-mode-map (("v" . dalvrosa/elfeed-play-with-mpv)
+                                      ("i" . dalvrosa/elfeed-ignore)))
   :init (setq elfeed-search-filter "@1-week-ago -no ")
   :config (setq elfeed-db-directory "~/.config/emacs/elfeed"
                 elfeed-search-sort-order 'ascending
@@ -1025,7 +1036,7 @@ With prefix arg NEW, start an additional session instead."
     (elfeed-search-update-entry entry)
     (forward-line)))
 
-(global-set-key (kbd "C-c i") 'erc-tls)
+(keymap-global-set "C-c i" 'erc-tls)
 
 (setq erc-server "irc.alvarezrosa.com")
 (setq erc-nick "dalvrosa")
@@ -1068,4 +1079,4 @@ Reuses a saved session or, on first login, the authentication file."
                   :host "matrix.alvarezrosa.com"
                   :user "@david:matrix.alvarezrosa.com")))))
 
-(global-set-key (kbd "C-c x") 'dalvrosa/ement-connect)
+(keymap-global-set "C-c x" 'dalvrosa/ement-connect)
