@@ -132,7 +132,7 @@
   (other-window 1))
 (keymap-global-set "C-x 3" 'dalvrosa/split-and-follow-vertically)
 
-(keymap-global-set "C-x K" 'kill-buffer-and-window)
+(keymap-global-set "C-x C-k" 'kill-buffer-and-window)
 
 (defun dalvrosa/kill-all-other-buffers ()
   "Kill all buffers except current and *scratch*."

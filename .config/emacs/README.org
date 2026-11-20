@@ -37,7 +37,7 @@ unshifted command.  Bind with =keymap-set= or =:bind=.
 | =C-c k m=                  | kill other buffers, man                                         |
 | =C-c w l c h d=            | git-link, commit, homepage, DuckDuckGo                          |
 | =C-x p g h t j e b s=      | Magit, Claude Code, ghostel, its buffers, errand, buffers, grep |
-| =C-x k=, =C-x K=           | kill buffer, kill buffer and window                             |
+| =C-x k=, =C-x C-k=         | kill buffer, kill buffer and window                             |
 | =M-n M-p=, =M-N M-P=       | paragraph motion, scroll by line                                |
 | =M-Q=, =M-W=               | unfill paragraph, unfill and kill                               |
 | =M-o=, =C-==, =C-.=, =C-;= | other window, expand region, Embark act, Embark dwim            |
@@ -286,7 +286,7 @@ Keep backups, autosaves and lock files in the temp directory.
 #+end_src
 
 #+begin_src elisp
-  (keymap-global-set "C-x K" 'kill-buffer-and-window)
+  (keymap-global-set "C-x C-k" 'kill-buffer-and-window)
 
   (defun dalvrosa/kill-all-other-buffers ()
     "Kill all buffers except current and *scratch*."
