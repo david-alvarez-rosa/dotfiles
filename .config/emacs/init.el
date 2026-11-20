@@ -583,7 +583,8 @@ With prefix arg NEW, start an additional session instead."
 (use-package errand
   :ensure nil
   :load-path "~/dev/errand"
-  :commands errand-agents)
+  :commands errand-agents
+  :custom (errand-workers '("homelab" "local")))
 
 (use-package eglot
   :ensure nil
@@ -595,8 +596,6 @@ With prefix arg NEW, start an additional session instead."
         '("ty" "server"))
   :hook ((c++-ts-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
-         (java-ts-mode . eglot-ensure)
-         (ruby-ts-mode . eglot-ensure)
          (rust-ts-mode . eglot-ensure)
          (python-ts-mode . eglot-ensure)
          (LaTeX-mode . eglot-ensure)
@@ -652,8 +651,7 @@ With prefix arg NEW, start an additional session instead."
 
 (use-package vlf)
 
-(setq org-modules '(ol-doi ol-bbdb ol-bibtex ol-docview ol-eww
-                    ol-info ol-irc))
+(setq org-modules '(ol-bbdb))
 
 (setq org-use-speed-commands t)
 
@@ -692,7 +690,7 @@ With prefix arg NEW, start an additional session instead."
 (setq org-confirm-babel-evaluate nil)
 (setq org-plantuml-exec-mode 'plantuml)
 
-(setq org-export-backends '(ascii html icalendar latex md odt))
+(setq org-export-backends '(ascii html latex md odt))
 (use-package ox-hugo :after ox :demand t)
 
 (setq org-agenda-restore-windows-after-quit t)

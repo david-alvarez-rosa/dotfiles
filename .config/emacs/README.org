@@ -914,13 +914,15 @@ Throwaway Claude Code chat with =C-c q=, in a fresh =~/tmp= directory.
   (keymap-global-set "C-c q" 'dalvrosa/claude-scratch)
 #+end_src
 
-Claude Code sessions delegated to the homelab (=C-x p e=).
+Claude Code sessions delegated to a worker (=C-x p e=): the homelab by
+default, or with =C-u= any other worker, including this machine.
 
 #+begin_src elisp
   (use-package errand
     :ensure nil
     :load-path "~/dev/errand"
-    :commands errand-agents)
+    :commands errand-agents
+    :custom (errand-workers '("homelab" "local")))
 #+end_src
 
 ** Language Server Protocol
@@ -938,8 +940,6 @@ Eglot under =C-c l=.
           '("ty" "server"))
     :hook ((c++-ts-mode . eglot-ensure)
            (c-ts-mode . eglot-ensure)
-           (java-ts-mode . eglot-ensure)
-           (ruby-ts-mode . eglot-ensure)
            (rust-ts-mode . eglot-ensure)
            (python-ts-mode . eglot-ensure)
            (LaTeX-mode . eglot-ensure)
@@ -1039,11 +1039,10 @@ Delete trailing whitespace on save, except in mail (it breaks the
 
 * Org Mode
 
-Trim ~org-modules~ (ol-gnus alone pulls in most of Gnus).
+Trim ~org-modules~ to BBDB, for birthdays in the agenda.
 
 #+begin_src elisp
-  (setq org-modules '(ol-doi ol-bbdb ol-bibtex ol-docview ol-eww
-                      ol-info ol-irc))
+  (setq org-modules '(ol-bbdb))
 #+end_src
 
 ** Speed Commands
@@ -1110,7 +1109,7 @@ Only load the languages I use (each costs load time).
 ** Export
 
 #+begin_src elisp
-  (setq org-export-backends '(ascii html icalendar latex md odt))
+  (setq org-export-backends '(ascii html latex md odt))
   (use-package ox-hugo :after ox :demand t)
 #+end_src
 
