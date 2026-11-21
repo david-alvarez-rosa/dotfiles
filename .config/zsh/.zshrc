@@ -11,8 +11,8 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 eval "$(starship init zsh)"
 
-bindkey "\ep" history-beginning-search-backward
-bindkey "\en" history-beginning-search-forward
+bindkey "\C-p" history-beginning-search-backward
+bindkey "\C-n" history-beginning-search-forward
 
 # ghostel integration
 if [[ "${INSIDE_EMACS%%,*}" = "ghostel" ]]; then
