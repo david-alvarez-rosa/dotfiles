@@ -26,6 +26,5 @@ alias cpc="xclip -selection clipboard"
 alias ls="ls --color=auto --group-directories-first"
 alias l="ls -N"
 alias ll="ls -lahN"
-alias claude="claude --dangerously-skip-permissions"
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

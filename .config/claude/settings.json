@@ -8,6 +8,9 @@
     "sessionUrl": false
   },
   "model": "fable",
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
   "hooks": {
     "PreToolUse": [
       {
