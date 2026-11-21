@@ -1,10 +1,14 @@
 #!/usr/bin/env sh
 set -eu
 
+prev=open
 while :; do
-    if [ "$(awk '{print $2}' /proc/acpi/button/lid/LID/state)" = closed ]; then
+    state=$(awk '{print $2}' /proc/acpi/button/lid/LID/state)
+    if [ "$state" = closed ]; then
         wpctl set-volume @DEFAULT_AUDIO_SINK@ 0
         wpctl set-mute @DEFAULT_AUDIO_SINK@ 1
+        [ "$prev" = closed ] || loginctl lock-session "$(loginctl show-user "$USER" -P Display)"
     fi
+    prev=$state
     sleep 2
 done
