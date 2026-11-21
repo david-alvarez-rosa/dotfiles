@@ -522,6 +522,12 @@
       (kill-new output)
       (message "Copied last command output"))))
 
+(defun dalvrosa/ghostel-previous-line ()
+  "Enter copy mode and move to the previous line."
+  (interactive)
+  (ghostel-copy-mode)
+  (call-interactively #'previous-line))
+
 (use-package ghostel
   :init
   (setq ghostel-module-directory (expand-file-name "ghostel/" user-emacs-directory))
@@ -536,7 +542,7 @@
   :bind (("C-c t" . ghostel)
          :map ghostel-semi-char-mode-map
          ("C-q" . ghostel-send-next-key)
-         ("C-M-p" . ghostel-copy-mode)
+         ("M-p" . dalvrosa/ghostel-previous-line)
          ("M-w" . dalvrosa/ghostel-yank-output)
          :map ghostel-readonly-mode-map
          ("M-w" . (lambda () (interactive)
