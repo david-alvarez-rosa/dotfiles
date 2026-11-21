@@ -1,9 +1,9 @@
 [Unit]
-Description=Mute audio while the laptop lid is closed
+Description=Lock and mute when the laptop lid is closed
 After=pipewire.service
 
 [Service]
-ExecStart=%h/.local/bin/lid-mute
+ExecStart=%h/.local/bin/lid-close
 Restart=always
 StandardOutput=journal
 StandardError=journal
