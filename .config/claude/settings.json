@@ -27,6 +27,6 @@
   },
   "outputStyle": "Concise",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "dark",
+  "theme": "auto",
   "switchModelsOnFlag": true
 }
